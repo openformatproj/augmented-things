@@ -1,0 +1,50 @@
+package mecs.iot.proj.om2m;
+
+import mecs.iot.proj.om2m.Client;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.net.URISyntaxException;
+
+class Path {
+	
+	private Client client;
+	private List<String> uri;
+	int level;
+	
+	Path(Client client, String uri, int capacity) {
+		this.client = client;
+		this.uri = new ArrayList<String>(capacity);
+		this.uri.add(uri);
+		level = 0;
+	}
+	
+	String uri() {
+		String out = "";
+		for(int i=0; i<uri.size(); i++) {
+			if (i!=uri.size()-1)
+				out += uri.get(i) + "/";
+			else
+				out += uri.get(i);
+		}
+		return out;
+	}
+	
+	void change(String[] uri) throws URISyntaxException {
+		level = uri.length;
+		for (int i=this.uri.size()-1; i>0; i--) {
+			this.uri.remove(i);
+		}
+		for(int i=0; i<level; i++) {
+			this.uri.add(uri[i]);
+		}
+		client.simpleConnect(uri());
+	}
+	
+	void down(String uri) throws URISyntaxException {
+		level += 1;
+		this.uri.add(uri);
+		client.simpleConnect(uri());
+	}
+
+}
