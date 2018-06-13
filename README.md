@@ -22,5 +22,5 @@ to push your edit in this repository
 
 ### Modules documentation
 Also check
-* [```om2m/README.md```](https://github.com/openformatproj/AugmentedThings/blob/master/om2m/README.md)
+* [```om2m/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md)
 * ```sandbox/README.md```
