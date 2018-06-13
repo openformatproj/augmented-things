@@ -19,14 +19,17 @@ org.eclipse.om2m.remoteCseAddress=127.0.0.1
 
 You should avoid editing these files directly, especially during tests (in which configuration may change a lot of times, resulting in many useless Github commits). You can override their content by putting your versions in a ```../configuration``` folder just above the main folder, in this way
 ```
-|_AugmentedThings
-  |_.settings
+.
+|_maven.1528908277673
+  |_augmented-things
+    |_.settings
+    |_om2m
+    |_.classpath
+    |_.project
+    |_pom.xml
   |_images
-  |_om2m
-  |_.classpath
-  |_.project
+  |_.gitignore
   |_LICENSE
-  |_pom.xml
   |_README.md
 |_configuration
   |_config.ini
