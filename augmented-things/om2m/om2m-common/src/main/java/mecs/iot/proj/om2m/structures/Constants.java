@@ -40,7 +40,7 @@ public class Constants {
 		conf = null;
 		Object str = null;
 		try {
-			conf = new Configuration ("../../../../configuration/config.ini");
+			conf = new Configuration ("../../../../../configuration/config.ini");
 			System.out.println("Found local configuration file");
 		} catch (Exception e0) {
 			try {
