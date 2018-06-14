@@ -24,7 +24,7 @@ class RemoteInterface extends Client {
 	
 	private long start;
 
-	RemoteInterface(Tag tag, String uri, String context, int location, long end, boolean debug, Action[] actions, String address, int port) throws URISyntaxException {
+	RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String address, int port, long end) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.context = context;
 		this.tag = tag;

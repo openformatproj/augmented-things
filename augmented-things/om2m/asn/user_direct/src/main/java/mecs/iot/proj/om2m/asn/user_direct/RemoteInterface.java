@@ -21,12 +21,12 @@ class RemoteInterface extends Client {
 	
 	private boolean executing;
 
-	RemoteInterface(String serial, String id, String host, String uri, String context, boolean debug, String address, int port, Console console) throws URISyntaxException {
+	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String serial, String ip, int port) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_remote",host), uri, debug);
 		this.serial = serial;
 		this.context = context;
 		this.id = Services.joinIdHost(id,host);
-		this.address = address + ":" + Integer.toString(port);
+		this.address = ip + ":" + Integer.toString(port);
 		CommandList list = new CommandList(this,this.id);
 		console.add("query",list.getCommand(0),"Query the attributes of a node. Syntax: query serial");
 		console.add("read",list.getCommand(1),"Read the value of a node. Syntax: read serial");

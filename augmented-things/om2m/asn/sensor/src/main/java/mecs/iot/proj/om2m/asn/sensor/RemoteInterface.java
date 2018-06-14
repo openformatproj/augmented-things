@@ -23,7 +23,7 @@ class RemoteInterface extends Client {
 	
 	private long start;
 
-	RemoteInterface(double value, String measureUnit, double fluctuation, Tag tag, String uri, String context, int location, long end, boolean debug) throws URISyntaxException {
+	RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, String measureUnit, double fluctuation, long end) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.value = value;
 		this.measureUnit = measureUnit;

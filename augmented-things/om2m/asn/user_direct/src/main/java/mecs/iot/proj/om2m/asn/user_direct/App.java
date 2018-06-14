@@ -11,14 +11,9 @@ import java.net.URISyntaxException;
 
 public class App 
 {
-	
-	final private static String baseAddress = Constants.inAddress + Constants._inADNPort; 							// IN address (ADN)
-	final private static String context = Constants.context;
-	final private static String relAddress = context;
-	final private static String address = Constants.adnProtocol + baseAddress + "/" + relAddress;
-	final private static String host = Constants.getComputerName();
-	
 	final private static String id = "user";
+	final private static String host = Constants.getComputerName();
+	final private static String address = Constants.adnProtocol + Constants.inAddress + Constants._inADNPort + "/" + Constants.context;
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
 	
@@ -32,7 +27,7 @@ public class App
     	final RemoteInterface remote;
     	RemoteInterface remote_ = null;
 		try {
-			remote_ = new RemoteInterface(getSerial(),id,host,address,context,true,Constants.getIp(),5690,console);
+			remote_ = new RemoteInterface(id,host,address,Constants.context,true,console,getSerial(),Constants.getIp(),5690);
 		} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);
 		} finally {
