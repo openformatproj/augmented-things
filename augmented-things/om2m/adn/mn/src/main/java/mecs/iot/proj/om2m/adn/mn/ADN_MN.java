@@ -333,6 +333,7 @@ class ADN_MN extends ADN {
 				response = new Response(ResponseCode.CREATED);
 			} else {
 				// notification, TODO
+				System.out.println("Got something");
 				System.out.println(exchange.getRequestText());
 				response = new Response(ResponseCode.VALID);
 			}

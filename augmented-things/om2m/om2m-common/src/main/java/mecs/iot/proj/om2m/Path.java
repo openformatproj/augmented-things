@@ -38,13 +38,13 @@ class Path {
 		for(int i=0; i<level; i++) {
 			this.uri.add(uri[i]);
 		}
-		client.simpleConnect(uri());
+		client.connect(uri(),false);
 	}
 	
 	void down(String uri) throws URISyntaxException {
 		level += 1;
 		this.uri.add(uri);
-		client.simpleConnect(uri());
+		client.connect(uri(),false);
 	}
 
 }

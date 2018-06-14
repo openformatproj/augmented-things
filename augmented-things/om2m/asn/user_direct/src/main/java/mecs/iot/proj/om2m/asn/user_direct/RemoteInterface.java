@@ -69,8 +69,13 @@ class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering to MN");
+//		boolean pinged = ping();
+//		if (pinged) {
+//			System.out.println("OK");
+//		} else {
+//			System.out.println("NR");
+//		}
 		response = register(id,this.address);
-		// response = ping();
 		if (response==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);

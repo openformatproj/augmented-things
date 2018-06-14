@@ -220,14 +220,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	protected CoapResponse ping() {
-		Request request = new Request(Code.GET);
-		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		debugStream.out("Sent ping to " + services.uri(), i);
-		return send(request);
-	}
-	
 	private CoapResource createResource(String[] actions, Action[] callbacks) {
 		return new CoapResource("");
 		// TODO

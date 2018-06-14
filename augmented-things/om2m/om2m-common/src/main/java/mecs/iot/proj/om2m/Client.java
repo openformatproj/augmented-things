@@ -36,9 +36,9 @@ public class Client extends Thread
 	
 	 /** 
 	 * Connects to a server by specifying its URI. For instance,
-	 * <code>connect("coap://192.168.0.104:5685");</code>
-	 * can be used to connect the client to the infrastructure ADN
-	 * at address 192.168.0.104, while
+	 * <code>connect("coap://192.168.0.104:5685/augmented-things");</code>
+	 * can be used to connect the client to the infrastructure
+	 * ADN at address 192.168.0.104, while
 	 * <code>connect("coap://192.168.0.105:5684/~/augmented-things-MN-cse")</code>
 	 * connects the client to the middle-node CSE.
 	 *
@@ -52,9 +52,17 @@ public class Client extends Thread
 		debugStream.out("Connected to " + uri, i);
 	}
 	
-	void simpleConnect(String uri) throws URISyntaxException {
+	public boolean ping() {
+		debugStream.out("Sent ping to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
+		return connection.ping();
+	}
+	
+	void connect(String uri, boolean createService) throws URISyntaxException {
 		this.uri = new URI(uri);
 		connection = new CoapClient(this.uri);
+		if (createService)
+			services = new Services(this,uri);
+		debugStream.out("Connected to " + uri, i);
 	}
 	
 	public void destroy() {
@@ -62,6 +70,7 @@ public class Client extends Thread
 	}
 	
 	public CoapResponse send(Request request) {
+		debugStream.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
 		return connection.advanced(request);
 	}
 	
