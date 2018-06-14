@@ -38,7 +38,7 @@ class ADN_MN extends ADN {
 	synchronized public void handleGET(CoapExchange exchange) {
 		Response response = null;
 		String mode = getUriValue(exchange,"mode",0);
-		if (!mode.isEmpty()) {
+		if (mode!=null) {
 			int sw;
 			try {
 				sw = Integer.parseInt(mode);
@@ -50,8 +50,11 @@ class ADN_MN extends ADN {
 				return;
 			}
 			String serial = getUriValue(exchange,"ser",1);
-			if (!isValidSerial(serial)) {
-				debugStream.out("Bad request, ser=" + serial, i);
+			if (serial==null || !isValidSerial(serial)) {
+				if (serial!=null)
+					debugStream.out("Bad request, ser=" + serial, i);
+				else
+					debugStream.out("Bad request, ser", i);
 				response = new Response(ResponseCode.BAD_REQUEST);
 				exchange.respond(response);
 				i++;
@@ -109,8 +112,6 @@ class ADN_MN extends ADN {
 				break;
 			}
 		} else {
-//			debugStream.out("Bad request, mode not specified", i);
-//			response = new Response(ResponseCode.BAD_REQUEST);
 			response = new Response(ResponseCode.CONTENT);
 			response.setPayload("MN " + name);
 		}
@@ -123,7 +124,7 @@ class ADN_MN extends ADN {
 	synchronized public void handlePOST(CoapExchange exchange) {
 		Response response = null;
 		String id = getUriValue(exchange,"id",0);
-		if (!id.isEmpty()) {
+		if (id!=null) {
 			if (!isValidId(id)) {
 				debugStream.out("Bad request, id=" + id, i);
 				response = new Response(ResponseCode.BAD_REQUEST);
@@ -132,7 +133,7 @@ class ADN_MN extends ADN {
 				return;
 			}
 			String serial = getUriValue(exchange,"ser",1);
-			if (!serial.isEmpty()) {
+			if (serial!=null) {
 				if (!isValidSerial(serial)) {
 					debugStream.out("Bad request, ser=" + serial, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
@@ -141,7 +142,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				String type = getUriValue(exchange,"type",2);
-				if (!type.isEmpty()) {
+				if (type!=null) {
 					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
 					if (!isValidType(type)) {
 						debugStream.out("Bad request, type=" + type, i);
@@ -163,8 +164,11 @@ class ADN_MN extends ADN {
 					Tag_ tag = null;
 					if (type.equals("act")) {
 						String address = getUriValue(exchange,"addr",3);
-						if (!isValidAddress(address)) {
-							debugStream.out("Bad request, addr=" + address, i);
+						if (address==null || !isValidAddress(address)) {
+							if (address!=null)
+								debugStream.out("Bad request, addr=" + address, i);
+							else
+								debugStream.out("Bad request, addr", i);
 							response = new Response(ResponseCode.BAD_REQUEST);
 							exchange.respond(response);
 							i++;
@@ -220,8 +224,11 @@ class ADN_MN extends ADN {
 			} else {
 				// user MN registration (id=<ID>&addr=<URI>)
 				String address = getUriValue(exchange,"addr",1);
-				if (!isValidAddress(address)) {
-					debugStream.out("Bad request, addr=" + address, i);
+				if (address==null || !isValidAddress(address)) {
+					if (address!=null)
+						debugStream.out("Bad request, addr=" + address, i);
+					else
+						debugStream.out("Bad request, addr", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -236,7 +243,7 @@ class ADN_MN extends ADN {
 			String serial1 = getUriValue(exchange,"ser",1);
 			String id0 = getUriValue(exchange,"id",2);
 			String id1 = getUriValue(exchange,"id",3);
-			if (!serial0.isEmpty() && !serial1.isEmpty() && !id0.isEmpty() && !id1.isEmpty()) {
+			if (serial0!=null && serial1!=null && id0!=null && id1!=null) {
 				// nodes link (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>)
 				if (!isValidSerial(serial0) && isValidSerial(serial1)) {
 					debugStream.out("Bad request, ser0=" + serial0, i);
