@@ -13,7 +13,7 @@ public class Db {
 		Configuration conf = null;
 		String[][] mn = null;
 		try {
-			conf = new Configuration ("../../../../configuration/db.ini");
+			conf = new Configuration ("../../../../../configuration/db.ini");
 			System.out.println("Found local database");
 		} catch (Exception e0) {
 			try {
