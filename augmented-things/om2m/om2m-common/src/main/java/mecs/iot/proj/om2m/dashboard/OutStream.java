@@ -14,6 +14,7 @@ public class OutStream {
 	private int num;
 	
 	public OutStream(String name) {
+		Stream.register(Thread.currentThread().getName());
 		this.name = name;
 		String str = "";
 		for (int i=0; i<name.length(); i++)

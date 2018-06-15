@@ -16,6 +16,7 @@ public class DebugStream {
 //	private int num;
 	
 	public DebugStream(String name, boolean debug) {
+		Stream.register(Thread.currentThread().getName());
 		this.name = name;
 		this.debug = debug;
 		String str = "";
@@ -232,5 +233,16 @@ public class DebugStream {
 		StackTraceElement element = Thread.currentThread().getStackTrace()[3];
 		return MessageFormat.format("({0}:{1, number,#}) : ",element.getFileName(),element.getLineNumber());
 	}
+	
+	public static void main( String[] args )
+    {
+		OutStream outStream = new OutStream("user@ALESSANDRO-K7NR");
+		DebugStream debugStream = new DebugStream("user@ALESSANDRO-K7NR",true);
+		for (int i=0; i<11; i++) {
+			outStream.out1("Received 192.168.0.103 as MN address, connecting to CSE", i);
+			debugStream.out("Connected to CSE",i);
+			outStream.out2("done");
+		}
+    }
 
 }
