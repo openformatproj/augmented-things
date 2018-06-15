@@ -63,7 +63,7 @@ In order to launch an ADN, first go in the folder
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
-(replace ```<ADN>``` with either ```in``` or ```mn```) and launch the ```./start.sh``` shell command. If MN is launched before the IN, its CSE won't go in execution before the infrastructure node is active: only after the IN becomes visible, indeed, the MN can register and expose its services. After this, start the corresponding Java application (from either Eclipse or by executing directly its .jar from Linux bash): this will activate the ADN. IN and MNs can be executed on the same physical machine.
+(replace ```<ADN>``` with either ```in``` or ```mn```) and launch the ```./start.sh``` shell command. If MN is launched before the IN, its CSE won't go in execution before the infrastructure node is active: only after the IN becomes visible, indeed, the MN can register and expose its services. After this, start the corresponding Java applications (from either Eclipse or by executing directly its .jar from Linux bash): this will launch the ADNs and connect them with the underlying CSEs. IN and MNs can be executed on the same physical machine.
 
 ### ASNs
 To run an ASN, simply run its Java executable. Please notice that ```mecs.iot.proj.om2m.asn.sensor.App``` and ```mecs.iot.proj.om2m.asn.actuator.App``` are actually mockups used for testing.
