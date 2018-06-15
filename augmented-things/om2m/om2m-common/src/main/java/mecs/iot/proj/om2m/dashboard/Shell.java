@@ -6,14 +6,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-class Frame {
+class Shell implements Interface {
 	
 	private JFrame frame;
 	private JLabel login;
 	private JLabel out;
 	private JTextField commandLine;
 	
-	Frame() {
+	Shell(Console console) {
 		frame = new JFrame("AT Console");
 		login = new JLabel();
 		out = new JLabel();
@@ -33,17 +33,21 @@ class Frame {
 		commandLine.setBounds(210, 10, 400, 30);
 		submit.setBounds(650, 10, 100, 30);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		if (console!=null)
+			login.setText(console.getName()+">");
+		else
+			login.setText("login");
 	}
 	
-	void start() {
+	@Override
+	
+	public void start() {
 		frame.setVisible(true);
 	}
 	
-	void setLogin(String str) {
-		login.setText(str);
-	}
+	@Override
 	
-	synchronized String in() {
+	public synchronized String in() {
 		try {
 			wait();
 		} catch (InterruptedException e) {
@@ -52,21 +56,22 @@ class Frame {
 		return commandLine.getText();
 	}
 	
+	@Override
+	
+	public void out(String str) {
+		out.setText(str);
+	}
+	
 	private synchronized void wake() {
 		notify();
 	}
 	
-	void out(String str) {
-		out.setText(str);
-	}
-	
 	public static void main(String[] args) {
-	    Frame frame = new Frame();
-	    frame.start();
-	    frame.setLogin("login");
+	    Shell shell = new Shell(null);
+	    shell.start();
 	    while (true) {
-		    String str = frame.in();
-		    frame.out(str);
+		    String str = shell.in();
+		    shell.out(str);
 	    }
 	}
 

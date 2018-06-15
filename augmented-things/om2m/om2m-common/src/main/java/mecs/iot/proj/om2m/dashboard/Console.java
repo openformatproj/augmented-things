@@ -9,7 +9,7 @@ public class Console extends Thread {
 	private boolean enable;
 	private boolean executing;
 	private HashMap<String,CommandContainer> commandMap;
-	private Frame frame;
+	private Interface interf;
 	
 	private OutStream outStream;
 	private int i;
@@ -21,8 +21,22 @@ public class Console extends Thread {
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
 		if (enable) {
-			frame = new Frame();
-			frame.setLogin(getName()+">");
+			interf = new Shell(this);
+		}
+		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
+		i = 0;
+	}
+	
+	public Console(String id, String host, Interface interf) {
+		super(Services.joinIdHost(id+"_console",host));
+		// scan = new Scanner(System.in);
+		executing = true;
+		commandMap = new HashMap<String,CommandContainer>();
+		if (interf!=null) {
+			this.interf = interf;
+			this.enable = true;
+		} else {
+			this.enable = false;
 		}
 		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
 		i = 0;
@@ -46,13 +60,13 @@ public class Console extends Thread {
 	public void run() {
 		if (enable) {
 			outStream.out("Starting console", i);
-			frame.start();
+			interf.start();
 		}
 		else
-			outStream.out("Starting console (GUI not launched)", i);
+			outStream.out("Starting console (without interface)", i);
 		while (executing) {
 			if (enable) {
-				String str = frame.in();
+				String str = interf.in();
 				String[] sections = str.split(" ");
 				String name = sections[0];
 				if (commandMap.containsKey(name)) {
@@ -63,15 +77,15 @@ public class Console extends Thread {
 							options[i] = sections[i+1];
 						}
 						if (options[0].equals("help")) {
-							frame.out(commandMap.get(name).help);
+							interf.out(commandMap.get(name).help);
 						} else {
-							frame.out(commandMap.get(name).command.execute(options));
+							interf.out(commandMap.get(name).command.execute(options));
 						}
 					} else {
-						frame.out(commandMap.get(name).command.execute(null));
+						interf.out(commandMap.get(name).command.execute(null));
 					}
 				} else {
-					frame.out(name + " is not a valid command");
+					interf.out(name + " is not a valid command");
 				}
 			}
 			i++;
