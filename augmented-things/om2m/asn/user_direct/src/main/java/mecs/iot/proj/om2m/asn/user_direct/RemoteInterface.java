@@ -117,9 +117,9 @@ class RemoteInterface extends Client {
 		console.start();
 		i++;
 		while(executing) {
-			outStream.out1("Waiting for subscriptions", i);
+			outStream.out("Waiting for subscriptions...", i);
 			waitForSubscriptions();
-			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
+			outStream.out("...received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")", i);
 			i++;
 		}
 		// TODO, delete AE
