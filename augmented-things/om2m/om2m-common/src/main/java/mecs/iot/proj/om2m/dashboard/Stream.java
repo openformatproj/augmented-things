@@ -22,8 +22,7 @@ class Stream {
 		
 		if (insertNewLine) {
 			System.out.print("\n" + msg);
-		}
-		else {
+		} else {
 			System.out.print(msg);
 			// hasBeenInterrupted[owner.ordinal()] = false;
 			State state = agentMap.get(owner);
