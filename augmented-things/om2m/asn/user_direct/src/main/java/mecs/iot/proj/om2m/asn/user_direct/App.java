@@ -27,7 +27,7 @@ public class App
     	final Console console = new Console(id,host,true);
 		try {
 			final RemoteInterface remote = new RemoteInterface(id,host,address,Constants.context,true,console,getSerial(),Constants.getIp(),5690);
-			Command exit = (s) -> {console.terminate(); remote.destroyConnections(); remote.terminate(); return "Exiting";};
+			Command exit = (s) -> {console.terminate(); remote.destroy(); remote.terminate(); return "Exiting";};
 			console.add("exit",exit,"Terminate this asn","exit");
 			remote.start();
 		} catch (URISyntaxException e) {

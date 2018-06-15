@@ -255,7 +255,9 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return notifier;
 	}
 	
-	public void destroyConnections() {
+	@Override
+	
+	public void destroy() {
 		server.destroy();
 		super.destroy();
 	}
