@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.asn.sensor;
 
 import mecs.iot.proj.om2m.asn.Client;
+import mecs.iot.proj.om2m.asn.Physics;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
@@ -118,7 +119,7 @@ class RemoteInterface extends Client {
 		while(System.currentTimeMillis()-start<end || end==0) {
 			try        
 			{
-			    sleep((long)randomFluctuation(0.5));
+			    sleep((long)Physics.randomFluctuation(0.5));
 			} 
 			catch(InterruptedException ex) 
 			{
@@ -126,7 +127,7 @@ class RemoteInterface extends Client {
 			}
 			outStream.out("Posting Content Instance", i);
 			try {
-				response = services.postContentInstance(value*randomFluctuation(fluctuation),measureUnit,i);
+				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),measureUnit,i);
 			} catch (URISyntaxException e) {
 				errStream.out(e, i, Severity.MEDIUM);
 				return;

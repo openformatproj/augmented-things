@@ -255,10 +255,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return notifier;
 	}
 	
-	protected double randomFluctuation (double width) {
-		return 1+width*2*(Math.random()-0.5);
-	}
-	
 	public void destroyConnections() {
 		server.destroy();
 		super.destroy();
