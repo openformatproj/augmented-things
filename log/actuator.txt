@@ -1,0 +1,24 @@
+Found local configuration file
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5685/augmented-things
+actuator@ALESSANDRO-K7NR	[INFO]	0) Starting interface
+actuator@ALESSANDRO-K7NR	[INFO]	0) Registering to IN...
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5685/augmented-things with payload
+                        	       	   "action1,action2"
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5685/augmented-things
+actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, received 192.168.0.111 as MN address, connecting...
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5686/augmented-things
+actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, registering to MN...
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5686/augmented-things with payload
+                        	       	   "action1,action2"
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5686/augmented-things
+actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, connecting to CSE...
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse
+actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, posting AE
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"actuator.ALESSANDRO-K7NR"}}
+                        	       	   to coap://192.168.0.111:5684/~/augmented-things-MN-cse
+actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse
+actuator@ALESSANDRO-K7NR	[INFO]	0) Received JSON: rn=actuator.ALESSANDRO-K7NR, ty=2
+actuator@ALESSANDRO-K7NR	[INFO]	1) Waiting for subscriptions...

@@ -1,0 +1,61 @@
+Found local configuration file
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5685/augmented-things
+sensor@ALESSANDRO-K7NR	[INFO]	0) Starting interface
+sensor@ALESSANDRO-K7NR	[INFO]	0) Registering to IN...
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5685/augmented-things with payload "event"
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5685/augmented-things
+sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, received 192.168.0.111 as MN address, connecting...
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5686/augmented-things
+sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, registering to MN...
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5686/augmented-things with payload "event"
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5686/augmented-things
+sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, connecting to CSE...
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse
+sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, posting AE
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"sensor.ALESSANDRO-K7NR"}} to
+                      	       	   coap://192.168.0.111:5684/~/augmented-things-MN-cse
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse
+sensor@ALESSANDRO-K7NR	[INFO]	0) Received JSON: Name already present in the parent collection.
+sensor@ALESSANDRO-K7NR	[INFO]	0) Posting Container
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:cnt":{"rn":"data"}} to coap://192.168.0.111:5684/~/augmented-things-MN-cse/
+                      	       	   augmented-things-MN/sensor.ALESSANDRO-K7NR
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                      	       	   sensor.ALESSANDRO-K7NR
+sensor@ALESSANDRO-K7NR	[INFO]	0) Received JSON: Name already present in the parent collection.
+sensor@ALESSANDRO-K7NR	[INFO]	0) Posting Content Instance
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/
+                      	       	   data
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:cin":{"con":"36,000 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
+                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                      	       	   sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[INFO]	0) Received JSON: ty=4, cnf=text/plain:0, con=36,000 °C
+sensor@ALESSANDRO-K7NR	[INFO]	1) Posting Content Instance
+sensor@ALESSANDRO-K7NR	[DEBUG]	1) Sent JSON: {"m2m:cin":{"con":"34,278 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
+                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[DEBUG]	1) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                      	       	   sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[INFO]	1) Received JSON: ty=4, cnf=text/plain:0, con=34,278 °C
+sensor@ALESSANDRO-K7NR	[INFO]	2) Posting Content Instance
+sensor@ALESSANDRO-K7NR	[DEBUG]	2) Sent JSON: {"m2m:cin":{"con":"35,721 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
+                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[DEBUG]	2) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                      	       	   sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[INFO]	2) Received JSON: ty=4, cnf=text/plain:0, con=35,721 °C
+sensor@ALESSANDRO-K7NR	[INFO]	3) Posting Content Instance
+sensor@ALESSANDRO-K7NR	[DEBUG]	3) Sent JSON: {"m2m:cin":{"con":"36,383 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
+                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[DEBUG]	3) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                      	       	   sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[INFO]	3) Received JSON: ty=4, cnf=text/plain:0, con=36,383 °C
+sensor@ALESSANDRO-K7NR	[INFO]	4) Posting Content Instance
+sensor@ALESSANDRO-K7NR	[DEBUG]	4) Sent JSON: {"m2m:cin":{"con":"35,564 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
+                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[DEBUG]	4) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                      	       	   sensor.ALESSANDRO-K7NR/data
+sensor@ALESSANDRO-K7NR	[INFO]	4) Received JSON: ty=4, cnf=text/plain:0, con=35,564 °C

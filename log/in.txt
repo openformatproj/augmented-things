@@ -1,0 +1,12 @@
+Found local configuration file
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+IN-ADN_server@alessandro	[DEBUG]	0) Connected to coap://localhost:5683/~/augmented-things-IN-cse
+main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5685/augmented-things... done. Starting server... done
+IN-ADN_console@alessandro	[INFO]	0) Starting console (without interface)
+Found local database
+IN-ADN_server@alessandro	[INFO]	1) Registering node "sensor.ALESSANDRO-K7NR" (serial "0x0001") on MN "augmented-things-MN"
+IN-ADN_server@alessandro	[INFO]	2) Handling user localization for serial "0x0001"
+IN-ADN_server@alessandro	[INFO]	3) Registering node "actuator.ALESSANDRO-K7NR" (serial "0x0002") on MN "augmented-things-MN"
+
