@@ -95,7 +95,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				String id = tag2.id;
-				String[] uri = new String[] {this.id, id, "data", "la"};
+				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 				CoapResponse cin = null;
 				try {
 					cin = client.services.getResource(uri,i);
@@ -200,7 +200,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out("Subscribing user \"" + id + "\" (address \"" + address + "\") to resource \"" + tag.id + "\" (serial \"" + serial + "\")", i);
-					String[] uri = new String[] {this.id, tag.id, "data"};
+					String[] uri = new String[] {context + Constants.mnPostfix, tag.id, "data"};
 					CoapResponse response_;
 					try {
 						response_ = subscriber.insert(Constants._mnADNPort+"/"+getName(),tag.id,uri,address,i);
@@ -318,7 +318,7 @@ class ADN_MN extends ADN {
 				}
 				outStream.out("Linking sensor \"" + tag0.id + "\" (serial \"" + serial0 + //
 						"\") to actuator \"" + tag1.id + "\" (serial \"" + serial1 + "\")", i);
-				String[] uri = new String[] {this.id, tag0.id, "data"};
+				String[] uri = new String[] {context + Constants.mnPostfix, tag0.id, "data"};
 				CoapResponse response_;
 				try {
 					response_ = subscriber.insert(Constants._mnADNPort+"/"+getName(),tag0.id,uri,tag0.attributes[i0],tag1.description,tag1.attributes[i1],i);
