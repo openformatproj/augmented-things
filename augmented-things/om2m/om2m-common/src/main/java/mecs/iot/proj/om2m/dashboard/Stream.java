@@ -12,10 +12,10 @@ class Stream {
 	private static boolean insertNewLine = false;
 	//private static boolean[] hasBeenInterrupted = {false,false,false};
 	
-	static void register(String thread) {
-		agentMap.put(new Agent(thread,Type.OUT),new State(false));
-		agentMap.put(new Agent(thread,Type.DEBUG),new State(false));
-		agentMap.put(new Agent(thread,Type.ERR),new State(false));
+	static void register(String name) {
+		agentMap.put(new Agent(name,Type.OUT),new State(false));
+		agentMap.put(new Agent(name,Type.DEBUG),new State(false));
+		agentMap.put(new Agent(name,Type.ERR),new State(false));
 	}
 	
 	static void print(String msg) {
@@ -31,9 +31,9 @@ class Stream {
 		
 	}
 	
-	static void lock(Type type) {
+	static void lock(String name, Type type) {
 		//l.lock();
-		Agent caller = new Agent(Thread.currentThread().getName(),type);
+		Agent caller = new Agent(name,type);
 		if (owner==null || owner.equals(caller)) {
 			insertNewLine = false;
 			owner = caller;
@@ -50,8 +50,8 @@ class Stream {
 		//l.unlock();
 	}
 	
-	static boolean hasBeenInterrupted(Type type) {
-		Agent caller = new Agent(Thread.currentThread().getName(),type);
+	static boolean hasBeenInterrupted(String name, Type type) {
+		Agent caller = new Agent(name,type);
 		State state = agentMap.get(caller);
 		return state.value;
 		//return hasBeenInterrupted[caller.ordinal()];
@@ -61,18 +61,18 @@ class Stream {
 
 class Agent {
 	
-	String thread;
+	String name;
 	Type type;
 	
-	Agent(String thread, Type type) {
-		this.thread = thread;
+	Agent(String name, Type type) {
+		this.name = name;
 		this.type = type;
 	}
 	
 	@Override
 	
 	public int hashCode() {
-		int hash = thread.hashCode()*(type.ordinal()+1);
+		int hash = name.hashCode()*(type.ordinal()+1);
 		return hash;
 	}
 	
@@ -80,7 +80,7 @@ class Agent {
 	
 	public boolean equals(Object obj) {
 		Agent agent = (Agent)obj;
-		return thread.equals(agent.thread) && type.equals(agent.type);
+		return name.equals(agent.name) && type.equals(agent.type);
 	}
 	
 }

@@ -14,7 +14,7 @@ public class OutStream {
 	private int num;
 	
 	public OutStream(String name) {
-		Stream.register(Thread.currentThread().getName());
+		Stream.register(name);
 		this.name = name;
 		String str = "";
 		for (int i=0; i<name.length(); i++)
@@ -71,7 +71,7 @@ public class OutStream {
 			}
 		}
 		
-		Stream.lock(Type.OUT);
+		Stream.lock(name,Type.OUT);
 		Stream.print(preamble + str);
 		Stream.unlock();
 		
@@ -117,7 +117,7 @@ public class OutStream {
 		offset = Math.min(chunk.get(chunk.size()-1).length(),chunkLength);
 		num = i;
 		
-		Stream.lock(Type.OUT);
+		Stream.lock(name,Type.OUT);
 		Stream.print(preamble + str);
 		
 	}
@@ -127,7 +127,7 @@ public class OutStream {
 		if (msg==null || msg=="")
 			return;
 		
-		if (!Stream.hasBeenInterrupted(Type.OUT)) {
+		if (!Stream.hasBeenInterrupted(name,Type.OUT)) {
 		
 			msg = " " + msg + "...";
 			
@@ -182,7 +182,7 @@ public class OutStream {
 		if (msg==null || msg=="")
 			return;
 		
-		if (!Stream.hasBeenInterrupted(Type.OUT)) {
+		if (!Stream.hasBeenInterrupted(name,Type.OUT)) {
 		
 			msg = " " + msg;
 			

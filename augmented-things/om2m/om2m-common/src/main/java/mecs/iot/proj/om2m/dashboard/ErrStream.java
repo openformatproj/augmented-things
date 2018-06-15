@@ -7,7 +7,7 @@ public class ErrStream {
 	String name;
 	
 	public ErrStream(String name) {
-		Stream.register(Thread.currentThread().getName());
+		Stream.register(name);
 		this.name = name;
 	}
 

@@ -16,7 +16,7 @@ public class DebugStream {
 //	private int num;
 	
 	public DebugStream(String name, boolean debug) {
-		Stream.register(Thread.currentThread().getName());
+		Stream.register(name);
 		this.name = name;
 		this.debug = debug;
 		String str = "";
@@ -74,7 +74,7 @@ public class DebugStream {
 			}
 		}
 		
-		Stream.lock(Type.DEBUG);
+		Stream.lock(name,Type.DEBUG);
 		Stream.print(preamble + str);
 		Stream.unlock();
 		
