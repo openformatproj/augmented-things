@@ -65,6 +65,8 @@ public class Client extends Thread
 		debugStream.out("Connected to " + uri, i);
 	}
 	
+	@Override
+	
 	public void destroy() {
 		connection.shutdown();
 	}
