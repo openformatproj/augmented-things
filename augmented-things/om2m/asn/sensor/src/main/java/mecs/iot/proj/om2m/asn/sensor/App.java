@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 
 public class App 
 {
+	
 	final private static String id = "sensor";
 	final private static String host = Constants.getComputerName();
 	final private static String address = Constants.adnProtocol + Constants.inAddress + Constants._inADNPort + "/" + Constants.context;
@@ -21,13 +22,12 @@ public class App
 	
     public static void main( String[] args )
     {
-    	RemoteInterface remote = null;
 		try {
-			remote = new RemoteInterface(tag,location,address,Constants.context,true,36.0,"°C",0.05,2000);
+			final RemoteInterface remote = new RemoteInterface(tag,location,address,Constants.context,true,36.0,"°C",0.05,2000);
+			remote.start();
 		} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);
 		}
-		remote.start();
     }
     
 }
