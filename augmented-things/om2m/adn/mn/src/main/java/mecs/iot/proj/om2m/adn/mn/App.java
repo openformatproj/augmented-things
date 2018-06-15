@@ -39,7 +39,7 @@ public class App
     	server.start();
     	outStream.out2("done");
     	Command exit = (s) -> {console.terminate(); server.destroy(); adn.client.destroy(); return "Exiting";};
-		console.add("exit",exit,"Terminate this adn. Syntax: exit");
+		console.add("exit",exit,"Terminate this adn","exit");
     	console.start();
     }
 }

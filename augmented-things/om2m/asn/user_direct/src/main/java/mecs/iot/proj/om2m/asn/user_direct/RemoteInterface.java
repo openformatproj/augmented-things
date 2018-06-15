@@ -19,6 +19,7 @@ class RemoteInterface extends Client {
 	
 	private String address;
 	
+	private Console console;
 	private boolean executing;
 
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String serial, String ip, int port) throws URISyntaxException {
@@ -28,12 +29,13 @@ class RemoteInterface extends Client {
 		this.id = Services.joinIdHost(id,host);
 		this.address = ip + ":" + Integer.toString(port);
 		CommandList list = new CommandList(this,this.id);
-		console.add("query",list.getCommand(0),"Query the attributes of a node. Syntax: query serial");
-		console.add("read",list.getCommand(1),"Read the value of a node. Syntax: read serial");
-		console.add("lookout",list.getCommand(2),"Adds a subscription to a node. Syntax: lookout serial");
-		console.add("write",list.getCommand(3),"Write an action to a node. Syntax: write serial action");
-		console.add("link",list.getCommand(4),"Adds a subscription between two nodes. Syntax: link sensor actuator event action");
+		console.add("query",list.getCommand(0),"Query the attributes of a node","query <serial>");
+		console.add("read",list.getCommand(1),"Read the value of a node","read <serial>");
+		console.add("lookout",list.getCommand(2),"Adds a subscription to a node","lookout <serial>");
+		console.add("write",list.getCommand(3),"Write an action to a node","write <serial> <action>");
+		console.add("link",list.getCommand(4),"Adds a subscription between two nodes","link <sensor> <actuator> <event> <action>");
 		//console.add("rm",list.getCommand(5)); TODO
+		this.console = console;
 		executing = true;
 		createSubscriptionServer(null,null,port);
 	}
@@ -112,6 +114,7 @@ class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out2("done");
+		console.start();
 		i++;
 		while(executing) {
 			outStream.out1("Waiting for subscriptions", i);

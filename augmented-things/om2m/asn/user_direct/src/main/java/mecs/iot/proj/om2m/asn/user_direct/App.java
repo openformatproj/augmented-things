@@ -33,10 +33,9 @@ public class App
 		} finally {
 			remote = remote_;
 		}
-		remote.start();
 		Command exit = (s) -> {console.terminate(); remote.destroyConnections(); remote.terminate(); return "Exiting";};
-		console.add("exit",exit,"Terminate this asn. Syntax: exit");
-		console.start();
+		console.add("exit",exit,"Terminate this asn","exit");
+		remote.start();
     }
     
 }

@@ -28,8 +28,8 @@ public class Console extends Thread {
 		i = 0;
 	}
 	
-	public void add (String name, Command command, String help) {
-		CommandContainer container = new CommandContainer(command,help);
+	public void add (String name, Command command, String help, String syntax) {
+		CommandContainer container = new CommandContainer(command, help + ". Syntax: " + syntax);
 		commandMap.put(name,container);
 	}
 	
