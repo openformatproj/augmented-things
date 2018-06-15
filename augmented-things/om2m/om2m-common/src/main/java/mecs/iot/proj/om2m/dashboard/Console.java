@@ -6,23 +6,22 @@ import mecs.iot.proj.om2m.Services;
 
 public class Console extends Thread {
 
-	private boolean enable;
+	private boolean enabled;
 	private boolean executing;
 	private HashMap<String,CommandContainer> commandMap;
 	private Interface interf;
-	
 	private OutStream outStream;
 	private int i;
 	
-	public Console(String id, String host, boolean enable) {
+	public Console(String id, String host, boolean enabled) {
 		super(Services.joinIdHost(id+"_console",host));
-		this.enable = enable;
+		this.enabled = enabled;
+		if (enabled) {
+			interf = new Shell(this);
+		}
 		// scan = new Scanner(System.in);
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
-		if (enable) {
-			interf = new Shell(this);
-		}
 		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
 		i = 0;
 	}
@@ -30,14 +29,14 @@ public class Console extends Thread {
 	public Console(String id, String host, Interface interf) {
 		super(Services.joinIdHost(id+"_console",host));
 		// scan = new Scanner(System.in);
+		if (interf!=null) {
+			this.enabled = true;
+			this.interf = interf;
+		} else {
+			this.enabled = false;
+		}
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
-		if (interf!=null) {
-			this.interf = interf;
-			this.enable = true;
-		} else {
-			this.enable = false;
-		}
 		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
 		i = 0;
 	}
@@ -58,14 +57,10 @@ public class Console extends Thread {
 	@Override
 	
 	public void run() {
-		if (enable) {
-			outStream.out("Starting console", i);
+		outStream.out("Starting console", i);
+		if (enabled) {
 			interf.start();
-		}
-		else
-			outStream.out("Starting console (without interface)", i);
-		while (executing) {
-			if (enable) {
+			while (executing) {
 				String str = interf.in();
 				String[] sections = str.split(" ");
 				String name = sections[0];
@@ -87,10 +82,12 @@ public class Console extends Thread {
 				} else {
 					interf.out(name + " is not a valid command");
 				}
+				i++;
 			}
-			i++;
+			outStream.out("Terminating console", i);
+		} else {
+			outStream.out("Terminating console (no interface provided)", i);
 		}
-		outStream.out("Terminating console", i);
 	}
 	
 	//TODO (GUI,commands)
