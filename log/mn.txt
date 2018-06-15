@@ -4,7 +4,8 @@ SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 MN-ADN_server@alessandro	[DEBUG]	0) Connected to coap://localhost:5684/~/augmented-things-MN-cse
 main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5686/augmented-things... done. Starting server... done
-MN-ADN_console@alessandro	[INFO]	0) Starting console (without interface)
+MN-ADN_console@alessandro	[INFO]	0) Starting console
+MN-ADN_console@alessandro	[INFO]	0) Terminating console (no interface provided)
 MN-ADN_server@alessandro	[INFO]	1) Registering node "sensor.ALESSANDRO-K7NR" (serial "0x0001")
 MN-ADN_server@alessandro	[INFO]	2) Registering user "user.ALESSANDRO-K7NR" (address "192.168.0.111:5690")
 MN-ADN_server@alessandro	[INFO]	3) Handling attributes querying for serial "0x0001"
