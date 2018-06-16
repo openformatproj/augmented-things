@@ -20,7 +20,6 @@ To synchronize your local copy with the current version of this repository
 to push your edit in this repository
 * right click on Package Explorer/AugmentedThings -> Team -> Commit -> Commit and Push
 
-### Modules documentation
+### Modules' documentation
 Also check
 * [```om2m/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md)
-* ```sandbox/README.md```
