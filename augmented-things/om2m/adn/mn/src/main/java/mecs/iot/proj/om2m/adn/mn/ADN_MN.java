@@ -22,7 +22,6 @@ class ADN_MN extends ADN {
 
 	private HashMap<String,Tag_> tagMap;
 	private HashMap<String,String> userMap;
-	private String id;
 
 	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
@@ -30,7 +29,6 @@ class ADN_MN extends ADN {
 		subscriber = new Subscriber(client);
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
-		this.id = id;
 	}
 
 	@Override
