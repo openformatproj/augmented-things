@@ -24,7 +24,10 @@ user_remote@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5686/au
 user_remote@ALESSANDRO-K7NR	[INFO]	0) ...done
 user_remote@ALESSANDRO-K7NR	[INFO]	1) Waiting for notifications...
 user_console@ALESSANDRO-K7NR	[INFO]	0) Starting console
-user_remote@ALESSANDRO-K7NR	[DEBUG]	1) Sent attributes request to coap://192.168.0.111:5686/augmented-things
-user_remote@ALESSANDRO-K7NR	[DEBUG]	1) Sent request to Coap server 192.168.0.111:5686/augmented-things
-user_remote@ALESSANDRO-K7NR	[DEBUG]	1) Sent reading request to coap://192.168.0.111:5686/augmented-things
-user_remote@ALESSANDRO-K7NR	[DEBUG]	1) Sent request to Coap server 192.168.0.111:5686/augmented-things
+user_console@ALESSANDRO-K7NR	[DEBUG]	1) Sent attributes request to coap://192.168.0.111:5686/augmented-things
+user_console@ALESSANDRO-K7NR	[DEBUG]	1) Sent request to Coap server 192.168.0.111:5686/augmented-things
+user_console@ALESSANDRO-K7NR	[DEBUG]	2) Sent reading request to coap://192.168.0.111:5686/augmented-things
+user_console@ALESSANDRO-K7NR	[DEBUG]	2) Sent request to Coap server 192.168.0.111:5686/augmented-things
+user_remote@ALESSANDRO-K7NR	[INFO]	1) ...received: "terminated" (by "user_console@ALESSANDRO-K7NR")
+user_remote@ALESSANDRO-K7NR	[INFO]	2) Terminating interface
+user_console@ALESSANDRO-K7NR	[INFO]	3) Terminating console
