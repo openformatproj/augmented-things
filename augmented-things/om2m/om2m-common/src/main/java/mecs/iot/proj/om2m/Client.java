@@ -78,7 +78,7 @@ public class Client extends Thread
 	}
 	
 	public CoapResponse send(Request request, Console console) {
-		console.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
+		console.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath());
 		return connection.advanced(request);
 	}
 	

@@ -54,7 +54,7 @@ public class Console extends Thread {
 //		return executing;
 //	}
 	
-	public void out(String str, int i) {
+	public void out(String str) {
 		debugStream.out(str,i);
 	}
 	
@@ -70,6 +70,7 @@ public class Console extends Thread {
 			interf.start();
 			while (executing) {
 				String str = interf.in();
+				i++;
 				String[] sections = str.split(" -");
 				String name = sections[0];
 				if (commandMap.containsKey(name)) {
@@ -99,7 +100,6 @@ public class Console extends Thread {
 				} else {
 					interf.out(name + " is not a valid command");
 				}
-				i++;
 			}
 			interf.terminate();
 			outStream.out("Terminating console", i);

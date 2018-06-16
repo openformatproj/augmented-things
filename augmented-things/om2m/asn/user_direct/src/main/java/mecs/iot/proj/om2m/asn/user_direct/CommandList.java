@@ -10,12 +10,12 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		super(client);
 		numCommands = 6;
 		commands = new Command[numCommands];
-		commands[0] = (options) -> client.getAttributes(options[0],client.getCount(),console).getResponseText();
-		commands[1] = (options) -> client.getResource(options[0],client.getCount(),console).getResponseText();
-		commands[2] = (options) -> client.postSubscription(id,options[0],client.getCount(),console).getResponseText();
-		commands[3] = (options) -> client.removeSubscription(id,options[0],client.getCount(),console).getResponseText();
-		commands[4] = (options) -> client.putResource(options[0],options[1],client.getCount(),console).getResponseText();
-		commands[5] = (options) -> client.postSubscription(options[0],options[1],options[2],options[3],client.getCount(),console).getResponseText();
+		commands[0] = (options) -> client.getAttributes(options[0],console).getResponseText();
+		commands[1] = (options) -> client.getResource(options[0],console).getResponseText();
+		commands[2] = (options) -> client.postSubscription(id,options[0],console).getResponseText();
+		commands[3] = (options) -> client.removeSubscription(id,options[0],console).getResponseText();
+		commands[4] = (options) -> client.putResource(options[0],options[1],console).getResponseText();
+		commands[5] = (options) -> client.postSubscription(options[0],options[1],options[2],options[3],console).getResponseText();
 		text = new String[numCommands][3];
 		text[0] = new String[] {"query","Query the attributes of a node","query -<serial>"};
 		text[1] = new String[] {"read","Read the value of a node","read -<serial>"};

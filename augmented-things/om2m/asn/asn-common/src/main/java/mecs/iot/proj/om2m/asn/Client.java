@@ -152,14 +152,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse getAttributes(String serial, int i, Console console) {
+	public CoapResponse getAttributes(String serial, Console console) {
 		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("mode" + "=" + "1");
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
-		console.out("Sent attributes request to " + services.uri(), i);
+		console.out("Sent attributes request to " + services.uri());
 		return send(request,console);
 	}
 	
@@ -177,14 +177,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse getResource(String serial, int i, Console console) {
+	public CoapResponse getResource(String serial, Console console) {
 		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("mode" + "=" + "2");
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
-		console.out("Sent reading request to " + services.uri(), i);
+		console.out("Sent reading request to " + services.uri());
 		return send(request,console);
 	}
 	
@@ -202,14 +202,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse postSubscription(String observer, String serial, int i, Console console) {
+	public CoapResponse postSubscription(String observer, String serial, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(observer));
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
-		console.out("Sent lookout request to " + services.uri(), i);
+		console.out("Sent lookout request to " + services.uri());
 		return send(request,console);
 	}
 	
@@ -227,14 +227,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse removeSubscription(String observer, String serial, int i, Console console) {
+	public CoapResponse removeSubscription(String observer, String serial, Console console) {
 		Request request = new Request(Code.DELETE);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(observer));
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
-		console.out("Sent lookout removal request to " + services.uri(), i);
+		console.out("Sent lookout removal request to " + services.uri());
 		return send(request,console);
 	}
 	
@@ -252,14 +252,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse putResource(String serial, String id, int i, Console console) {
+	public CoapResponse putResource(String serial, String id, Console console) {
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		request.getOptions().addUriQuery("id" + "=" + id);
 		//request.setTimedOut(true);
-		console.out("Sent write request to " + services.uri(), i);
+		console.out("Sent write request to " + services.uri());
 		return send(request,console);
 	}
 	
@@ -279,7 +279,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse postSubscription(String serial0, String serial1, String id0, String id1, int i, Console console) {
+	public CoapResponse postSubscription(String serial0, String serial1, String id0, String id1, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -288,7 +288,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id0);
 		request.getOptions().addUriQuery("id" + "=" + id1);
 		//request.setTimedOut(true);
-		console.out("Sent link request to " + services.uri(), i);
+		console.out("Sent link request to " + services.uri());
 		return send(request,console);
 	}
 	
