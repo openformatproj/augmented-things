@@ -38,7 +38,7 @@ public class Db {
 		}
 		for (int i=0; i<mn.length; i++) {
 			mnMap.put(i, new MN(mn[i][0],mn[i][1]));
-			System.out.println(mn[i][0]+","+mn[i][1]);
+			System.out.println("\t"+mn[i][0]+","+mn[i][1]);
 		}
 	}
 	

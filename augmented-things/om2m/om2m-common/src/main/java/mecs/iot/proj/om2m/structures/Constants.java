@@ -63,7 +63,7 @@ public class Constants {
 			str = "127.0.0.1";
 		} finally {
 			inAddress = (String) str;
-			System.out.println("inAddress="+str);
+			System.out.println("\tinAddress="+str);
 		}
 		try {
 			str = conf.loadAttribute("cseProtocol");
@@ -185,7 +185,7 @@ public class Constants {
 			Process p = Runtime.getRuntime().exec("export HOSTNAME");
 			p.waitFor();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -207,7 +207,7 @@ public class Constants {
 		} catch (Exception e) {
 			str = "localhost";
 		}
-		System.out.println("ip="+str);
+		System.out.println("\tip="+str);
 		return str;
 	}
 
