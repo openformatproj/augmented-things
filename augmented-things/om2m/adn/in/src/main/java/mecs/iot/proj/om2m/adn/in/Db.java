@@ -10,27 +10,26 @@ public class Db {
 	final public static HashMap<Integer,MN> mnMap = new HashMap<Integer,MN>();
 
 	static {
-		Configuration conf = null;
+		Configuration db = null;
 		String[][] mn = null;
 		try {
-			conf = new Configuration ("../../../../../configuration/db.ini");
+			db = new Configuration ("configuration/db.ini");
 			System.out.println("Found local database");
 		} catch (Exception e0) {
 			try {
-				conf = new Configuration ("configuration/db.ini","http://thingstalk.altervista.org/augmented-things");
-				System.out.println("Found remote database");
+				db = new Configuration ("src/main/resources/configuration/db.ini");
+				System.out.println("Found local database");
 			} catch (Exception e1) {
-				//e1.printStackTrace();
 				try {
-					conf = new Configuration ("configuration/db.ini");
-					System.out.println("Found local database (Maven)");
+					db = new Configuration ("configuration/db.ini","http://thingstalk.altervista.org/augmented-things");
+					System.out.println("Found remote database");
 				} catch (Exception e2) {
 					System.out.println("No databases found, using default values");
 				}
 			}
 		}
 		try {
-			mn = conf.loadAttributeList("mnList",2);
+			mn = db.loadAttributeList("mecs.iot.proj.om2m.mnList",2);
 		} catch (Exception e) {
 			mn = new String[1][2];
 			mn[0][0] = "augmented-things-MN";
