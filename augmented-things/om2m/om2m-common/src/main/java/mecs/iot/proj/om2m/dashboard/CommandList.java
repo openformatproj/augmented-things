@@ -6,6 +6,8 @@ public class CommandList {
 	
 	protected Client client;
 	protected Command[] commands;
+	public int numCommands;
+	public String[][] text;
 	
 	public CommandList(Client client) {
 		this.client = client;

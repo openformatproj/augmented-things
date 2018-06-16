@@ -1,5 +1,6 @@
 package mecs.iot.proj.om2m.dashboard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import mecs.iot.proj.om2m.Services;
@@ -78,6 +79,15 @@ public class Console extends Thread {
 						}
 					} else {
 						interf.out(commandMap.get(name).command.execute(null));
+					}
+				} else if (name.equals("ls")) {
+					for (int i=0; i<commandMap.size(); i++) {
+						ArrayList<String> list = new ArrayList<String>(commandMap.keySet());
+						String o = "";
+						for (String c: list) {
+							o += c + ": " + commandMap.get(c).help + "\r\n";
+						}
+						interf.out(o);
 					}
 				} else {
 					interf.out(name + " is not a valid command");

@@ -29,12 +29,9 @@ class RemoteInterface extends Client {
 		this.id = Services.joinIdHost(id,host);
 		this.address = ip + ":" + Integer.toString(port);
 		CommandList list = new CommandList(this,this.id);
-		console.add("query",list.getCommand(0),"Query the attributes of a node","query <serial>");
-		console.add("read",list.getCommand(1),"Read the value of a node","read <serial>");
-		console.add("lookout",list.getCommand(2),"Adds a subscription to a node","lookout <serial>");
-		console.add("write",list.getCommand(3),"Write an action to a node","write <serial> <action>");
-		console.add("link",list.getCommand(4),"Adds a subscription between two nodes","link <sensor> <actuator> <event> <action>");
-		//console.add("rm",list.getCommand(5)); TODO
+		for (int i=0; i<list.numCommands; i++) {
+			console.add(list.text[i][0],list.getCommand(i),list.text[i][1],list.text[i][2]);
+		}
 		this.console = console;
 		executing = true;
 		createSubscriptionServer(null,null,port);
