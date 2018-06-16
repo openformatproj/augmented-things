@@ -3,6 +3,7 @@ package mecs.iot.proj.om2m;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
+import mecs.iot.proj.om2m.dashboard.Console;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -73,6 +74,11 @@ public class Client extends Thread
 	
 	public CoapResponse send(Request request) {
 		debugStream.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
+		return connection.advanced(request);
+	}
+	
+	public CoapResponse send(Request request, Console console) {
+		console.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
 		return connection.advanced(request);
 	}
 	

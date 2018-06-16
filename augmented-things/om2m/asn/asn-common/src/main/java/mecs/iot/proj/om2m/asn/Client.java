@@ -160,7 +160,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent attributes request to " + services.uri(), i);
-		return send(request);
+		return send(request,console);
 	}
 	
 	/*
@@ -185,7 +185,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent reading request to " + services.uri(), i);
-		return send(request);
+		return send(request,console);
 	}
 	
 	/*
@@ -210,7 +210,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent lookout request to " + services.uri(), i);
-		return send(request);
+		return send(request,console);
 	}
 	
 	/*
@@ -235,7 +235,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent lookout removal request to " + services.uri(), i);
-		return send(request);
+		return send(request,console);
 	}
 	
 	/*
@@ -260,7 +260,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id);
 		//request.setTimedOut(true);
 		console.out("Sent write request to " + services.uri(), i);
-		return send(request);
+		return send(request,console);
 	}
 	
 	/*
@@ -289,7 +289,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id1);
 		//request.setTimedOut(true);
 		console.out("Sent link request to " + services.uri(), i);
-		return send(request);
+		return send(request,console);
 	}
 	
 	/*
