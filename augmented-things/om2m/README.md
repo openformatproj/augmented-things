@@ -11,7 +11,7 @@ org.eclipse.om2m.cseBaseName=augmented-things-MN
 ```
 by replacing ```augmented-things-MN``` with the actual value (for instance, ```greenhouse-MN```). The other file in which this name must be inserted is [```./om2m/adn/in/configuration/db.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/in/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle node.
 
-The last configuration file is [```./configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/om2m-common/configuration/config.ini), which contains the IP address of the infrastructure node, the IP address of the local machine and other parameters. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
+The last configuration file is [```./om2m/om2m-common/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/om2m-common/configuration/config.ini), which contains the IP address of the infrastructure node, the IP address of the local machine and other parameters. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
 ```
 org.eclipse.om2m.remoteCseAddress=127.0.0.1
 ```
@@ -22,11 +22,6 @@ You should avoid editing these files directly, especially during tests (in which
 .
 |_maven.1528908277673
   |_augmented-things
-    |_.settings
-    |_om2m
-    |_.classpath
-    |_.project
-    |_pom.xml
   |_images
   |_.gitignore
   |_LICENSE
@@ -56,6 +51,8 @@ and click on Run. All .jar files can be found in the ```<package>/target``` fold
    * actuator
    * user_direct
 
+executables can also be launched from Eclipse. Right click on ```App.java``` and then Run As -> Java Application to launch them.
+
 ## Executing nodes
 
 ### ADNs
@@ -70,6 +67,9 @@ To run an ASN, simply run its Java executable. Please notice that ```mecs.iot.pr
 
 ## Viewing the OM2M structure
 Visit ```127.0.0.1:8080/webpage``` (replace ```127.0.0.1``` with the IP address of the IN) to access the OM2M resources' directory.
+
+## Log
+All nodes generate a log. Check [here](https://github.com/openformatproj/augmented-things/tree/master/log) for some examples.
 
 ## Resources
 * [OM2M Installation](https://people.unipi.it/giacomo_tanganelli/teaching/om2m/om2m-installation/)
