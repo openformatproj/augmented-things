@@ -21,3 +21,6 @@
 
 # Properties files
 *.properties
+
+#Initialization files
+*.ini
