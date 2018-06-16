@@ -36,8 +36,10 @@ public class Db {
 			mn[0][0] = "augmented-things-MN";
 			mn[0][1] = "127.0.0.1";
 		}
-		for (int i=0; i<mn.length; i++)
+		for (int i=0; i<mn.length; i++) {
 			mnMap.put(i, new MN(mn[i][0],mn[i][1]));
+			System.out.println(mn[i][0]+","+mn[i][1]);
+		}
 	}
 	
 	public static void main(String[] args) {

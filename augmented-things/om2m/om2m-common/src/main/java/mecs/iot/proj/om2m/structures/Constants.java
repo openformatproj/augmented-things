@@ -1,5 +1,6 @@
 package mecs.iot.proj.om2m.structures;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class Constants {
@@ -62,6 +63,7 @@ public class Constants {
 			str = "127.0.0.1";
 		} finally {
 			inAddress = (String) str;
+			System.out.println("inAddress="+str);
 		}
 		try {
 			str = conf.loadAttribute("cseProtocol");
@@ -178,11 +180,19 @@ public class Constants {
 
 	public static String getComputerName() {
 		Map<String, String> env = System.getenv();
+		// Ubuntu systems require to "export HOSTNAME" before running the Java code, otherwise env.containsKey("HOSTNAME")==false
+		try {
+			Process p = Runtime.getRuntime().exec("export HOSTNAME");
+			p.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	    if (env.containsKey("COMPUTERNAME"))
 	        return env.get("COMPUTERNAME").replaceAll("\\s","_");
 	    else if (env.containsKey("HOSTNAME"))
 	        return env.get("HOSTNAME").replaceAll("\\s","_");
-	    // Ubuntu systems require to "export HOSTNAME" before running the Java code, otherwise env.containsKey("HOSTNAME")==false
 	    else if (env.containsKey("USER"))
 	    	return env.get("USER").replaceAll("\\s","_");
 	    else
@@ -197,6 +207,7 @@ public class Constants {
 		} catch (Exception e) {
 			str = "localhost";
 		}
+		System.out.println("ip="+str);
 		return str;
 	}
 
