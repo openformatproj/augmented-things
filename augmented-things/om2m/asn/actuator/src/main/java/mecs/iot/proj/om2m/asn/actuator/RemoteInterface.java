@@ -132,7 +132,7 @@ class RemoteInterface extends Client {
 			start = System.currentTimeMillis();
 		}
 		while(System.currentTimeMillis()-start<end || end==0) {
-			outStream.out1("Waiting for subscriptions", i);
+			outStream.out1("Waiting for notifications", i);
 			waitForSubscriptions();
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;

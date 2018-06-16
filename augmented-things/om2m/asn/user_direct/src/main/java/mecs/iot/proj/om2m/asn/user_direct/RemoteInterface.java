@@ -114,7 +114,7 @@ class RemoteInterface extends Client {
 		i++;
 		console.start();
 		while(executing) {
-			outStream.out1("Waiting for subscriptions", i);
+			outStream.out1("Waiting for notifications", i);
 			waitForSubscriptions();
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;
