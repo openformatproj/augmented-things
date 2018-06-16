@@ -180,6 +180,20 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	}
 	
 	/*
+	 * Lookout removal
+	 */
+	public CoapResponse removeSubscription(String observer, String serial, int i) {
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(observer));
+		request.getOptions().addUriQuery("ser" + "=" + serial);
+		//request.setTimedOut(true);
+		debugStream.out("Sent lookout removal request to " + services.uri(), i);
+		return send(request);
+	}
+	
+	/*
 	 * Node write
 	 */
 	public CoapResponse putResource(String serial, String id, int i) {
