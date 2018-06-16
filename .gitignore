@@ -22,5 +22,7 @@
 # Properties files
 *.properties
 
-# Initialization files
-*.ini
+# Configuration files
+config.ini
+asn.ini
+db.ini
