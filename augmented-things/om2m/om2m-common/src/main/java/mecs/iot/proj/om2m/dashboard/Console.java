@@ -63,7 +63,7 @@ public class Console extends Thread {
 			interf.start();
 			while (executing) {
 				String str = interf.in();
-				String[] sections = str.split(" ");
+				String[] sections = str.split(" -");
 				String name = sections[0];
 				if (commandMap.containsKey(name)) {
 					int n = sections.length-1;
