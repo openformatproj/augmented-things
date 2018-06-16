@@ -62,6 +62,13 @@ class Shell implements Interface {
 		out.setText(str);
 	}
 	
+	@Override
+	
+	public void terminate() {
+		frame.setVisible(false);
+		frame.dispose();
+	}
+	
 	private synchronized void wake() {
 		notify();
 	}

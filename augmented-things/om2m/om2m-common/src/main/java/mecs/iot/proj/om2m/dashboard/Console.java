@@ -94,6 +94,7 @@ public class Console extends Thread {
 				}
 				i++;
 			}
+			interf.terminate();
 			outStream.out("Terminating console", i);
 		} else {
 			outStream.out("Terminating console (no interface provided)", i);

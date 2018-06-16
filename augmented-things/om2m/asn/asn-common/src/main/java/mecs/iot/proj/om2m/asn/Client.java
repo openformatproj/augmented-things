@@ -272,7 +272,8 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	@Override
 	
 	public void destroy() {
-		server.destroy();
+		if (server!=null)
+			server.destroy();
 		super.destroy();
 	}
 
