@@ -7,7 +7,6 @@ import mecs.iot.proj.om2m.dashboard.Console;
 class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 	
 	CommandList(Client client, Console console, String id) {
-		super(client);
 		numCommands = 6;
 		commands = new Command[numCommands];
 		commands[0] = (options) -> client.getAttributes(options[0],console).getResponseText();
