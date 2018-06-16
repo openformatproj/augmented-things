@@ -9,28 +9,13 @@ to change a MN name, you have to contextualize the following line in [```./om2m/
 ```
 org.eclipse.om2m.cseBaseName=augmented-things-MN
 ```
-by replacing ```augmented-things-MN``` with the actual value (for instance, ```greenhouse-MN```). The other file in which this name must be inserted is [```./om2m/adn/in/configuration/db.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/in/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle node.
+by replacing ```augmented-things-MN``` with the actual value (for instance, ```greenhouse-MN```). The other file in which this name must be inserted is [```./om2m/adn/in/src/main/resources/configuration/db.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/in/src/main/resources/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle node.
 
-The last configuration file is [```./om2m/om2m-common/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/om2m-common/configuration/config.ini), which contains the IP address of the infrastructure node, the IP address of the local machine and other parameters. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
+The last configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/asn/asn-common/src/main/resources/configuration/asn.ini), which contains the IP address of the infrastructure node and the IP address of the local machine. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
 ```
 org.eclipse.om2m.remoteCseAddress=127.0.0.1
 ```
-(replace ```127.0.0.1``` with a qualified address if IN and MN run on different machines). These two files can contain different addresses only if one of them is ```127.0.0.1``` (```localhost```), meaning that either all running ASNs or the MN are executing on the same machine of the IN.
-
-You should avoid editing these files directly, especially during tests (in which configuration may change a lot of times, resulting in many useless Github commits). You can override their content by putting your versions in a ```../configuration``` folder just above the main folder, in this way
-```
-.
-|_maven.1528908277673
-  |_augmented-things
-  |_images
-  |_.gitignore
-  |_LICENSE
-  |_README.md
-|_configuration
-  |_config.ini
-  |_db.ini
-```
-[```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) must instead be changed from within your local Linux directory (```$HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.mn-cse/target/products/mn-cse/linux/gtk/x86_64```) in order for it to work.
+(replace ```127.0.0.1``` with a qualified address if IN and MN run on different machines). These two files can contain different addresses only if one of them is ```127.0.0.1``` (```localhost```), meaning that either all running ASNs or the MN are executing on the same machine of the IN. For more information about configuration, check the documentation.
 
 ## Generating .jar files
 From Eclipse, right click on
