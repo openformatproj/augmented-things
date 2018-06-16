@@ -12,9 +12,10 @@ public class Console extends Thread {
 	private HashMap<String,CommandContainer> commandMap;
 	private Interface interf;
 	private OutStream outStream;
+	private DebugStream debugStream;
 	private int i;
 	
-	public Console(String id, String host, boolean enabled) {
+	public Console(String id, String host, boolean enabled, boolean debug) {
 		super(Services.joinIdHost(id+"_console",host));
 		this.enabled = enabled;
 		if (enabled) {
@@ -24,10 +25,11 @@ public class Console extends Thread {
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
 		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
+		debugStream = new DebugStream(Services.joinIdHost(id+"_console",host),debug);
 		i = 0;
 	}
 	
-	public Console(String id, String host, Interface interf) {
+	public Console(String id, String host, Interface interf, boolean debug) {
 		super(Services.joinIdHost(id+"_console",host));
 		// scan = new Scanner(System.in);
 		if (interf!=null) {
@@ -39,6 +41,7 @@ public class Console extends Thread {
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
 		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
+		debugStream = new DebugStream(Services.joinIdHost(id+"_console",host),debug);
 		i = 0;
 	}
 	
@@ -50,6 +53,10 @@ public class Console extends Thread {
 //	public boolean isExecuting() {
 //		return executing;
 //	}
+	
+	public void out(String str, int i) {
+		debugStream.out(str,i);
+	}
 	
 	public void terminate() {
 		executing = false;

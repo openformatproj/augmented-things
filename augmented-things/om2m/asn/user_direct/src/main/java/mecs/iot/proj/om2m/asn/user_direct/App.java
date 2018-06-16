@@ -15,6 +15,7 @@ public class App
 	final private static String id = "user";
 	final private static String host = Constants.getComputerName();
 	final private static String address = Constants.adnProtocol + Constants.inAddress + Constants._inADNPort + "/" + Constants.context;
+	final private static boolean debug = true;
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
 	
@@ -24,9 +25,9 @@ public class App
 	
     public static void main( String[] args )
     {
-    	final Console console = new Console(id,host,true);
+    	final Console console = new Console(id,host,true,debug);
 		try {
-			final RemoteInterface remote = new RemoteInterface(id,host,address,Constants.context,true,console,getSerial(),Constants.getIp(),5690);
+			final RemoteInterface remote = new RemoteInterface(id,host,address,Constants.context,debug,console,getSerial(),Constants.getIp(),5690);
 			Command exit = (s) -> {console.terminate(); remote.destroy(); remote.terminate(); return "Exiting";};
 			console.add("exit",exit,"Terminate this asn","exit");
 			remote.start();

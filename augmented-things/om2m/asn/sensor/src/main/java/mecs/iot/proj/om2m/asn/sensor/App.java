@@ -14,6 +14,7 @@ public class App
 	final private static String id = "sensor";
 	final private static String host = Constants.getComputerName();
 	final private static String address = Constants.adnProtocol + Constants.inAddress + Constants._inADNPort + "/" + Constants.context;
+	final private static boolean debug = true;
 	
 	final private static Tag tag = new Tag(Services.joinIdHost(id,host),"0x0001","tempC",new String[]{"event"});
 	final private static int location = 0;
@@ -23,7 +24,7 @@ public class App
     public static void main( String[] args )
     {
 		try {
-			final RemoteInterface remote = new RemoteInterface(tag,location,address,Constants.context,true,36.0,"°C",0.05,2000);
+			final RemoteInterface remote = new RemoteInterface(tag,location,address,Constants.context,debug,36.0,"°C",0.05,2000);
 			remote.start();
 		} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);

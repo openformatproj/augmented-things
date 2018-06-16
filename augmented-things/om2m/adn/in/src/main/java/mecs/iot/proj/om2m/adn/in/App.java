@@ -17,15 +17,16 @@ public class App
 	
 	final private static String id = Constants.inId;
 	final private static String host = Constants.getComputerName();
+	final private static boolean debug = true;
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
 	final private static OutStream outStream = new OutStream(Services.joinIdHost("main",host));
 	
     public static void main( String[] args )
     {
-    	final Console console = new Console(id,host,false);
+    	final Console console = new Console(id,host,false,debug);
 		try {
-			final ADN_IN adn = new ADN_IN(id,host,Constants.context,Constants.context,true,console);
+			final ADN_IN adn = new ADN_IN(id,host,Constants.context,Constants.context,debug,console);
 			CoapServer server = new CoapServer(Constants.inADNPort);
 			outStream.out1("Adding ADN on " + Constants.adnProtocol + "localhost" + Constants._inADNPort + "/" + adn.getName(), 0);
 			server.add(adn);
