@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Properties;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 
 public class Configuration {
@@ -27,6 +28,33 @@ public class Configuration {
 			prop.load(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			throw e;
+		}
+	}
+	
+	public Configuration (String filename, Pack pack) throws NullPointerException, FileNotFoundException, IOException {
+		prop = new Properties();
+		switch (pack) {
+			case MAVEN:
+				File file = null;
+				try {
+					file = new File(filename);
+				} catch (NullPointerException e) {
+					throw e;
+				}
+				try {
+					prop.load(new FileInputStream(file));
+				} catch (FileNotFoundException e) {
+					throw e;
+				}
+				break;
+			case JAR:
+				InputStream stream = getClass().getResourceAsStream(filename);
+				try {
+					prop.load(stream);
+				} catch (FileNotFoundException e) {
+					throw e;
+				}
+				break;
 		}
 	}
 	

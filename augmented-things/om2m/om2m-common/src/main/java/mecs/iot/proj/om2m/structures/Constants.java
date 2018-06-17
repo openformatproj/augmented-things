@@ -41,11 +41,11 @@ public class Constants {
 		Configuration conf = null;
 		Object str = null;
 		try {
-			conf = new Configuration ("configuration/config.ini");
+			conf = new Configuration ("/configuration/config.ini",Pack.JAR);
 			System.out.println("Found local configuration file");
 		} catch (Exception e0) {
 			try {
-				conf = new Configuration ("../../om2m-common/src/main/resources/configuration/config.ini");
+				conf = new Configuration ("../../om2m-common/src/main/resources/configuration/config.ini",Pack.MAVEN);
 				System.out.println("Found local configuration file");
 			} catch (Exception e1) {
 				try {
@@ -194,16 +194,16 @@ public class Constants {
 	private static void loadASN() {
 		if (asn==null) {
 			try {
-				asn = new Configuration ("configuration/asn.ini");
+				asn = new Configuration ("/configuration/asn.ini",Pack.JAR);
 				System.out.println("Found local configuration file (ASN)");
 			} catch (Exception e0) {
 				try {
-					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini");
+					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini",Pack.MAVEN);
 					System.out.println("Found local configuration file (ASN)");
 				} catch (Exception e1) {
 					try {
 						asn = new Configuration ("configuration/asn.ini","http://thingstalk.altervista.org/augmented-things");
-						System.out.println("Found remote configuration file");
+						System.out.println("Found remote configuration file (ASN)");
 					} catch (Exception e2) {
 						System.out.println("No configuration files found, using default values");
 					}

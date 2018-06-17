@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.adn.in;
 
 import mecs.iot.proj.om2m.structures.MN;
+import mecs.iot.proj.om2m.structures.Pack;
 import mecs.iot.proj.om2m.structures.Configuration;
 
 import java.util.HashMap;
@@ -13,11 +14,11 @@ public class Db {
 		Configuration db = null;
 		String[][] mn = null;
 		try {
-			db = new Configuration ("configuration/db.ini");
+			db = new Configuration ("/configuration/db.ini",Pack.JAR);
 			System.out.println("Found local database");
 		} catch (Exception e0) {
 			try {
-				db = new Configuration ("src/main/resources/configuration/db.ini");
+				db = new Configuration ("src/main/resources/configuration/db.ini",Pack.MAVEN);
 				System.out.println("Found local database");
 			} catch (Exception e1) {
 				try {
