@@ -17,6 +17,8 @@ org.eclipse.om2m.remoteCseAddress=127.0.0.1
 ```
 (replace ```127.0.0.1``` with a qualified address if IN and MN run on different machines). These two files can contain different addresses only if one of them is ```127.0.0.1``` (```localhost```), meaning that either all running ASNs or the MN are executing on the same machine of the IN. For more information about configuration, check the documentation.
 
+Note: [```./om2m/adn/in/src/main/resources/configuration/db.ini```](http://thingstalk.altervista.org/augmented-things/configuration/db.ini) and [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini) are not included in this repository and must be added manually into the right folders.
+
 ## Generating .jar files
 From Eclipse, right click on
 
