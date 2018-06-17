@@ -26,7 +26,9 @@ fill the Goals field with
 ```
 clean compile assembly:single
 ```
-![Eclipse options](images/Run.PNG "Eclipse options")
+
+![Eclipse options](https://github.com/openformatproj/augmented-things/blob/master/images/Run.PNG "Eclipse options")
+
 and click on Run. All .jar files can be found in the ```<package>/target``` folder, being ```<package>``` one of the possible applications
 
 * ADN (```./om2m/adn/```)
