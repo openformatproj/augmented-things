@@ -2,7 +2,7 @@ package mecs.iot.proj.om2m.structures;
 
 import mecs.iot.proj.om2m.structures.Configuration;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.Map;
 
 public class Constants {
@@ -173,14 +173,14 @@ public class Constants {
 	public static String getComputerName() {
 		Map<String, String> env = System.getenv();
 		// Ubuntu systems require to "export HOSTNAME" before running the Java code, otherwise env.containsKey("HOSTNAME")==false
-		try {
-			Process p = Runtime.getRuntime().exec("export HOSTNAME");
-			p.waitFor();
-		} catch (IOException e) {
-			//e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Process p = Runtime.getRuntime().exec("export HOSTNAME");
+//			p.waitFor();
+//		} catch (IOException e) {
+//			//e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 	    if (env.containsKey("COMPUTERNAME"))
 	        return env.get("COMPUTERNAME").replaceAll("\\s","_");
 	    else if (env.containsKey("HOSTNAME"))
