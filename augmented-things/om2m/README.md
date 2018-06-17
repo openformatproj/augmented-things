@@ -57,6 +57,13 @@ $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/
 ### ASNs
 To run an ASN, simply run its Java executable. Please notice that ```mecs.iot.proj.om2m.asn.sensor.App``` and ```mecs.iot.proj.om2m.asn.actuator.App``` are actually mockups used for testing.
 
+### Notes
+On Ubuntu systems, in order to correctly resolve the hostname and prevent the risk of name conflicts, before executing a node one should launch the command
+```
+export HOSTNAME
+```
+in this way, the full host identifier is used instead of the simple username.
+
 ## Viewing the OM2M structure
 Visit ```127.0.0.1:8080/webpage``` (replace ```127.0.0.1``` with the IP address of the IN) to access the OM2M resources' directory.
 
