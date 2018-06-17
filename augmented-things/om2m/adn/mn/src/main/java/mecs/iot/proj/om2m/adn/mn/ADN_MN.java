@@ -86,7 +86,7 @@ class ADN_MN extends ADN {
 				outStream.out("Handling sensor reading for serial \"" + serial + "\"", i);
 				Tag_ tag2 = tagMap.get(serial);
 				if (tag2==null) {
-					debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
+					debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -108,6 +108,12 @@ class ADN_MN extends ADN {
 				response.setPayload(Services.parseJSON(cin.getResponseText(), "m2m:cin", //
 						new String[] {"con"}, new Class<?>[] {String.class}));
 				break;
+			default:
+				debugStream.out("Bad request, mode=" + mode, i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
 			}
 		} else {
 			response = new Response(ResponseCode.CONTENT);
@@ -183,7 +189,7 @@ class ADN_MN extends ADN {
 					// node subscription (id=<ID>&ser=<SERIAL>)
 					Tag_ tag = tagMap.get(serial);
 					if (tag==null) {
-						debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
+						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
@@ -267,14 +273,14 @@ class ADN_MN extends ADN {
 				Tag_ tag0 = tagMap.get(serial0);
 				Tag_ tag1 = tagMap.get(serial1);
 				if (tag0==null) {
-					debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN", i);
+					debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
 				if (tag1==null) {
-					debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN", i);
+					debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -350,15 +356,15 @@ class ADN_MN extends ADN {
 	@Override
 	
 	synchronized public void handlePUT(CoapExchange exchange) {
-		// node write (ser=<SERIAL>&id=<ACTION_ID>), TODO
+		// node write (ser=<SERIAL>&id=<ACTION_ID>), TODO ResponseCode.CREATED
 	}
 	
 	@Override
 	
 	synchronized public void handleDELETE(CoapExchange exchange) {
-		// subscription removal (id=<ID>&ser=<SERIAL>), TODO
-		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>), TODO
-		// node/user removal (id=<ID>), TODO
+		// subscription removal (id=<ID>&ser=<SERIAL>), TODO ResponseCode.DELETED
+		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>), TODO ResponseCode.DELETED
+		// node/user removal (id=<ID>), TODO ResponseCode.DELETED
 	}
 
 }

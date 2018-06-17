@@ -16,4 +16,11 @@ public class MN {
 		return "id=" + id + ", address=" + address;
 	}
 	
+	@Override
+	
+	public boolean equals(Object obj) {
+		MN mn = (MN)obj;
+		return id.equals(mn.id);
+	}
+	
 }

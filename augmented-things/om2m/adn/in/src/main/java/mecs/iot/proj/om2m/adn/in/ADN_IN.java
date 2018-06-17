@@ -78,7 +78,7 @@ class ADN_IN extends ADN {
 				response.setPayload(mn.address);
 				break;
 			case 1:
-				// attributes query (mode=1&ser=<SERIAL>)
+				// attributes query (mode=1&ser=<SERIAL>) TOREMOVE (TODO)
 				outStream.out("Handling attributes querying for serial \"" + serial + "\"", i);
 				Tag_ tag1 = tagMap.get(serial);
 				if (tag1==null) {
@@ -100,11 +100,11 @@ class ADN_IN extends ADN {
 				response.setPayload(payload);
 				break;
 			case 2:
-				// node read (mode=2&ser=<SERIAL>)
+				// node read (mode=2&ser=<SERIAL>) TOREMOVE (TODO)
 				outStream.out("Handling sensor reading for serial \"" + serial + "\"", i);
 				Tag_ tag2 = tagMap.get(serial);
 				if (tag2==null) {
-					debugStream.out("Serial \"" + serial + "\" is not registered on any MN", i);
+					debugStream.out("Serial \"" + serial + "\" is not registered on any MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -113,7 +113,7 @@ class ADN_IN extends ADN {
 				String id = tag2.id;
 				mn = mnMap.get(serial);
 				if (mn==null) {
-					debugStream.out("Serial \"" + serial + "\" is not registered on any MN", i);
+					debugStream.out("Serial \"" + serial + "\" is not registered on any MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -134,6 +134,12 @@ class ADN_IN extends ADN {
 				response.setPayload(Services.parseJSON(cin.getResponseText(), "m2m:cin", //
 						new String[] {"con"}, new Class<?>[] {String.class}));
 				break;
+			default:
+				debugStream.out("Bad request, mode=" + mode, i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
 			}
 		} else {
 			debugStream.out("Bad request, mode not specified", i);
@@ -224,10 +230,10 @@ class ADN_IN extends ADN {
 					response = new Response(ResponseCode.CREATED);
 					response.setPayload(mn.id + "," + mn.address);
 				} else {
-					// node subscription (id=<ID>&ser=<SERIAL>)
+					// node subscription (id=<ID>&ser=<SERIAL>) TOREMOVE (TODO)
 					MN mn = mnMap.get(serial);
 					if (mn==null) {
-						debugStream.out("Serial \"" + serial + "\" is not registered on any MN", i);
+						debugStream.out("Serial \"" + serial + "\" is not registered on any MN as a sensor", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
@@ -235,7 +241,7 @@ class ADN_IN extends ADN {
 					}
 					Tag_ tag = tagMap.get(serial);
 					if (tag==null) {
-						debugStream.out("Serial \"" + serial + "\" is not registered on any MN", i);
+						debugStream.out("Serial \"" + serial + "\" is not registered on any MN as a sensor", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
@@ -294,7 +300,7 @@ class ADN_IN extends ADN {
 			String id0 = getUriValue(exchange,"id",2);
 			String id1 = getUriValue(exchange,"id",3);
 			if (serial0!=null && serial1!=null && id0!=null && id1!=null) {
-				// nodes link (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>)
+				// nodes link (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>) TOREMOVE (TODO)
 				if (!isValidSerial(serial0) && isValidSerial(serial1)) {
 					debugStream.out("Bad request, ser0=" + serial0, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
@@ -316,9 +322,24 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				MN mn = mnMap.get(serial0);
-				if (mn==null) {
-					debugStream.out("Serial \"" + serial0 + "\" is not registered on any MN", i);
+				MN mn0 = mnMap.get(serial0);
+				if (mn0==null) {
+					debugStream.out("Serial \"" + serial0 + "\" is not registered on any MN as a sensor", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				MN mn1 = mnMap.get(serial1);
+				if (mn1==null) {
+					debugStream.out("Serial \"" + serial1 + "\" is not registered on any MN as an actuator", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				if (!mn0.equals(mn1)) {
+					debugStream.out("Serial \"" + serial0 + "\" and serial \"" + serial1 + "\" are associated to different MNs", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -327,14 +348,14 @@ class ADN_IN extends ADN {
 				Tag_ tag0 = tagMap.get(serial0);
 				Tag_ tag1 = tagMap.get(serial1);
 				if (tag0==null) {
-					debugStream.out("Serial \"" + serial0 + "\" is not registered on any MN", i);
+					debugStream.out("Serial \"" + serial0 + "\" is not registered on any MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
 				if (tag1==null) {
-					debugStream.out("Serial \"" + serial1 + "\" is not registered on any MN", i);
+					debugStream.out("Serial \"" + serial1 + "\" is not registered on any MN as an actuator", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -376,7 +397,7 @@ class ADN_IN extends ADN {
 				}
 				outStream.out("Linking sensor \"" + tag0.id + "\" (serial \"" + serial0 + //
 						"\") to actuator \"" + tag1.id + "\" (serial \"" + serial1 + "\")", i);
-				String[] uri = new String[] {context + Constants.inPostfix, mn.id, tag0.id, "data"};
+				String[] uri = new String[] {context + Constants.inPostfix, mn0.id, tag0.id, "data"};
 				CoapResponse response_;
 				try {
 					response_ = subscriber.insert(Constants._inADNPort+"/"+getName(),tag0.id,uri,tag0.attributes[i0],tag1.description,tag1.attributes[i1],i);
@@ -409,15 +430,7 @@ class ADN_IN extends ADN {
 	
 	@Override
 	
-	synchronized public void handlePUT(CoapExchange exchange) {
-		// node write (ser=<SERIAL>&id=<ACTION_ID>), TODO
-	}
-	
-	@Override
-	
 	synchronized public void handleDELETE(CoapExchange exchange) {
-		// subscription removal (id=<ID>&ser=<SERIAL>), TODO
-		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>), TODO
 		// node/user removal (id=<ID>), TODO
 	}
 
