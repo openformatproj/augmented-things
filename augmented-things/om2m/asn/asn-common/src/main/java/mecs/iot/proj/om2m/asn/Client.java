@@ -12,6 +12,7 @@ import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.CoAP.Code;
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 public class Client extends mecs.iot.proj.om2m.Client {
 	
@@ -152,7 +153,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse getAttributes(String serial, Console console) {
+	public String getAttributes(String serial, Console console) {
 		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -160,7 +161,11 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent attributes request to " + services.uri());
-		return send(request,console);
+		CoapResponse response = send(request,console);
+		if (response.getCode()==ResponseCode.CONTENT)
+			return response.getResponseText();
+		else
+			return response.getCode().toString();
 	}
 	
 	/*
@@ -177,7 +182,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse getResource(String serial, Console console) {
+	public String getResource(String serial, Console console) {
 		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -185,7 +190,11 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent reading request to " + services.uri());
-		return send(request,console);
+		CoapResponse response = send(request,console);
+		if (response.getCode()==ResponseCode.CONTENT)
+			return response.getResponseText();
+		else
+			return response.getCode().toString();
 	}
 	
 	/*
@@ -202,7 +211,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse postSubscription(String observer, String serial, Console console) {
+	public String postSubscription(String observer, String serial, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -210,7 +219,11 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent lookout request to " + services.uri());
-		return send(request,console);
+		CoapResponse response = send(request,console);
+		if (response.getCode()==ResponseCode.CREATED)
+			return response.getResponseText();
+		else
+			return response.getCode().toString();
 	}
 	
 	/*
@@ -227,7 +240,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse removeSubscription(String observer, String serial, Console console) {
+	public String removeSubscription(String observer, String serial, Console console) {
 		Request request = new Request(Code.DELETE);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -235,7 +248,11 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent lookout removal request to " + services.uri());
-		return send(request,console);
+		CoapResponse response = send(request,console);
+		if (response.getCode()==ResponseCode.DELETED)
+			return response.getResponseText();
+		else
+			return response.getCode().toString();
 	}
 	
 	/*
@@ -252,7 +269,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse putResource(String serial, String id, Console console) {
+	public String putResource(String serial, String id, Console console) {
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -260,7 +277,11 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id);
 		//request.setTimedOut(true);
 		console.out("Sent write request to " + services.uri());
-		return send(request,console);
+		CoapResponse response = send(request,console);
+		if (response.getCode()==ResponseCode.CREATED)
+			return response.getResponseText();
+		else
+			return response.getCode().toString();
 	}
 	
 	/*
@@ -279,7 +300,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	public CoapResponse postSubscription(String serial0, String serial1, String id0, String id1, Console console) {
+	public String postSubscription(String serial0, String serial1, String id0, String id1, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -289,7 +310,11 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id1);
 		//request.setTimedOut(true);
 		console.out("Sent link request to " + services.uri());
-		return send(request,console);
+		CoapResponse response = send(request,console);
+		if (response.getCode()==ResponseCode.CREATED)
+			return response.getResponseText();
+		else
+			return response.getCode().toString();
 	}
 	
 	/*
