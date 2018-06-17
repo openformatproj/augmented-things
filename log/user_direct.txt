@@ -1,4 +1,7 @@
 Found local configuration file
+Found local configuration file (ASN)
+	inAddress=192.168.0.111
+	ip=192.168.0.109
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.

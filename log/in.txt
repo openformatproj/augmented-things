@@ -7,6 +7,7 @@ main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5685/augmented-things..
 IN-ADN_console@alessandro	[INFO]	0) Starting console
 IN-ADN_console@alessandro	[INFO]	0) Terminating console (no interface provided)
 Found local database
+	augmented-things-MN,192.168.0.111
 IN-ADN_server@alessandro	[INFO]	1) Registering node "sensor.ALESSANDRO-K7NR" (serial "0x0001") on MN "augmented-things-MN"
 IN-ADN_server@alessandro	[INFO]	2) Handling user localization for serial "0x0001"
 IN-ADN_server@alessandro	[INFO]	3) Registering node "actuator.ALESSANDRO-K7NR" (serial "0x0002") on MN "augmented-things-MN"

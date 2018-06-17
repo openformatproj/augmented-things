@@ -1,4 +1,7 @@
 Found local configuration file
+Found local configuration file (ASN)
+	inAddress=192.168.0.111
+	ip=192.168.0.109
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
@@ -21,4 +24,5 @@ actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:ae":{"rr":"true","api":"Tem
                         	       	   to coap://192.168.0.111:5684/~/augmented-things-MN-cse
 actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse
 actuator@ALESSANDRO-K7NR	[INFO]	0) Received JSON: rn=actuator.ALESSANDRO-K7NR, ty=2
-actuator@ALESSANDRO-K7NR	[INFO]	1) Waiting for notifications...
+actuator@ALESSANDRO-K7NR	[INFO]	1) Waiting for notifications... received: "terminated" (by "watchdog@ALESSANDRO-K7NR")
+actuator@ALESSANDRO-K7NR	[INFO]	2) Terminating interface
