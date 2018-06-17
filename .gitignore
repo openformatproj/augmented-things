@@ -20,6 +20,5 @@
 *.properties
 
 # Configuration files
-config.ini
 asn.ini
 db.ini
