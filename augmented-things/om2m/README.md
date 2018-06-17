@@ -5,7 +5,7 @@ This module contains all om2m modules (ADNs and endpoint nodes). Each ADN module
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
-to change a MN name, you have to contextualize the following line in [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini)
+to change a MN name, you have to contextualize the following line in [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) (after copying it in the previous folder)
 ```
 org.eclipse.om2m.cseBaseName=augmented-things-MN
 ```
