@@ -12,13 +12,13 @@ class Stream {
 	private static boolean insertNewLine = false;
 	//private static boolean[] hasBeenInterrupted = {false,false,false};
 	
-	static void register(String name) {
+	static synchronized void register(String name) {
 		agentMap.put(new Agent(name,Type.OUT),new State(false));
 		agentMap.put(new Agent(name,Type.DEBUG),new State(false));
 		agentMap.put(new Agent(name,Type.ERR),new State(false));
 	}
 	
-	static void print(String msg) {
+	static synchronized void print(String msg) {
 		
 		if (insertNewLine) {
 			System.out.print("\n" + msg);
@@ -31,7 +31,7 @@ class Stream {
 		
 	}
 	
-	static void lock(String name, Type type) {
+	static synchronized void lock(String name, Type type) {
 		//l.lock();
 		Agent caller = new Agent(name,type);
 		if (owner==null || owner.equals(caller)) {
@@ -45,12 +45,12 @@ class Stream {
 		}
 	}
 	
-	static void unlock() {
+	static synchronized void unlock() {
 		owner = null;
 		//l.unlock();
 	}
 	
-	static boolean hasBeenInterrupted(String name, Type type) {
+	static synchronized boolean hasBeenInterrupted(String name, Type type) {
 		Agent caller = new Agent(name,type);
 		State state = agentMap.get(caller);
 		return state.value;
