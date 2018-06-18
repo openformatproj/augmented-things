@@ -32,7 +32,8 @@ class Remotes {
 		double value;
 		double fluctuation;
 		int port;
-		int duration;
+		long duration;
+		long period;
 		Tag tag;
 		Node node;
 		
@@ -77,10 +78,11 @@ class Remotes {
 				location = Integer.parseInt(conf.getTagTextContent("location",node));
 				value = Double.parseDouble(conf.getTagTextContent("value",node));
 				fluctuation = Double.parseDouble(conf.getTagTextContent("fluctuation",node));
-				duration = Integer.parseInt(conf.getTagTextContent("duration",node));
+				duration = Long.parseLong(conf.getTagTextContent("duration",node));
+				period = Long.parseLong(conf.getTagTextContent("period",node));
 				tag = new Tag(Services.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
 				try {
-					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration);
+					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration,period);
 					clients.add(remote);
 					viewer.add(id,serial,type,0);
 					sensors++;

@@ -20,11 +20,12 @@ public class RemoteInterface extends Client {
 	private String context;
 	private Tag tag;
 	private int location;
-	private long end;
+	private long duration;
+	private long period;
 	
 	private long start;
 
-	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long end) throws URISyntaxException {
+	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long duration, long period) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.value = value;
 		this.metadata = Format.get(tag.type);
@@ -32,7 +33,8 @@ public class RemoteInterface extends Client {
 		this.context = context;
 		this.tag = tag;
 		this.location = location;
-		this.end = end;
+		this.duration = duration;
+		this.period = period;
 	}
 	
 	@Override
@@ -116,15 +118,16 @@ public class RemoteInterface extends Client {
 				new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
 		i++;
 		start = System.currentTimeMillis();
-		while(System.currentTimeMillis()-start<end || end==0) {
-			try        
-			{
-			    sleep((long)Physics.randomFluctuation(0.5));
-			} 
-			catch(InterruptedException ex) 
-			{
-			    Thread.currentThread().interrupt();
-			}
+		long timer;
+		while(System.currentTimeMillis()-start<duration || duration==0) {
+//			try        
+//			{
+//			    sleep((long)Physics.randomFluctuation(0.5));
+//			} 
+//			catch(InterruptedException ex) 
+//			{
+//			    Thread.currentThread().interrupt();
+//			}
 			outStream.out("Posting Content Instance", i);
 			try {
 				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),metadata,i);
@@ -135,6 +138,8 @@ public class RemoteInterface extends Client {
 			outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
 					new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
 			i++;
+			timer = System.currentTimeMillis();
+			while (System.currentTimeMillis()-timer<(period/1000.0));
 		}
 		// TODO, delete AE
 		outStream.out("Terminating interface", i);

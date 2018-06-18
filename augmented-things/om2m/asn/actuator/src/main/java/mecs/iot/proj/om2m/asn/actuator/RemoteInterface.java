@@ -17,19 +17,19 @@ public class RemoteInterface extends Client {
 	private String context;
 	private Tag tag;
 	private int location;
-	private long end;
+	private long duration;
 	
 	private Action[] actions;
 	private String address;
 	
 	private long start;
 
-	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String address, int port, long end) throws URISyntaxException {
+	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String address, int port, long duration) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.context = context;
 		this.tag = tag;
 		this.location = location;
-		this.end = end;
+		this.duration = duration;
 		this.actions = actions;
 		this.address = address + ":" + Integer.toString(port);
 		createSubscriptionServer(tag.attributes,actions,port);
@@ -51,7 +51,7 @@ public class RemoteInterface extends Client {
 	    public void run() {
 			start_ = start;
 			while (true) {
-				while(System.currentTimeMillis()-start_<end);
+				while(System.currentTimeMillis()-start_<duration);
 				synchronized(lock) {
 					lock.setNotification("terminated",getName());
 					lock.notify();
@@ -123,7 +123,7 @@ public class RemoteInterface extends Client {
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae", //
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		i++;
-		if (end>0) {
+		if (duration>0) {
 			Thread wd = new Watchdog(this);
 			//wd.setDaemon(true);
 			start = System.currentTimeMillis();
@@ -131,7 +131,7 @@ public class RemoteInterface extends Client {
 		} else {
 			start = System.currentTimeMillis();
 		}
-		while(System.currentTimeMillis()-start<end || end==0) {
+		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out1("Waiting for notifications", i);
 			waitForSubscriptions();
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
