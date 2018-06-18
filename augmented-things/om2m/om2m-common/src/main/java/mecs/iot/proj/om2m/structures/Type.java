@@ -1,5 +1,5 @@
 package mecs.iot.proj.om2m.structures;
 
-public enum Pack {
-	MAVEN, JAR, REMOTE
+public enum Type {
+	INI, XML
 }

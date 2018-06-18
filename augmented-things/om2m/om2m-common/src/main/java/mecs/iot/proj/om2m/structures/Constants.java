@@ -41,15 +41,15 @@ public class Constants {
 		Configuration conf = null;
 		Object str = null;
 		try {
-			conf = new Configuration ("/configuration/config.ini",Pack.JAR);
+			conf = new Configuration ("/configuration/config.ini",Pack.JAR,Type.INI);
 			System.out.println("Found local configuration file");
 		} catch (Exception e0) {
 			try {
-				conf = new Configuration ("../../om2m-common/src/main/resources/configuration/config.ini",Pack.MAVEN);
+				conf = new Configuration ("../../om2m-common/src/main/resources/configuration/config.ini",Pack.MAVEN,Type.INI);
 				System.out.println("Found local configuration file");
 			} catch (Exception e1) {
 				try {
-					conf = new Configuration ("configuration/config.ini","http://thingstalk.altervista.org/augmented-things");
+					conf = new Configuration ("http://thingstalk.altervista.org/augmented-things/configuration/config.ini",Pack.REMOTE,Type.INI);
 					System.out.println("Found remote configuration file");
 				} catch (Exception e2) {
 					//e1.printStackTrace();
@@ -58,105 +58,105 @@ public class Constants {
 			}
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.cseProtocol");
+			str = conf.getAttribute("mecs.iot.proj.om2m.cseProtocol");
 		} catch (Exception e) {
 			str = "coap://";
 		} finally {
 			cseProtocol = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.adnProtocol");
+			str = conf.getAttribute("mecs.iot.proj.om2m.adnProtocol");
 		} catch (Exception e) {
 			str = "coap://";
 		} finally {
 			adnProtocol = (String) str;
 		}
 		try {
-			str = Integer.parseInt(conf.loadAttribute("mecs.iot.proj.om2m.inCSEPort"));
+			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.inCSEPort"));
 		} catch (Exception e) {
 			str = 5683;
 		} finally {
 			inCSEPort = (int) str;
 		}
 		try {
-			str = Integer.parseInt(conf.loadAttribute("mecs.iot.proj.om2m.mnCSEPort"));
+			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.mnCSEPort"));
 		} catch (Exception e) {
 			str = 5684;
 		} finally {
 			mnCSEPort = (int) str;
 		}
 		try {
-			str = Integer.parseInt(conf.loadAttribute("mecs.iot.proj.om2m.inADNPort"));
+			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.inADNPort"));
 		} catch (Exception e) {
 			str = 5685;
 		} finally {
 			inADNPort = (int) str;
 		}
 		try {
-			str = Integer.parseInt(conf.loadAttribute("mecs.iot.proj.om2m.mnADNPort"));
+			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.mnADNPort"));
 		} catch (Exception e) {
 			str = 5686;
 		} finally {
 			mnADNPort = (int) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.context");
+			str = conf.getAttribute("mecs.iot.proj.om2m.context");
 		} catch (Exception e) {
 			str = "augmented-things";
 		} finally {
 			context = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.root");
+			str = conf.getAttribute("mecs.iot.proj.om2m.root");
 		} catch (Exception e) {
 			str = "~/";
 		} finally {
 			root = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.inPostfix");
+			str = conf.getAttribute("mecs.iot.proj.om2m.inPostfix");
 		} catch (Exception e) {
 			str = "-IN";
 		} finally {
 			inPostfix = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.mnPostfix");
+			str = conf.getAttribute("mecs.iot.proj.om2m.mnPostfix");
 		} catch (Exception e) {
 			str = "-MN";
 		} finally {
 			mnPostfix = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.inCSEPostfix");
+			str = conf.getAttribute("mecs.iot.proj.om2m.inCSEPostfix");
 		} catch (Exception e) {
 			str = "-IN-cse";
 		} finally {
 			inCSEPostfix = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.mnCSEPostfix");
+			str = conf.getAttribute("mecs.iot.proj.om2m.mnCSEPostfix");
 		} catch (Exception e) {
 			str = "-MN-cse";
 		} finally {
 			mnCSEPostfix = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.inId");
+			str = conf.getAttribute("mecs.iot.proj.om2m.inId");
 		} catch (Exception e) {
 			str = "IN-ADN";
 		} finally {
 			inId = (String) str;
 		}
 		try {
-			str = conf.loadAttribute("mecs.iot.proj.om2m.mnId");
+			str = conf.getAttribute("mecs.iot.proj.om2m.mnId");
 		} catch (Exception e) {
 			str = "MN-ADN";
 		} finally {
 			mnId = (String) str;
 		}
 		try {
-			str = Integer.parseInt(conf.loadAttribute("mecs.iot.proj.om2m.streamCharacters"));
+			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.streamCharacters"));
 		} catch (Exception e) {
 			str = 120;
 		} finally {
@@ -194,15 +194,15 @@ public class Constants {
 	private static void loadASN() {
 		if (asn==null) {
 			try {
-				asn = new Configuration ("/configuration/asn.ini",Pack.JAR);
+				asn = new Configuration ("/configuration/asn.ini",Pack.JAR,Type.INI);
 				System.out.println("Found local configuration file (ASN)");
 			} catch (Exception e0) {
 				try {
-					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini",Pack.MAVEN);
+					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini",Pack.MAVEN,Type.INI);
 					System.out.println("Found local configuration file (ASN)");
 				} catch (Exception e1) {
 					try {
-						asn = new Configuration ("configuration/asn.ini","http://thingstalk.altervista.org/augmented-things");
+						asn = new Configuration ("http://thingstalk.altervista.org/augmented-things/configuration/asn.ini",Pack.REMOTE,Type.INI);
 						System.out.println("Found remote configuration file (ASN)");
 					} catch (Exception e2) {
 						System.out.println("No configuration files found, using default values");
@@ -216,7 +216,7 @@ public class Constants {
 		loadASN();
 		String str = null;
 		try {
-			str = asn.loadAttribute("mecs.iot.proj.om2m.inAddress");
+			str = asn.getAttribute("mecs.iot.proj.om2m.inAddress");
 		} catch (Exception e) {
 			str = "127.0.0.1";
 		}
@@ -229,7 +229,7 @@ public class Constants {
 		loadASN();
 		String str = null;
 		try {
-			str = asn.loadAttribute("mecs.iot.proj.om2m.ip");
+			str = asn.getAttribute("mecs.iot.proj.om2m.ip");
 		} catch (Exception e) {
 			str = "localhost";
 		}

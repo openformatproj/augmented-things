@@ -2,6 +2,7 @@ package mecs.iot.proj.om2m.adn.in;
 
 import mecs.iot.proj.om2m.structures.MN;
 import mecs.iot.proj.om2m.structures.Pack;
+import mecs.iot.proj.om2m.structures.Type;
 import mecs.iot.proj.om2m.structures.Configuration;
 
 import java.util.HashMap;
@@ -14,15 +15,15 @@ public class Db {
 		Configuration db = null;
 		String[][] mn = null;
 		try {
-			db = new Configuration ("/configuration/db.ini",Pack.JAR);
+			db = new Configuration ("/configuration/db.ini",Pack.JAR,Type.INI);
 			System.out.println("Found local database");
 		} catch (Exception e0) {
 			try {
-				db = new Configuration ("src/main/resources/configuration/db.ini",Pack.MAVEN);
+				db = new Configuration ("src/main/resources/configuration/db.ini",Pack.MAVEN,Type.INI);
 				System.out.println("Found local database");
 			} catch (Exception e1) {
 				try {
-					db = new Configuration ("configuration/db.ini","http://thingstalk.altervista.org/augmented-things");
+					db = new Configuration ("http://thingstalk.altervista.org/augmented-things/configuration/db.ini",Pack.REMOTE,Type.INI);
 					System.out.println("Found remote database");
 				} catch (Exception e2) {
 					System.out.println("No databases found, using default values");
@@ -30,7 +31,7 @@ public class Db {
 			}
 		}
 		try {
-			mn = db.loadAttributeList("mecs.iot.proj.om2m.mnList",2);
+			mn = db.getAttributeList("mecs.iot.proj.om2m.mnList",2);
 		} catch (Exception e) {
 			mn = new String[1][2];
 			mn[0][0] = "augmented-things-MN";
