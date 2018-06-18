@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
-class RemoteInterface extends Client {
+public class RemoteInterface extends Client {
 	
 	private String context;
 	private Tag tag;
@@ -24,7 +24,7 @@ class RemoteInterface extends Client {
 	
 	private long start;
 
-	RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String address, int port, long end) throws URISyntaxException {
+	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String address, int port, long end) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.context = context;
 		this.tag = tag;
