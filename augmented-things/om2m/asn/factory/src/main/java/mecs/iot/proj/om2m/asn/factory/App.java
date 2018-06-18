@@ -10,7 +10,7 @@ import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.asn.factory.dashboard.Viewer;
 
-public class App 
+public class App
 {
 	
 	final private static String host = Constants.getComputerName();

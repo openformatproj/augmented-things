@@ -10,7 +10,6 @@ import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.factory.dashboard.Interface;
-import mecs.iot.proj.om2m.asn.factory.dashboard.Viewer;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Pack;
 import mecs.iot.proj.om2m.structures.Tag;
