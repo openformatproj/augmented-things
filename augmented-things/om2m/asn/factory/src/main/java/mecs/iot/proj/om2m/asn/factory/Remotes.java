@@ -80,7 +80,7 @@ class Remotes {
 				duration = Integer.parseInt(conf.getTagTextContent("duration",node));
 				tag = new Tag(Services.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
 				try {
-					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,"°C",fluctuation,duration);
+					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration);
 					clients.add(remote);
 					viewer.add(id,serial,type,0);
 					sensors++;

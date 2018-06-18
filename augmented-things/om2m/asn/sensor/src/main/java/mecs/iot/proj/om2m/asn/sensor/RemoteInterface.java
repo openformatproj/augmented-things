@@ -15,7 +15,7 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 public class RemoteInterface extends Client {
 	
 	private double value;
-	private String measureUnit;
+	private String metadata;
 	private double fluctuation;
 	private String context;
 	private Tag tag;
@@ -24,10 +24,10 @@ public class RemoteInterface extends Client {
 	
 	private long start;
 
-	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, String measureUnit, double fluctuation, long end) throws URISyntaxException {
+	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long end) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.value = value;
-		this.measureUnit = measureUnit;
+		this.metadata = Format.get(tag.type);
 		this.fluctuation = fluctuation;
 		this.context = context;
 		this.tag = tag;
@@ -107,7 +107,7 @@ public class RemoteInterface extends Client {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out("Posting Content Instance", i);
 		try {
-			response = services.postContentInstance(value,measureUnit,i);
+			response = services.postContentInstance(value,metadata,i);
 		} catch (URISyntaxException e) {
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
@@ -127,7 +127,7 @@ public class RemoteInterface extends Client {
 			}
 			outStream.out("Posting Content Instance", i);
 			try {
-				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),measureUnit,i);
+				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),metadata,i);
 			} catch (URISyntaxException e) {
 				errStream.out(e, i, Severity.MEDIUM);
 				return;
