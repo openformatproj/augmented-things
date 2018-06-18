@@ -165,7 +165,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		if (response.getCode()==ResponseCode.CONTENT)
 			return response.getResponseText();
 		else
-			return response.getCode().toString();
+			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
@@ -194,7 +194,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		if (response.getCode()==ResponseCode.CONTENT)
 			return response.getResponseText();
 		else
-			return response.getCode().toString();
+			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
@@ -223,7 +223,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		if (response.getCode()==ResponseCode.CREATED)
 			return response.getResponseText();
 		else
-			return response.getCode().toString();
+			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
@@ -252,7 +252,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		if (response.getCode()==ResponseCode.DELETED)
 			return response.getResponseText();
 		else
-			return response.getCode().toString();
+			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
@@ -281,7 +281,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		if (response.getCode()==ResponseCode.CREATED)
 			return response.getResponseText();
 		else
-			return response.getCode().toString();
+			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
@@ -314,7 +314,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		if (response.getCode()==ResponseCode.CREATED)
 			return response.getResponseText();
 		else
-			return response.getCode().toString();
+			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
