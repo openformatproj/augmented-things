@@ -362,7 +362,7 @@ class ADN_MN extends ADN {
 			i++;
 			return;
 		}
-		String label = getUriValue(exchange,"label",1);
+		String label = getUriValue(exchange,"lab",1);
 		if (label==null || !isValidLabel(label,tag)) {
 			if (label!=null)
 				debugStream.out("Bad request, lab=" + label, i);
