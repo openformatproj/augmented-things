@@ -27,7 +27,7 @@ class RemoteInterface extends Client {
 		this.serial = serial;
 		this.context = context;
 		this.id = Services.joinIdHost(id,host);
-		this.address = ip + ":" + Integer.toString(port) + "/" + context;
+		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;
 		CommandList list = new CommandList(this,console,this.id);
 		for (int i=0; i<list.numCommands; i++) {
 			console.add(list.text[i][0],list.getCommand(i),list.text[i][1],list.text[i][2]);
