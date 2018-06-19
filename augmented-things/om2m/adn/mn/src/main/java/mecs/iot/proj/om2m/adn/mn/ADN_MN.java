@@ -386,8 +386,7 @@ class ADN_MN extends ADN {
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("ser" + "=" + serial);
-		request.getOptions().addUriQuery("lab" + "=" + label);
+		request.setPayload(label);
 		CoapResponse response_ = notificationClient.send(request);
 		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
 			errStream.out("Unable to write on actuator \"" + tag.id + "\", response: " + response_.getCode(), //
