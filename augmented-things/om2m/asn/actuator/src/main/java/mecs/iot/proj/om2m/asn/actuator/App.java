@@ -23,7 +23,7 @@ public class App
 	final private static Tag tag = new Tag(Services.joinIdHost(id,host),"0x0002",new String[]{"action1","action2"});
 	final private static int location = 0;
 	
-	final private static Action action1 = () -> {};
+	final private static Action action1 = () -> {/* System.out.println("*************************"); An action */};
 	final private static Action action2 = () -> {};
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
