@@ -27,14 +27,15 @@ class RemoteInterface extends Client {
 		this.serial = serial;
 		this.context = context;
 		this.id = Services.joinIdHost(id,host);
-		this.address = ip + ":" + Integer.toString(port);
+		this.address = ip + ":" + Integer.toString(port) + "/" + context;
 		CommandList list = new CommandList(this,console,this.id);
 		for (int i=0; i<list.numCommands; i++) {
 			console.add(list.text[i][0],list.getCommand(i),list.text[i][1],list.text[i][2]);
 		}
 		this.console = console;
 		executing = true;
-		createNotificationServer(null,null,port);
+		ConsoleWrapper unit = new ConsoleWrapper(Services.joinIdHost(id+"_unit",host),console);
+		createNotificationServer(Services.joinIdHost(id+"_server",host),context,debug,unit,port);
 	}
 	
 	@Override

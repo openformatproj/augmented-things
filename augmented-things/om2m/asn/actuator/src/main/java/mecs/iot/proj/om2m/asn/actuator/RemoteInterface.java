@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.asn.actuator;
 
 import mecs.iot.proj.om2m.asn.Client;
+import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.structures.Constants;
@@ -19,20 +20,19 @@ public class RemoteInterface extends Client {
 	private int location;
 	private long duration;
 	
-	private Action[] actions;
 	private String address;
 	
 	private long start;
 
-	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String address, int port, long duration) throws URISyntaxException {
+	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String ip, int port, String id, String host, long duration) throws URISyntaxException, ActionNumberMismatchException {
 		super(tag.id, uri, debug);
 		this.context = context;
 		this.tag = tag;
 		this.location = location;
 		this.duration = duration;
-		this.actions = actions;
-		this.address = address + ":" + Integer.toString(port);
-		createNotificationServer(tag.attributes,actions,port);
+		this.address = ip + ":" + Integer.toString(port) + "/" + context;
+		ActuationUnit unit = new ActuationUnit(Services.joinIdHost(id+"_unit",host),tag.attributes,actions);
+		createNotificationServer(Services.joinIdHost(id+"_server",host),context,debug,unit,port);
 	}
 	
 	private class Watchdog extends Thread {

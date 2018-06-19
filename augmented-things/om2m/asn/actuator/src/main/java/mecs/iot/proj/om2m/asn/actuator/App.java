@@ -2,6 +2,7 @@ package mecs.iot.proj.om2m.asn.actuator;
 
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
+import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
@@ -30,9 +31,11 @@ public class App
     public static void main( String[] args )
     {
 		try {
-			final RemoteInterface remote = new RemoteInterface(tag,location,address,context,debug,new Action[]{action1,action2},ip,5690,2000);
+			final RemoteInterface remote = new RemoteInterface(tag,location,address,context,debug,new Action[]{action1,action2},ip,5690,id,host,2000);
 			remote.start();
 		} catch (URISyntaxException e) {
+			errStream.out(e,0,Severity.MEDIUM);
+		} catch (ActionNumberMismatchException e) {
 			errStream.out(e,0,Severity.MEDIUM);
 		}
     }

@@ -4,7 +4,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.CoAP.Code;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.eclipse.californium.core.coap.MediaTypeRegistry;
+import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
@@ -22,10 +25,12 @@ class ADN_MN extends ADN {
 
 	private HashMap<String,Tag_> tagMap;
 	private HashMap<String,String> userMap;
+	private Client notificationClient;
 
 	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		client = new Client(name, Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
+		notificationClient = new Client(Services.joinIdHost(id+"_client",host),debug);
 		subscriber = new Subscriber(client);
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
@@ -61,7 +66,6 @@ class ADN_MN extends ADN {
 			switch (sw) {
 			case 1:
 				// attributes query (mode=1&ser=<SERIAL>)
-				outStream.out("Handling attributes querying for serial \"" + serial + "\"", i);
 				Tag_ tag1 = tagMap.get(serial);
 				if (tag1==null) {
 					debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
@@ -70,6 +74,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
+				outStream.out("Handling attributes querying for serial \"" + serial + "\"", i);
 				String[] attributes = tag1.attributes;
 				String payload = "";
 				for (int i=0; i<attributes.length; i++) {
@@ -83,15 +88,15 @@ class ADN_MN extends ADN {
 				break;
 			case 2:
 				// node read (mode=2&ser=<SERIAL>)
-				outStream.out("Handling sensor reading for serial \"" + serial + "\"", i);
 				Tag_ tag2 = tagMap.get(serial);
-				if (tag2==null) {
+				if (tag2==null || tag2.node!=Node.SENSOR) {
 					debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
+				outStream.out("Handling sensor reading for serial \"" + serial + "\"", i);
 				String id = tag2.id;
 				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 				CoapResponse cin = null;
@@ -186,9 +191,9 @@ class ADN_MN extends ADN {
 					tagMap.put(serial,tag);
 					response = new Response(ResponseCode.CREATED);
 				} else {
-					// node subscription (id=<ID>&ser=<SERIAL>)
+					// node lookout (id=<ID>&ser=<SERIAL>)
 					Tag_ tag = tagMap.get(serial);
-					if (tag==null) {
+					if (tag==null || tag.node!=Node.SENSOR) {
 						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -245,10 +250,10 @@ class ADN_MN extends ADN {
 		} else {
 			String serial0 = getUriValue(exchange,"ser",0);
 			String serial1 = getUriValue(exchange,"ser",1);
-			String id0 = getUriValue(exchange,"id",2);
-			String id1 = getUriValue(exchange,"id",3);
-			if (serial0!=null && serial1!=null && id0!=null && id1!=null) {
-				// nodes link (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>)
+			String label0 = getUriValue(exchange,"lab",2);
+			String label1 = getUriValue(exchange,"lab",3);
+			if (serial0!=null && serial1!=null && label0!=null && label1!=null) {
+				// nodes link (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>)
 				if (!isValidSerial(serial0) && isValidSerial(serial1)) {
 					debugStream.out("Bad request, ser0=" + serial0, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
@@ -272,49 +277,29 @@ class ADN_MN extends ADN {
 				}
 				Tag_ tag0 = tagMap.get(serial0);
 				Tag_ tag1 = tagMap.get(serial1);
-				if (tag0==null) {
+				if (tag0==null || tag0.node!=Node.SENSOR) {
 					debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
-				if (tag1==null) {
+				if (tag1==null || tag1.node!=Node.ACTUATOR) {
 					debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
-				int i0;
-				int i1;
-				try {
-					i0 = Integer.parseInt(id0);
-				} catch (NumberFormatException e) {
-					debugStream.out("Bad request, id0=" + id0, i);
+				if (!isValidLabel(label0,tag0)) {
+					debugStream.out("Bad request, lab=" + label0, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
-				if (i0>=tag0.attributes.length) {
-					debugStream.out("Bad request, id0=" + id0 + " (out of bounds)", i);
-					response = new Response(ResponseCode.BAD_REQUEST);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				try {
-					i1 = Integer.parseInt(id1);
-				} catch (NumberFormatException e) {
-					debugStream.out("Bad request, id1=" + id1, i);
-					response = new Response(ResponseCode.BAD_REQUEST);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				if (i1>=tag1.attributes.length) {
-					debugStream.out("Bad request, id1=" + id1 + " (out of bounds)", i);
+				if (!isValidLabel(label1,tag1)) {
+					debugStream.out("Bad request, lab=" + label1, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -325,7 +310,7 @@ class ADN_MN extends ADN {
 				String[] uri = new String[] {context + Constants.mnPostfix, tag0.id, "data"};
 				CoapResponse response_;
 				try {
-					response_ = subscriber.insert(Constants._mnADNPort+"/"+getName(),tag0.id,uri,tag0.attributes[i0],tag1.description,tag1.attributes[i1],i);
+					response_ = subscriber.insert(Constants._mnADNPort+"/"+getName(),tag0.id,uri,label0,tag1.address,label1,i);
 				} catch (URISyntaxException e) {
 					errStream.out(e,0,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -356,14 +341,72 @@ class ADN_MN extends ADN {
 	@Override
 	
 	synchronized public void handlePUT(CoapExchange exchange) {
-		// node write (ser=<SERIAL>&id=<ACTION_ID>), TODO ResponseCode.CREATED
+		Response response = null;
+		// node write (ser=<SERIAL>&lab=<ACTION_LABEL>)
+		String serial = getUriValue(exchange,"ser",0);
+		if (serial==null || !isValidSerial(serial)) {
+			if (serial!=null)
+				debugStream.out("Bad request, ser=" + serial, i);
+			else
+				debugStream.out("Bad request, ser", i);
+			response = new Response(ResponseCode.BAD_REQUEST);
+			exchange.respond(response);
+			i++;
+			return;
+		}
+		Tag_ tag = tagMap.get(serial);
+		if (tag==null || tag.node!=Node.ACTUATOR) {
+			debugStream.out("Serial \"" + serial + "\" is not registered on this MN as an actuator", i);
+			response = new Response(ResponseCode.BAD_REQUEST);
+			exchange.respond(response);
+			i++;
+			return;
+		}
+		String label = getUriValue(exchange,"label",1);
+		if (label==null || !isValidLabel(label,tag)) {
+			if (label!=null)
+				debugStream.out("Bad request, lab=" + label, i);
+			else
+				debugStream.out("Bad request, lab", i);
+			response = new Response(ResponseCode.BAD_REQUEST);
+			exchange.respond(response);
+			i++;
+			return;
+		}
+		outStream.out("Handling sensor writing for serial \"" + serial + "\"", i);
+		try {
+			notificationClient.connect(tag.address,false);
+		} catch (URISyntaxException e) {
+			errStream.out(e,0,Severity.MEDIUM);
+			response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+			exchange.respond(response);
+			i++;
+			return;
+		}
+		Request request = new Request(Code.PUT);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("ser" + "=" + serial);
+		request.getOptions().addUriQuery("lab" + "=" + label);
+		CoapResponse response_ = notificationClient.send(request);
+		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+			errStream.out("Unable to write on actuator \"" + tag.id + "\", response: " + response_.getCode(), //
+					i, Severity.LOW);
+			response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+			exchange.respond(response);
+			i++;
+			return;
+		}
+		response = new Response(ResponseCode.CHANGED);
+		exchange.respond(response);
+		i++;
 	}
 	
 	@Override
 	
 	synchronized public void handleDELETE(CoapExchange exchange) {
 		// subscription removal (id=<ID>&ser=<SERIAL>), TODO ResponseCode.DELETED
-		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_ID>&id=<ACTION_ID>), TODO ResponseCode.DELETED
+		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_LABEL>&id=<ACTION_LABEL>), TODO ResponseCode.DELETED
 		// node/user removal (id=<ID>), TODO ResponseCode.DELETED
 	}
 

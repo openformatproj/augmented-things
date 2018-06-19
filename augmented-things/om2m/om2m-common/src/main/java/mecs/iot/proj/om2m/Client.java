@@ -26,6 +26,12 @@ public class Client extends Thread
 	
 	protected int i;
 	
+	public Client(String name, boolean debug) {
+		super(name);
+		debugStream = new DebugStream(name,debug);
+		i = 0;
+	}
+	
 	public Client(String name, String uri, boolean debug) throws URISyntaxException {
 		super(name);
 		outStream = new OutStream(name);
@@ -58,7 +64,7 @@ public class Client extends Thread
 		return connection.ping();
 	}
 	
-	void connect(String uri, boolean createService) throws URISyntaxException {
+	public void connect(String uri, boolean createService) throws URISyntaxException {
 		this.uri = new URI(uri);
 		connection = new CoapClient(this.uri);
 		if (createService)

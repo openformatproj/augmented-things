@@ -121,7 +121,7 @@ class Remotes {
 					callbacks[j] = () -> {viewer.touch(n,action);};
 				}
 				try {
-					mecs.iot.proj.om2m.asn.actuator.RemoteInterface remote = new mecs.iot.proj.om2m.asn.actuator.RemoteInterface(tag,location,address,context,debug,callbacks,ip,port,duration);
+					mecs.iot.proj.om2m.asn.actuator.RemoteInterface remote = new mecs.iot.proj.om2m.asn.actuator.RemoteInterface(tag,location,address,context,debug,callbacks,ip,port,id,host,duration);
 					clients.add(remote);
 					viewer.add(id,serial,"act",callbacks.length);
 				} catch (URISyntaxException e) {

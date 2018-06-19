@@ -10,7 +10,7 @@ public class Console extends Thread {
 	private boolean enabled;
 	private boolean executing;
 	private HashMap<String,CommandContainer> commandMap;
-	private Interface interf;
+	public Interface interf;
 	private OutStream outStream;
 	private DebugStream debugStream;
 	private int i;

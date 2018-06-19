@@ -6,7 +6,6 @@ import mecs.iot.proj.om2m.structures.Tag;
 
 import java.net.URISyntaxException;
 
-import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
@@ -258,56 +257,56 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Node write
 	 */
-	public CoapResponse putResource(String serial, String id, int i) {
+	public CoapResponse putResource(String serial, String label, int i) {
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("ser" + "=" + serial);
-		request.getOptions().addUriQuery("id" + "=" + id);
+		request.getOptions().addUriQuery("lab" + "=" + label);
 		//request.setTimedOut(true);
 		debugStream.out("Sent write request to " + services.uri(), i);
 		return send(request);
 	}
 	
-	public String putResource(String serial, String id, Console console) {
+	public String putResource(String serial, String label, Console console) {
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("ser" + "=" + serial);
-		request.getOptions().addUriQuery("id" + "=" + id);
+		request.getOptions().addUriQuery("lab" + "=" + label);
 		//request.setTimedOut(true);
 		console.out("Sent write request to " + services.uri());
 		CoapResponse response = send(request,console);
-		if (response.getCode()==ResponseCode.CREATED)
+		if (response.getCode()==ResponseCode.CHANGED)
 			return response.getResponseText();
 		else
 			return "Error: " + response.getCode().toString();
 	}
 	
 	/*
-	 * Nodes link (serial0=sensor, serial1=actuator, id0=event, id1=action)
+	 * Nodes link (serial0=sensor, serial1=actuator, lab0=event, lab1=action)
 	 */
-	public CoapResponse postSubscription(String serial0, String serial1, String id0, String id1, int i) {
+	public CoapResponse postSubscription(String serial0, String serial1, String label0, String label1, int i) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("ser" + "=" + serial0);
 		request.getOptions().addUriQuery("ser" + "=" + serial1);
-		request.getOptions().addUriQuery("id" + "=" + id0);
-		request.getOptions().addUriQuery("id" + "=" + id1);
+		request.getOptions().addUriQuery("lab" + "=" + label0);
+		request.getOptions().addUriQuery("lab" + "=" + label1);
 		//request.setTimedOut(true);
 		debugStream.out("Sent link request to " + services.uri(), i);
 		return send(request);
 	}
 	
-	public String postSubscription(String serial0, String serial1, String id0, String id1, Console console) {
+	public String postSubscription(String serial0, String serial1, String label0, String label1, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("ser" + "=" + serial0);
 		request.getOptions().addUriQuery("ser" + "=" + serial1);
-		request.getOptions().addUriQuery("id" + "=" + id0);
-		request.getOptions().addUriQuery("id" + "=" + id1);
+		request.getOptions().addUriQuery("lab" + "=" + label0);
+		request.getOptions().addUriQuery("lab" + "=" + label1);
 		//request.setTimedOut(true);
 		console.out("Sent link request to " + services.uri());
 		CoapResponse response = send(request,console);
@@ -331,15 +330,10 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
-	private CoapResource createResource(String[] actions, Action[] callbacks) {
-		return new CoapResource("");
-		// TODO
-	}
-	
-	protected void createNotificationServer(String[] actions, Action[] callbacks, int port) {
-		//server = new CoapServer(port);
-		//server.add(createResource(actions,callbacks));
-		//server.start();
+	protected void createNotificationServer(String name, String uri, boolean debug, Unit unit, int port) {
+		server = new CoapServer(port);
+		server.add(new NotificationServer(name,uri,debug,unit));
+		server.start();
 	}
 	
 	protected synchronized void waitForNotifications() {

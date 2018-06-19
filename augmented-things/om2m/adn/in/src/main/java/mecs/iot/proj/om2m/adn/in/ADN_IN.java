@@ -400,7 +400,7 @@ class ADN_IN extends ADN {
 				String[] uri = new String[] {context + Constants.inPostfix, mn0.id, tag0.id, "data"};
 				CoapResponse response_;
 				try {
-					response_ = subscriber.insert(Constants._inADNPort+"/"+getName(),tag0.id,uri,tag0.attributes[i0],tag1.description,tag1.attributes[i1],i);
+					response_ = subscriber.insert(Constants._inADNPort+"/"+getName(),tag0.id,uri,tag0.attributes[i0],tag1.address,tag1.attributes[i1],i);
 				} catch (URISyntaxException e) {
 					errStream.out(e,0,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
