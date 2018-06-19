@@ -32,7 +32,7 @@ public class RemoteInterface extends Client {
 		this.duration = duration;
 		this.actions = actions;
 		this.address = address + ":" + Integer.toString(port);
-		createSubscriptionServer(tag.attributes,actions,port);
+		createNotificationServer(tag.attributes,actions,port);
 	}
 	
 	private class Watchdog extends Thread {
@@ -133,7 +133,7 @@ public class RemoteInterface extends Client {
 		}
 		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out1("Waiting for notifications", i);
-			waitForSubscriptions();
+			waitForNotifications();
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;
 		}

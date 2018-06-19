@@ -34,7 +34,7 @@ class RemoteInterface extends Client {
 		}
 		this.console = console;
 		executing = true;
-		createSubscriptionServer(null,null,port);
+		createNotificationServer(null,null,port);
 	}
 	
 	@Override
@@ -115,7 +115,7 @@ class RemoteInterface extends Client {
 		console.start();
 		while(executing) {
 			outStream.out1("Waiting for notifications", i);
-			waitForSubscriptions();
+			waitForNotifications();
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;
 		}

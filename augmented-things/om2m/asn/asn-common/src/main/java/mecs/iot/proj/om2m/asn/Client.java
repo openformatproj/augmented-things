@@ -336,13 +336,13 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		// TODO
 	}
 	
-	protected void createSubscriptionServer(String[] actions, Action[] callbacks, int port) {
+	protected void createNotificationServer(String[] actions, Action[] callbacks, int port) {
 		//server = new CoapServer(port);
 		//server.add(createResource(actions,callbacks));
 		//server.start();
 	}
 	
-	protected synchronized void waitForSubscriptions() {
+	protected synchronized void waitForNotifications() {
 		waiting = true;
 		notify();
 		try {
