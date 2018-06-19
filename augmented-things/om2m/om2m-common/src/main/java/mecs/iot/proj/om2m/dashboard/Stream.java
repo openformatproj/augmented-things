@@ -1,96 +1,77 @@
 package mecs.iot.proj.om2m.dashboard;
 
 import java.util.HashMap;
-//import java.util.concurrent.locks.ReentrantLock;
+import java.util.Set;
 
 class Stream {
 	
-	//static private ReentrantLock l = new ReentrantLock();
 	static private HashMap<Agent,State> agentMap = new HashMap<Agent,State>();
-	//static Type owner = null;
-	static Agent owner = null;
-	private static boolean insertNewLine = false;
-	//private static boolean[] hasBeenInterrupted = {false,false,false};
 	
-	static synchronized void register(String name) {
-		agentMap.put(new Agent(name,Type.OUT),new State(false));
-		agentMap.put(new Agent(name,Type.DEBUG),new State(false));
-		agentMap.put(new Agent(name,Type.ERR),new State(false));
+	static synchronized void register(Agent agent) {
+		agentMap.put(agent,new State(false,false));
 	}
 	
-	static synchronized void print(String msg) {
-		
-		if (insertNewLine) {
-			System.out.print("\n" + msg);
-		} else {
+	static synchronized void print(String msg, Agent caller) {
+		Set<Agent> agents = agentMap.keySet();
+		boolean hasInterruptedSomeone = false;
+		for (Agent a: agents) {
+			State s = agentMap.get(a);
+			if (!a.equals(caller) && s.isOwner) {
+				if (!s.hasBeenInterrupted) {
+					hasInterruptedSomeone = true;
+					s.hasBeenInterrupted = true;
+				}
+			}
+		}
+		if (hasInterruptedSomeone) {
+			System.out.print("\n"+msg);
+			//agentMap.get(caller).hasInterruptedSomeone = false;
+		}
+		else
 			System.out.print(msg);
-			// hasBeenInterrupted[owner.ordinal()] = false;
-			State state = agentMap.get(owner);
-			state.value = false;
+		agentMap.get(caller).hasBeenInterrupted = false;
+	}
+	
+	static synchronized void lock(Agent caller) {
+		agentMap.get(caller).isOwner = true;
+		agentMap.get(caller).hasBeenInterrupted = false;
+	}
+	
+	static synchronized void unlock(Agent caller) {
+		agentMap.get(caller).hasBeenInterrupted = false;
+		agentMap.get(caller).isOwner = false;
+	}
+	
+	static synchronized boolean hasBeenInterrupted(Agent caller) {
+		return agentMap.get(caller).hasBeenInterrupted;
+	}
+	
+	public static void main( String[] args )
+    {
+		OutStream outStream1 = new OutStream("sensor@ALESSANDRO-K7NR");
+		OutStream outStream2 = new OutStream("actuator@ALESSANDRO-K7NR");
+		DebugStream debugStream1 = new DebugStream("sensor@ALESSANDRO-K7NR",true);
+		DebugStream debugStream2 = new DebugStream("actuator@ALESSANDRO-K7NR",true);
+		for (int i=0; i<11; i++) {
+			outStream1.out1("Received 192.168.0.0 as MN address, connecting to CSE", i);
+			outStream2.out1("Received 192.168.0.0 as MN address, connecting to CSE", i);
+			debugStream1.out("Connected to CSE",i);
+			debugStream2.out("Connected to CSE",i);
+			outStream1.out2("done");
+			outStream2.out2("done");
 		}
-		
-	}
-	
-	static synchronized void lock(String name, Type type) {
-		//l.lock();
-		Agent caller = new Agent(name,type);
-		if (owner==null || owner.equals(caller)) {
-			insertNewLine = false;
-			owner = caller;
-		} else {
-			insertNewLine = true;
-			//hasBeenInterrupted[owner.ordinal()] = true;
-			State state = agentMap.get(owner);
-			state.value = true;
-		}
-	}
-	
-	static synchronized void unlock() {
-		owner = null;
-		//l.unlock();
-	}
-	
-	static synchronized boolean hasBeenInterrupted(String name, Type type) {
-		Agent caller = new Agent(name,type);
-		State state = agentMap.get(caller);
-		return state.value;
-		//return hasBeenInterrupted[caller.ordinal()];
-	}
+    }
 
-}
-
-class Agent {
-	
-	String name;
-	Type type;
-	
-	Agent(String name, Type type) {
-		this.name = name;
-		this.type = type;
-	}
-	
-	@Override
-	
-	public int hashCode() {
-		int hash = name.hashCode()*(type.ordinal()+1);
-		return hash;
-	}
-	
-	@Override
-	
-	public boolean equals(Object obj) {
-		Agent agent = (Agent)obj;
-		return name.equals(agent.name) && type.equals(agent.type);
-	}
-	
 }
 
 class State {
 	
-	boolean value;
+	boolean isOwner;
+	boolean hasBeenInterrupted;
 	
-	State(boolean value) {
-		this.value = value;
+	State(boolean isOwner, boolean hasBeenInterrupted) {
+		this.isOwner = isOwner;
+		this.hasBeenInterrupted = hasBeenInterrupted;
 	}
 	
 }

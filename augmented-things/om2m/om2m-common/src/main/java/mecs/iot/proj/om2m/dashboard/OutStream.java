@@ -2,19 +2,22 @@ package mecs.iot.proj.om2m.dashboard;
 
 import mecs.iot.proj.om2m.structures.Constants;
 
-import java.util.List;
 import java.util.ArrayList;
 
 public class OutStream {
 	
+	private Agent me;
 	private String name;
+	
+	final private String pad;
+	
 	private int preambleLength;
 	private int offset;
-	private String pad;
 	private int num;
 	
 	public OutStream(String name) {
-		Stream.register(name);
+		me = new Agent(name,Type.OUT);
+		Stream.register(me);
 		this.name = name;
 		String str = "";
 		for (int i=0; i<name.length(); i++)
@@ -46,7 +49,7 @@ public class OutStream {
 		
 		String preamble = name + "\t[INFO]\t" + Integer.toString(i) + ") ";
 		int chunkLength = Constants.streamCharacters - preamble.length();
-		List<String> chunk = new ArrayList<String>();
+		ArrayList<String> chunk = new ArrayList<String>();
 		int startIndex = 0;
 		int endIndex;
 		
@@ -64,16 +67,16 @@ public class OutStream {
 		
 		for (int j=0; j<chunk.size(); j++) {
 			if (j==0) {
-				str += chunk.get(0) + "\n";
+				str += chunk.get(0);
 			} else {
 				str += pad(i);
-				str += chunk.get(j) + "\n";
+				str += chunk.get(j);
 			}
+			if (j<chunk.size()-1)
+				str += "\n";
 		}
 		
-		Stream.lock(name,Type.OUT);
-		Stream.print(preamble + str);
-		Stream.unlock();
+		Stream.print(preamble+str+"\n",me);
 		
 	}
 	
@@ -87,7 +90,7 @@ public class OutStream {
 		String preamble = name + "\t[INFO]\t" + Integer.toString(i) + ") ";
 		preambleLength = preamble.length();
 		int chunkLength = Constants.streamCharacters - preambleLength;
-		List<String> chunk = new ArrayList<String>();
+		ArrayList<String> chunk = new ArrayList<String>();
 		int startIndex = 0;
 		int endIndex;
 		
@@ -117,8 +120,8 @@ public class OutStream {
 		offset = Math.min(chunk.get(chunk.size()-1).length(),chunkLength);
 		num = i;
 		
-		Stream.lock(name,Type.OUT);
-		Stream.print(preamble + str);
+		Stream.lock(me);
+		Stream.print(preamble+str,me);
 		
 	}
 	
@@ -127,12 +130,12 @@ public class OutStream {
 		if (msg==null || msg=="")
 			return;
 		
-		if (!Stream.hasBeenInterrupted(name,Type.OUT)) {
+		if (!Stream.hasBeenInterrupted(me)) {
 		
 			msg = " " + msg + "...";
 			
 			int chunkLength = Constants.streamCharacters - preambleLength;
-			List<String> chunk = new ArrayList<String>();
+			ArrayList<String> chunk = new ArrayList<String>();
 			int startIndex = 0;
 			int endIndex;
 			int offset = this.offset;
@@ -166,7 +169,7 @@ public class OutStream {
 			else
 				this.offset = Math.min(chunk.get(chunk.size()-1).length(),chunkLength);
 			
-			Stream.print(str);
+			Stream.print(str,me);
 		
 		} else {
 			
@@ -182,12 +185,12 @@ public class OutStream {
 		if (msg==null || msg=="")
 			return;
 		
-		if (!Stream.hasBeenInterrupted(name,Type.OUT)) {
+		if (!Stream.hasBeenInterrupted(me)) {
 		
 			msg = " " + msg;
 			
 			int chunkLength = Constants.streamCharacters - preambleLength;
-			List<String> chunk = new ArrayList<String>();
+			ArrayList<String> chunk = new ArrayList<String>();
 			int startIndex = 0;
 			int endIndex;
 			int offset = this.offset;
@@ -207,15 +210,16 @@ public class OutStream {
 			
 			for (int j=0; j<chunk.size(); j++) {
 				if (j==0) {
-					str += chunk.get(0) + "\n";
+					str += chunk.get(0);
 				} else {
 					str += pad(num);
-					str += chunk.get(j) + "\n";
+					str += chunk.get(j);
 				}
+				if (j<chunk.size()-1)
+					str += "\n";
 			}
 			
-			Stream.print(str);
-			Stream.unlock();
+			Stream.print(str+"\n",me);
 		
 		} else {
 			
@@ -224,17 +228,8 @@ public class OutStream {
 			
 		}
 		
+		Stream.unlock(me);
+		
 	}
-	
-	public static void main( String[] args )
-    {
-		OutStream outStream = new OutStream("user@ALESSANDRO-K7NR");
-		for (int i=0; i<11; i++) {
-			outStream.out1("Received 192.168.0.103 as MN address, connecting to CSE", i);
-			outStream.out1_2("done, posting AE");
-			outStream.out1_2("done, posting Content Instance on coap://192.168.0.103:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data");
-			outStream.out2("done");
-		}
-    }
 
 }

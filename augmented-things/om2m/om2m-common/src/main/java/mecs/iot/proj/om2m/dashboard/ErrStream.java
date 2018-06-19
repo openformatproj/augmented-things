@@ -4,10 +4,12 @@ import mecs.iot.proj.om2m.structures.Severity;
 
 public class ErrStream {
 	
-	String name;
+	private Agent me;
+	private String name;
 	
 	public ErrStream(String name) {
-		Stream.register(name);
+		me = new Agent(name,Type.ERR);
+		Stream.register(me);
 		this.name = name;
 	}
 
