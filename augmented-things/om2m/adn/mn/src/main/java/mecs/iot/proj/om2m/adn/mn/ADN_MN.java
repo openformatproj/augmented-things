@@ -397,6 +397,7 @@ class ADN_MN extends ADN {
 			return;
 		}
 		response = new Response(ResponseCode.CHANGED);
+		response.setPayload("Success on \"" + label + "\"");
 		exchange.respond(response);
 		i++;
 	}
