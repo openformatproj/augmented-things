@@ -4,6 +4,7 @@ import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.structures.Constants;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
@@ -59,6 +60,15 @@ public class Services {
 				parse += ", ";
 		}
 		return parse;
+	}
+	
+	public static String parseCoapRequest(Request request) {
+		List<String> list = request.getOptions().getUriQuery();
+		String str = "";
+		for (int i=0; i<list.size(); i++) {
+			str += list.get(i);
+		}
+		return str;
 	}
 	
 	public static String normalizeName(String name) {

@@ -79,12 +79,12 @@ public class Client extends Thread
 	}
 	
 	public CoapResponse send(Request request) {
-		debugStream.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
+		debugStream.out("Sent request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
 		return connection.advanced(request);
 	}
 	
 	public CoapResponse send(Request request, Console console) {
-		console.out("Sent request to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath());
+		console.out("Sent request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request));
 		return connection.advanced(request);
 	}
 	
@@ -95,7 +95,15 @@ public class Client extends Thread
 //	}
 	
 	public int getCount() {
-		return i;
+		return this.i;
+	}
+	
+	public void setCount(int i) {
+		this.i = i;
+	}
+	
+	public void stepCount() {
+		this.i = this.i+1;
 	}
 	
 }

@@ -25,13 +25,12 @@ class ADN_MN extends ADN {
 
 	private HashMap<String,Tag_> tagMap;
 	private HashMap<String,String> userMap;
-	private Client notificationClient;
 
 	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
-		client = new Client(name, Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
-		notificationClient = new Client(Services.joinIdHost(id+"_client",host),debug);
-		subscriber = new Subscriber(client);
+		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
+		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
+		subscriber = new Subscriber(cseClient);
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
 	}
@@ -101,7 +100,8 @@ class ADN_MN extends ADN {
 				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 				CoapResponse cin = null;
 				try {
-					cin = client.services.getResource(uri,i);
+					cin = cseClient.services.getResource(uri,i);
+					cseClient.stepCount();
 				} catch (URISyntaxException e) {
 					errStream.out(e,0,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -124,6 +124,7 @@ class ADN_MN extends ADN {
 			response = new Response(ResponseCode.CONTENT);
 			response.setPayload("MN: " + name);
 		} else {
+			debugStream.out("Bad request, mode not specified", i);
 			response = new Response(ResponseCode.BAD_REQUEST);
 		}
 		exchange.respond(response);
@@ -223,7 +224,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
-						errStream.out("Unable to subscribe user to " + client.services.uri() + ", response: " + response_.getCode(), //
+						errStream.out("Unable to subscribe user to " + cseClient.services.uri() + ", response: " + response_.getCode(), //
 								i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
@@ -321,7 +322,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
-					errStream.out("Unable to register link on " + client.services.uri() + ", response: " + response_.getCode(), //
+					errStream.out("Unable to register link on " + cseClient.services.uri() + ", response: " + response_.getCode(), //
 							i, Severity.LOW);
 					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 					exchange.respond(response);

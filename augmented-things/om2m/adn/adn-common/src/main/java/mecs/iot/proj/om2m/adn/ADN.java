@@ -17,7 +17,8 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 
 public class ADN extends CoapResource {
 	
-	public Client client;
+	public Client cseClient;
+	public Client notificationClient;
 	
 	protected String name;
 	protected String context;
