@@ -7,12 +7,12 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
-import mecs.iot.proj.om2m.Client;
+//import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
-import mecs.iot.proj.om2m.adn.Subscriber;
+//import mecs.iot.proj.om2m.adn.Subscriber;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
-import mecs.iot.proj.om2m.structures.Constants;
+//import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.MN;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Tag_;
@@ -25,8 +25,8 @@ class ADN_IN extends ADN {
 
 	ADN_IN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
-		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
-		subscriber = new Subscriber(cseClient);
+		//cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
+		//subscriber = new Subscriber(cseClient);
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
 		mnMap = new HashMap<String,MN>();

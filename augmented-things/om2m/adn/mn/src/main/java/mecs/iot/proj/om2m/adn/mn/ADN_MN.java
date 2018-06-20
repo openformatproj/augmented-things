@@ -100,8 +100,8 @@ class ADN_MN extends ADN {
 				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 				CoapResponse cin = null;
 				try {
-					cin = cseClient.services.getResource(uri,cseClient.getCount());
 					cseClient.stepCount();
+					cin = cseClient.services.getResource(uri,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					errStream.out(e,0,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
