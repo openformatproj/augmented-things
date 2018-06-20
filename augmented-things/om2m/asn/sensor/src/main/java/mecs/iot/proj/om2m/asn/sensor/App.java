@@ -25,7 +25,8 @@ public class App
     public static void main( String[] args )
     {
 		try {
-			final RemoteInterface remote = new RemoteInterface(tag,location,address,context,debug,36.0,0.05,2000,200000);
+			//final RemoteInterface remote = new RemoteInterface(tag,location,address,context,debug,36.0,0.05,2000,200000);
+			final RemoteInterface remote = new RemoteInterface(tag,location,address,context,debug,36.0,0.05,0,5000000);
 			remote.start();
 		} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);
