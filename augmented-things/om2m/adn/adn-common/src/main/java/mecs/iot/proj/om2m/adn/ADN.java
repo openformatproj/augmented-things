@@ -47,11 +47,15 @@ public class ADN extends CoapResource {
 
 	protected String getUriValue(CoapExchange exchange, String attribute, int index) {
 		List<String> query = exchange.getRequestOptions().getUriQuery();
-		String q = query.get(index);
-		if (attribute.equals(q.substring(0, attribute.length())))
-			return q.substring(attribute.length()+1);
-		else
+		if (index<query.size()) {
+			String q = query.get(index);
+			if (attribute.equals(q.substring(0, attribute.length())))
+				return q.substring(attribute.length()+1);
+			else
+				return null;
+		} else {
 			return null;
+		}
 	}
 	
 	protected boolean isValidSerial(String serial) {
