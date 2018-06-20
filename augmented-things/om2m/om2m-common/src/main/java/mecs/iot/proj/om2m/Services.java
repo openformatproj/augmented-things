@@ -159,8 +159,8 @@ public class Services {
 		JSONObject obj = new JSONObject();
 		obj.put("rn",id);
 		obj.put("nu",Constants.adnProtocol+"localhost"+observer);
+		obj.put("nct",1);
 		// obj.put("nct",2);
-		obj.put("nct",2);
 		JSONObject root = new JSONObject();
 		root.put("m2m:sub",obj);
 		request.setPayload(root.toString());

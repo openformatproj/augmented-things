@@ -30,7 +30,7 @@ public class Subscriber {
 			addressMap.put(id,array);
 		}
 		client.stepCount();
-		return client.services.postSubscription(adn,id,uri,client.getCount());
+		return client.services.postSubscription(adn,id+"_sub",uri,client.getCount());
 	}
 	
 	public CoapResponse insert(String adn, String id, String[] uri, String event, String address, String action, int i) throws URISyntaxException {
@@ -42,7 +42,7 @@ public class Subscriber {
 			addressMap.put(id,array);
 		}
 		client.stepCount();
-		return client.services.postSubscription(adn,id,uri,client.getCount());
+		return client.services.postSubscription(adn,id+"_sub",uri,client.getCount());
 	}
 
 }
