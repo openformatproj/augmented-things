@@ -66,7 +66,10 @@ public class Services {
 		List<String> list = request.getOptions().getUriQuery();
 		String str = "";
 		for (int i=0; i<list.size(); i++) {
-			str += list.get(i);
+			if (i<list.size()-1)
+				str += list.get(i) + "&";
+			else
+				str += list.get(i);
 		}
 		return str;
 	}
