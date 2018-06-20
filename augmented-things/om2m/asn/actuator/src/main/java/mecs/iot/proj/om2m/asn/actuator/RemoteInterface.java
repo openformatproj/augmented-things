@@ -69,11 +69,11 @@ public class RemoteInterface extends Client {
 		outStream.out1("Registering to IN", i);
 		CoapResponse response = register(tag,this.address,location);
 		if (response==null) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
@@ -89,18 +89,18 @@ public class RemoteInterface extends Client {
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e,i,Severity.MEDIUM);
 			return;
 		}
 		outStream.out1_2("done, registering to MN");
 		response = register(tag,this.address);
 		if (response==null) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
@@ -114,7 +114,7 @@ public class RemoteInterface extends Client {
 		try {
 			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
@@ -139,7 +139,6 @@ public class RemoteInterface extends Client {
 		}
 		// TODO, delete AE
 		outStream.out("Terminating interface", i);
-		// TODO, solve termination issues (due to wd this JVM doesn't terminate)
 	}
 
 }

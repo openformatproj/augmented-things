@@ -45,11 +45,11 @@ class RemoteInterface extends Client {
 		outStream.out1("Locating serial \"" + serial + "\"", i);
 		CoapResponse response = locate(serial);
 		if (response==null) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CONTENT) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to locate the user on " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
@@ -64,24 +64,18 @@ class RemoteInterface extends Client {
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
 		outStream.out1_2("done, registering to MN");
-//		boolean pinged = ping();
-//		if (pinged) {
-//			System.out.println("OK");
-//		} else {
-//			System.out.println("NR");
-//		}
 		response = register(id,this.address);
 		if (response==null) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
@@ -95,7 +89,7 @@ class RemoteInterface extends Client {
 		try {
 			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
@@ -107,7 +101,7 @@ class RemoteInterface extends Client {
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}

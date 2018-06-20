@@ -44,11 +44,11 @@ public class RemoteInterface extends Client {
 		outStream.out1("Registering to IN", i);
 		CoapResponse response = register(tag,location);
 		if (response==null) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
@@ -65,18 +65,18 @@ public class RemoteInterface extends Client {
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
 		outStream.out1_2("done, registering to MN");
 		response = register(tag);
 		if (response==null) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
@@ -90,7 +90,7 @@ public class RemoteInterface extends Client {
 		try {
 			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
 		} catch (URISyntaxException e) {
-			outStream.out2("failed");
+			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
@@ -102,6 +102,7 @@ public class RemoteInterface extends Client {
 		try {
 			response = services.postContainer(id,Services.normalizeName(tag.id),i);
 		} catch (URISyntaxException e) {
+			outStream.out("failed. Terminating interface",i);
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
@@ -111,6 +112,7 @@ public class RemoteInterface extends Client {
 		try {
 			response = services.postContentInstance(value,metadata,i);
 		} catch (URISyntaxException e) {
+			outStream.out("failed. Terminating interface",i);
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
@@ -120,18 +122,11 @@ public class RemoteInterface extends Client {
 		start = System.currentTimeMillis();
 		long timer;
 		while(System.currentTimeMillis()-start<duration || duration==0) {
-//			try        
-//			{
-//			    sleep((long)Physics.randomFluctuation(0.5));
-//			} 
-//			catch(InterruptedException ex) 
-//			{
-//			    Thread.currentThread().interrupt();
-//			}
 			outStream.out("Posting Content Instance", i);
 			try {
 				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),metadata,i);
 			} catch (URISyntaxException e) {
+				outStream.out("failed. Terminating interface",i);
 				errStream.out(e, i, Severity.MEDIUM);
 				return;
 			}

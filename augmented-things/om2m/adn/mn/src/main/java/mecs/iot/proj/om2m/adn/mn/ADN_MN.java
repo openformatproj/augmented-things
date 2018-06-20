@@ -120,9 +120,11 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-		} else {
+		} else if (exchange.getRequestOptions().getUriQuery().size()==0) {
 			response = new Response(ResponseCode.CONTENT);
-			response.setPayload("MN " + name);
+			response.setPayload("MN: " + name);
+		} else {
+			response = new Response(ResponseCode.BAD_REQUEST);
 		}
 		exchange.respond(response);
 		i++;
