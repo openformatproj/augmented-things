@@ -4,7 +4,6 @@ public class Tag_ {
 	
 	public Node node;
 	public String id;
-	//public String description; 										// type for sensors, address for actuators
 	public String type;
 	public String address;
 	public String[] attributes;
@@ -12,7 +11,6 @@ public class Tag_ {
 	public Tag_ (Node node, String id, String description, String[] attributes) {
 		this.node = node;
 		this.id = id;
-		//this.description = description;
 		switch (node) {
 			case SENSOR:
 				type = description;
