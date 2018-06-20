@@ -330,9 +330,8 @@ class ADN_MN extends ADN {
 				}
 				response = new Response(ResponseCode.CREATED);
 			} else {
-				// notification, TODO
-				System.out.println("Got something");
-				System.out.println(exchange.getRequestText());
+				// notifications on published CI. TODO: get id of the publishing resource, check who is subscribed and deliver to all of them
+				System.out.println("Got something: " + exchange.getRequestText());
 				response = new Response(ResponseCode.VALID);
 			}
 		}
