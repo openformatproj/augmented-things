@@ -16,6 +16,7 @@ public class Subscriber {
 	
 	public Subscriber(Client client) {
 		this.client = client;
+		addressMap = new HashMap<String,ArrayList<Addr>>();
 	}
 	
 	// TODO
