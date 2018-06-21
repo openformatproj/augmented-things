@@ -18,6 +18,8 @@ public class Tag_ {
 			case ACTUATOR:
 				address = description;
 				break;
+			case USER:
+				break;
 		}
 		this.attributes = attributes;
 	}
