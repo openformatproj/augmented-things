@@ -178,7 +178,7 @@ public class Services {
 		return client.send(request);
 	}
 	
-	public CoapResponse postSubscription(String observer, String id, String[] uri, int i) throws URISyntaxException {
+	public void postSubscription(String observer, String id, String[] uri, int i) throws URISyntaxException {
 		path.change(uri);
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,23));
@@ -194,7 +194,8 @@ public class Services {
 		root.put("m2m:sub",obj);
 		request.setPayload(root.toString());
 		client.debugStream.out("Sent JSON: " + root.toString() + " to " + path.uri(), i);
-		return client.send(request);
+		client.sendAsync(request);
+		//return client.send(request);
 	}
 	
 	public String uri() {

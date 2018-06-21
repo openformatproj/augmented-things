@@ -14,7 +14,7 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		commands[2] = (options) -> client.postSubscription(id,options[0],console);
 		commands[3] = (options) -> client.removeSubscription(id,options[0],console);
 		commands[4] = (options) -> client.putResource(options[0],options[1],console);
-		commands[5] = (options) -> client.postSubscription(options[0],options[1],options[2],options[3],console);
+		commands[5] = (options) -> client.postSubscription(id,options[0],options[1],options[2],options[3],console);
 		text = new String[numCommands][3];
 		text[0] = new String[] {"query","Query the attributes of a node","query -<serial>"};
 		text[1] = new String[] {"read","Read the value of a node","read -<serial>"};

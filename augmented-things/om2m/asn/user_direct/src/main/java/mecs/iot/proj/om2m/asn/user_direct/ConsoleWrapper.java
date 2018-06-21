@@ -34,7 +34,7 @@ class ConsoleWrapper implements Unit {
 	}
 	
 	private boolean isValid(String str) {
-		return str.contains("con=");
+		return str.equals("OK") || str.contains("con=");
 	}
 	
 }

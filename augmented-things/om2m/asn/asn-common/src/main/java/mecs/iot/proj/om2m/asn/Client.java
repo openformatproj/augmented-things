@@ -294,7 +294,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	}
 	
 	/*
-	 * Nodes link (serial0=sensor, serial1=actuator, lab0=event, lab1=action)
+	 * Nodes link (serial0=sensor, serial1=actuator, lab0=event, lab1=action, id=notificationId)
 	 */
 //	public CoapResponse postSubscription(String serial0, String serial1, String label0, String label1, int i) {
 //		Request request = new Request(Code.POST);
@@ -309,7 +309,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 //		return send(request);
 //	}
 	
-	public String postSubscription(String serial0, String serial1, String label0, String label1, Console console) {
+	public String postSubscription(String id, String serial0, String serial1, String label0, String label1, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -317,13 +317,16 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial1);
 		request.getOptions().addUriQuery("lab" + "=" + label0);
 		request.getOptions().addUriQuery("lab" + "=" + label1);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(id));
 		//request.setTimedOut(true);
 		console.out("Sent link request to " + services.uri());
 		CoapResponse response = send(request,console);
 		if (response==null)
 			return "Error: timeout expired";
-		if (response.getCode()==ResponseCode.CREATED)
-			return response.getResponseText();
+		// if (response.getCode()==ResponseCode.CREATED)
+		if (response.getCode()==ResponseCode.CONTINUE)
+			// return response.getResponseText();
+			return "Subscribing...";
 		else
 			return "Error: " + response.getCode().toString();
 	}

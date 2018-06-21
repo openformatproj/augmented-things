@@ -88,6 +88,11 @@ public class Client extends Thread
 		return connection.advanced(request);
 	}
 	
+	public void sendAsync(Request request) {
+		debugStream.out("Sent request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
+		connection.advanced(null,request);
+	}
+	
 //	String getUriValue(CoapResponse response, String attribute, int index)
 //	{
 //		List<String> query = response.getOptions().getUriQuery();

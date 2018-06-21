@@ -32,24 +32,30 @@ class NotificationServer extends CoapResource {
 	@Override
 	
 	synchronized public void handlePUT(CoapExchange exchange) {
+		Response response = null;
 		String str = exchange.getRequestText();
-		outStream.out("Handling notification \"" + str + "\"", i);
-		Response response = unit.send(str);
-		if (response==null || response.getCode()==ResponseCode.BAD_REQUEST) {
-			debugStream.out("Bad request, \"" + str + "\" is not a valid notification", i);
-			response = new Response(ResponseCode.BAD_REQUEST);
-			exchange.respond(response);
-			i++;
-			return;
-		} else if (response.getCode()!=ResponseCode.CHANGED) {
-			errStream.out("Unable to write on the unit \"" + unit.getName() + "\", response: " + response.getCode(), //
-					i, Severity.LOW);
-			response = new Response(response.getCode());
-			exchange.respond(response);
-			i++;
-			return;
+		if (str.equals("OK")) {
+			outStream.out("Handling successful subscription",i);
+			response = unit.send(str);
+		} else {
+			outStream.out("Handling notification \"" + str + "\"", i);
+			response = unit.send(str);
+			if (response==null || response.getCode()==ResponseCode.BAD_REQUEST) {
+				debugStream.out("Bad request, \"" + str + "\" is not a valid notification", i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			} else if (response.getCode()!=ResponseCode.CHANGED) {
+				errStream.out("Unable to write on the unit \"" + unit.getName() + "\", response: " + response.getCode(), //
+						i, Severity.LOW);
+				response = new Response(response.getCode());
+				exchange.respond(response);
+				i++;
+				return;
+			}
 		}
-		response = new Response(ResponseCode.CHANGED);
+		// response = new Response(ResponseCode.CHANGED);
 		exchange.respond(response);
 		i++;
 	}
