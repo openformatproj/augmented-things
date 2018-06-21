@@ -1,68 +1,57 @@
 package mecs.iot.proj.om2m.adn;
 
 import java.util.HashMap;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-import org.eclipse.californium.core.CoapResponse;
-
-import mecs.iot.proj.om2m.Client;
 
 public class Subscriber {
 	
-	private Client client;
+	private HashMap<String,ArrayList<Reference>> referenceMap;
+	private HashMap<String,String> piMap;
+	private String lastResource;
 	
-	private HashMap<String,ArrayList<Addr>> addressMap;
-	
-	public Subscriber(Client client) {
-		this.client = client;
-		addressMap = new HashMap<String,ArrayList<Addr>>();
+	public Subscriber() {
+		referenceMap = new HashMap<String,ArrayList<Reference>>();
+		piMap = new HashMap<String,String>();
 	}
 	
-	// TODO
-	
-	public CoapResponse insert(String adn, String id, String[] uri, String address, int i) throws URISyntaxException {
-		if (addressMap.containsKey(id)) {
-			addressMap.get(id).add(new Addr(address));
+	public void insert(String sensor, String id, String address) {
+		Reference ref = new Reference(sensor,id,address);
+		if (referenceMap.containsKey(sensor)) {
+			referenceMap.get(sensor).add(ref);
 		} else {
-			ArrayList<Addr> array = new ArrayList<Addr>();
-			array.add(new Addr(address));
-			addressMap.put(id,array);
+			ArrayList<Reference> refs = new ArrayList<Reference>();
+			refs.add(ref);
+			referenceMap.put(sensor,refs);
 		}
-		client.stepCount();
-		return client.services.postSubscription(adn,id+"_sub",uri,client.getCount());
+		lastResource = sensor;
 	}
 	
-	public CoapResponse insert(String adn, String id, String[] uri, String event, String address, String action, int i) throws URISyntaxException {
-		if (addressMap.containsKey(id)) {
-			addressMap.get(id).add(new Addr(address,action,event));
+	public void insert(String sensor, String event, String id, String address, String action) {
+		Reference ref = new Reference(sensor,event,id,address,action);
+		if (referenceMap.containsKey(sensor)) {
+			referenceMap.get(sensor).add(ref);
 		} else {
-			ArrayList<Addr> array = new ArrayList<Addr>();
-			array.add(new Addr(address,action,event));
-			addressMap.put(id,array);
+			ArrayList<Reference> refs = new ArrayList<Reference>();
+			refs.add(ref);
+			referenceMap.put(sensor,refs);
 		}
-		client.stepCount();
-		return client.services.postSubscription(adn,id+"_sub",uri,client.getCount());
+		lastResource = sensor;
+	}
+	
+	public boolean containsResource(String resource) {
+		return piMap.containsValue(resource);
+	}
+	
+	public boolean containsKey(String pi) {
+		return piMap.containsKey(pi);
+	}
+	
+	public void bindToLastResource(String pi) {
+		piMap.put(pi,lastResource);
+	}
+	
+	public ArrayList<Reference> get(String pi) {
+		return referenceMap.get(piMap.get(pi));
 	}
 
-}
-
-class Addr {
-	
-	String address;
-	String action;
-	String event;
-	
-	Addr(String address) {
-		this.address = address;
-		this.action = null;
-		this.event = null;
-	}
-	
-	Addr(String address, String action, String event) {
-		this.address = address;
-		this.action = action;
-		this.event = event;
-	}
-	
 }

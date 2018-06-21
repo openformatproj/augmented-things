@@ -62,6 +62,34 @@ public class Services {
 		return parse;
 	}
 	
+	public static String parseJSON(String json, String[] type, String[] attr, Class<?>[] Type) {
+		JSONObject root = null;
+		try {
+			root = new JSONObject(json);
+		} catch (JSONException e) {
+			return json;
+		}
+		JSONObject obj = root;
+		for (int i=0; i<type.length; i++) {
+			try {
+				obj = (JSONObject) obj.get(type[i]);
+			} catch (JSONException e) {
+				return "Response is not of type " + type;
+			}
+		}
+		String parse = "";
+		for (int i=0; i<attr.length; i++) {
+			try {
+				parse += parseJSONObject(obj,attr[i],Type[i]);
+			} catch (JSONException e) {
+				return "Response has no attributes of type " + attr[i];
+			}
+			if (i<attr.length-1)
+				parse += ", ";
+		}
+		return parse;
+	}
+	
 	public static String parseCoapRequest(Request request) {
 		List<String> list = request.getOptions().getUriQuery();
 		String str = "";
@@ -133,7 +161,8 @@ public class Services {
 	}
 	
 	public CoapResponse postContentInstance(double value, String measureUnit, int i) throws URISyntaxException {
-		if (path.level==2) path.down("data");
+		if (path.level==2)
+			path.down("data");
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -159,8 +188,8 @@ public class Services {
 		JSONObject obj = new JSONObject();
 		obj.put("rn",id);
 		obj.put("nu",Constants.adnProtocol+"localhost"+observer);
-		obj.put("nct",1);
-		// obj.put("nct",2);
+		// obj.put("nct",1);
+		obj.put("nct",2);
 		JSONObject root = new JSONObject();
 		root.put("m2m:sub",obj);
 		request.setPayload(root.toString());
