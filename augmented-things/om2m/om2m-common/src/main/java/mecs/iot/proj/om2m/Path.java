@@ -46,5 +46,11 @@ class Path {
 		this.uri.add(uri);
 		client.connect(uri(),false);
 	}
+	
+	void up() throws URISyntaxException {
+		level -= 1;
+		this.uri.remove(this.uri.get(this.uri.size()-1));
+		client.connect(uri(),false);
+	}
 
 }

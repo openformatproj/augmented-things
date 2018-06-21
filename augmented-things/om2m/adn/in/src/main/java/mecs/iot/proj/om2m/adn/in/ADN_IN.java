@@ -26,7 +26,7 @@ class ADN_IN extends ADN {
 	ADN_IN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		//cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
-		//subscriber = new Subscriber(cseClient);
+		//subscriber = new Subscriber();
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
 		mnMap = new HashMap<String,MN>();
