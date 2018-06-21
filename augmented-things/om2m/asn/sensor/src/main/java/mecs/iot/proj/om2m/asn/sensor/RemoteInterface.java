@@ -96,6 +96,11 @@ public class RemoteInterface extends Client {
 		}
 		outStream.out2("done, posting AE");
 		response = services.postAE(Services.normalizeName(tag.id),i);
+		if (response==null) {
+			outStream.out("failed. Terminating interface",i);
+			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae", //
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out("Posting Container", i);
@@ -106,6 +111,11 @@ public class RemoteInterface extends Client {
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
+		if (response==null) {
+			outStream.out("failed. Terminating interface",i);
+			errStream.out("Unable to post container to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt", //
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out("Posting Content Instance", i);
@@ -114,6 +124,11 @@ public class RemoteInterface extends Client {
 		} catch (URISyntaxException e) {
 			outStream.out("failed. Terminating interface",i);
 			errStream.out(e, i, Severity.MEDIUM);
+			return;
+		}
+		if (response==null) {
+			outStream.out("failed. Terminating interface",i);
+			errStream.out("Unable to post content instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
@@ -128,6 +143,11 @@ public class RemoteInterface extends Client {
 			} catch (URISyntaxException e) {
 				outStream.out("failed. Terminating interface",i);
 				errStream.out(e, i, Severity.MEDIUM);
+				return;
+			}
+			if (response==null) {
+				outStream.out("failed. Terminating interface",i);
+				errStream.out("Unable to post content instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 				return;
 			}
 			outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
