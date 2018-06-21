@@ -240,33 +240,7 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-//						CoapResponse response_;
-//						try {
-//							response_ = cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
-//						} catch (URISyntaxException e) {
-//							errStream.out(e,0,Severity.MEDIUM);
-//							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
-//						if (response_==null) {
-//							errStream.out("Unable to subscribe user to " + cseClient.services.uri(), //
-//									i, Severity.LOW);
-//							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						} else if (response_.getCode()!=ResponseCode.CREATED) {
-//							errStream.out("Unable to subscribe user to " + cseClient.services.uri() + ", response: " + response_.getCode(), //
-//									i, Severity.LOW);
-//							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
 						subscriber.insert(tag.id,id,address);
-//						response = new Response(ResponseCode.CREATED);
 						if (!subscriber.containsResource(tag.id))
 							subscriptionsEnabled = false;
 						response = new Response(ResponseCode.CONTINUE);
@@ -372,33 +346,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-//					CoapResponse response_;
-//					try {
-//						response_ = cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
-//					} catch (URISyntaxException e) {
-//						errStream.out(e,0,Severity.MEDIUM);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					if (response_==null) {
-//						errStream.out("Unable to register link on " + cseClient.services.uri(), //
-//								i, Severity.LOW);
-//						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					} else if (response_.getCode()!=ResponseCode.CREATED) {
-//						errStream.out("Unable to register link on " + cseClient.services.uri() + ", response: " + response_.getCode(), //
-//								i, Severity.LOW);
-//						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
 					subscriber.insert(tag0.id,label0,tag1.id,tag1.address,label1);
-//					response = new Response(ResponseCode.CREATED);
 					if (!subscriber.containsResource(tag0.id))
 						subscriptionsEnabled = false;
 					response = new Response(ResponseCode.CONTINUE);
@@ -417,7 +365,6 @@ class ADN_MN extends ADN {
 							new String[] {"con"}, new Class<?>[] {String.class});
 					// String sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
 					//		new String[] {"sur"}, new Class<?>[] {String.class});
-					// System.out.println("Got something: " + exchange.getRequestText());
 					outStream.out("Received JSON: " + pi + ", " + con, i);
 					if (!subscriber.containsKey(getKey(pi))) {
 						subscriber.bindToLastResource(getKey(pi));
@@ -513,7 +460,7 @@ class ADN_MN extends ADN {
 	
 	synchronized public void handleDELETE(CoapExchange exchange) {
 		// subscription removal (id=<ID>&ser=<SERIAL>), TODO ResponseCode.DELETED
-		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_LABEL>&id=<ACTION_LABEL>), TODO ResponseCode.DELETED
+		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_LABEL>&id=<ACTION_LABEL>&id=<ID>), TODO ResponseCode.DELETED
 		// node/user removal (id=<ID>), TODO ResponseCode.DELETED
 	}
 	
