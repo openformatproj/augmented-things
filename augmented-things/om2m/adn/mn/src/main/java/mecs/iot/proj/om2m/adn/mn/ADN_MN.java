@@ -480,6 +480,7 @@ class ADN_MN extends ADN {
 			return;
 		}
 		outStream.out("Handling actuator writing for serial \"" + serial + "\"", i);
+		notificationClient.stepCount();
 		try {
 			notificationClient.connect(tag.address,false);
 		} catch (URISyntaxException e) {
@@ -517,6 +518,7 @@ class ADN_MN extends ADN {
 	}
 	
 	private Response forwardNotification(String id, String address, String content) {
+		notificationClient.stepCount();
 		try {
 			notificationClient.connect(address,false);
 		} catch (URISyntaxException e) {
