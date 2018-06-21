@@ -391,7 +391,7 @@ class ADN_MN extends ADN {
 					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 				}
 			} else {
-				// notifications for published CI
+				// notifications from subscriptions
 				String pi = Services.parseJSON(exchange.getRequestText(), new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "pi=/augmented-things-MN-cse/cnt-67185819"
 						new String[] {"pi"}, new Class<?>[] {String.class});
 				String con = Services.parseJSON(exchange.getRequestText(), new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "con=36,404 °C"
@@ -399,6 +399,7 @@ class ADN_MN extends ADN {
 				// String sur = Services.parseJSON(exchange.getRequestText(), "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
 				//		new String[] {"sur"}, new Class<?>[] {String.class});
 				// System.out.println("Got something: " + exchange.getRequestText());
+				outStream.out("Received JSON: " + pi + ", " + con, i);
 				if (!subscriber.containsKey(getKey(pi))) {
 					subscriber.bindToLastResource(getKey(pi));
 					subscriptionsEnabled = true;
