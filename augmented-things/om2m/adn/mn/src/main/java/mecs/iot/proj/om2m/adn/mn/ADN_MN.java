@@ -366,11 +366,12 @@ class ADN_MN extends ADN {
 					// String sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
 					//		new String[] {"sur"}, new Class<?>[] {String.class});
 					outStream.out("Received JSON: " + pi + ", " + con, i);
-					if (!subscriber.containsKey(getKey(pi))) {
-						subscriber.bindToLastResource(getKey(pi));
+					String key = getKey(pi);
+					if (!subscriber.containsKey(key)) {
+						subscriber.bindToLastResource(key);
 						subscriptionsEnabled = true;
 					}
-					ArrayList<Reference> refs = subscriber.get(getKey(pi));
+					ArrayList<Reference> refs = subscriber.get(key);
 					for (int i=0; i<refs.size(); i++) {
 						switch (refs.get(i).node) {
 							case SENSOR:
@@ -379,7 +380,7 @@ class ADN_MN extends ADN {
 								forwardNotification(refs.get(i).id,refs.get(i).address,refs.get(i).action); // TODO: check events
 								break;
 							case USER:
-								forwardNotification(refs.get(i).id,refs.get(i).address,con);
+								forwardNotification(refs.get(i).id,refs.get(i).address,"Answer from \"" + subscriber.getName(key) + "\": " + con);
 								break;
 						}
 					}

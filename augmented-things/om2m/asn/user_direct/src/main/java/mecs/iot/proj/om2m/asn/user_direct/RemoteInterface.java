@@ -35,7 +35,7 @@ class RemoteInterface extends Client {
 		this.console = console;
 		executing = true;
 		ConsoleWrapper unit = new ConsoleWrapper(Services.joinIdHost(id+"_unit",host),console);
-		createNotificationServer(Services.joinIdHost(id+"_server",host),context,debug,unit,port);
+		createNotificationServer(Services.joinIdHost(id+"_ATserver",host),context,debug,unit,port);
 	}
 	
 	@Override

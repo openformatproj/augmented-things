@@ -53,5 +53,9 @@ public class Subscriber {
 	public ArrayList<Reference> get(String pi) {
 		return referenceMap.get(piMap.get(pi));
 	}
+	
+	public String getName(String pi) {
+		return piMap.get(pi);
+	}
 
 }

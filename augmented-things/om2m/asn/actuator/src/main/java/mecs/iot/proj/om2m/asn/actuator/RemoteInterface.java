@@ -33,7 +33,7 @@ public class RemoteInterface extends Client {
 		this.duration = 0;
 		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;
 		ActuationUnit unit = new ActuationUnit(Services.joinIdHost(id+"_unit",host),tag.attributes,actions);
-		createNotificationServer(Services.joinIdHost(id+"_server",host),context,debug,unit,port);
+		createNotificationServer(Services.joinIdHost(id+"_ATserver",host),context,debug,unit,port);
 	}
 	
 	private class Watchdog extends Thread {
