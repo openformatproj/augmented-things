@@ -38,6 +38,8 @@ public class Subscriber {
 		lastResource = sensor;
 	}
 	
+	// TODO: push referenceMap pair (sensor,refs) into CSE for IN-MN synchronization
+	
 	public boolean containsResource(String resource) {
 		return piMap.containsValue(resource);
 	}
