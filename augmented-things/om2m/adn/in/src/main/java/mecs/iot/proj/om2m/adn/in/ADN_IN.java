@@ -20,7 +20,7 @@ import mecs.iot.proj.om2m.structures.Tag_;
 class ADN_IN extends ADN {
 	
 	private HashMap<String,Tag_> tagMap;
-	private HashMap<String,String> userMap;
+	// private HashMap<String,String> userMap;
 	private HashMap<String,MN> mnMap;
 
 	ADN_IN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
@@ -28,7 +28,7 @@ class ADN_IN extends ADN {
 		//cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
 		//subscriber = new Subscriber();
 		tagMap = new HashMap<String,Tag_>();
-		userMap = new HashMap<String,String>();
+		// userMap = new HashMap<String,String>();
 		mnMap = new HashMap<String,MN>();
 	}
 	
@@ -175,21 +175,21 @@ class ADN_IN extends ADN {
 					response = new Response(ResponseCode.BAD_REQUEST);
 				}
 			} else {
-				// user IN registration (id=<ID>&addr=<URI>)
-				String address = getUriValue(exchange,"addr",1);
-				if (address==null || !isValidAddress(address)) {
-					if (address!=null)
-						debugStream.out("Bad request, addr=" + address, i);
-					else
-						debugStream.out("Bad request, addr", i);
-					response = new Response(ResponseCode.BAD_REQUEST);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				outStream.out("Registering user \"" + id + "\" (address \"" + address + "\")", i);
-				userMap.put(id,address);
-				response = new Response(ResponseCode.CREATED);
+//				// user IN registration (id=<ID>&addr=<URI>)
+//				String address = getUriValue(exchange,"addr",1);
+//				if (address==null || !isValidAddress(address)) {
+//					if (address!=null)
+//						debugStream.out("Bad request, addr=" + address, i);
+//					else
+//						debugStream.out("Bad request, addr", i);
+//					response = new Response(ResponseCode.BAD_REQUEST);
+//					exchange.respond(response);
+//					i++;
+//					return;
+//				}
+//				outStream.out("Registering user \"" + id + "\" (address \"" + address + "\")", i);
+//				userMap.put(id,address);
+//				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
 			debugStream.out("Bad request, id not specified", i);

@@ -33,7 +33,8 @@ public class RemoteInterface extends Client {
 		this.context = context;
 		this.tag = tag;
 		this.location = location;
-		this.duration = duration;
+		// this.duration = duration;
+		this.duration = 0;
 		this.period = period;
 	}
 	
@@ -154,7 +155,7 @@ public class RemoteInterface extends Client {
 					new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
 			i++;
 			timer = System.currentTimeMillis();
-			while (System.currentTimeMillis()-timer<(period/1000.0));
+			while (System.currentTimeMillis()-timer<period);
 		}
 		// TODO, delete AE
 		outStream.out("Terminating interface", i);

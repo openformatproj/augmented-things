@@ -46,7 +46,7 @@ class RemoteInterface extends Client {
 		CoapResponse response = locate(serial);
 		if (response==null) {
 			outStream.out2("failed. Terminating interface");
-			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			errStream.out("Unable to locate the user on " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CONTENT) {
 			outStream.out2("failed. Terminating interface");
