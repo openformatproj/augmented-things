@@ -369,7 +369,26 @@ class ADN_MN extends ADN {
 				String notification = exchange.getRequestText();
 				if (notification.contains("m2m:vrq")) {
 					outStream.out1("Handling subscription confirmation", i);
-					forwardNotification(notificationId,notificationAddress,"OK");	// Warn the requester about completed subscription
+					CoapResponse response_ = null;
+					try {
+						response_ = forwardNotification(notificationId,notificationAddress,"OK");	// Warn the requester about completed subscription
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,0,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+						outStream.out2("failed");
+						errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(), //
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 				} else {
 					String pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "pi=/augmented-things-MN-cse/cnt-67185819"
 							new String[] {"pi"}, new Class<?>[] {String.class});
@@ -385,16 +404,44 @@ class ADN_MN extends ADN {
 					}
 					ArrayList<Reference> refs = subscriber.get(key);
 					if (refs!=null && refs.size()>0) {
+						CoapResponse response_ = null;
 						for (int i=0; i<refs.size(); i++) {
 							switch (refs.get(i).node) {
 								case SENSOR:
 									break;
 								case ACTUATOR:
-									forwardNotification(refs.get(i).receiver,refs.get(i).address,refs.get(i).action); // TODO: check events
+									try {
+										response_ = forwardNotification(refs.get(i).receiver,refs.get(i).address,refs.get(i).action);
+									} catch (URISyntaxException e) {
+										outStream.out2("failed");
+										errStream.out(e,0,Severity.MEDIUM);
+										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+										exchange.respond(response);
+										i++;
+										return;
+									} // TODO: check events
 									break;
 								case USER:
-									forwardNotification(refs.get(i).receiver,refs.get(i).address,subscriber.getName(key)+": "+con);
+									try {
+										response_ = forwardNotification(refs.get(i).receiver,refs.get(i).address,subscriber.getName(key)+": "+con);
+									} catch (URISyntaxException e) {
+										outStream.out2("failed");
+										errStream.out(e,0,Severity.MEDIUM);
+										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+										exchange.respond(response);
+										i++;
+										return;
+									}
 									break;
+							}
+							if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+								outStream.out2("failed");
+								errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(), //
+										i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
 							}
 						}
 					}
@@ -638,30 +685,15 @@ class ADN_MN extends ADN {
 		i++;
 	}
 	
-	private Response forwardNotification(String id, String address, String content) {
-		outStream.out("Forwarding notification to \"" + id + "\"", i);
+	private CoapResponse forwardNotification(String id, String address, String content) throws URISyntaxException {
+		outStream.out1_2("forwarding notification to \"" + id + "\"");
 		notificationClient.stepCount();
-		try {
-			notificationClient.connect(address,false);
-		} catch (URISyntaxException e) {
-			outStream.out("failed",i);
-			errStream.out(e,0,Severity.MEDIUM);
-			return new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-		}
+		notificationClient.connect(address,false);
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.setPayload(content);
-		CoapResponse response_ = notificationClient.send(request, Code.PUT);
-		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
-			outStream.out("failed",i);
-			errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(), //
-					i, Severity.LOW);
-			return new Response(ResponseCode.SERVICE_UNAVAILABLE);
-		} else {
-			outStream.out("done",i);
-			return new Response(ResponseCode.CHANGED);
-		}
+		return notificationClient.send(request, Code.PUT);
 	}
 	
 	private String getKey(String pi) {
