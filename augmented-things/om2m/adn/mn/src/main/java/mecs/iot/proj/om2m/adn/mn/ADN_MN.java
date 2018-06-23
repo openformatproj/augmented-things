@@ -495,6 +495,7 @@ class ADN_MN extends ADN {
 				subscriber.remove(id);
 				ArrayList<String> resources = subscriber.emptyRefs();
 				String resource;
+				boolean deletedAllOrphanSubscriptions = true;
 				for (int i=0; i<resources.size(); i++) {
 					resource = resources.get(i);
 					outStream.out("Delete subscription on \"" + resource + "\"", i);
@@ -513,11 +514,14 @@ class ADN_MN extends ADN {
 					if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
 						errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 								i, Severity.LOW);
-						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-						exchange.respond(response);
-						i++;
-						return;
+						deletedAllOrphanSubscriptions = false;
 					}
+				}
+				if (!deletedAllOrphanSubscriptions) {
+					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+					exchange.respond(response);
+					i++;
+					return;
 				}
 				userMap.remove(id);
 			}
@@ -568,6 +572,7 @@ class ADN_MN extends ADN {
 					subscriber.remove(tagMap.get(serial0).id);
 					ArrayList<String> resources = subscriber.emptyRefs();
 					String resource;
+					boolean deletedAllOrphanSubscriptions = true;
 					for (int i=0; i<resources.size(); i++) {
 						resource = resources.get(i);
 						outStream.out("Delete subscription on \"" + resource + "\"", i);
@@ -586,11 +591,14 @@ class ADN_MN extends ADN {
 						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
 							errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 									i, Severity.LOW);
-							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-							exchange.respond(response);
-							i++;
-							return;
+							deletedAllOrphanSubscriptions = false;
 						}
+					}
+					if (!deletedAllOrphanSubscriptions) {
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
 					}
 					tagMap.remove(serial0);
 				}
