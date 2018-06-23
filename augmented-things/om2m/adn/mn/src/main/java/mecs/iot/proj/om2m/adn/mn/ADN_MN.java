@@ -39,6 +39,8 @@ class ADN_MN extends ADN {
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
 		subscriptionsEnabled = true;
+		notificationId = "";
+		notificationAddress = "";
 	}
 
 	@Override
@@ -82,11 +84,11 @@ class ADN_MN extends ADN {
 				outStream.out1("Handling attributes querying for serial \"" + serial + "\"", i);
 				String[] attributes = tag1.attributes;
 				String payload = "";
-				for (int i=0; i<attributes.length; i++) {
-					if (i!=attributes.length-1)
-						payload += attributes[i] + ",";
+				for (int j=0; j<attributes.length; j++) {
+					if (j!=attributes.length-1)
+						payload += attributes[j] + ",";
 					else
-						payload += attributes[i];
+						payload += attributes[j];
 				}
 				response = new Response(ResponseCode.CONTENT);
 				response.setPayload(payload);
@@ -405,13 +407,13 @@ class ADN_MN extends ADN {
 					ArrayList<Reference> refs = subscriber.get(key);
 					if (refs!=null && refs.size()>0) {
 						CoapResponse response_ = null;
-						for (int i=0; i<refs.size(); i++) {
-							switch (refs.get(i).node) {
+						for (int j=0; j<refs.size(); j++) {
+							switch (refs.get(j).node) {
 								case SENSOR:
 									break;
 								case ACTUATOR:
 									try {
-										response_ = forwardNotification(refs.get(i).receiver,refs.get(i).address,refs.get(i).action);
+										response_ = forwardNotification(refs.get(j).receiver,refs.get(j).address,refs.get(j).action);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
@@ -423,7 +425,7 @@ class ADN_MN extends ADN {
 									break;
 								case USER:
 									try {
-										response_ = forwardNotification(refs.get(i).receiver,refs.get(i).address,subscriber.getName(key)+": "+con);
+										response_ = forwardNotification(refs.get(j).receiver,refs.get(j).address,subscriber.getName(key)+": "+con);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
@@ -559,8 +561,8 @@ class ADN_MN extends ADN {
 				ArrayList<String> resources = subscriber.emptyRefs();
 				String resource;
 				boolean deletedAllOrphanSubscriptions = true;
-				for (int i=0; i<resources.size(); i++) {
-					resource = resources.get(i);
+				for (int j=0; j<resources.size(); j++) {
+					resource = resources.get(j);
 					outStream.out1("Delete subscription on \"" + resource + "\"", i);
 					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 					CoapResponse response_ = null;
@@ -639,9 +641,9 @@ class ADN_MN extends ADN {
 					ArrayList<String> resources = subscriber.emptyRefs();
 					String resource;
 					boolean deletedAllOrphanSubscriptions = true;
-					for (int i=0; i<resources.size(); i++) {
-						resource = resources.get(i);
-						outStream.out1("Delete subscription on \"" + resource + "\"", i);
+					for (int j=0; j<resources.size(); j++) {
+						resource = resources.get(j);
+						outStream.out1("Delete subscription on \"" + resource + "\"", j);
 						String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 						CoapResponse response_ = null;
 						cseClient.stepCount();
