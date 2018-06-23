@@ -101,6 +101,17 @@ class RemoteInterface extends Client {
 			outStream.out("failed. Terminating interface",i);
 			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			deleteUserAsync(Services.normalizeName(id));
+			outStream.out("failed. Terminating interface",i);
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() + //
+						", reason: " + response.getResponseText(), //
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(), //
+					i, Severity.LOW);
+			return;
 		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae", //
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);

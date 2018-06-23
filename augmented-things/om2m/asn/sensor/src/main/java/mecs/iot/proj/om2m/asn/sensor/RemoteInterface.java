@@ -91,6 +91,7 @@ public class RemoteInterface extends Client {
 		try {
 			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
 		} catch (URISyntaxException e) {
+			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
@@ -98,8 +99,20 @@ public class RemoteInterface extends Client {
 		outStream.out2("done, posting AE");
 		response = services.postAE(Services.normalizeName(tag.id),i);
 		if (response==null) {
+			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
 			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			deleteNodeAsync(tag.serial);
+			outStream.out("failed. Terminating interface",i);
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() + //
+						", reason: " + response.getResponseText(), //
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(), //
+					i, Severity.LOW);
 			return;
 		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae", //
@@ -108,13 +121,26 @@ public class RemoteInterface extends Client {
 		try {
 			response = services.postContainer(id,Services.normalizeName(tag.id),i);
 		} catch (URISyntaxException e) {
+			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
 		if (response==null) {
+			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
 			errStream.out("Unable to post container to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			deleteNodeAsync(tag.serial);
+			outStream.out("failed. Terminating interface",i);
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() + //
+						", reason: " + response.getResponseText(), //
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(), //
+					i, Severity.LOW);
 			return;
 		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt", //
@@ -123,11 +149,13 @@ public class RemoteInterface extends Client {
 		try {
 			response = services.postContentInstance(value,metadata,i);
 		} catch (URISyntaxException e) {
+			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
 		if (response==null) {
+			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
 			errStream.out("Unable to post content instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
@@ -142,11 +170,13 @@ public class RemoteInterface extends Client {
 			try {
 				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),metadata,i);
 			} catch (URISyntaxException e) {
+				deleteNodeAsync(tag.serial);
 				outStream.out("failed. Terminating interface",i);
 				errStream.out(e, i, Severity.MEDIUM);
 				return;
 			}
 			if (response==null) {
+				deleteNodeAsync(tag.serial);
 				outStream.out("failed. Terminating interface",i);
 				errStream.out("Unable to post content instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 				return;
@@ -157,7 +187,7 @@ public class RemoteInterface extends Client {
 			timer = System.currentTimeMillis();
 			while (System.currentTimeMillis()-timer<period);
 		}
-		// TODO, delete AE
+		deleteNodeAsync(tag.serial);
 		outStream.out("Terminating interface", i);
 	}
 

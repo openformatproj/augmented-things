@@ -298,6 +298,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		sendAsync(request, Code.DELETE);
 	}
 	
+	protected void deleteNode(String serial) {
+		// TODO
+	}
+	
+	protected void deleteNodeAsync(String serial) {
+		// TODO
+	}
+	
 	protected void createNotificationServer(String name, String uri, boolean debug, Unit unit, int port) {
 		server = new CoapServer(port);
 		server.add(new NotificationServer(name,uri,debug,unit));
