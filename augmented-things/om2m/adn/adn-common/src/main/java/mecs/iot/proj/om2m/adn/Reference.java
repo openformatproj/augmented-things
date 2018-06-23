@@ -4,7 +4,7 @@ import mecs.iot.proj.om2m.structures.Node;
 
 public class Reference {
 	
-	public String sender;
+	private String sender;
 	public String event;
 	public String receiver;
 	public String address;
