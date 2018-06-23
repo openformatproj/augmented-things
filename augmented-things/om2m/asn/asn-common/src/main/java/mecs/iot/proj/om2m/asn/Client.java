@@ -278,7 +278,17 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Delete
 	 */
-	protected void deleteUser(String id) {
+	protected CoapResponse deleteUser(String id) {
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + id);
+		//request.setTimedOut(true);
+		debugStream.out("Sent deletion request to " + services.uri(), i);
+		return send(request);
+	}
+	
+	protected void deleteUserAsync(String id) {
 		Request request = new Request(Code.DELETE);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);

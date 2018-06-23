@@ -496,12 +496,21 @@ class ADN_MN extends ADN {
 				ArrayList<String> resources = subscriber.emptyRefs();
 				for (int i=0; i<resources.size(); i++) {
 					String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
-						cseClient.services.deleteSubscription(uri,cseClient.getCount());
+						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						errStream.out(e,0,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+						errStream.out("Unable to delete subscription on \"" + resources.get(i) + "\", response: " + response_.getCode(), //
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
 						i++;
 						return;
@@ -557,12 +566,21 @@ class ADN_MN extends ADN {
 					ArrayList<String> resources = subscriber.emptyRefs();
 					for (int i=0; i<resources.size(); i++) {
 						String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+						CoapResponse response_ = null;
 						cseClient.stepCount();
 						try {
-							cseClient.services.deleteSubscription(uri,cseClient.getCount());
+							response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 						} catch (URISyntaxException e) {
 							errStream.out(e,0,Severity.MEDIUM);
 							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+							errStream.out("Unable to delete subscription on \"" + resources.get(i) + "\", response: " + response_.getCode(), //
+									i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 							exchange.respond(response);
 							i++;
 							return;

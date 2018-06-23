@@ -197,15 +197,15 @@ public class Services {
 		client.sendAsync(request);
 	}
 	
-	public void deleteSubscription(String[] uri, int i) throws URISyntaxException {
+	public CoapResponse deleteSubscription(String[] uri, int i) throws URISyntaxException {
 		path.change(uri);
 		Request request = new Request(Code.DELETE);
-		//request.getOptions().addOption(new Option(267,23)); TODO
+		request.getOptions().addOption(new Option(267,23));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		client.debugStream.out("Sent DELETE to " + path.uri(), i);
-		client.sendAsync(request);
+		return client.send(request);
 	}
 	
 	public String uri() {
