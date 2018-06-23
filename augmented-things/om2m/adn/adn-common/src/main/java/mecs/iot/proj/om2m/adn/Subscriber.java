@@ -72,16 +72,16 @@ public class Subscriber {
 	}
 	
 	public void remove (String receiver) {
-		List<String> resources = (List<String>)referenceMap.keySet();
+		String[] resources = referenceMap.keySet().toArray(new String[]{});
 		ArrayList<Reference> refs;
-		for (int i=0; i<resources.size(); i++) {
-			refs = referenceMap.get(resources.get(i));
+		for (int i=0; i<resources.length; i++) {
+			refs = referenceMap.get(resources[i]);
 			for (int j=0; j<refs.size(); j++) {
 				if (refs.get(j).receiver.equals(receiver))
 					refs.remove(j);
 			}
 			if (refs.size()==0)
-				emptyRefs.add(resources.get(i));
+				emptyRefs.add(resources[i]);
 		}
 	}
 
