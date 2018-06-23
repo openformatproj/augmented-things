@@ -71,73 +71,73 @@ class ADN_MN extends ADN {
 				return;
 			}
 			switch (sw) {
-			case 1:
-				// attributes query (mode=1&ser=<SERIAL>)
-				Tag_ tag1 = tagMap.get(serial);
-				if (tag1==null) {
-					debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
+				case 1:
+					// attributes query (mode=1&ser=<SERIAL>)
+					Tag_ tag1 = tagMap.get(serial);
+					if (tag1==null) {
+						debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					outStream.out1("Handling attributes querying for serial \"" + serial + "\"", i);
+					String[] attributes = tag1.attributes;
+					String payload = "";
+					for (int j=0; j<attributes.length; j++) {
+						if (j!=attributes.length-1)
+							payload += attributes[j] + ",";
+						else
+							payload += attributes[j];
+					}
+					response = new Response(ResponseCode.CONTENT);
+					response.setPayload(payload);
+					break;
+				case 2:
+					// node read (mode=2&ser=<SERIAL>)
+					Tag_ tag2 = tagMap.get(serial);
+					if (tag2==null || tag2.node!=Node.SENSOR) {
+						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					outStream.out1("Handling reading on sensor with serial \"" + serial + "\"", i);
+					String id = tag2.id;
+					String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
+					CoapResponse response_ = null;
+					try {
+						cseClient.stepCount();
+						response_ = cseClient.services.getResource(uri,cseClient.getCount());
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,0,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (response_==null) {
+						outStream.out2("failed");
+						errStream.out("Unable to read from " + cseClient.services.uri(), //
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					response = new Response(ResponseCode.CONTENT);
+					String con = Services.parseJSON(response_.getResponseText(), "m2m:cin", //
+							new String[] {"con"}, new Class<?>[] {String.class});
+					response.setPayload(id + ": " + con);
+					break;
+				default:
+					debugStream.out("Bad request, mode=" + mode, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
-				}
-				outStream.out1("Handling attributes querying for serial \"" + serial + "\"", i);
-				String[] attributes = tag1.attributes;
-				String payload = "";
-				for (int j=0; j<attributes.length; j++) {
-					if (j!=attributes.length-1)
-						payload += attributes[j] + ",";
-					else
-						payload += attributes[j];
-				}
-				response = new Response(ResponseCode.CONTENT);
-				response.setPayload(payload);
-				break;
-			case 2:
-				// node read (mode=2&ser=<SERIAL>)
-				Tag_ tag2 = tagMap.get(serial);
-				if (tag2==null || tag2.node!=Node.SENSOR) {
-					debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
-					response = new Response(ResponseCode.BAD_REQUEST);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				outStream.out1("Handling reading on sensor with serial \"" + serial + "\"", i);
-				String id = tag2.id;
-				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
-				CoapResponse response_ = null;
-				try {
-					cseClient.stepCount();
-					response_ = cseClient.services.getResource(uri,cseClient.getCount());
-				} catch (URISyntaxException e) {
-					outStream.out2("failed");
-					errStream.out(e,0,Severity.MEDIUM);
-					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				if (response_==null) {
-					outStream.out2("failed");
-					errStream.out("Unable to read from " + cseClient.services.uri(), //
-							i, Severity.LOW);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				response = new Response(ResponseCode.CONTENT);
-				String con = Services.parseJSON(response_.getResponseText(), "m2m:cin", //
-						new String[] {"con"}, new Class<?>[] {String.class});
-				response.setPayload(id + ": " + con);
-				break;
-			default:
-				debugStream.out("Bad request, mode=" + mode, i);
-				response = new Response(ResponseCode.BAD_REQUEST);
-				exchange.respond(response);
-				i++;
-				return;
 			}
 		} else if (exchange.getRequestOptions().getUriQuery().size()==0) {
 			outStream.out1("Handling MN name request", i);
@@ -557,12 +557,12 @@ class ADN_MN extends ADN {
 					return;
 				}
 				outStream.out("Handling removal of user \"" + id + "\"", i);
-				subscriber.remove(id);
-				ArrayList<String> resources = subscriber.emptyRefs();
+				subscriber.remove(id,Node.USER);
+				ArrayList<String> orphanRefs = subscriber.orphanRefs();
 				String resource;
 				boolean deletedAllOrphanSubscriptions = true;
-				for (int j=0; j<resources.size(); j++) {
-					resource = resources.get(j);
+				for (int j=0; j<orphanRefs.size(); j++) {
+					resource = orphanRefs.get(j);
 					outStream.out1("Delete subscription on \"" + resource + "\"", i);
 					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 					CoapResponse response_ = null;
@@ -583,6 +583,7 @@ class ADN_MN extends ADN {
 								i, Severity.LOW);
 						deletedAllOrphanSubscriptions = false;
 					}
+					subscriber.removeOrphanRef(j);
 				}
 				if (!deletedAllOrphanSubscriptions) {
 					outStream.out("Failure in removing all subscriptions from CSE",i);
@@ -636,40 +637,72 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
+					Tag_ tag0 = tagMap.get(serial0);
 					outStream.out("Handling removal of node with serial \"" + serial0 + "\"", i);
-					subscriber.remove(tagMap.get(serial0).id);
-					ArrayList<String> resources = subscriber.emptyRefs();
-					String resource;
-					boolean deletedAllOrphanSubscriptions = true;
-					for (int j=0; j<resources.size(); j++) {
-						resource = resources.get(j);
-						outStream.out1("Delete subscription on \"" + resource + "\"", j);
-						String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
-						CoapResponse response_ = null;
-						cseClient.stepCount();
-						try {
-							response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-						} catch (URISyntaxException e) {
-							outStream.out2("failed");
-							errStream.out(e,0,Severity.MEDIUM);
-							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-							outStream.out2("failed");
-							errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
-									i, Severity.LOW);
-							deletedAllOrphanSubscriptions = false;
-						}
-					}
-					if (!deletedAllOrphanSubscriptions) {
-						outStream.out("Failure in removing all subscriptions from CSE",i);
-						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-						exchange.respond(response);
-						i++;
-						return;
+					String[] uri = null;
+					CoapResponse response_ = null;
+					switch (tag0.node) {
+						case SENSOR:
+							subscriber.remove(tag0.id,Node.SENSOR);
+							outStream.out1("Delete subscription on \"" + tag0.id + "\"", i);
+							uri = new String[] {context + Constants.mnPostfix, tag0.id, "data", "subscription"};
+							cseClient.stepCount();
+							try {
+								response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+							} catch (URISyntaxException e) {
+								outStream.out2("failed");
+								errStream.out(e,0,Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+								outStream.out2("failed");
+								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", response: " + response_.getCode(), //
+										i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							break;
+						case ACTUATOR:
+							subscriber.remove(tag0.id,Node.ACTUATOR);
+							ArrayList<String> orphanRefs = subscriber.orphanRefs();
+							String resource;
+							boolean deletedAllOrphanSubscriptions = true;
+							for (int j=0; j<orphanRefs.size(); j++) {
+								resource = orphanRefs.get(j);
+								outStream.out1("Delete subscription on \"" + resource + "\"", i);
+								uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
+								cseClient.stepCount();
+								try {
+									response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+								} catch (URISyntaxException e) {
+									outStream.out2("failed");
+									errStream.out(e,0,Severity.MEDIUM);
+									response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+									exchange.respond(response);
+									i++;
+									return;
+								}
+								if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+									outStream.out2("failed to delete subscription on \"" + resource + "\", response: " + response_.getCode());
+									deletedAllOrphanSubscriptions = false;
+								}
+								subscriber.removeOrphanRef(j);
+							}
+							if (!deletedAllOrphanSubscriptions) {
+								errStream.out("Failure in removing all subscriptions from CSE", i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							break;
+						case USER:
+							break;
 					}
 					tagMap.remove(serial0);
 				}

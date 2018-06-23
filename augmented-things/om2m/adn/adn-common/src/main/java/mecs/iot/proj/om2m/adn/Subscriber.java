@@ -1,19 +1,22 @@
 package mecs.iot.proj.om2m.adn;
 
 import java.util.HashMap;
+
+import mecs.iot.proj.om2m.structures.Node;
+
 import java.util.ArrayList;
 
 public class Subscriber {
 	
-	private HashMap<String,ArrayList<Reference>> referenceMap;
+	private HashMap<String,ArrayList<Reference>> referenceMap;										// resource -> list of references
 	private HashMap<String,String> piMap;
-	private ArrayList<String> emptyRefs;
+	private ArrayList<String> orphanRefs;															// It contains all resources pointing to an empty list of references: they correspond to subscriptions nobody is really subscribed to, and that must therefore be removed
 	private String lastResource;
 	
 	public Subscriber() {
 		referenceMap = new HashMap<String,ArrayList<Reference>>();
 		piMap = new HashMap<String,String>();
-		emptyRefs = new ArrayList<String>();
+		orphanRefs = new ArrayList<String>();
 	}
 	
 	public void insert(String sender, String receiver, String address) {
@@ -25,7 +28,7 @@ public class Subscriber {
 			refs.add(ref);
 			referenceMap.put(sender,refs);
 		}
-		emptyRefs.remove(sender);
+		orphanRefs.remove(sender);
 		lastResource = sender;
 	}
 	
@@ -38,7 +41,7 @@ public class Subscriber {
 			refs.add(ref);
 			referenceMap.put(sender,refs);
 		}
-		emptyRefs.remove(sender);
+		orphanRefs.remove(sender);
 		lastResource = sender;
 	}
 	
@@ -64,22 +67,34 @@ public class Subscriber {
 		return piMap.get(pi);
 	}
 	
-	public ArrayList<String> emptyRefs() {
-		return emptyRefs;
+	public ArrayList<String> orphanRefs() {
+		return orphanRefs;
 	}
 	
-	public void remove (String receiver) {
-		String[] resources = referenceMap.keySet().toArray(new String[]{});
-		ArrayList<Reference> refs;
-		for (int i=0; i<resources.length; i++) {
-			refs = referenceMap.get(resources[i]);
-			for (int j=0; j<refs.size(); j++) {
-				if (refs.get(j).receiver.equals(receiver))
-					refs.remove(j);
-			}
-			if (refs.size()==0)
-				emptyRefs.add(resources[i]);
+	public void remove(String id, Node node) {
+		switch(node) {
+			case SENSOR:
+				referenceMap.remove(id);
+				break;
+			case ACTUATOR:
+			case USER:
+				String[] resources = referenceMap.keySet().toArray(new String[]{});
+				ArrayList<Reference> refs;
+				for (int i=0; i<resources.length; i++) {
+					refs = referenceMap.get(resources[i]);
+					for (int j=0; j<refs.size(); j++) {
+						if (refs.get(j).receiver.equals(id))
+							refs.remove(j);
+					}
+					if (refs.size()==0)
+						orphanRefs.add(resources[i]);
+				}
+				break;
 		}
+	}
+	
+	public void removeOrphanRef(int i) {
+		orphanRefs.remove(i);
 	}
 
 }
