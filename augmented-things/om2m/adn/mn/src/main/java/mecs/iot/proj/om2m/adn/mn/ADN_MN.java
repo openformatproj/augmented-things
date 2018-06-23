@@ -101,7 +101,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Handling sensor reading for serial \"" + serial + "\"", i);
+				outStream.out("Handling reading on sensor with serial \"" + serial + "\"", i);
 				String id = tag2.id;
 				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 				CoapResponse response_ = null;
@@ -205,7 +205,7 @@ class ADN_MN extends ADN {
 					} else {
 						tag = new Tag_(Node.SENSOR,id,type,attributes);
 					}
-					outStream.out("Registering node \"" + id + "\" (serial \"" + serial + "\")", i);
+					outStream.out("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					tagMap.put(serial,tag);
 					response = new Response(ResponseCode.CREATED);
 				} else {
@@ -229,7 +229,7 @@ class ADN_MN extends ADN {
 						}
 						notificationId = id;
 						notificationAddress = address;
-						outStream.out("Subscribing user \"" + id + "\" (address \"" + address + "\") to resource \"" + tag.id + "\" (serial \"" + serial + "\")", i);
+						outStream.out("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
 						String[] uri = new String[] {context + Constants.mnPostfix, tag.id, "data"};
 						cseClient.stepCount();
 						try {
@@ -262,7 +262,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Registering user \"" + id + "\" (address \"" + address + "\")", i);
+				outStream.out("Registering user \"" + id + "\" with address \"" + address + "\"", i);
 				userMap.put(id,address);
 				response = new Response(ResponseCode.CREATED);
 			}
@@ -334,8 +334,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					outStream.out("Linking sensor \"" + tag0.id + "\" (serial \"" + serial0 + //
-							"\") to actuator \"" + tag1.id + "\" (serial \"" + serial1 + "\")", i);
+					outStream.out("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
 					String[] uri = new String[] {context + Constants.mnPostfix, tag0.id, "data"};
 					cseClient.stepCount();
 					try {
@@ -366,7 +365,7 @@ class ADN_MN extends ADN {
 							new String[] {"con"}, new Class<?>[] {String.class});
 					// String sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
 					//		new String[] {"sur"}, new Class<?>[] {String.class});
-					outStream.out("Received JSON: " + pi + ", " + con, i);
+					outStream.out("Received notification with JSON: " + pi + ", " + con, i);
 					String key = getKey(pi);
 					if (!subscriber.containsKey(key)) {
 						subscriber.bindToLastResource(key);
@@ -430,7 +429,7 @@ class ADN_MN extends ADN {
 			i++;
 			return;
 		}
-		outStream.out("Handling actuator writing for serial \"" + serial + "\"", i);
+		outStream.out("Handling writing on actuator with serial \"" + serial + "\"", i);
 		notificationClient.stepCount();
 		try {
 			notificationClient.connect(tag.address,false);
@@ -485,30 +484,30 @@ class ADN_MN extends ADN {
 				// subscription removal (id=<ID>&ser=<SERIAL>), TODO
 			} else {
 				// user removal (id=<ID>)
-				if (userMap.containsKey(id)) {
-					subscriber.remove(id);
-					ArrayList<String> resources = subscriber.emptyRefs();
-					for (int i=0; i<resources.size(); i++) {
-						String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
-						cseClient.stepCount();
-						try {
-							cseClient.services.deleteSubscription(uri,cseClient.getCount());
-						} catch (URISyntaxException e) {
-							errStream.out(e,0,Severity.MEDIUM);
-							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-					}
-					userMap.remove(id);
-				} else {
+				if (!userMap.containsKey(id)) {
 					debugStream.out("User \"" + id + "\" is not registered on this MN", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
+				outStream.out("Handling removal of user \"" + id + "\"", i);
+				subscriber.remove(id);
+				ArrayList<String> resources = subscriber.emptyRefs();
+				for (int i=0; i<resources.size(); i++) {
+					String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+					cseClient.stepCount();
+					try {
+						cseClient.services.deleteSubscription(uri,cseClient.getCount());
+					} catch (URISyntaxException e) {
+						errStream.out(e,0,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+				}
+				userMap.remove(id);
 			}
 		} else {
 			String serial0 = getUriValue(exchange,"ser",0);
@@ -553,6 +552,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
+					outStream.out("Handling removal of node with serial \"" + serial0 + "\"", i);
 					subscriber.remove(tagMap.get(serial0).id);
 					ArrayList<String> resources = subscriber.emptyRefs();
 					for (int i=0; i<resources.size(); i++) {
