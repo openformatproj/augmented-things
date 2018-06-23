@@ -494,8 +494,11 @@ class ADN_MN extends ADN {
 				outStream.out("Handling removal of user \"" + id + "\"", i);
 				subscriber.remove(id);
 				ArrayList<String> resources = subscriber.emptyRefs();
+				String resource;
 				for (int i=0; i<resources.size(); i++) {
-					String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+					resource = resources.get(i);
+					outStream.out("Delete subscription on \"" + resource + "\"", i);
+					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
@@ -508,7 +511,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-						errStream.out("Unable to delete subscription on \"" + resources.get(i) + "\", response: " + response_.getCode(), //
+						errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 								i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
@@ -564,8 +567,11 @@ class ADN_MN extends ADN {
 					outStream.out("Handling removal of node with serial \"" + serial0 + "\"", i);
 					subscriber.remove(tagMap.get(serial0).id);
 					ArrayList<String> resources = subscriber.emptyRefs();
+					String resource;
 					for (int i=0; i<resources.size(); i++) {
-						String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+						resource = resources.get(i);
+						outStream.out("Delete subscription on \"" + resource + "\"", i);
+						String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 						CoapResponse response_ = null;
 						cseClient.stepCount();
 						try {
@@ -578,7 +584,7 @@ class ADN_MN extends ADN {
 							return;
 						}
 						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-							errStream.out("Unable to delete subscription on \"" + resources.get(i) + "\", response: " + response_.getCode(), //
+							errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 									i, Severity.LOW);
 							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 							exchange.respond(response);
