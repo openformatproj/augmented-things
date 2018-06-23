@@ -141,17 +141,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Attributes query
 	 */
-//	public CoapResponse getAttributes(String serial, int i) {
-//		Request request = new Request(Code.GET);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("mode" + "=" + "1");
-//		request.getOptions().addUriQuery("ser" + "=" + serial);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent attributes request to " + services.uri(), i);
-//		return send(request);
-//	}
-	
 	public String getAttributes(String serial, Console console) {
 		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -172,17 +161,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Node read
 	 */
-//	public CoapResponse getResource(String serial, int i) {
-//		Request request = new Request(Code.GET);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("mode" + "=" + "2");
-//		request.getOptions().addUriQuery("ser" + "=" + serial);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent reading request to " + services.uri(), i);
-//		return send(request);
-//	}
-	
 	public String getResource(String serial, Console console) {
 		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -203,17 +181,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Node lookout
 	 */
-//	public CoapResponse postSubscription(String observer, String serial, int i) {
-//		Request request = new Request(Code.POST);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(observer));
-//		request.getOptions().addUriQuery("ser" + "=" + serial);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent lookout request to " + services.uri(), i);
-//		return send(request);
-//	}
-	
 	public String postSubscription(String observer, String serial, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -225,8 +192,8 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		CoapResponse response = send(request,console);
 		if (response==null)
 			return "Error: timeout expired";
-		if (response.getCode()==ResponseCode.CREATED)
-			return response.getResponseText();
+		if (response.getCode()==ResponseCode.CONTINUE)
+			return "Subscribing...";
 		else
 			return "Error: " + response.getCode().toString();
 	}
@@ -234,17 +201,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Lookout removal
 	 */
-//	public CoapResponse removeSubscription(String observer, String serial, int i) {
-//		Request request = new Request(Code.DELETE);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(observer));
-//		request.getOptions().addUriQuery("ser" + "=" + serial);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent lookout removal request to " + services.uri(), i);
-//		return send(request);
-//	}
-	
 	public String removeSubscription(String observer, String serial, Console console) {
 		Request request = new Request(Code.DELETE);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -265,17 +221,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Node write
 	 */
-//	public CoapResponse putResource(String serial, String label, int i) {
-//		Request request = new Request(Code.PUT);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("ser" + "=" + serial);
-//		request.getOptions().addUriQuery("lab" + "=" + label);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent write request to " + services.uri(), i);
-//		return send(request);
-//	}
-	
 	public String putResource(String serial, String label, Console console) {
 		Request request = new Request(Code.PUT);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -296,19 +241,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Nodes link (serial0=sensor, serial1=actuator, lab0=event, lab1=action, id=notificationId)
 	 */
-//	public CoapResponse postSubscription(String serial0, String serial1, String label0, String label1, int i) {
-//		Request request = new Request(Code.POST);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("ser" + "=" + serial0);
-//		request.getOptions().addUriQuery("ser" + "=" + serial1);
-//		request.getOptions().addUriQuery("lab" + "=" + label0);
-//		request.getOptions().addUriQuery("lab" + "=" + label1);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent link request to " + services.uri(), i);
-//		return send(request);
-//	}
-	
 	public String postSubscription(String id, String serial0, String serial1, String label0, String label1, Console console) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -323,9 +255,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		CoapResponse response = send(request,console);
 		if (response==null)
 			return "Error: timeout expired";
-		// if (response.getCode()==ResponseCode.CREATED)
 		if (response.getCode()==ResponseCode.CONTINUE)
-			// return response.getResponseText();
 			return "Subscribing...";
 		else
 			return "Error: " + response.getCode().toString();
@@ -349,7 +279,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	 * Delete
 	 */
 	protected void deleteUser(String id) {
-		Request request = new Request(Code.GET);
+		Request request = new Request(Code.DELETE);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("id" + "=" + id);
