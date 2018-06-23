@@ -19,36 +19,36 @@ public class Subscriber {
 		emptyRefs = new ArrayList<String>();
 	}
 	
-	public void insert(String resource, String id, String address) {
-		Reference ref = new Reference(resource,id,address);
-		if (referenceMap.containsKey(resource)) {
-			referenceMap.get(resource).add(ref);
+	public void insert(String sender, String receiver, String address) {
+		Reference ref = new Reference(sender,receiver,address);
+		if (referenceMap.containsKey(sender)) {
+			referenceMap.get(sender).add(ref);
 		} else {
 			ArrayList<Reference> refs = new ArrayList<Reference>();
 			refs.add(ref);
-			referenceMap.put(resource,refs);
+			referenceMap.put(sender,refs);
 		}
-		emptyRefs.remove(resource);
-		lastResource = resource;
+		emptyRefs.remove(sender);
+		lastResource = sender;
 	}
 	
-	public void insert(String resource, String event, String id, String address, String action) {
-		Reference ref = new Reference(resource,event,id,address,action);
-		if (referenceMap.containsKey(resource)) {
-			referenceMap.get(resource).add(ref);
+	public void insert(String sender, String event, String receiver, String address, String action) {
+		Reference ref = new Reference(sender,event,receiver,address,action);
+		if (referenceMap.containsKey(sender)) {
+			referenceMap.get(sender).add(ref);
 		} else {
 			ArrayList<Reference> refs = new ArrayList<Reference>();
 			refs.add(ref);
-			referenceMap.put(resource,refs);
+			referenceMap.put(sender,refs);
 		}
-		emptyRefs.remove(resource);
-		lastResource = resource;
+		emptyRefs.remove(sender);
+		lastResource = sender;
 	}
 	
 	// TODO: push referenceMap pair (sensor,refs) into CSE for IN-MN synchronization
 	
-	public boolean containsResource(String resource) {
-		return piMap.containsValue(resource);
+	public boolean containsResource(String sender) {
+		return piMap.containsValue(sender);
 	}
 	
 	public boolean containsKey(String pi) {
