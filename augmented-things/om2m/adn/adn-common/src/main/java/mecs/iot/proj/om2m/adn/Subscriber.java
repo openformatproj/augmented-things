@@ -94,7 +94,7 @@ public class Subscriber {
 	}
 	
 	public void removeOrphanRef(int i) {
-		orphanRefs.remove(i);
+		orphanRefs.remove(i);															// TODO: seems not to work
 	}
 
 }

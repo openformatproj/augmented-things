@@ -556,14 +556,14 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Handling removal of user \"" + id + "\"", i);
+				outStream.out("Handling removal of user \"" + id + "\"...", i);
 				subscriber.remove(id,Node.USER);
 				ArrayList<String> orphanRefs = subscriber.orphanRefs();
 				String resource;
 				boolean deletedAllOrphanSubscriptions = true;
 				for (int j=0; j<orphanRefs.size(); j++) {
 					resource = orphanRefs.get(j);
-					outStream.out1("Delete subscription on \"" + resource + "\"", i);
+					outStream.out1("Deleting subscription on \"" + resource + "\"", i);
 					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
@@ -644,7 +644,7 @@ class ADN_MN extends ADN {
 					switch (tag0.node) {
 						case SENSOR:
 							subscriber.remove(tag0.id,Node.SENSOR);
-							outStream.out1("Delete subscription on \"" + tag0.id + "\"", i);
+							outStream.out1("Deleting subscription on \"" + tag0.id + "\"", i);
 							uri = new String[] {context + Constants.mnPostfix, tag0.id, "data", "subscription"};
 							cseClient.stepCount();
 							try {
@@ -674,7 +674,7 @@ class ADN_MN extends ADN {
 							boolean deletedAllOrphanSubscriptions = true;
 							for (int j=0; j<orphanRefs.size(); j++) {
 								resource = orphanRefs.get(j);
-								outStream.out1("Delete subscription on \"" + resource + "\"", i);
+								outStream.out1("Deleting subscription on \"" + resource + "\"", i);
 								uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 								cseClient.stepCount();
 								try {
@@ -716,7 +716,7 @@ class ADN_MN extends ADN {
 		}
 		response = new Response(ResponseCode.DELETED);
 		exchange.respond(response);
-		outStream.out("done",i);
+		outStream.out("...done",i);
 		i++;
 	}
 	
