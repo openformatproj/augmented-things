@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.CoAP.Code;
 import org.eclipse.californium.core.coap.Request;
 
 public class Client extends Thread
@@ -78,18 +79,18 @@ public class Client extends Thread
 		connection.shutdown();
 	}
 	
-	public CoapResponse send(Request request) {
-		debugStream.out("Sent request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
+	public CoapResponse send(Request request, Code method) {
+		debugStream.out("Sent " + method + " request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
 		return connection.advanced(request);
 	}
 	
-	public CoapResponse send(Request request, Console console) {
-		console.out("Sent request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request));
+	public CoapResponse send(Request request, Code method, Console console) {
+		console.out("Sent " + method + " request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request));
 		return connection.advanced(request);
 	}
 	
-	public void sendAsync(Request request) {
-		debugStream.out("Sent request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
+	public void sendAsync(Request request, Code method) {
+		debugStream.out("Sent " + method + " request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
 		connection.advanced(null,request);
 	}
 	

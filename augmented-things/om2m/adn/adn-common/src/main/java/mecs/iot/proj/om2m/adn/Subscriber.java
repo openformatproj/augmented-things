@@ -1,10 +1,7 @@
 package mecs.iot.proj.om2m.adn;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Subscriber {
 	

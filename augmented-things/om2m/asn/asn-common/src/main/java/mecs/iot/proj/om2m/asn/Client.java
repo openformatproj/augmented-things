@@ -49,7 +49,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.setPayload(payload);
 		//request.setTimedOut(true);
 		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
-		return send(request);
+		return send(request, Code.POST);
 	}
 	
 	/*
@@ -74,7 +74,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.setPayload(payload);
 		//request.setTimedOut(true);
 		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
-		return send(request);
+		return send(request, Code.POST);
 	}
 	
 	/*
@@ -97,7 +97,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.setPayload(payload);
 		//request.setTimedOut(true);
 		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
-		return send(request);
+		return send(request, Code.POST);
 	}
 	
 	/*
@@ -121,7 +121,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.setPayload(payload);
 		//request.setTimedOut(true);
 		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
-		return send(request);
+		return send(request, Code.POST);
 	}
 	
 	/*
@@ -135,7 +135,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("addr" + "=" + address);
 		//request.setTimedOut(true);
 		debugStream.out("Sent registration request to " + services.uri(), i);
-		return send(request);
+		return send(request, Code.POST);
 	}
 	
 	/*
@@ -149,7 +149,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent attributes request to " + services.uri());
-		CoapResponse response = send(request,console);
+		CoapResponse response = send(request, Code.GET, console);
 		if (response==null)
 			return "Error: timeout expired";
 		if (response.getCode()==ResponseCode.CONTENT)
@@ -169,7 +169,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent reading request to " + services.uri());
-		CoapResponse response = send(request,console);
+		CoapResponse response = send(request, Code.GET, console);
 		if (response==null)
 			return "Error: timeout expired";
 		if (response.getCode()==ResponseCode.CONTENT)
@@ -189,7 +189,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent lookout request to " + services.uri());
-		CoapResponse response = send(request,console);
+		CoapResponse response = send(request, Code.POST, console);
 		if (response==null)
 			return "Error: timeout expired";
 		if (response.getCode()==ResponseCode.CONTINUE)
@@ -209,7 +209,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		console.out("Sent lookout removal request to " + services.uri());
-		CoapResponse response = send(request,console);
+		CoapResponse response = send(request, Code.DELETE, console);
 		if (response==null)
 			return "Error: timeout expired";
 		if (response.getCode()==ResponseCode.DELETED)
@@ -229,7 +229,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("lab" + "=" + label);
 		//request.setTimedOut(true);
 		console.out("Sent write request to " + services.uri());
-		CoapResponse response = send(request,console);
+		CoapResponse response = send(request, Code.PUT, console);
 		if (response==null)
 			return "Error: timeout expired";
 		if (response.getCode()==ResponseCode.CHANGED)
@@ -252,7 +252,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(id));
 		//request.setTimedOut(true);
 		console.out("Sent link request to " + services.uri());
-		CoapResponse response = send(request,console);
+		CoapResponse response = send(request, Code.POST, console);
 		if (response==null)
 			return "Error: timeout expired";
 		if (response.getCode()==ResponseCode.CONTINUE)
@@ -272,7 +272,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		debugStream.out("Sent location request to " + services.uri(), i);
-		return send(request);
+		return send(request, Code.GET);
 	}
 	
 	/*
@@ -285,7 +285,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id);
 		//request.setTimedOut(true);
 		debugStream.out("Sent deletion request to " + services.uri(), i);
-		return send(request);
+		return send(request, Code.DELETE);
 	}
 	
 	protected void deleteUserAsync(String id) {
@@ -295,7 +295,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("id" + "=" + id);
 		//request.setTimedOut(true);
 		debugStream.out("Sent deletion request to " + services.uri(), i);
-		sendAsync(request);
+		sendAsync(request, Code.DELETE);
 	}
 	
 	protected void createNotificationServer(String name, String uri, boolean debug, Unit unit, int port) {

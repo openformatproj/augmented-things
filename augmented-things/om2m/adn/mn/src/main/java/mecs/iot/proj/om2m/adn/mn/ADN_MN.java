@@ -79,7 +79,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Handling attributes querying for serial \"" + serial + "\"", i);
+				outStream.out1("Handling attributes querying for serial \"" + serial + "\"", i);
 				String[] attributes = tag1.attributes;
 				String payload = "";
 				for (int i=0; i<attributes.length; i++) {
@@ -101,7 +101,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Handling reading on sensor with serial \"" + serial + "\"", i);
+				outStream.out1("Handling reading on sensor with serial \"" + serial + "\"", i);
 				String id = tag2.id;
 				String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 				CoapResponse response_ = null;
@@ -109,6 +109,7 @@ class ADN_MN extends ADN {
 					cseClient.stepCount();
 					response_ = cseClient.services.getResource(uri,cseClient.getCount());
 				} catch (URISyntaxException e) {
+					outStream.out2("failed");
 					errStream.out(e,0,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
@@ -116,6 +117,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				if (response_==null) {
+					outStream.out2("failed");
 					errStream.out("Unable to read from " + cseClient.services.uri(), //
 							i, Severity.LOW);
 					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
@@ -136,13 +138,18 @@ class ADN_MN extends ADN {
 				return;
 			}
 		} else if (exchange.getRequestOptions().getUriQuery().size()==0) {
+			outStream.out1("Handling MN name request", i);
 			response = new Response(ResponseCode.CONTENT);
 			response.setPayload("MN: " + name);
 		} else {
 			debugStream.out("Bad request, mode not specified", i);
 			response = new Response(ResponseCode.BAD_REQUEST);
+			exchange.respond(response);
+			i++;
+			return;
 		}
 		exchange.respond(response);
+		outStream.out2("done");
 		i++;
 	}
 
@@ -205,7 +212,7 @@ class ADN_MN extends ADN {
 					} else {
 						tag = new Tag_(Node.SENSOR,id,type,attributes);
 					}
-					outStream.out("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
+					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					tagMap.put(serial,tag);
 					response = new Response(ResponseCode.CREATED);
 				} else {
@@ -229,12 +236,13 @@ class ADN_MN extends ADN {
 						}
 						notificationId = id;
 						notificationAddress = address;
-						outStream.out("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
+						outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
 						String[] uri = new String[] {context + Constants.mnPostfix, tag.id, "data"};
 						cseClient.stepCount();
 						try {
 							cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
 						} catch (URISyntaxException e) {
+							outStream.out2("failed");
 							errStream.out(e,0,Severity.MEDIUM);
 							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 							exchange.respond(response);
@@ -243,9 +251,10 @@ class ADN_MN extends ADN {
 						}
 						subscriber.insert(tag.id,id,address);
 						if (!subscriber.containsResource(tag.id))
-							subscriptionsEnabled = false;
+							subscriptionsEnabled = false;								// Disable subscription service to determine the pi identifier associated to this subscription
 						response = new Response(ResponseCode.CONTINUE);
 					} else {
+						outStream.out1("Subscription service temporarily disabled", i);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 					}
 				}
@@ -262,7 +271,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Registering user \"" + id + "\" with address \"" + address + "\"", i);
+				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
 				userMap.put(id,address);
 				response = new Response(ResponseCode.CREATED);
 			}
@@ -334,12 +343,13 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					outStream.out("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
+					outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
 					String[] uri = new String[] {context + Constants.mnPostfix, tag0.id, "data"};
 					cseClient.stepCount();
 					try {
 						cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
+						outStream.out2("failed");
 						errStream.out(e,0,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
@@ -348,16 +358,18 @@ class ADN_MN extends ADN {
 					}
 					subscriber.insert(tag0.id,label0,tag1.id,tag1.address,label1);
 					if (!subscriber.containsResource(tag0.id))
-						subscriptionsEnabled = false;
+						subscriptionsEnabled = false;								// Disable subscription service to determine the pi identifier associated to this subscription
 					response = new Response(ResponseCode.CONTINUE);
 				} else {
+					outStream.out1("Subscription service temporarily disabled", i);
 					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 				}
 			} else {
 				// notifications from subscriptions
 				String notification = exchange.getRequestText();
 				if (notification.contains("m2m:vrq")) {
-					forwardNotification(notificationId,notificationAddress,"OK");
+					outStream.out1("Handling subscription confirmation", i);
+					forwardNotification(notificationId,notificationAddress,"OK");	// Warn the requester about completed subscription
 				} else {
 					String pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "pi=/augmented-things-MN-cse/cnt-67185819"
 							new String[] {"pi"}, new Class<?>[] {String.class});
@@ -365,11 +377,11 @@ class ADN_MN extends ADN {
 							new String[] {"con"}, new Class<?>[] {String.class});
 					// String sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
 					//		new String[] {"sur"}, new Class<?>[] {String.class});
-					outStream.out("Received notification with JSON: " + pi + ", " + con, i);
+					outStream.out1("Handling notification with JSON: " + pi + ", " + con, i);
 					String key = getKey(pi);
 					if (!subscriber.containsKey(key)) {
-						subscriber.bindToLastResource(key);
-						subscriptionsEnabled = true;
+						subscriber.bindToLastResource(key);							// If this is a brand new notification, associated this pi to the last subscription
+						subscriptionsEnabled = true;								// Re-enable subscription service
 					}
 					ArrayList<Reference> refs = subscriber.get(key);
 					if (refs!=null && refs.size()>0) {
@@ -391,6 +403,7 @@ class ADN_MN extends ADN {
 			}
 		}
 		exchange.respond(response);
+		outStream.out2("done");
 		i++;
 	}
 	
@@ -429,11 +442,12 @@ class ADN_MN extends ADN {
 			i++;
 			return;
 		}
-		outStream.out("Handling writing on actuator with serial \"" + serial + "\"", i);
+		outStream.out1("Handling writing on actuator with serial \"" + serial + "\"", i);
 		notificationClient.stepCount();
 		try {
 			notificationClient.connect(tag.address,false);
 		} catch (URISyntaxException e) {
+			outStream.out2("failed");
 			errStream.out(e,0,Severity.MEDIUM);
 			response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 			exchange.respond(response);
@@ -444,8 +458,9 @@ class ADN_MN extends ADN {
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.setPayload(label);
-		CoapResponse response_ = notificationClient.send(request);
+		CoapResponse response_ = notificationClient.send(request, Code.PUT);
 		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+			outStream.out2("failed");
 			errStream.out("Unable to write on actuator \"" + tag.id + "\", response: " + response_.getCode(), //
 					i, Severity.LOW);
 			response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
@@ -456,6 +471,7 @@ class ADN_MN extends ADN {
 		response = new Response(ResponseCode.CHANGED);
 		response.setPayload(tag.id + ": " + label);
 		exchange.respond(response);
+		outStream.out2("done");
 		i++;
 	}
 	
@@ -498,13 +514,14 @@ class ADN_MN extends ADN {
 				boolean deletedAllOrphanSubscriptions = true;
 				for (int i=0; i<resources.size(); i++) {
 					resource = resources.get(i);
-					outStream.out("Delete subscription on \"" + resource + "\"", i);
+					outStream.out1("Delete subscription on \"" + resource + "\"", i);
 					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
 						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
+						outStream.out2("failed");
 						errStream.out(e,0,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
@@ -512,12 +529,14 @@ class ADN_MN extends ADN {
 						return;
 					}
 					if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+						outStream.out2("failed");
 						errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 								i, Severity.LOW);
 						deletedAllOrphanSubscriptions = false;
 					}
 				}
 				if (!deletedAllOrphanSubscriptions) {
+					outStream.out("Failure in removing all subscriptions from CSE",i);
 					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 					exchange.respond(response);
 					i++;
@@ -575,13 +594,14 @@ class ADN_MN extends ADN {
 					boolean deletedAllOrphanSubscriptions = true;
 					for (int i=0; i<resources.size(); i++) {
 						resource = resources.get(i);
-						outStream.out("Delete subscription on \"" + resource + "\"", i);
+						outStream.out1("Delete subscription on \"" + resource + "\"", i);
 						String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
 						CoapResponse response_ = null;
 						cseClient.stepCount();
 						try {
 							response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 						} catch (URISyntaxException e) {
+							outStream.out2("failed");
 							errStream.out(e,0,Severity.MEDIUM);
 							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 							exchange.respond(response);
@@ -589,12 +609,14 @@ class ADN_MN extends ADN {
 							return;
 						}
 						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+							outStream.out2("failed");
 							errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 									i, Severity.LOW);
 							deletedAllOrphanSubscriptions = false;
 						}
 					}
 					if (!deletedAllOrphanSubscriptions) {
+						outStream.out("Failure in removing all subscriptions from CSE",i);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
 						i++;
@@ -612,14 +634,17 @@ class ADN_MN extends ADN {
 		}
 		response = new Response(ResponseCode.DELETED);
 		exchange.respond(response);
+		outStream.out("done",i);
 		i++;
 	}
 	
 	private Response forwardNotification(String id, String address, String content) {
+		outStream.out("Forwarding notification to \"" + id + "\"", i);
 		notificationClient.stepCount();
 		try {
 			notificationClient.connect(address,false);
 		} catch (URISyntaxException e) {
+			outStream.out("failed",i);
 			errStream.out(e,0,Severity.MEDIUM);
 			return new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 		}
@@ -627,12 +652,14 @@ class ADN_MN extends ADN {
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.setPayload(content);
-		CoapResponse response_ = notificationClient.send(request);
+		CoapResponse response_ = notificationClient.send(request, Code.PUT);
 		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+			outStream.out("failed",i);
 			errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(), //
 					i, Severity.LOW);
 			return new Response(ResponseCode.SERVICE_UNAVAILABLE);
 		} else {
+			outStream.out("done",i);
 			return new Response(ResponseCode.CHANGED);
 		}
 	}

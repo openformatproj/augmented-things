@@ -117,8 +117,8 @@ public class Services {
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		client.debugStream.out("Sent GET to " + path.uri(), i);
-		return client.send(request);
+		client.debugStream.out("Sent access request to " + path.uri(), i);
+		return client.send(request, Code.GET);
 	}
 	
 	public CoapResponse postAE(String name, int i) {
@@ -134,8 +134,8 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:ae",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent POST with JSON: " + root.toString() + " to " + path.uri(), i);
-		return client.send(request);
+		client.debugStream.out("Sent AE creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		return client.send(request, Code.POST);
 	}
 	
 	public CoapResponse postContainer(String name1, String name2, int i) throws URISyntaxException {
@@ -156,8 +156,8 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent POST with JSON: " + root.toString() + " to " + path.uri(), i);
-		return client.send(request);
+		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		return client.send(request, Code.POST);
 	}
 	
 	public CoapResponse postContentInstance(double value, String measureUnit, int i) throws URISyntaxException {
@@ -174,8 +174,8 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent POST with JSON: " + root.toString() + " to " + path.uri(), i);
-		return client.send(request);
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		return client.send(request, Code.POST);
 	}
 	
 	public void postSubscription(String observer, String id, String[] uri, int i) throws URISyntaxException {
@@ -193,8 +193,8 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:sub",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent POST with JSON: " + root.toString() + " to " + path.uri(), i);
-		client.sendAsync(request);
+		client.debugStream.out("Sent Subscription creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.sendAsync(request, Code.POST);
 	}
 	
 	public CoapResponse deleteSubscription(String[] uri, int i) throws URISyntaxException {
@@ -204,8 +204,8 @@ public class Services {
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		client.debugStream.out("Sent DELETE to " + path.uri(), i);
-		return client.send(request);
+		client.debugStream.out("Sent Subscription deletion to " + path.uri(), i);
+		return client.send(request, Code.DELETE);
 	}
 	
 	public String uri() {
