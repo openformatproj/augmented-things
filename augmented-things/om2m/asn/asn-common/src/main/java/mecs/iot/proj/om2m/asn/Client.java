@@ -345,6 +345,19 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		return send(request);
 	}
 	
+	/*
+	 * Delete
+	 */
+	protected void deleteUser(String id) {
+		Request request = new Request(Code.GET);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + id);
+		//request.setTimedOut(true);
+		debugStream.out("Sent deletion request to " + services.uri(), i);
+		sendAsync(request);
+	}
+	
 	protected void createNotificationServer(String name, String uri, boolean debug, Unit unit, int port) {
 		server = new CoapServer(port);
 		server.add(new NotificationServer(name,uri,debug,unit));

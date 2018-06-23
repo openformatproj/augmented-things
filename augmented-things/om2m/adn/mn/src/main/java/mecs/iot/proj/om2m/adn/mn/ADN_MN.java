@@ -124,8 +124,9 @@ class ADN_MN extends ADN {
 					return;
 				}
 				response = new Response(ResponseCode.CONTENT);
-				response.setPayload(Services.parseJSON(response_.getResponseText(), "m2m:cin", //
-						new String[] {"con"}, new Class<?>[] {String.class}));
+				String con = Services.parseJSON(response_.getResponseText(), "m2m:cin", //
+						new String[] {"con"}, new Class<?>[] {String.class});
+				response.setPayload(id + ": " + con);
 				break;
 			default:
 				debugStream.out("Bad request, mode=" + mode, i);
@@ -372,16 +373,18 @@ class ADN_MN extends ADN {
 						subscriptionsEnabled = true;
 					}
 					ArrayList<Reference> refs = subscriber.get(key);
-					for (int i=0; i<refs.size(); i++) {
-						switch (refs.get(i).node) {
-							case SENSOR:
-								break;
-							case ACTUATOR:
-								forwardNotification(refs.get(i).id,refs.get(i).address,refs.get(i).action); // TODO: check events
-								break;
-							case USER:
-								forwardNotification(refs.get(i).id,refs.get(i).address,"Answer from \"" + subscriber.getName(key) + "\": " + con);
-								break;
+					if (refs!=null && refs.size()>0) {
+						for (int i=0; i<refs.size(); i++) {
+							switch (refs.get(i).node) {
+								case SENSOR:
+									break;
+								case ACTUATOR:
+									forwardNotification(refs.get(i).receiver,refs.get(i).address,refs.get(i).action); // TODO: check events
+									break;
+								case USER:
+									forwardNotification(refs.get(i).receiver,refs.get(i).address,subscriber.getName(key)+": "+con);
+									break;
+							}
 						}
 					}
 				}
@@ -452,7 +455,7 @@ class ADN_MN extends ADN {
 			return;
 		}
 		response = new Response(ResponseCode.CHANGED);
-		response.setPayload("Success on \"" + label + "\"");
+		response.setPayload(tag.id + ": " + label);
 		exchange.respond(response);
 		i++;
 	}
@@ -460,9 +463,124 @@ class ADN_MN extends ADN {
 	@Override
 	
 	synchronized public void handleDELETE(CoapExchange exchange) {
-		// subscription removal (id=<ID>&ser=<SERIAL>), TODO ResponseCode.DELETED
-		// link removal (ser=<SERIAL>&ser=<SERIAL>&id=<EVENT_LABEL>&id=<ACTION_LABEL>&id=<ID>), TODO ResponseCode.DELETED
-		// node/user removal (id=<ID>), TODO ResponseCode.DELETED
+		Response response = null;
+		String id = getUriValue(exchange,"id",0);
+		if (id!=null) {
+			if (!isValidId(id)) {
+				debugStream.out("Bad request, id=" + id, i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			}
+			String serial = getUriValue(exchange,"ser",1);
+			if (serial!=null) {
+				if (!isValidSerial(serial)) {
+					debugStream.out("Bad request, ser=" + serial, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				// subscription removal (id=<ID>&ser=<SERIAL>), TODO
+			} else {
+				// user removal (id=<ID>)
+				if (userMap.containsKey(id)) {
+					subscriber.remove(id);
+					ArrayList<String> resources = subscriber.emptyRefs();
+					for (int i=0; i<resources.size(); i++) {
+						String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+						cseClient.stepCount();
+						try {
+							cseClient.services.deleteSubscription(uri,cseClient.getCount());
+						} catch (URISyntaxException e) {
+							errStream.out(e,0,Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+					}
+					userMap.remove(id);
+				} else {
+					debugStream.out("User \"" + id + "\" is not registered on this MN", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+			}
+		} else {
+			String serial0 = getUriValue(exchange,"ser",0);
+			if (serial0!=null) {
+				if (!isValidSerial(serial0)) {
+					debugStream.out("Bad request, ser=" + serial0, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				String serial1 = getUriValue(exchange,"ser",1);
+				if (serial1!=null) {
+					if (!isValidSerial(serial1)) {
+						debugStream.out("Bad request, ser=" + serial1, i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (!tagMap.containsKey(serial0) || tagMap.get(serial0).node!=Node.SENSOR) {
+						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (!tagMap.containsKey(serial1) || tagMap.get(serial1).node!=Node.ACTUATOR) {
+						debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					// link removal (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>), TODO
+				} else {
+					// node removal (ser=<SERIAL>)
+					if (!tagMap.containsKey(serial0)) {
+						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					subscriber.remove(tagMap.get(serial0).id);
+					ArrayList<String> resources = subscriber.emptyRefs();
+					for (int i=0; i<resources.size(); i++) {
+						String[] uri = new String[] {context + Constants.mnPostfix, resources.get(i), "data", "subscription"};
+						cseClient.stepCount();
+						try {
+							cseClient.services.deleteSubscription(uri,cseClient.getCount());
+						} catch (URISyntaxException e) {
+							errStream.out(e,0,Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+					}
+					tagMap.remove(serial0);
+				}
+			} else {
+				debugStream.out("Bad request, ser", i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			}
+		}
+		response = new Response(ResponseCode.DELETED);
+		exchange.respond(response);
+		i++;
 	}
 	
 	private Response forwardNotification(String id, String address, String content) {

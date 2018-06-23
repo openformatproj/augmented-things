@@ -89,6 +89,7 @@ class RemoteInterface extends Client {
 		try {
 			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
 		} catch (URISyntaxException e) {
+			deleteUser(Services.normalizeName(id));
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
@@ -96,6 +97,7 @@ class RemoteInterface extends Client {
 		outStream.out2("done, posting AE");
 		response = services.postAE(Services.normalizeName(id),i);
 		if (response==null) {
+			deleteUser(Services.normalizeName(id));
 			outStream.out("failed. Terminating interface",i);
 			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
@@ -106,6 +108,7 @@ class RemoteInterface extends Client {
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
 		} catch (URISyntaxException e) {
+			deleteUser(Services.normalizeName(id));
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
 			return;
@@ -119,7 +122,7 @@ class RemoteInterface extends Client {
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;
 		}
-		// TODO, delete AE
+		deleteUser(Services.normalizeName(id));
 		outStream.out("Terminating interface", i);
 	}
 	

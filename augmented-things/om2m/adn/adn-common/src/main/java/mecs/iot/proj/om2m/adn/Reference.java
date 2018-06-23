@@ -4,26 +4,26 @@ import mecs.iot.proj.om2m.structures.Node;
 
 public class Reference {
 	
-	public String resource;
+	public String sender;
 	public String event;
-	public String id;
+	public String receiver;
 	public String address;
 	public String action;
 	public Node node;
 	
-	Reference(String resource, String id, String address) {
-		this.resource = resource;
+	Reference(String sender, String receiver, String address) {
+		this.sender = sender;
 		this.event = null;
-		this.id = id;
+		this.receiver = receiver;
 		this.address = address;
 		this.action = null;
 		node = Node.USER;
 	}
 	
-	Reference(String resource, String event, String id, String address, String action) {
-		this.resource = resource;
+	Reference(String sender, String event, String receiver, String address, String action) {
+		this.sender = sender;
 		this.event = event;
-		this.id = id;
+		this.receiver = receiver;
 		this.address = address;
 		this.action = action;
 		node = Node.ACTUATOR;
