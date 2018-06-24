@@ -33,8 +33,7 @@ public class RemoteInterface extends Client {
 		this.context = context;
 		this.tag = tag;
 		this.location = location;
-		// this.duration = duration;
-		this.duration = 0;
+		this.duration = duration;
 		this.period = period;
 	}
 	

@@ -298,12 +298,24 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		sendAsync(request, Code.DELETE);
 	}
 	
-	protected void deleteNode(String serial) {
-		// TODO
+	protected CoapResponse deleteNode(String serial) {
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("ser" + "=" + serial);
+		//request.setTimedOut(true);
+		debugStream.out("Sent deletion request to " + services.uri(), i);
+		return send(request, Code.DELETE);
 	}
 	
 	protected void deleteNodeAsync(String serial) {
-		// TODO
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("ser" + "=" + serial);
+		//request.setTimedOut(true);
+		debugStream.out("Sent deletion request to " + services.uri(), i);
+		sendAsync(request, Code.DELETE);
 	}
 	
 	protected void createNotificationServer(String name, String uri, boolean debug, Unit unit, int port) {

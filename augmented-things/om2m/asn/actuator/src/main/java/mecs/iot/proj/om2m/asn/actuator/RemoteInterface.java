@@ -29,8 +29,7 @@ public class RemoteInterface extends Client {
 		this.context = context;
 		this.tag = tag;
 		this.location = location;
-		// this.duration = duration;
-		this.duration = 0;
+		this.duration = duration;
 		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;
 		ActuationUnit unit = new ActuationUnit(Services.joinIdHost(id+"_unit",host),tag.attributes,actions);
 		createNotificationServer(Services.joinIdHost(id+"_ATserver",host),context,debug,unit,port);
