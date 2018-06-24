@@ -4,8 +4,8 @@ import org.eclipse.californium.core.coap.Response;
 
 public interface Unit {
 	
-	Response send(String str);
-	// void sendAsync(String str); TODO
+	void sendAck(String str);
+	Response sendContent(String str);
 	String getName();
 
 }

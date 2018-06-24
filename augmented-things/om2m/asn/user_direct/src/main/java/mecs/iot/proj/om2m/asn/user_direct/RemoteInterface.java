@@ -22,9 +22,9 @@ class RemoteInterface extends Client {
 	private Console console;
 	private boolean executing;
 
-	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String serial, String ip, int port) throws URISyntaxException {
+	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_remote",host), uri, debug);
-		this.serial = serial;
+		this.serial = console.getSerial();
 		this.context = context;
 		this.id = Services.joinIdHost(id,host);
 		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;

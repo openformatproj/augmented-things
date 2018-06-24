@@ -50,9 +50,9 @@ public class Console extends Thread {
 		commandMap.put(name,container);
 	}
 	
-//	public boolean isExecuting() {
-//		return executing;
-//	}
+	public String getSerial() {
+		return interf.getSerial();
+	}
 	
 	public void out(String str) {
 		debugStream.out(str,i);

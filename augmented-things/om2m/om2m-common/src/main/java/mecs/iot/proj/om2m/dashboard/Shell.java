@@ -41,6 +41,12 @@ class Shell implements Interface {
 	
 	@Override
 	
+	public String getSerial() {
+		return "0x0001";
+	}
+	
+	@Override
+	
 	public void start() {
 		frame.setVisible(true);
 	}
@@ -59,6 +65,12 @@ class Shell implements Interface {
 	@Override
 	
 	public void out(String str) {
+		out.setText(str);
+	}
+	
+	@Override
+	
+	public void outAsync(String str) {
 		out.setText(str);
 	}
 	

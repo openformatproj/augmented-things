@@ -21,15 +21,12 @@ public class App
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
 	
-	final private static String getSerial() {	// TODO
-		return "0x0001";
-	}
-	
     public static void main( String[] args )
     {
+    	/* Replace true with your interface implementation. When working with default Shell, be sure that a sensor with serial "0x0001" exists */
     	final Console console = new Console(id,host,true,debug);
 		try {
-			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,getSerial(),ip,5691);
+			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
 			Command exit = (s) -> {console.terminate(); remote.destroy(); remote.terminate(); return "Exiting";};
 			console.add("exit",exit,"Terminate this asn","exit");
 			remote.start();

@@ -18,9 +18,15 @@ class ConsoleWrapper implements Unit {
 	
 	@Override
 	
-	public Response send(String str) {
-		if (isValid(str)) {
-			console.interf.out(str);
+	public void sendAck(String str) {
+		console.interf.out(str);
+	}
+	
+	@Override
+	
+	public Response sendContent(String str) {
+		if (str.contains("con=")) {
+			console.interf.outAsync(str);
 			return new Response(ResponseCode.CHANGED);
 		} else {
 			return new Response(ResponseCode.BAD_REQUEST);
@@ -31,10 +37,6 @@ class ConsoleWrapper implements Unit {
 	
 	public String getName() {
 		return name;
-	}
-	
-	private boolean isValid(String str) {
-		return str.equals("OK") || str.contains("con=");
 	}
 	
 }

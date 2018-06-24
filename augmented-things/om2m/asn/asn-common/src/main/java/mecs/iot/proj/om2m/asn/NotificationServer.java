@@ -36,10 +36,11 @@ class NotificationServer extends CoapResource {
 		String str = exchange.getRequestText();
 		if (str.equals("OK")) {
 			outStream.out("Handling successful subscription",i);
-			response = unit.send(str);
+			unit.sendAck(str);
+			response = new Response(ResponseCode.CHANGED);
 		} else {
 			outStream.out("Handling notification \"" + str + "\"", i);
-			response = unit.send(str);
+			response = unit.sendContent(str);
 			if (response==null || response.getCode()==ResponseCode.BAD_REQUEST) {
 				debugStream.out("Bad request, \"" + str + "\" is not a valid notification", i);
 				response = new Response(ResponseCode.BAD_REQUEST);
@@ -55,7 +56,6 @@ class NotificationServer extends CoapResource {
 				return;
 			}
 		}
-		// response = new Response(ResponseCode.CHANGED);
 		exchange.respond(response);
 		i++;
 	}

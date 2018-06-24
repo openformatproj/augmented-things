@@ -27,7 +27,13 @@ class ActuationUnit implements Unit {
 	
 	@Override
 	
-	public Response send(String str) {
+	public void sendAck(String str) {
+		;
+	}
+	
+	@Override
+	
+	public Response sendContent(String str) {
 		if (actionMap.containsKey(str)) {
 			actionMap.get(str).action();
 			return new Response(ResponseCode.CHANGED);
