@@ -17,9 +17,8 @@ import java.util.ArrayList;
 
 public class Subscriber {
 	
-	private HashMap<String,ArrayList<Reference>> referenceMap;										// resource -> list of references
+	private HashMap<String,ArrayList<Reference>> referenceMap;												// resource -> list of references
 	private HashMap<String,String> piMap;
-	//private ArrayList<String> orphanRefs;															// It contains all resources pointing to an empty list of references: they correspond to subscriptions nobody is really subscribed to, and that must therefore be removed
 	private String lastResource;
 	
 	private DebugStream debugStream;
@@ -30,7 +29,6 @@ public class Subscriber {
 	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) {
 		referenceMap = new HashMap<String,ArrayList<Reference>>();
 		piMap = new HashMap<String,String>();
-		//orphanRefs = new ArrayList<String>();
 		this.debugStream = debugStream;
 		this.errStream = errStream;
 		this.cseClient = cseClient;
@@ -46,7 +44,6 @@ public class Subscriber {
 			refs.add(ref);
 			referenceMap.put(sender,refs);
 		}
-		//orphanRefs.remove(sender);
 		lastResource = sender;
 	}
 	
@@ -59,7 +56,6 @@ public class Subscriber {
 			refs.add(ref);
 			referenceMap.put(sender,refs);
 		}
-		//orphanRefs.remove(sender);
 		lastResource = sender;
 	}
 	
@@ -85,10 +81,6 @@ public class Subscriber {
 		return piMap.get(pi);
 	}
 	
-//	public ArrayList<String> orphanRefs() {
-//		return orphanRefs;
-//	}
-	
 	public void remove(String id, Node node, int k) throws URISyntaxException {
 		switch(node) {
 			case SENSOR:
@@ -102,10 +94,9 @@ public class Subscriber {
 					refs = referenceMap.get(resources[i]);
 					for (int j=0; j<refs.size(); j++) {
 						if (refs.get(j).receiver.equals(id))
-							refs.remove(j);
+							refs.remove(j);																	// Remove all references containing the receiver
 					}
-					if (refs.size()==0) {
-//						orphanRefs.add(resources[i]);
+					if (refs.size()==0) {																	// If there are no references anymore, remove the subscription to the corresponding resource
 						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
 						String[] uri = new String[] {context + Constants.mnPostfix, resources[i], "data", "subscription"};
 						CoapResponse response_ = null;
@@ -115,14 +106,11 @@ public class Subscriber {
 							errStream.out("Unable to delete subscription on \"" + resources[i] + "\", response: " + response_.getCode(), //
 									i, Severity.LOW);
 						}
+						referenceMap.remove(resources[i]);
 					}
 				}
 				break;
 		}
 	}
-	
-//	public void removeOrphanRef(int i) {
-//		orphanRefs.remove(i);															// TODO: seems not to work
-//	}
 
 }
