@@ -35,7 +35,7 @@ class ADN_MN extends ADN {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
-		subscriber = new Subscriber();
+		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
 		tagMap = new HashMap<String,Tag_>();
 		userMap = new HashMap<String,String>();
 		subscriptionsEnabled = true;
@@ -283,7 +283,7 @@ class ADN_MN extends ADN {
 			String label0 = getUriValue(exchange,"lab",2);
 			String label1 = getUriValue(exchange,"lab",3);
 			notificationId = getUriValue(exchange,"id",4);
-			if (serial0!=null && serial1!=null && label0!=null && label1!=null) {
+			if (serial0!=null && serial1!=null && label0!=null && label1!=null && notificationId!=null) {
 				if (subscriptionsEnabled) {
 					// nodes link (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
 					if (!isValidSerial(serial0) && isValidSerial(serial1)) {
@@ -556,42 +556,52 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out("Handling removal of user \"" + id + "\"...", i);
-				subscriber.remove(id,Node.USER);
-				ArrayList<String> orphanRefs = subscriber.orphanRefs();
-				String resource;
-				boolean deletedAllOrphanSubscriptions = true;
-				for (int j=0; j<orphanRefs.size(); j++) {
-					resource = orphanRefs.get(j);
-					outStream.out1("Deleting subscription on \"" + resource + "\"", i);
-					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
-					CoapResponse response_ = null;
-					cseClient.stepCount();
-					try {
-						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-					} catch (URISyntaxException e) {
-						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
-						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-						outStream.out2("failed");
-						errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
-								i, Severity.LOW);
-						deletedAllOrphanSubscriptions = false;
-					}
-					subscriber.removeOrphanRef(j);
-				}
-				if (!deletedAllOrphanSubscriptions) {
-					outStream.out("Failure in removing all subscriptions from CSE",i);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+				outStream.out1("Handling removal of user \"" + id + "\"", i);
+				try {
+					subscriber.remove(id,Node.USER,i);
+				} catch (URISyntaxException e) {
+					outStream.out2("failed");
+					errStream.out(e,0,Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					i++;
 					return;
 				}
+//				ArrayList<String> orphanRefs = subscriber.orphanRefs();
+//				String resource;
+//				boolean deletedAllOrphanSubscriptions = true;
+//				for (int j=0; j<orphanRefs.size(); j++) {
+//					resource = orphanRefs.get(j);
+//					outStream.out1("Deleting subscription on \"" + resource + "\"", i);
+//					String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
+//					CoapResponse response_ = null;
+//					cseClient.stepCount();
+//					try {
+//						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+//					} catch (URISyntaxException e) {
+//						outStream.out2("failed");
+//						errStream.out(e,0,Severity.MEDIUM);
+//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//						exchange.respond(response);
+//						i++;
+//						return;
+//					}
+//					if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+//						outStream.out2("failed");
+//						errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
+//								i, Severity.LOW);
+//						deletedAllOrphanSubscriptions = false;
+//					}
+//					subscriber.removeOrphanRef(j);
+//					orphanRefs = subscriber.orphanRefs();
+//				}
+//				if (!deletedAllOrphanSubscriptions) {
+//					outStream.out("Failure in removing all subscriptions from CSE",i);
+//					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+//					exchange.respond(response);
+//					i++;
+//					return;
+//				}
 				userMap.remove(id);
 			}
 		} else {
@@ -638,13 +648,22 @@ class ADN_MN extends ADN {
 						return;
 					}
 					Tag_ tag0 = tagMap.get(serial0);
-					outStream.out("Handling removal of node with serial \"" + serial0 + "\"", i);
+					outStream.out1("Handling removal of node with serial \"" + serial0 + "\"", i);
 					String[] uri = null;
 					CoapResponse response_ = null;
 					switch (tag0.node) {
 						case SENSOR:
-							subscriber.remove(tag0.id,Node.SENSOR);
-							outStream.out1("Deleting subscription on \"" + tag0.id + "\"", i);
+							try {
+								subscriber.remove(tag0.id,Node.SENSOR,i);
+							} catch (URISyntaxException e) {
+								outStream.out2("failed");
+								errStream.out(e,0,Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							outStream.out1_2("deleting subscription on \"" + tag0.id + "\"");
 							uri = new String[] {context + Constants.mnPostfix, tag0.id, "data", "subscription"};
 							cseClient.stepCount();
 							try {
@@ -668,38 +687,47 @@ class ADN_MN extends ADN {
 							}
 							break;
 						case ACTUATOR:
-							subscriber.remove(tag0.id,Node.ACTUATOR);
-							ArrayList<String> orphanRefs = subscriber.orphanRefs();
-							String resource;
-							boolean deletedAllOrphanSubscriptions = true;
-							for (int j=0; j<orphanRefs.size(); j++) {
-								resource = orphanRefs.get(j);
-								outStream.out1("Deleting subscription on \"" + resource + "\"", i);
-								uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
-								cseClient.stepCount();
-								try {
-									response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-								} catch (URISyntaxException e) {
-									outStream.out2("failed");
-									errStream.out(e,0,Severity.MEDIUM);
-									response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-									exchange.respond(response);
-									i++;
-									return;
-								}
-								if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-									outStream.out2("failed to delete subscription on \"" + resource + "\", response: " + response_.getCode());
-									deletedAllOrphanSubscriptions = false;
-								}
-								subscriber.removeOrphanRef(j);
-							}
-							if (!deletedAllOrphanSubscriptions) {
-								errStream.out("Failure in removing all subscriptions from CSE", i, Severity.LOW);
-								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							try {
+								subscriber.remove(tag0.id,Node.ACTUATOR,i);
+							} catch (URISyntaxException e) {
+								outStream.out2("failed");
+								errStream.out(e,0,Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 								exchange.respond(response);
 								i++;
 								return;
 							}
+//							ArrayList<String> orphanRefs = subscriber.orphanRefs();
+//							String resource;
+//							boolean deletedAllOrphanSubscriptions = true;
+//							for (int j=0; j<orphanRefs.size(); j++) {
+//								resource = orphanRefs.get(j);
+//								outStream.out1("Deleting subscription on \"" + resource + "\"", i);
+//								uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
+//								cseClient.stepCount();
+//								try {
+//									response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+//								} catch (URISyntaxException e) {
+//									outStream.out2("failed");
+//									errStream.out(e,0,Severity.MEDIUM);
+//									response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//									exchange.respond(response);
+//									i++;
+//									return;
+//								}
+//								if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+//									outStream.out2("failed to delete subscription on \"" + resource + "\", response: " + response_.getCode());
+//									deletedAllOrphanSubscriptions = false;
+//								}
+//								subscriber.removeOrphanRef(j);
+//							}
+//							if (!deletedAllOrphanSubscriptions) {
+//								errStream.out("Failure in removing all subscriptions from CSE", i, Severity.LOW);
+//								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+//								exchange.respond(response);
+//								i++;
+//								return;
+//							}
 							break;
 						case USER:
 							break;
@@ -716,7 +744,7 @@ class ADN_MN extends ADN {
 		}
 		response = new Response(ResponseCode.DELETED);
 		exchange.respond(response);
-		outStream.out("...done",i);
+		outStream.out2("done");
 		i++;
 	}
 	
