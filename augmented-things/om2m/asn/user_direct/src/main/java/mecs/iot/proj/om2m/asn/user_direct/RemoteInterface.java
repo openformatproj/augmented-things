@@ -134,6 +134,7 @@ class RemoteInterface extends Client {
 			i++;
 		}
 		deleteUserAsync(Services.normalizeName(id));
+		destroy();
 		outStream.out("Terminating interface", i);
 	}
 	
