@@ -262,6 +262,29 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	}
 	
 	/*
+	 * Link removal (serial0=sensor, serial1=actuator, lab0=event, lab1=action, id=notificationId)
+	 */
+	public String removeSubscription(String id, String serial0, String serial1, String label0, String label1, Console console) {
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("ser" + "=" + serial0);
+		request.getOptions().addUriQuery("ser" + "=" + serial1);
+		request.getOptions().addUriQuery("lab" + "=" + label0);
+		request.getOptions().addUriQuery("lab" + "=" + label1);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(id));
+		//request.setTimedOut(true);
+		console.out("Sent link removal request to " + services.uri());
+		CoapResponse response = send(request, Code.DELETE, console);
+		if (response==null)
+			return "Error: timeout expired";
+		if (response.getCode()==ResponseCode.DELETED)
+			return response.getResponseText();
+		else
+			return "Error: " + response.getCode().toString();
+	}
+	
+	/*
 	 * Locate
 	 */
 	protected CoapResponse locate(String serial) {

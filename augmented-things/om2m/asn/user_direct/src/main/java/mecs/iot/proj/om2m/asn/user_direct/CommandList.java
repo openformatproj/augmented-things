@@ -7,7 +7,7 @@ import mecs.iot.proj.om2m.dashboard.Console;
 class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 	
 	CommandList(Client client, Console console, String id) {
-		numCommands = 6;
+		numCommands = 7;
 		commands = new Command[numCommands];
 		commands[0] = (options) -> client.getAttributes(options[0],console);
 		commands[1] = (options) -> client.getResource(options[0],console);
@@ -15,6 +15,7 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		commands[3] = (options) -> client.removeSubscription(id,options[0],console);
 		commands[4] = (options) -> client.putResource(options[0],options[1],console);
 		commands[5] = (options) -> client.postSubscription(id,options[0],options[1],options[2],options[3],console);
+		commands[6] = (options) -> client.removeSubscription(id,options[0],options[1],options[2],options[3],console);
 		text = new String[numCommands][3];
 		text[0] = new String[] {"query","Query the attributes of a node","query -<serial>"};
 		text[1] = new String[] {"read","Read the value of a node","read -<serial>"};
@@ -22,6 +23,7 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		text[3] = new String[] {"rm lookout","Removes a subscription from a node","rm lookout -<serial>"};
 		text[4] = new String[] {"write","Write an action to a node","write -<serial> -<action>"};
 		text[5] = new String[] {"link","Adds a subscription between two nodes","link -<sensor_serial> -<actuator_serial> -<event> -<action>"};
+		text[6] = new String[] {"rm link","Removes a subscription between two nodes","rm link -<sensor_serial> -<actuator_serial> -<event> -<action>"};
 	}
 
 }

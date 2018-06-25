@@ -59,6 +59,13 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
+			if (sw!=1 || sw!=2) {
+				debugStream.out("Bad request, mode=" + mode, i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			}
 			String serial = getUriValue(exchange,"ser",1);
 			if (serial==null || !isValidSerial(serial)) {
 				if (serial!=null)
@@ -70,19 +77,19 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
+			Tag_ tag = tagMap.get(serial);
 			switch (sw) {
 				case 1:
-					// attributes query (mode=1&ser=<SERIAL>)
-					Tag_ tag1 = tagMap.get(serial);
-					if (tag1==null) {
-						debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
+					// attributes query (mode=1&ser=<SERIAL>)		
+					if (tag==null || tag.node==Node.USER) {
+						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as an endpoint node", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
 					}
 					outStream.out1("Handling attributes querying for serial \"" + serial + "\"", i);
-					String[] attributes = tag1.attributes;
+					String[] attributes = tag.attributes;
 					String payload = "";
 					for (int j=0; j<attributes.length; j++) {
 						if (j!=attributes.length-1)
@@ -95,8 +102,7 @@ class ADN_MN extends ADN {
 					break;
 				case 2:
 					// node read (mode=2&ser=<SERIAL>)
-					Tag_ tag2 = tagMap.get(serial);
-					if (tag2==null || tag2.node!=Node.SENSOR) {
+					if (tag==null || tag.node!=Node.SENSOR) {
 						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -104,7 +110,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out1("Handling reading on sensor with serial \"" + serial + "\"", i);
-					String id = tag2.id;
+					String id = tag.id;
 					String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
 					CoapResponse response_ = null;
 					try {
@@ -537,8 +543,17 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
+			String address = userMap.get(id);
+			if (address==null) {
+				debugStream.out("User \"" + id + "\" is not registered on this MN", i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			}
 			String serial = getUriValue(exchange,"ser",1);
 			if (serial!=null) {
+				// lookout removal (id=<ID>&ser=<SERIAL>)
 				if (!isValidSerial(serial)) {
 					debugStream.out("Bad request, ser=" + serial, i);
 					response = new Response(ResponseCode.BAD_REQUEST);
@@ -546,16 +561,27 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				// subscription removal (id=<ID>&ser=<SERIAL>), TODO
-			} else {
-				// user removal (id=<ID>)
-				if (!userMap.containsKey(id)) {
-					debugStream.out("User \"" + id + "\" is not registered on this MN", i);
+				Tag_ tag = tagMap.get(serial);
+				if (tag==null || tag.node!=Node.SENSOR) {
+					debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
 					return;
 				}
+				outStream.out1("Handling removal of lookout between user \"" + id + "\" and serial \"" + serial + "\"", i);
+				try {
+					subscriber.remove(tag.id,id,i);
+				} catch (URISyntaxException e) {
+					outStream.out2("failed");
+					errStream.out(e,0,Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+			} else {
+				// user removal (id=<ID>)
 				outStream.out1("Handling removal of user \"" + id + "\"", i);
 				try {
 					subscriber.remove(id,Node.USER,i);
@@ -579,8 +605,17 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
+				Tag_ tag0 = tagMap.get(serial0);
 				String serial1 = getUriValue(exchange,"ser",1);
 				if (serial1!=null) {
+					// link removal (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
+					if (tag0==null || tag0.node!=Node.SENSOR) {
+						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					if (!isValidSerial(serial1)) {
 						debugStream.out("Bad request, ser=" + serial1, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
@@ -588,31 +623,59 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (!tagMap.containsKey(serial0) || tagMap.get(serial0).node!=Node.SENSOR) {
-						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (!tagMap.containsKey(serial1) || tagMap.get(serial1).node!=Node.ACTUATOR) {
+					Tag_ tag1 = tagMap.get(serial1);
+					if (tag1==null || tag1.node!=Node.ACTUATOR) {
 						debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
 					}
-					// link removal (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>), TODO
-				} else {
-					// node removal (ser=<SERIAL>)
-					if (!tagMap.containsKey(serial0)) {
-						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN", i);
+					String label0 = getUriValue(exchange,"lab",2);
+					String label1 = getUriValue(exchange,"lab",3);
+//					String notificationId = getUriValue(exchange,"id",4);
+					if (!isValidLabel(label0,tag0)) {
+						debugStream.out("Bad request, lab=" + label0, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
 					}
-					Tag_ tag0 = tagMap.get(serial0);
+					if (!isValidLabel(label1,tag1)) {
+						debugStream.out("Bad request, lab=" + label1, i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+//					notificationAddress = userMap.get(notificationId);
+//					if (notificationAddress==null) {
+//						debugStream.out("User \"" + notificationId + "\" is not registered on this MN", i);
+//						response = new Response(ResponseCode.BAD_REQUEST);
+//						exchange.respond(response);
+//						i++;
+//						return;
+//					}
+					outStream.out1("Handling removal of link between serial \"" + serial0 + "\" and serial \"" + serial1 + "\"", i);
+					try {
+						subscriber.remove(tag0.id,label0,tag1.id,label1,i);
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,0,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+				} else {
+					// node removal (ser=<SERIAL>)
+					if (tag0==null || tag0.node==Node.USER) {
+						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as an endpoint node", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					outStream.out1("Handling removal of node with serial \"" + serial0 + "\"", i);
 					String[] uri = null;
 					CoapResponse response_ = null;

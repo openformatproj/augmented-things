@@ -97,20 +97,58 @@ public class Subscriber {
 							refs.remove(j);																	// Remove all references containing the receiver
 					}
 					if (refs.size()==0) {																	// If there are no references anymore, remove the subscription to the corresponding resource
-						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
-						String[] uri = new String[] {context + Constants.mnPostfix, resources[i], "data", "subscription"};
-						CoapResponse response_ = null;
-						cseClient.stepCount();
-						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-							errStream.out("Unable to delete subscription on \"" + resources[i] + "\", response: " + response_.getCode(), //
-									i, Severity.LOW);
-						}
-						referenceMap.remove(resources[i]);
+//						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
+//						String[] uri = new String[] {context + Constants.mnPostfix, resources[i], "data", "subscription"};
+//						CoapResponse response_ = null;
+//						cseClient.stepCount();
+//						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+//						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+//							errStream.out("Unable to delete subscription on \"" + resources[i] + "\", response: " + response_.getCode(), //
+//									k, Severity.LOW);
+//						}
+//						referenceMap.remove(resources[i]);
+						deleteSubscription(resources[i], k);
 					}
 				}
 				break;
 		}
+	}
+	
+	public void remove(String sender, String receiver, int k) throws URISyntaxException {
+		ArrayList<Reference> refs = referenceMap.get(sender);
+		for (int j=0; j<refs.size(); j++) {
+			if (refs.get(j).receiver.equals(receiver))
+				refs.remove(j);																				// Remove all references containing the receiver
+		}
+		if (refs.size()==0) {
+			deleteSubscription(sender, k);
+		}
+	}
+	
+	public void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException {
+		ArrayList<Reference> refs = referenceMap.get(sender);
+		Reference ref;
+		for (int j=0; j<refs.size(); j++) {
+			ref = refs.get(j);
+			if (ref.receiver.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
+				refs.remove(j);																				// Remove all references both containing the receiver and matching the pair event/action
+		}
+		if (refs.size()==0) {
+			deleteSubscription(sender, k);
+		}
+	}
+	
+	private void deleteSubscription(String resource, int k) throws URISyntaxException {
+		debugStream.out("Deleting subscription on \"" + resource + "\"", k);
+		String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
+		CoapResponse response_ = null;
+		cseClient.stepCount();
+		response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+		if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
+					k, Severity.LOW);
+		}
+		referenceMap.remove(resource);
 	}
 
 }
