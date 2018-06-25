@@ -41,6 +41,8 @@ public class Tag {
 			case SENSOR:
 				this.address = null;
 				this.type = description;
+				this.attributes = attributes;
+				labelMap = new HashMap<String,String>();
 				String[] splits;
 				for (int i=0; i<attributes.length; i++) {
 					splits = attributes[i].split(": ");
@@ -53,11 +55,12 @@ public class Tag {
 			case ACTUATOR:
 				this.address = description;
 				this.type = "act";
+				this.attributes = attributes;
+				labelMap = null;
 				break;
 			case USER:
 				break;
 		}
-		this.attributes = attributes;
 	}
 	
 //	public String[] labels() {
