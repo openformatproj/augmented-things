@@ -59,7 +59,7 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-			if (sw!=1 || sw!=2) {
+			if (sw!=1 && sw!=2) {
 				debugStream.out("Bad request, mode=" + mode, i);
 				response = new Response(ResponseCode.BAD_REQUEST);
 				exchange.respond(response);
