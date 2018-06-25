@@ -11,6 +11,7 @@ import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
+import org.json.JSONException;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
@@ -19,13 +20,14 @@ import mecs.iot.proj.om2m.adn.Subscriber;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
-import mecs.iot.proj.om2m.structures.Tag_;
+import mecs.iot.proj.om2m.structures.Tag;
 
 class ADN_MN extends ADN {
 
-	private HashMap<String,Tag_> tagMap;
+	private HashMap<String,Tag> tagMap;
 	private HashMap<String,String> userMap;
 	private boolean subscriptionsEnabled;
 	private String notificationId;
@@ -36,7 +38,7 @@ class ADN_MN extends ADN {
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
 		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
-		tagMap = new HashMap<String,Tag_>();
+		tagMap = new HashMap<String,Tag>();
 		userMap = new HashMap<String,String>();
 		subscriptionsEnabled = true;
 		notificationId = "";
@@ -77,7 +79,7 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-			Tag_ tag = tagMap.get(serial);
+			Tag tag = tagMap.get(serial);
 			switch (sw) {
 				case 1:
 					// attributes query (mode=1&ser=<SERIAL>)		
@@ -203,7 +205,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					Tag_ tag = null;
+					Tag tag = null;
 					if (type.equals("act")) {
 						String address = getUriValue(exchange,"addr",3);
 						if (address==null || !isValidAddress(address)) {
@@ -216,9 +218,9 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						tag = new Tag_(Node.ACTUATOR,id,address,attributes);
+						tag = new Tag(Node.ACTUATOR,id,address,attributes);
 					} else {
-						tag = new Tag_(Node.SENSOR,id,type,attributes);
+						tag = new Tag(Node.SENSOR,id,type,attributes);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					tagMap.put(serial,tag);
@@ -226,7 +228,7 @@ class ADN_MN extends ADN {
 				} else {
 					// node lookout (id=<ID>&ser=<SERIAL>)
 					if (subscriptionsEnabled) {
-						Tag_ tag = tagMap.get(serial);
+						Tag tag = tagMap.get(serial);
 						if (tag==null || tag.node!=Node.SENSOR) {
 							debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 							response = new Response(ResponseCode.BAD_REQUEST);
@@ -313,8 +315,8 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					Tag_ tag0 = tagMap.get(serial0);
-					Tag_ tag1 = tagMap.get(serial1);
+					Tag tag0 = tagMap.get(serial0);
+					Tag tag1 = tagMap.get(serial1);
 					if (tag0==null || tag0.node!=Node.SENSOR) {
 						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
@@ -364,7 +366,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					subscriber.insert(tag0.id,label0,tag1.id,tag1.address,label1);
+					subscriber.insert(tag0.id,label0,tag0.labelMap.get(label0),tag1.id,tag1.address,label1);
 					if (!subscriber.containsResource(tag0.id))
 						subscriptionsEnabled = false;								// Disable subscription service to determine the pi identifier associated to this subscription
 					response = new Response(ResponseCode.CONTINUE);
@@ -398,12 +400,23 @@ class ADN_MN extends ADN {
 						return;
 					}
 				} else {
-					String pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "pi=/augmented-things-MN-cse/cnt-67185819"
-							new String[] {"pi"}, new Class<?>[] {String.class});
-					String con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "con=36,404 °C"
-							new String[] {"con"}, new Class<?>[] {String.class});
-					// String sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
-					//		new String[] {"sur"}, new Class<?>[] {String.class});
+					String pi = null;
+					String con = null;
+					// String sur = null;
+					try {
+						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "pi=/augmented-things-MN-cse/cnt-67185819"
+								new String[] {"pi"}, new Class<?>[] {String.class},false);
+						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "con=36,404 °C"
+								new String[] {"con"}, new Class<?>[] {String.class},false);
+						// sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
+						//		new String[] {"sur"}, new Class<?>[] {String.class});
+					} catch (JSONException e) {
+						debugStream.out("Received invalid notification", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					outStream.out1("Handling notification with JSON: " + pi + ", " + con, i);
 					String key = getKey(pi);
 					if (!subscriber.containsKey(key)) {
@@ -414,12 +427,15 @@ class ADN_MN extends ADN {
 					if (refs!=null && refs.size()>0) {
 						CoapResponse response_ = null;
 						for (int j=0; j<refs.size(); j++) {
-							switch (refs.get(j).node) {
+							switch (refs.get(j).receiver.node) {
 								case SENSOR:
 									break;
 								case ACTUATOR:
+									String[] splits = con.split("con=");
+									double value = Format.unpack(splits[0],tagMap.get(refs.get(j).sender.id).type);
+									//TODO
 									try {
-										response_ = forwardNotification(refs.get(j).receiver,refs.get(j).address,refs.get(j).action);
+										response_ = forwardNotification(refs.get(j).receiver.id,refs.get(j).receiver.address,refs.get(j).action);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
@@ -427,11 +443,11 @@ class ADN_MN extends ADN {
 										exchange.respond(response);
 										i++;
 										return;
-									} // TODO: check events
+									}
 									break;
 								case USER:
 									try {
-										response_ = forwardNotification(refs.get(j).receiver,refs.get(j).address,subscriber.getName(key)+": "+con);
+										response_ = forwardNotification(refs.get(j).receiver.id,refs.get(j).receiver.address,subscriber.getName(key)+": "+con);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
@@ -478,7 +494,7 @@ class ADN_MN extends ADN {
 			i++;
 			return;
 		}
-		Tag_ tag = tagMap.get(serial);
+		Tag tag = tagMap.get(serial);
 		if (tag==null || tag.node!=Node.ACTUATOR) {
 			debugStream.out("Serial \"" + serial + "\" is not registered on this MN as an actuator", i);
 			response = new Response(ResponseCode.BAD_REQUEST);
@@ -561,7 +577,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				Tag_ tag = tagMap.get(serial);
+				Tag tag = tagMap.get(serial);
 				if (tag==null || tag.node!=Node.SENSOR) {
 					debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
@@ -608,7 +624,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				Tag_ tag0 = tagMap.get(serial0);
+				Tag tag0 = tagMap.get(serial0);
 				String serial1 = getUriValue(exchange,"ser",1);
 				if (serial1!=null) {
 					// link removal (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
@@ -626,7 +642,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					Tag_ tag1 = tagMap.get(serial1);
+					Tag tag1 = tagMap.get(serial1);
 					if (tag1==null || tag1.node!=Node.ACTUATOR) {
 						debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
 						response = new Response(ResponseCode.BAD_REQUEST);

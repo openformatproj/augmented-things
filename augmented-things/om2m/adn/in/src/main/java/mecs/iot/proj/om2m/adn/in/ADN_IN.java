@@ -15,11 +15,11 @@ import mecs.iot.proj.om2m.dashboard.Console;
 //import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.MN;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Tag_;
+import mecs.iot.proj.om2m.structures.Tag;
 
 class ADN_IN extends ADN {
 	
-	private HashMap<String,Tag_> tagMap;
+	private HashMap<String,Tag> tagMap;
 	// private HashMap<String,String> userMap;
 	private HashMap<String,MN> mnMap;
 
@@ -27,7 +27,7 @@ class ADN_IN extends ADN {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		//cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
 		//subscriber = new Subscriber();
-		tagMap = new HashMap<String,Tag_>();
+		tagMap = new HashMap<String,Tag>();
 		// userMap = new HashMap<String,String>();
 		mnMap = new HashMap<String,MN>();
 	}
@@ -140,7 +140,7 @@ class ADN_IN extends ADN {
 						i++;
 						return;
 					}
-					Tag_ tag = null;
+					Tag tag = null;
 					if (type.equals("act")) {
 						String address = getUriValue(exchange,"addr",4);
 						if (address==null || !isValidAddress(address)) {
@@ -153,9 +153,9 @@ class ADN_IN extends ADN {
 							i++;
 							return;
 						}
-						tag = new Tag_(Node.ACTUATOR,id,address,attributes);
+						tag = new Tag(Node.ACTUATOR,id,address,attributes);
 					} else {
-						tag = new Tag_(Node.SENSOR,id,type,attributes);
+						tag = new Tag(Node.SENSOR,id,type,attributes);
 					}
 					MN mn = Db.mnMap.get(Integer.parseInt(location));
 					if (mn==null) {

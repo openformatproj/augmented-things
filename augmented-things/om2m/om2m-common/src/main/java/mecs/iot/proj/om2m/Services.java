@@ -41,20 +41,20 @@ public class Services {
 		try {
 			root = new JSONObject(json);
 		} catch (JSONException e) {
-			return json;
+			return "Invalid JSON: " + json;
 		}
 		JSONObject obj = null;
 		try {
 			obj = (JSONObject) root.get(type);
 		} catch (JSONException e) {
-			return "Response is not of type " + type;
+			return "Invalid JSON type \"" + type + "\": " + json;
 		}
 		String parse = "";
 		for (int i=0; i<attr.length; i++) {
 			try {
 				parse += parseJSONObject(obj,attr[i],Type[i]);
 			} catch (JSONException e) {
-				return "Response has no attributes of type " + attr[i];
+				return "Invalid JSON attribute \"" + attr[i] + "\": " + json;
 			}
 			if (i<attr.length-1)
 				parse += ", ";
@@ -67,14 +67,14 @@ public class Services {
 		try {
 			root = new JSONObject(json);
 		} catch (JSONException e) {
-			return json;
+			return "Invalid JSON: " + json;
 		}
 		JSONObject obj = root;
 		for (int i=0; i<type.length; i++) {
 			try {
 				obj = (JSONObject) obj.get(type[i]);
 			} catch (JSONException e) {
-				return "Response is not of type " + type;
+				return "Invalid JSON type \"" + type[i] + "\": " + json;
 			}
 		}
 		String parse = "";
@@ -82,7 +82,61 @@ public class Services {
 			try {
 				parse += parseJSONObject(obj,attr[i],Type[i]);
 			} catch (JSONException e) {
-				return "Response has no attributes of type " + attr[i];
+				return "Invalid JSON attribute \"" + attr[i] + "\": " + json;
+			}
+			if (i<attr.length-1)
+				parse += ", ";
+		}
+		return parse;
+	}
+	
+	public static String parseJSON(String json, String type, String[] attr, Class<?>[] Type, boolean debug) throws JSONException {
+		JSONObject root = null;
+		try {
+			root = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		JSONObject obj = null;
+		try {
+			obj = (JSONObject) root.get(type);
+		} catch (JSONException e) {
+			throw e;
+		}
+		String parse = "";
+		for (int i=0; i<attr.length; i++) {
+			try {
+				parse += parseJSONObject(obj,attr[i],Type[i]);
+			} catch (JSONException e) {
+				throw e;
+			}
+			if (i<attr.length-1)
+				parse += ", ";
+		}
+		return parse;
+	}
+	
+	public static String parseJSON(String json, String[] type, String[] attr, Class<?>[] Type, boolean debug) throws JSONException {
+		JSONObject root = null;
+		try {
+			root = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		JSONObject obj = root;
+		for (int i=0; i<type.length; i++) {
+			try {
+				obj = (JSONObject) obj.get(type[i]);
+			} catch (JSONException e) {
+				throw e;
+			}
+		}
+		String parse = "";
+		for (int i=0; i<attr.length; i++) {
+			try {
+				parse += parseJSONObject(obj,attr[i],Type[i]);
+			} catch (JSONException e) {
+				throw e;
 			}
 			if (i<attr.length-1)
 				parse += ", ";
@@ -160,7 +214,7 @@ public class Services {
 		return client.send(request, Code.POST);
 	}
 	
-	public CoapResponse postContentInstance(double value, String measureUnit, int i) throws URISyntaxException {
+	public CoapResponse postContentInstance(String content, int i) throws URISyntaxException {
 		if (path.level==2)
 			path.down("data");
 		Request request = new Request(Code.POST);
@@ -170,7 +224,8 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		JSONObject obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-		obj.put("con",String.format("%.3f",value)+" "+ measureUnit);
+//		obj.put("con",String.format("%.3f",value)+" "+ measureUnit);
+		obj.put("con",content);
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());

@@ -5,12 +5,12 @@ import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
-import mecs.iot.proj.om2m.structures.Tag_;
+import mecs.iot.proj.om2m.structures.Tag;
 
-import java.util.Arrays;
-import java.util.HashSet;
+//import java.util.Arrays;
+//import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+//import java.util.Set;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.server.resources.CoapExchange;
@@ -99,12 +99,13 @@ public class ADN extends CoapResource {
 		return address!=null && !address.isEmpty();
 	}
 	
-	protected boolean isValidLabel(String label, Tag_ tag) {
-		Set<String> s = new HashSet<String>(Arrays.asList(tag.labels()));
-		if (s.contains(label))
-			return true;
-		else
-			return false;
+	protected boolean isValidLabel(String label, Tag tag) {
+//		Set<String> s = new HashSet<String>(Arrays.asList(tag.labels()));
+//		if (s.contains(label))
+//			return true;
+//		else
+//			return false;
+		return tag.labelMap.containsKey(label);
 	}
 
 }

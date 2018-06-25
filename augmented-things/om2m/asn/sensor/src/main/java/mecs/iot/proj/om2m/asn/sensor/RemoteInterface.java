@@ -4,6 +4,7 @@ import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.Physics;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
@@ -15,7 +16,7 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 public class RemoteInterface extends Client {
 	
 	private double value;
-	private String metadata;
+//	private String metadata;
 	private double fluctuation;
 	private String context;
 	private Tag tag;
@@ -28,7 +29,7 @@ public class RemoteInterface extends Client {
 	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long duration, long period) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.value = value;
-		this.metadata = Format.get(tag.type);
+//		this.metadata = Format.get(tag.type);
 		this.fluctuation = fluctuation;
 		this.context = context;
 		this.tag = tag;
@@ -146,7 +147,7 @@ public class RemoteInterface extends Client {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out("Posting Content Instance", i);
 		try {
-			response = services.postContentInstance(value,metadata,i);
+			response = services.postContentInstance(Format.pack(value,tag.type),i);
 		} catch (URISyntaxException e) {
 			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
@@ -167,7 +168,7 @@ public class RemoteInterface extends Client {
 		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out("Posting Content Instance", i);
 			try {
-				response = services.postContentInstance(value*Physics.randomFluctuation(fluctuation),metadata,i);
+				response = services.postContentInstance(Format.pack(value*Physics.randomFluctuation(fluctuation),tag.type),i);
 			} catch (URISyntaxException e) {
 				deleteNodeAsync(tag.serial);
 				outStream.out("failed. Terminating interface",i);

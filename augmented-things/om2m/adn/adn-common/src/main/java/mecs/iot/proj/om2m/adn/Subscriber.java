@@ -47,8 +47,8 @@ public class Subscriber {
 		lastResource = sender;
 	}
 	
-	public void insert(String sender, String event, String receiver, String address, String action) {
-		Reference ref = new Reference(sender,event,receiver,address,action);
+	public void insert(String sender, String event, String rule, String receiver, String address, String action) {
+		Reference ref = new Reference(sender,event,rule,receiver,address,action);
 		if (referenceMap.containsKey(sender)) {
 			referenceMap.get(sender).add(ref);
 		} else {
