@@ -93,7 +93,7 @@ public class Subscriber {
 				for (int i=0; i<resources.length; i++) {
 					refs = referenceMap.get(resources[i]);
 					for (int j=0; j<refs.size(); j++) {
-						if (refs.get(j).receiver.equals(id))
+						if (refs.get(j).receiver.id.equals(id))
 							refs.remove(j);																	// Remove all references containing the receiver
 					}
 					if (refs.size()==0) {																	// If there are no references anymore, remove the subscription to the corresponding resource
@@ -117,7 +117,7 @@ public class Subscriber {
 	public void remove(String sender, String receiver, int k) throws URISyntaxException {
 		ArrayList<Reference> refs = referenceMap.get(sender);
 		for (int j=0; j<refs.size(); j++) {
-			if (refs.get(j).receiver.equals(receiver))
+			if (refs.get(j).receiver.id.equals(receiver))
 				refs.remove(j);																				// Remove all references containing the receiver
 		}
 		if (refs.size()==0) {
@@ -130,7 +130,7 @@ public class Subscriber {
 		Reference ref;
 		for (int j=0; j<refs.size(); j++) {
 			ref = refs.get(j);
-			if (ref.receiver.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
+			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
 				refs.remove(j);																				// Remove all references both containing the receiver and matching the pair event/action
 		}
 		if (refs.size()==0) {
