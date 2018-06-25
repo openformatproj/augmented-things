@@ -90,7 +90,7 @@ public class Client extends Thread
 	}
 	
 	public void sendAsync(Request request, Code method) {
-		debugStream.out("Sent " + method + " request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
+		debugStream.out("Sent asynchronous " + method + " request to " + uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request), i);
 		connection.advanced(null,request);
 	}
 	
