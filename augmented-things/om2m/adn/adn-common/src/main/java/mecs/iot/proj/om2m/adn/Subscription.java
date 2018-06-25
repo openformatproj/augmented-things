@@ -2,7 +2,7 @@ package mecs.iot.proj.om2m.adn;
 
 import mecs.iot.proj.om2m.structures.Node;
 
-public class Reference {
+public class Subscription {
 	
 	public Terminal sender;
 	public String event;
@@ -10,7 +10,7 @@ public class Reference {
 	public Terminal receiver;
 	public String action;
 	
-	Reference(String sender, String receiver, String address) {
+	Subscription(String sender, String receiver, String address) {
 		this.sender = new Terminal(sender,null,Node.SENSOR);
 		this.action = null;
 		this.rule = null;
@@ -18,7 +18,7 @@ public class Reference {
 		this.action = null;
 	}
 	
-	Reference(String sender, String event, String rule, String receiver, String address, String action) {
+	Subscription(String sender, String event, String rule, String receiver, String address, String action) {
 		this.sender = new Terminal(sender,null,Node.SENSOR);
 		this.event = event;
 		this.rule = rule;

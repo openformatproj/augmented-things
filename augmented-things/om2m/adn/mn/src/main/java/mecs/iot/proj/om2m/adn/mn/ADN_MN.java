@@ -15,7 +15,7 @@ import org.json.JSONException;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
-import mecs.iot.proj.om2m.adn.Reference;
+import mecs.iot.proj.om2m.adn.Subscription;
 import mecs.iot.proj.om2m.adn.Subscriber;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
@@ -423,19 +423,19 @@ class ADN_MN extends ADN {
 						subscriber.bindToLastResource(key);							// If this is a brand new notification, associated this pi to the last subscription
 						subscriptionsEnabled = true;								// Re-enable subscription service
 					}
-					ArrayList<Reference> refs = subscriber.get(key);
-					if (refs!=null && refs.size()>0) {
+					ArrayList<Subscription> subs = subscriber.get(key);
+					if (subs!=null && subs.size()>0) {
 						CoapResponse response_ = null;
-						for (int j=0; j<refs.size(); j++) {
-							switch (refs.get(j).receiver.node) {
+						for (int j=0; j<subs.size(); j++) {
+							switch (subs.get(j).receiver.node) {
 								case SENSOR:
 									break;
 								case ACTUATOR:
 									String[] splits = con.split("con=");
-									double value = Format.unpack(splits[0],tagMap.get(refs.get(j).sender.id).type);
+									double value = Format.unpack(splits[0],tagMap.get(subs.get(j).sender.id).type);
 									//TODO
 									try {
-										response_ = forwardNotification(refs.get(j).receiver.id,refs.get(j).receiver.address,refs.get(j).action);
+										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
@@ -447,7 +447,7 @@ class ADN_MN extends ADN {
 									break;
 								case USER:
 									try {
-										response_ = forwardNotification(refs.get(j).receiver.id,refs.get(j).receiver.address,subscriber.getName(key)+": "+con);
+										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subscriber.getName(key)+": "+con);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Subscriber {
 	
-	private HashMap<String,ArrayList<Reference>> referenceMap;												// resource -> list of references
+	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource -> list of subscriptions
 	private HashMap<String,String> piMap;
 	private String lastResource;
 	
@@ -27,7 +27,7 @@ public class Subscriber {
 	private String context;
 	
 	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) {
-		referenceMap = new HashMap<String,ArrayList<Reference>>();
+		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
 		piMap = new HashMap<String,String>();
 		this.debugStream = debugStream;
 		this.errStream = errStream;
@@ -36,30 +36,30 @@ public class Subscriber {
 	}
 	
 	public void insert(String sender, String receiver, String address) {
-		Reference ref = new Reference(sender,receiver,address);
-		if (referenceMap.containsKey(sender)) {
-			referenceMap.get(sender).add(ref);
+		Subscription ref = new Subscription(sender,receiver,address);
+		if (subscriptionMap.containsKey(sender)) {
+			subscriptionMap.get(sender).add(ref);
 		} else {
-			ArrayList<Reference> refs = new ArrayList<Reference>();
-			refs.add(ref);
-			referenceMap.put(sender,refs);
+			ArrayList<Subscription> subs = new ArrayList<Subscription>();
+			subs.add(ref);
+			subscriptionMap.put(sender,subs);
 		}
 		lastResource = sender;
 	}
 	
 	public void insert(String sender, String event, String rule, String receiver, String address, String action) {
-		Reference ref = new Reference(sender,event,rule,receiver,address,action);
-		if (referenceMap.containsKey(sender)) {
-			referenceMap.get(sender).add(ref);
+		Subscription ref = new Subscription(sender,event,rule,receiver,address,action);
+		if (subscriptionMap.containsKey(sender)) {
+			subscriptionMap.get(sender).add(ref);
 		} else {
-			ArrayList<Reference> refs = new ArrayList<Reference>();
-			refs.add(ref);
-			referenceMap.put(sender,refs);
+			ArrayList<Subscription> subs = new ArrayList<Subscription>();
+			subs.add(ref);
+			subscriptionMap.put(sender,subs);
 		}
 		lastResource = sender;
 	}
 	
-	// TODO: push referenceMap pair (sensor,refs) into CSE for IN-MN synchronization
+	// TODO: push subscriptionMap pair (sensor,subs) into CSE for IN-MN synchronization
 	
 	public boolean containsResource(String sender) {
 		return piMap.containsValue(sender);
@@ -73,8 +73,8 @@ public class Subscriber {
 		piMap.put(pi,lastResource);
 	}
 	
-	public ArrayList<Reference> get(String pi) {
-		return referenceMap.get(piMap.get(pi));
+	public ArrayList<Subscription> get(String pi) {
+		return subscriptionMap.get(piMap.get(pi));
 	}
 	
 	public String getName(String pi) {
@@ -84,19 +84,19 @@ public class Subscriber {
 	public void remove(String id, Node node, int k) throws URISyntaxException {
 		switch(node) {
 			case SENSOR:
-				referenceMap.remove(id);
+				subscriptionMap.remove(id);
 				break;
 			case ACTUATOR:
 			case USER:
-				String[] resources = referenceMap.keySet().toArray(new String[]{});
-				ArrayList<Reference> refs;
+				String[] resources = subscriptionMap.keySet().toArray(new String[]{});
+				ArrayList<Subscription> subs;
 				for (int i=0; i<resources.length; i++) {
-					refs = referenceMap.get(resources[i]);
-					for (int j=0; j<refs.size(); j++) {
-						if (refs.get(j).receiver.id.equals(id))
-							refs.remove(j);																	// Remove all references containing the receiver
+					subs = subscriptionMap.get(resources[i]);
+					for (int j=0; j<subs.size(); j++) {
+						if (subs.get(j).receiver.id.equals(id))
+							subs.remove(j);																	// Remove all subscriptions containing the receiver
 					}
-					if (refs.size()==0) {																	// If there are no references anymore, remove the subscription to the corresponding resource
+					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
 //						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
 //						String[] uri = new String[] {context + Constants.mnPostfix, resources[i], "data", "subscription"};
 //						CoapResponse response_ = null;
@@ -106,7 +106,7 @@ public class Subscriber {
 //							errStream.out("Unable to delete subscription on \"" + resources[i] + "\", response: " + response_.getCode(), //
 //									k, Severity.LOW);
 //						}
-//						referenceMap.remove(resources[i]);
+//						subscriptionMap.remove(resources[i]);
 						deleteSubscription(resources[i], k);
 					}
 				}
@@ -115,25 +115,25 @@ public class Subscriber {
 	}
 	
 	public void remove(String sender, String receiver, int k) throws URISyntaxException {
-		ArrayList<Reference> refs = referenceMap.get(sender);
-		for (int j=0; j<refs.size(); j++) {
-			if (refs.get(j).receiver.id.equals(receiver))
-				refs.remove(j);																				// Remove all references containing the receiver
+		ArrayList<Subscription> subs = subscriptionMap.get(sender);
+		for (int j=0; j<subs.size(); j++) {
+			if (subs.get(j).receiver.id.equals(receiver))
+				subs.remove(j);																				// Remove all subscriptions containing the receiver
 		}
-		if (refs.size()==0) {
+		if (subs.size()==0) {
 			deleteSubscription(sender, k);
 		}
 	}
 	
 	public void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException {
-		ArrayList<Reference> refs = referenceMap.get(sender);
-		Reference ref;
-		for (int j=0; j<refs.size(); j++) {
-			ref = refs.get(j);
+		ArrayList<Subscription> subs = subscriptionMap.get(sender);
+		Subscription ref;
+		for (int j=0; j<subs.size(); j++) {
+			ref = subs.get(j);
 			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
-				refs.remove(j);																				// Remove all references both containing the receiver and matching the pair event/action
+				subs.remove(j);																				// Remove all subscriptions both containing the receiver and matching the pair event/action
 		}
-		if (refs.size()==0) {
+		if (subs.size()==0) {
 			deleteSubscription(sender, k);
 		}
 	}
@@ -148,7 +148,7 @@ public class Subscriber {
 			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
 					k, Severity.LOW);
 		}
-		referenceMap.remove(resource);
+		subscriptionMap.remove(resource);
 	}
 
 }
