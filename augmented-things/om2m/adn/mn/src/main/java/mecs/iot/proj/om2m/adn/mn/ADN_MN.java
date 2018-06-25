@@ -580,6 +580,8 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
+				response = new Response(ResponseCode.DELETED);
+				response.setPayload("OK");
 			} else {
 				// user removal (id=<ID>)
 				outStream.out1("Handling removal of user \"" + id + "\"", i);
@@ -594,6 +596,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				userMap.remove(id);
+				response = new Response(ResponseCode.DELETED);
 			}
 		} else {
 			String serial0 = getUriValue(exchange,"ser",0);
@@ -667,6 +670,8 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
+					response = new Response(ResponseCode.DELETED);
+					response.setPayload("OK");
 				} else {
 					// node removal (ser=<SERIAL>)
 					if (tag0==null || tag0.node==Node.USER) {
@@ -730,6 +735,7 @@ class ADN_MN extends ADN {
 							break;
 					}
 					tagMap.remove(serial0);
+					response = new Response(ResponseCode.DELETED);
 				}
 			} else {
 				debugStream.out("Bad request, ser", i);
@@ -739,7 +745,6 @@ class ADN_MN extends ADN {
 				return;
 			}
 		}
-		response = new Response(ResponseCode.DELETED);
 		exchange.respond(response);
 		outStream.out2("done");
 		i++;
