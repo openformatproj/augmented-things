@@ -24,6 +24,7 @@ import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
 class ADN_MN extends ADN {
 
@@ -366,7 +367,16 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					subscriber.insert(tag0.id,label0,tag0.labelMap.get(label0),tag1.id,tag1.address,label1);
+					try {
+						subscriber.insert(tag0.id,label0,tag0.labelMap.get(label0),tag1.id,tag1.address,label1);
+					} catch (InvalidRuleException e) {
+						outStream.out2("failed");
+						errStream.out(e,0,Severity.LOW);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					if (!subscriber.containsResource(tag0.id))
 						subscriptionsEnabled = false;								// Disable subscription service to determine the pi identifier associated to this subscription
 					response = new Response(ResponseCode.CONTINUE);
@@ -433,16 +443,18 @@ class ADN_MN extends ADN {
 								case ACTUATOR:
 									String[] splits = con.split("con=");
 									double value = Format.unpack(splits[0],tagMap.get(subs.get(j).sender.id).type);
-									//TODO
-									try {
-										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
-									} catch (URISyntaxException e) {
-										outStream.out2("failed");
-										errStream.out(e,0,Severity.MEDIUM);
-										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-										exchange.respond(response);
-										i++;
-										return;
+									subs.get(j).controller.insert(value);
+									if (subs.get(j).controller.check()) {
+										try {
+											response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
+										} catch (URISyntaxException e) {
+											outStream.out2("failed");
+											errStream.out(e,0,Severity.MEDIUM);
+											response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+											exchange.respond(response);
+											i++;
+											return;
+										}
 									}
 									break;
 								case USER:

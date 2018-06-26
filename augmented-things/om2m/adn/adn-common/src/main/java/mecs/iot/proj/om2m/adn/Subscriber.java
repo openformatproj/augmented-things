@@ -11,6 +11,7 @@ import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
+import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class Subscriber {
 		lastResource = sender;
 	}
 	
-	public void insert(String sender, String event, String rule, String receiver, String address, String action) {
+	public void insert(String sender, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
 		Subscription ref = new Subscription(sender,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
@@ -97,16 +98,6 @@ public class Subscriber {
 							subs.remove(j);																	// Remove all subscriptions containing the receiver
 					}
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
-//						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
-//						String[] uri = new String[] {context + Constants.mnPostfix, resources[i], "data", "subscription"};
-//						CoapResponse response_ = null;
-//						cseClient.stepCount();
-//						response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-//						if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-//							errStream.out("Unable to delete subscription on \"" + resources[i] + "\", response: " + response_.getCode(), //
-//									k, Severity.LOW);
-//						}
-//						subscriptionMap.remove(resources[i]);
 						deleteSubscription(resources[i], k);
 					}
 				}
