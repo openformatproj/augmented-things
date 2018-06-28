@@ -222,6 +222,9 @@ class ADN_MN extends ADN {
 						}
 						tag = new Tag(Node.ACTUATOR,id,address,attributes);
 					} else {
+						// String pi = getUriValue(exchange,"pi",3);
+						// ...
+						// TODO: bindToResource(id,pi);
 						tag = new Tag(Node.SENSOR,id,type,attributes);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
