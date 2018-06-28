@@ -130,7 +130,7 @@ class ADN_MN extends ADN {
 					}
 					if (response_==null) {
 						outStream.out2("failed");
-						errStream.out("Unable to read from " + cseClient.services.uri(), //
+						errStream.out("Unable to read from " + cseClient.services.uri(),
 								i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
@@ -138,7 +138,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					response = new Response(ResponseCode.CONTENT);
-					String con = Services.parseJSON(response_.getResponseText(), "m2m:cin", //
+					String con = Services.parseJSON(response_.getResponseText(), "m2m:cin",
 							new String[] {"con"}, new Class<?>[] {String.class});
 					response.setPayload(id + ": " + con);
 					break;
@@ -264,7 +264,7 @@ class ADN_MN extends ADN {
 						}
 						subscriber.insert(tag.id,id,address);
 						if (!subscriber.containsResource(tag.id))
-							subscriptionsEnabled = false;								// Disable subscription service to determine the pi identifier associated to this subscription
+							subscriptionsEnabled = false;																// Disable subscription service to determine the pi identifier associated to this subscription
 						response = new Response(ResponseCode.CONTINUE);
 					} else {
 						outStream.out1("Subscription service temporarily disabled", i);
@@ -381,7 +381,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					if (!subscriber.containsResource(tag0.id))
-						subscriptionsEnabled = false;								// Disable subscription service to determine the pi identifier associated to this subscription
+						subscriptionsEnabled = false;																	// Disable subscription service to determine the pi identifier associated to this subscription
 					response = new Response(ResponseCode.CONTINUE);
 				} else {
 					outStream.out1("Subscription service temporarily disabled", i);
@@ -394,7 +394,7 @@ class ADN_MN extends ADN {
 					outStream.out1("Handling subscription confirmation", i);
 					CoapResponse response_ = null;
 					try {
-						response_ = forwardNotification(notificationId,notificationAddress,"OK");	// Warn the requester about completed subscription
+						response_ = forwardNotification(notificationId,notificationAddress,"OK");						// Warn the requester about completed subscription
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,0,Severity.MEDIUM);
@@ -405,7 +405,7 @@ class ADN_MN extends ADN {
 					}
 					if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
 						outStream.out2("failed");
-						errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(), //
+						errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
 								i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
@@ -417,11 +417,11 @@ class ADN_MN extends ADN {
 					String con = null;
 					// String sur = null;
 					try {
-						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "pi=/augmented-things-MN-cse/cnt-67185819"
+						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "pi=/augmented-things-MN-cse/cnt-67185819"
 								new String[] {"pi"}, new Class<?>[] {String.class},false);
-						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, // Example: "con=36,404 °C"
+						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "con=36,404 °C"
 								new String[] {"con"}, new Class<?>[] {String.class},false);
-						// sur = Services.parseJSON(notification, "m2m:sgn", // "Example: sur=/augmented-things-MN-cse/sub-730903481"
+						// sur = Services.parseJSON(notification, "m2m:sgn", 											// "Example: sur=/augmented-things-MN-cse/sub-730903481"
 						//		new String[] {"sur"}, new Class<?>[] {String.class});
 					} catch (JSONException e) {
 						debugStream.out("Received invalid notification", i);
@@ -433,8 +433,12 @@ class ADN_MN extends ADN {
 					outStream.out1("Handling notification with JSON: " + pi + ", " + con, i);
 					String key = getKey(pi);
 					if (!subscriber.containsKey(key)) {
-						subscriber.bindToLastResource(key);							// If this is a brand new notification, associated this pi to the last subscription
-						subscriptionsEnabled = true;								// Re-enable subscription service
+						if (!subscriptionsEnabled) {
+							subscriber.bindToLastResource(key);															// If this is a brand new notification, associated this pi to the last subscription
+							subscriptionsEnabled = true;																// Re-enable subscription service
+						} else {
+							;																							// Spurious notification, removing (TODO)
+						}
 					}
 					ArrayList<Subscription> subs = subscriber.get(key);
 					if (subs!=null && subs.size()>0) {
@@ -475,7 +479,7 @@ class ADN_MN extends ADN {
 							}
 							if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
 								outStream.out2("failed");
-								errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(), //
+								errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
 										i, Severity.LOW);
 								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 								exchange.respond(response);
@@ -547,7 +551,7 @@ class ADN_MN extends ADN {
 		CoapResponse response_ = notificationClient.send(request, Code.PUT);
 		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
 			outStream.out2("failed");
-			errStream.out("Unable to write on actuator \"" + tag.id + "\", response: " + response_.getCode(), //
+			errStream.out("Unable to write on actuator \"" + tag.id + "\", response: " + response_.getCode(),
 					i, Severity.LOW);
 			response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 			exchange.respond(response);
@@ -743,7 +747,7 @@ class ADN_MN extends ADN {
 							}
 							if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
 								outStream.out2("failed");
-								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", response: " + response_.getCode(), //
+								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", response: " + response_.getCode(),
 										i, Severity.LOW);
 								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 								exchange.respond(response);
