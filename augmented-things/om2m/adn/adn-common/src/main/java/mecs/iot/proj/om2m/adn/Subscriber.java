@@ -28,6 +28,7 @@ public class Subscriber {
 	private String context;
 	
 	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) {
+		// TODO: pull from OM2M
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
 		piMap = new HashMap<String,String>();
 		this.debugStream = debugStream;
@@ -44,6 +45,7 @@ public class Subscriber {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
+			// TODO: push to OM2M
 		}
 		lastResource = sender;
 	}
@@ -56,11 +58,10 @@ public class Subscriber {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
+			// TODO: push to OM2M
 		}
 		lastResource = sender;
 	}
-	
-	// TODO: push subscriptionMap pair (sensor,subs) into CSE for IN-MN synchronization
 	
 	public boolean containsResource(String sender) {
 		return piMap.containsValue(sender);
@@ -86,6 +87,7 @@ public class Subscriber {
 		switch(node) {
 			case SENSOR:
 				subscriptionMap.remove(id);
+				// TODO: push to OM2M
 				break;
 			case ACTUATOR:
 			case USER:
@@ -140,6 +142,7 @@ public class Subscriber {
 					k, Severity.LOW);
 		}
 		subscriptionMap.remove(resource);
+		// TODO: push to OM2M
 	}
 
 }

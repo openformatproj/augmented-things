@@ -39,6 +39,7 @@ class ADN_MN extends ADN {
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
 		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
+		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();
 		userMap = new HashMap<String,String>();
 		subscriptionsEnabled = true;
@@ -225,6 +226,7 @@ class ADN_MN extends ADN {
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					tagMap.put(serial,tag);
+					// TODO: push to OM2M
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					// node lookout (id=<ID>&ser=<SERIAL>)
@@ -284,6 +286,7 @@ class ADN_MN extends ADN {
 				}
 				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
 				userMap.put(id,address);
+				// TODO: push to OM2M 
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
@@ -624,6 +627,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				userMap.remove(id);
+				// TODO: push to OM2M
 				response = new Response(ResponseCode.DELETED);
 			}
 		} else {
@@ -763,6 +767,7 @@ class ADN_MN extends ADN {
 							break;
 					}
 					tagMap.remove(serial0);
+					// TODO: push to OM2M
 					response = new Response(ResponseCode.DELETED);
 				}
 			} else {
