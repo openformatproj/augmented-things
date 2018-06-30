@@ -11,19 +11,19 @@ public class Subscription {
 	public Terminal receiver;
 	public String action;
 	
-	Subscription(String sender, String receiver, String address) {
-		this.sender = new Terminal(sender,null,Node.SENSOR);
+	Subscription(String sender, String type, String receiver, String address) {
+		this.sender = new Terminal(sender,type,null,Node.SENSOR);
 		this.action = null;
 		this.controller = null;
-		this.receiver = new Terminal(receiver,address,Node.USER);
+		this.receiver = new Terminal(receiver,null,address,Node.USER);
 		this.action = null;
 	}
 	
-	Subscription(String sender, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
-		this.sender = new Terminal(sender,null,Node.SENSOR);
+	Subscription(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
+		this.sender = new Terminal(sender,type,null,Node.SENSOR);
 		this.event = event;
 		this.controller = new Controller(rule);
-		this.receiver = new Terminal(receiver,address,Node.ACTUATOR);
+		this.receiver = new Terminal(receiver,null,address,Node.ACTUATOR);
 		this.action = action;
 	}
 	

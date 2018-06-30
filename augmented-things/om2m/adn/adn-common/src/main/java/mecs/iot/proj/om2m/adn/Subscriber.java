@@ -37,8 +37,8 @@ public class Subscriber {
 		this.context = context;
 	}
 	
-	public void insert(String sender, String receiver, String address) {
-		Subscription ref = new Subscription(sender,receiver,address);
+	public void insert(String sender, String type, String receiver, String address) {
+		Subscription ref = new Subscription(sender,type,receiver,address);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
 		} else {
@@ -50,8 +50,8 @@ public class Subscriber {
 		lastResource = sender;
 	}
 	
-	public void insert(String sender, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
-		Subscription ref = new Subscription(sender,event,rule,receiver,address,action);
+	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
+		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
 		} else {

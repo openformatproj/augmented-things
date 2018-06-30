@@ -265,7 +265,7 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						subscriber.insert(tag.id,id,address);
+						subscriber.insert(tag.id,tag.type,id,address);
 						if (!subscriber.containsResource(tag.id))
 							subscriptionsEnabled = false;																// Disable subscription service to determine the pi identifier associated to this subscription
 						response = new Response(ResponseCode.CONTINUE);
@@ -374,7 +374,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					try {
-						subscriber.insert(tag0.id,label0,tag0.labelMap.get(label0),tag1.id,tag1.address,label1);
+						subscriber.insert(tag0.id,tag0.type,label0,tag0.labelMap.get(label0),tag1.id,tag1.address,label1);
 					} catch (InvalidRuleException e) {
 						outStream.out2("failed");
 						errStream.out(e,0,Severity.LOW);
@@ -452,7 +452,7 @@ class ADN_MN extends ADN {
 									break;
 								case ACTUATOR:
 									String[] splits = con.split("con=");
-									double value = Format.unpack(splits[0],tagMap.get(subs.get(j).sender.id).type);
+									double value = Format.unpack(splits[0],subs.get(j).sender.type);
 									subs.get(j).controller.insert(value);
 									if (subs.get(j).controller.check()) {
 										try {
