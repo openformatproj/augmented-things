@@ -39,15 +39,17 @@ class NotificationServer extends CoapResource {
 			unit.sendAck(str);
 			response = new Response(ResponseCode.CHANGED);
 		} else {
-			outStream.out("Handling notification \"" + str + "\"", i);
+			outStream.out1("Handling notification \"" + str + "\"", i);
 			response = unit.sendContent(str);
 			if (response==null || response.getCode()==ResponseCode.BAD_REQUEST) {
+				outStream.out2("failed");
 				debugStream.out("Bad request, \"" + str + "\" is not a valid notification", i);
 				response = new Response(ResponseCode.BAD_REQUEST);
 				exchange.respond(response);
 				i++;
 				return;
 			} else if (response.getCode()!=ResponseCode.CHANGED) {
+				outStream.out2("failed");
 				errStream.out("Unable to write on the unit \"" + unit.getName() + "\", response: " + response.getCode(), //
 						i, Severity.LOW);
 				response = new Response(response.getCode());
@@ -57,6 +59,7 @@ class NotificationServer extends CoapResource {
 			}
 		}
 		exchange.respond(response);
+		outStream.out2("done");
 		i++;
 	}
 
