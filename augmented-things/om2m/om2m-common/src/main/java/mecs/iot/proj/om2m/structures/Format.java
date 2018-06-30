@@ -20,7 +20,7 @@ public class Format {
 		return String.format("%.3f",value) + " " + formatMap.get(type);
 	}
 	
-	public static double unpack(String content, String type) {
+	public static double unpack(String content, String type) throws NumberFormatException {
 		String[] splits = content.split(" ");
 		return Double.parseDouble(splits[0]);
 	}

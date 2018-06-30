@@ -452,7 +452,17 @@ class ADN_MN extends ADN {
 									break;
 								case ACTUATOR:
 									String[] splits = con.split("con=");
-									double value = Format.unpack(splits[0],subs.get(j).sender.type);
+									double value;
+									try {
+										value = Format.unpack(splits[1],subs.get(j).sender.type);
+									} catch (NumberFormatException e) {
+										outStream.out2("failed");
+										errStream.out(e,0,Severity.MEDIUM);
+										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+										exchange.respond(response);
+										i++;
+										return;
+									}
 									subs.get(j).controller.insert(value);
 									if (subs.get(j).controller.check()) {
 										try {
