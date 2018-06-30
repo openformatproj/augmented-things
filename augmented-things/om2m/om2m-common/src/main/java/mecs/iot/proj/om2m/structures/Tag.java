@@ -48,8 +48,8 @@ public class Tag {
 				this.type = description;
 				this.attributes = attributes;
 				labelMap = new HashMap<String,String>();
-				String[] splits;
 				for (int i=0; i<attributes.length; i++) {
+					String[] splits;
 					splits = attributes[i].split(": ");
 					if (splits.length>1)
 						labelMap.put(splits[1],splits[0]);
@@ -62,7 +62,10 @@ public class Tag {
 				this.address = description;
 				this.type = "act";
 				this.attributes = attributes;
-				labelMap = null;
+				labelMap = new HashMap<String,String>();
+				for (int i=0; i<attributes.length; i++) {
+					labelMap.put(attributes[i],"");
+				}
 				break;
 			case USER:
 				break;
