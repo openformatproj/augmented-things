@@ -76,25 +76,52 @@ public class RemoteInterface extends Client {
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
 						i, Severity.LOW);
 			return;
 		}
 		String[] mnData = response.getResponseText().split(","); 													// MN address and id
 		String address = mnData[1]; 																				// MN address
-		outStream.out1_2("done, received " + address + " as MN address, connecting");
+		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
+		try {
+			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
+		} catch (URISyntaxException e) {
+			outStream.out2("failed. Terminating interface");
+			errStream.out(e, i, Severity.MEDIUM);
+			return;
+		}
+		outStream.out1_2("done, posting AE");
+		response = services.postAE(Services.normalizeName(tag.id),i);
+		if (response==null) {
+			outStream.out2("failed. Terminating interface");
+			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			outStream.out2("failed. Terminating interface");
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(),
+					i, Severity.LOW);
+			return;
+		}
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
-			errStream.out(e,i,Severity.MEDIUM);
+			errStream.out(e, i, Severity.MEDIUM);
 			return;
 		}
-		outStream.out1_2("done, registering to MN");
+		outStream.out1_2("done, registering");
 		response = register(tag,this.address,Node.ACTUATOR);
 		if (response==null) {
 			outStream.out2("failed. Terminating interface");
@@ -103,44 +130,15 @@ public class RemoteInterface extends Client {
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
 			return;
 		}
-		outStream.out1_2("done, connecting to CSE");
-		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
-		} catch (URISyntaxException e) {
-			deleteNodeAsync(tag.serial);
-			outStream.out2("failed. Terminating interface");
-			errStream.out(e, i, Severity.MEDIUM);
-			return;
-		}
-		outStream.out2("done, posting AE");
-		response = services.postAE(Services.normalizeName(tag.id),i);
-		if (response==null) {
-			deleteNodeAsync(tag.serial);
-			outStream.out("failed. Terminating interface",i);
-			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			deleteNodeAsync(tag.serial);
-			outStream.out("failed. Terminating interface",i);
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
-						i, Severity.LOW);
-			else
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(), //
-					i, Severity.LOW);
-			return;
-		}
-		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae", //
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		outStream.out2("done");
 		i++;
 		if (duration>0) {
 			Thread wd = new Watchdog(this);
