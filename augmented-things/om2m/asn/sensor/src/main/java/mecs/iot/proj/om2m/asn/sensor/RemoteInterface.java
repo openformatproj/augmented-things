@@ -129,22 +129,22 @@ public class RemoteInterface extends Client {
 		if (response==null) {
 			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
-			errStream.out("Unable to post container to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			errStream.out("Unable to post Container to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
 			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() + //
+				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode() + //
 						", reason: " + response.getResponseText(), //
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode(), //
 					i, Severity.LOW);
 			return;
 		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt", //
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+				new String[] {"rn","ty","ri"}, new Class<?>[] {String.class,Integer.class,String.class}), i);
 		outStream.out("Posting Content Instance", i);
 		try {
 			response = services.postContentInstance(Format.pack(value,tag.type),i);
@@ -157,7 +157,7 @@ public class RemoteInterface extends Client {
 		if (response==null) {
 			deleteNodeAsync(tag.serial);
 			outStream.out("failed. Terminating interface",i);
-			errStream.out("Unable to post content instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		}
 		outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
@@ -178,7 +178,7 @@ public class RemoteInterface extends Client {
 			if (response==null) {
 				deleteNodeAsync(tag.serial);
 				outStream.out("failed. Terminating interface",i);
-				errStream.out("Unable to post content instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
+				errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 				return;
 			}
 			outStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
