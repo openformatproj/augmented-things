@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.adn.mn;
 
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -455,7 +456,7 @@ class ADN_MN extends ADN {
 									double value;
 									try {
 										value = Format.unpack(splits[1],subs.get(j).sender.type);
-									} catch (NumberFormatException e) {
+									} catch (ParseException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
 										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);

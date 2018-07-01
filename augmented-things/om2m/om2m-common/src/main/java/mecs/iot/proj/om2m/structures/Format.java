@@ -1,5 +1,7 @@
 package mecs.iot.proj.om2m.structures;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 
 public class Format {
@@ -20,9 +22,10 @@ public class Format {
 		return String.format("%.3f",value) + " " + formatMap.get(type);
 	}
 	
-	public static double unpack(String content, String type) throws NumberFormatException {
+	public static double unpack(String content, String type) throws ParseException {
 		String[] splits = content.split(" ");
-		return Double.parseDouble(splits[0]);
+		NumberFormat format = NumberFormat.getInstance();
+		return format.parse(splits[0]).doubleValue();
 	}
 	
 }
