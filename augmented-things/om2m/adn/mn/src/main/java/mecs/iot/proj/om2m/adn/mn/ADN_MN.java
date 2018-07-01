@@ -276,7 +276,6 @@ class ADN_MN extends ADN {
 							return;
 						}
 						subscriber.insert(tag.id,tag.type,id,address);
-//						if (!subscriber.containsResource(tag.id))
 						subscriptionsEnabled = false;																	// Disable subscription service while waiting for confirmation
 						response = new Response(ResponseCode.CONTINUE);
 					} else {
@@ -393,7 +392,6 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-//					if (!subscriber.containsResource(tag0.id))
 					subscriptionsEnabled = false;																		// Disable subscription service while waiting for confirmation
 					response = new Response(ResponseCode.CONTINUE);
 				} else {
@@ -454,15 +452,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out1("Handling notification with JSON: " + pi + ", " + con, i);
-					String key = Services.getKey(pi);
-//					if (!subscriber.containsKey(key)) {
-//						if (!subscriptionsEnabled) {
-//							subscriber.bindToLastResource(key);															// If this is a brand new notification, associated this pi to the last subscription
-//							subscriptionsEnabled = true;																// Re-enable subscription service
-//						} else {
-//							;																							// Spurious notification, removing (TODO)
-//						}
-//					}
+					String key = Services.getKeyFromAttribute(pi);
 					ArrayList<Subscription> subs = subscriber.get(key);
 					if (subs!=null && subs.size()>0) {
 						CoapResponse response_ = null;
@@ -705,7 +695,6 @@ class ADN_MN extends ADN {
 					}
 					String label0 = getUriValue(exchange,"lab",2);
 					String label1 = getUriValue(exchange,"lab",3);
-//					String notificationId = getUriValue(exchange,"id",4);
 					if (!isValidLabel(label0,tag0)) {
 						debugStream.out("Bad request, lab=" + label0, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
@@ -720,14 +709,6 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-//					notificationAddress = userMap.get(notificationId);
-//					if (notificationAddress==null) {
-//						debugStream.out("User \"" + notificationId + "\" is not registered on this MN", i);
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
 					outStream.out1("Handling removal of link between serial \"" + serial0 + "\" and serial \"" + serial1 + "\"", i);
 					try {
 						subscriber.remove(tag0.id,label0,tag1.id,label1,i);

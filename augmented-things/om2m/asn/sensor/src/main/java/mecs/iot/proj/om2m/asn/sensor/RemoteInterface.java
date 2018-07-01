@@ -115,7 +115,7 @@ public class RemoteInterface extends Client {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		String ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
 				new String[] {"ri"}, new Class<?>[] {String.class});												// Example: "/augmented-things-MN-cse/cnt-67185819"
-		String key = Services.getKey(ri);																			// Example: "67185819"
+		String key = Services.getKeyFromAttribute(ri);																// Example: "67185819"
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
@@ -143,7 +143,7 @@ public class RemoteInterface extends Client {
 		}
 		outStream.out1_2("done, connecting to CSE for publishing");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix + "/cnt-" + key);
+			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix + Services.getPathFromKey(key));
 		} catch (URISyntaxException e) {
 			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");

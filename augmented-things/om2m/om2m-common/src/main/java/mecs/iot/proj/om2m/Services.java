@@ -267,8 +267,12 @@ public class Services {
 		return path.uri();
 	}
 	
-	public static String getKey(String id) {
-		return id.split("cnt-")[1];
+	public static String getKeyFromAttribute(String attr) {
+		return attr.split("cnt-")[1];
+	}
+	
+	public static String getPathFromKey(String key) {
+		return "/cnt-" + key;
 	}
 
 }
