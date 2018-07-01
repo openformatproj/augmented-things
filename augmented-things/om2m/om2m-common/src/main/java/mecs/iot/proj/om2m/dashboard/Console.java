@@ -45,8 +45,8 @@ public class Console extends Thread {
 		i = 0;
 	}
 	
-	public void add (String name, Command command, String help, String syntax) {
-		CommandContainer container = new CommandContainer(command, help + ". Syntax: " + syntax);
+	public void add (String name, Command command, int numOptions, String help, String syntax) {
+		CommandContainer container = new CommandContainer(command, numOptions, help + ". Syntax: " + syntax);
 		commandMap.put(name,container);
 	}
 	
@@ -74,19 +74,24 @@ public class Console extends Thread {
 				String[] sections = str.split(" -");
 				String name = sections[0];
 				if (commandMap.containsKey(name)) {
-					int n = sections.length-1;
-					if (n>0) {
-						String[] options = new String[n];
-						for (int i=0; i<n; i++) {
-							options[i] = sections[i+1];
-						}
-						if (options[0].equals("help")) {
-							interf.out(commandMap.get(name).help);
-						} else {
-							interf.out(commandMap.get(name).command.execute(options));
-						}
+					int commandsFound = sections.length-1;
+					int commands = commandMap.get(name).numOptions;
+					if (commandsFound<commands) {
+						interf.out(name + " has " + commandMap.get(name).numOptions + " mandatory number of options to specify");
 					} else {
-						interf.out(commandMap.get(name).command.execute(null));
+						if (commands>0) {
+							String[] options = new String[commands];
+							for (int i=0; i<commands; i++) {
+								options[i] = sections[i+1];
+							}
+							if (options[0].equals("help")) {
+								interf.out(commandMap.get(name).help);
+							} else {
+								interf.out(commandMap.get(name).command.execute(options));
+							}
+						} else {
+							interf.out(commandMap.get(name).command.execute(null));
+						}
 					}
 				} else if (name.equals("ls")) {
 					for (int i=0; i<commandMap.size(); i++) {
@@ -156,10 +161,12 @@ public class Console extends Thread {
 class CommandContainer {
 	
 	Command command;
+	int numOptions;
 	String help;
 	
-	CommandContainer(Command command, String help) {
+	CommandContainer(Command command, int numOptions, String help) {
 		this.command = command;
+		this.numOptions = numOptions;
 		this.help = help;
 	}
 	

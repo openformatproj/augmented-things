@@ -4,6 +4,7 @@ public class CommandList {
 	
 	protected Command[] commands;
 	public int numCommands;
+	public int numOptions[];
 	public String[][] text;
 	
 	public Command getCommand(int i) {
