@@ -16,7 +16,6 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 public class RemoteInterface extends Client {
 	
 	private double value;
-//	private String metadata;
 	private double fluctuation;
 	private String context;
 	private Tag tag;
@@ -29,7 +28,6 @@ public class RemoteInterface extends Client {
 	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long duration, long period) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.value = value;
-//		this.metadata = Format.get(tag.type);
 		this.fluctuation = fluctuation;
 		this.context = context;
 		this.tag = tag;
@@ -51,11 +49,11 @@ public class RemoteInterface extends Client {
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
 						i, Severity.LOW);
 			return;
 		}
@@ -79,11 +77,11 @@ public class RemoteInterface extends Client {
 //		} else if (response.getCode()!=ResponseCode.CREATED) {
 //			outStream.out2("failed. Terminating interface");
 //			if (!response.getResponseText().isEmpty())
-//				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
+//				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
 //						", reason: " + response.getResponseText(), //
 //						i, Severity.LOW);
 //			else
-//				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(), //
+//				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
 //					i, Severity.LOW);
 //			return;
 //		}
@@ -107,15 +105,15 @@ public class RemoteInterface extends Client {
 			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
 			return;
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae", //
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae",
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting Container");
 		try {
@@ -135,16 +133,19 @@ public class RemoteInterface extends Client {
 			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
+				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
 			return;
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt", //
-				new String[] {"rn","ty","ri"}, new Class<?>[] {String.class,Integer.class,String.class}), i);
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		String ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+				new String[] {"ri"}, new Class<?>[] {String.class});												// Example: "/augmented-things-MN-cse/cnt-67185819"
+		String key = ri.split("cnt-")[1];																			// Example: "67185819"
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
@@ -162,17 +163,17 @@ public class RemoteInterface extends Client {
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() + //
-						", reason: " + response.getResponseText(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(), //
+				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
 			return;
 		}
 		outStream.out1_2("done, connecting to CSE for publishing");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
+			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix + "/cnt-" + key);
 		} catch (URISyntaxException e) {
 			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");
@@ -195,7 +196,7 @@ public class RemoteInterface extends Client {
 //			errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 //			return;
 //		}
-//		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
+//		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin",
 //				new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
 		i++;
 		start = System.currentTimeMillis();
@@ -216,7 +217,7 @@ public class RemoteInterface extends Client {
 				errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 				return;
 			}
-			debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin", //
+			debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin",
 					new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
 			outStream.out2("done");
 			i++;
