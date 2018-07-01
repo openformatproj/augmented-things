@@ -5,6 +5,7 @@ import mecs.iot.proj.om2m.asn.Physics;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
+import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
@@ -120,7 +121,7 @@ public class RemoteInterface extends Client {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		String ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
 				new String[] {"ri"}, new Class<?>[] {String.class});												// Example: "/augmented-things-MN-cse/cnt-67185819"
-		String key = ri.split("cnt-")[1];																			// Example: "67185819"
+		String key = Services.getKey(ri);																			// Example: "67185819"
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
@@ -130,7 +131,7 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering");
-		response = register(tag);
+		response = register(tag,key,Node.SENSOR);
 		if (response==null) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);

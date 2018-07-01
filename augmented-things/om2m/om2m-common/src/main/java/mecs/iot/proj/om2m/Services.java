@@ -266,5 +266,9 @@ public class Services {
 	public String uri() {
 		return path.uri();
 	}
+	
+	public static String getKey(String id) {
+		return id.split("cnt-")[1];
+	}
 
 }

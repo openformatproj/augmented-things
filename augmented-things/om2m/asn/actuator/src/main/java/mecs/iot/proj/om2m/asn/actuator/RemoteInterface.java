@@ -5,6 +5,7 @@ import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
@@ -94,7 +95,7 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering to MN");
-		response = register(tag,this.address);
+		response = register(tag,this.address,Node.ACTUATOR);
 		if (response==null) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);

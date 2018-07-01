@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class Subscriber {
 	
 	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource -> list of subscriptions
-	private HashMap<String,String> piMap;
-	private String lastResource;
+	private HashMap<String,String> keyMap;
+//	private String lastResource;
 	
 	private DebugStream debugStream;
 	private ErrStream errStream;
@@ -30,7 +30,7 @@ public class Subscriber {
 	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) {
 		// TODO: pull from OM2M
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
-		piMap = new HashMap<String,String>();
+		keyMap = new HashMap<String,String>();
 		this.debugStream = debugStream;
 		this.errStream = errStream;
 		this.cseClient = cseClient;
@@ -47,7 +47,7 @@ public class Subscriber {
 			subscriptionMap.put(sender,subs);
 			// TODO: push to OM2M
 		}
-		lastResource = sender;
+//		lastResource = sender;
 	}
 	
 	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
@@ -60,27 +60,31 @@ public class Subscriber {
 			subscriptionMap.put(sender,subs);
 			// TODO: push to OM2M
 		}
-		lastResource = sender;
+//		lastResource = sender;
 	}
 	
-	public boolean containsResource(String sender) {
-		return piMap.containsValue(sender);
+//	public boolean containsResource(String sender) {
+//		return keyMap.containsValue(sender);
+//	}
+	
+//	public boolean containsKey(String pi) {
+//		return piMap.containsKey(pi);
+//	}
+	
+	public void bind(String id, String key) {
+		keyMap.put(key,id);
 	}
 	
-	public boolean containsKey(String pi) {
-		return piMap.containsKey(pi);
-	}
-	
-	public void bindToLastResource(String pi) {
-		piMap.put(pi,lastResource);
-	}
+//	public void bindToLastResource(String pi) {
+//		piMap.put(pi,lastResource);
+//	}
 	
 	public ArrayList<Subscription> get(String pi) {
-		return subscriptionMap.get(piMap.get(pi));
+		return subscriptionMap.get(keyMap.get(pi));
 	}
 	
-	public String getName(String pi) {
-		return piMap.get(pi);
+	public String getName(String key) {
+		return keyMap.get(key);
 	}
 	
 	public void remove(String id, Node node, int k) throws URISyntaxException {

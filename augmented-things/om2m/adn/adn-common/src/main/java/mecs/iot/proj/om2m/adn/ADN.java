@@ -99,6 +99,11 @@ public class ADN extends CoapResource {
 		return address!=null && !address.isEmpty();
 	}
 	
+	protected boolean isValidKey(String key) {
+		// TODO
+		return key!=null && !key.isEmpty();
+	}
+	
 	protected boolean isValidLabel(String label, Tag tag) {
 //		Set<String> s = new HashSet<String>(Arrays.asList(tag.labels()));
 //		if (s.contains(label))

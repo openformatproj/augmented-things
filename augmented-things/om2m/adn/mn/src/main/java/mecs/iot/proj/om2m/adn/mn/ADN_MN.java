@@ -223,9 +223,18 @@ class ADN_MN extends ADN {
 						}
 						tag = new Tag(Node.ACTUATOR,id,address,attributes);
 					} else {
-						// String pi = getUriValue(exchange,"pi",3);
-						// ...
-						// TODO: bindToResource(id,pi);
+						String key = getUriValue(exchange,"key",3);
+						if (key==null || !isValidKey(key)) {
+							if (key!=null)
+								debugStream.out("Bad request, key=" + key, i);
+							else
+								debugStream.out("Bad request, key", i);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						subscriber.bind(id,key);
 						tag = new Tag(Node.SENSOR,id,type,attributes);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
@@ -267,8 +276,8 @@ class ADN_MN extends ADN {
 							return;
 						}
 						subscriber.insert(tag.id,tag.type,id,address);
-						if (!subscriber.containsResource(tag.id))
-							subscriptionsEnabled = false;																// Disable subscription service to determine the pi identifier associated to this subscription
+//						if (!subscriber.containsResource(tag.id))
+						subscriptionsEnabled = false;																	// Disable subscription service while waiting for confirmation
 						response = new Response(ResponseCode.CONTINUE);
 					} else {
 						outStream.out1("Subscription service temporarily disabled", i);
@@ -384,8 +393,8 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (!subscriber.containsResource(tag0.id))
-						subscriptionsEnabled = false;																	// Disable subscription service to determine the pi identifier associated to this subscription
+//					if (!subscriber.containsResource(tag0.id))
+					subscriptionsEnabled = false;																		// Disable subscription service while waiting for confirmation
 					response = new Response(ResponseCode.CONTINUE);
 				} else {
 					outStream.out1("Subscription service temporarily disabled", i);
@@ -396,22 +405,32 @@ class ADN_MN extends ADN {
 				String notification = exchange.getRequestText();
 				if (notification.contains("m2m:vrq")) {
 					outStream.out1("Handling subscription confirmation", i);
-					CoapResponse response_ = null;
-					try {
-						response_ = forwardNotification(notificationId,notificationAddress,"OK");						// Warn the requester about completed subscription
-					} catch (URISyntaxException e) {
+					if (!subscriptionsEnabled) {
+						CoapResponse response_ = null;
+						try {
+							response_ = forwardNotification(notificationId,notificationAddress,"OK");					// Warn the requester about completed subscription
+						} catch (URISyntaxException e) {
+							outStream.out2("failed");
+							errStream.out(e,0,Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+							outStream.out2("failed");
+							errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
+									i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						subscriptionsEnabled = true;
+					} else {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
+						errStream.out("Unexpected confirmation",0,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
-						outStream.out2("failed");
-						errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
-								i, Severity.LOW);
-						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
 						i++;
 						return;
@@ -421,11 +440,11 @@ class ADN_MN extends ADN {
 					String con = null;
 					// String sur = null;
 					try {
-						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "pi=/augmented-things-MN-cse/cnt-67185819"
+						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "/augmented-things-MN-cse/cnt-67185819"
 								new String[] {"pi"}, new Class<?>[] {String.class},false);
-						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "con=36,404 °C"
+						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "36,404 °C"
 								new String[] {"con"}, new Class<?>[] {String.class},false);
-						// sur = Services.parseJSON(notification, "m2m:sgn", 											// "Example: sur=/augmented-things-MN-cse/sub-730903481"
+						// sur = Services.parseJSON(notification, "m2m:sgn", 											// Example: "/augmented-things-MN-cse/sub-730903481"
 						//		new String[] {"sur"}, new Class<?>[] {String.class});
 					} catch (JSONException e) {
 						debugStream.out("Received invalid notification", i);
@@ -435,15 +454,15 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out1("Handling notification with JSON: " + pi + ", " + con, i);
-					String key = getKey(pi);
-					if (!subscriber.containsKey(key)) {
-						if (!subscriptionsEnabled) {
-							subscriber.bindToLastResource(key);															// If this is a brand new notification, associated this pi to the last subscription
-							subscriptionsEnabled = true;																// Re-enable subscription service
-						} else {
-							;																							// Spurious notification, removing (TODO)
-						}
-					}
+					String key = Services.getKey(pi);
+//					if (!subscriber.containsKey(key)) {
+//						if (!subscriptionsEnabled) {
+//							subscriber.bindToLastResource(key);															// If this is a brand new notification, associated this pi to the last subscription
+//							subscriptionsEnabled = true;																// Re-enable subscription service
+//						} else {
+//							;																							// Spurious notification, removing (TODO)
+//						}
+//					}
 					ArrayList<Subscription> subs = subscriber.get(key);
 					if (subs!=null && subs.size()>0) {
 						CoapResponse response_ = null;
@@ -811,8 +830,5 @@ class ADN_MN extends ADN {
 		request.setPayload(content);
 		return notificationClient.send(request, Code.PUT);
 	}
-	
-	private String getKey(String pi) {
-		return pi.split("cnt-")[0];
-	}
+
 }
