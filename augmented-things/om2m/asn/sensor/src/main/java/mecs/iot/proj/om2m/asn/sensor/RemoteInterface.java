@@ -170,7 +170,16 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		outStream.out2("done, connecting to CSE for publishing");
+		outStream.out1_2("done, connecting to CSE for publishing");
+		try {
+			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
+		} catch (URISyntaxException e) {
+			deleteNodeAsync(tag.serial);
+			outStream.out2("failed. Terminating interface");
+			errStream.out(e, i, Severity.MEDIUM);
+			return;
+		}
+		outStream.out2("done");
 //		outStream.out1("Posting first Content Instance", i);
 //		try {
 //			response = services.postContentInstance(Format.pack(value,tag.type),i);
