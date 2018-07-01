@@ -61,31 +61,6 @@ public class RemoteInterface extends Client {
 		String id = mnData[0];
 		String address = mnData[1];
 		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
-//		try {
-//			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
-//		} catch (URISyntaxException e) {
-//			outStream.out2("failed. Terminating interface");
-//			errStream.out(e, i, Severity.MEDIUM);
-//			return;
-//		}
-//		outStream.out1_2("done, registering to MN");
-//		response = register(tag);
-//		if (response==null) {
-//			outStream.out2("failed. Terminating interface");
-//			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
-//			return;
-//		} else if (response.getCode()!=ResponseCode.CREATED) {
-//			outStream.out2("failed. Terminating interface");
-//			if (!response.getResponseText().isEmpty())
-//				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
-//						", reason: " + response.getResponseText(), //
-//						i, Severity.LOW);
-//			else
-//				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
-//					i, Severity.LOW);
-//			return;
-//		}
-//		outStream.out1_2("done, connecting to CSE");
 		try {
 			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
 		} catch (URISyntaxException e) {
@@ -181,23 +156,6 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out2("done");
-//		outStream.out1("Posting first Content Instance", i);
-//		try {
-//			response = services.postContentInstance(Format.pack(value,tag.type),i);
-//		} catch (URISyntaxException e) {
-//			deleteNodeAsync(tag.serial);
-//			outStream.out2("failed. Terminating interface");
-//			errStream.out(e, i, Severity.MEDIUM);
-//			return;
-//		}
-//		if (response==null) {
-//			deleteNodeAsync(tag.serial);
-//			outStream.out2("failed. Terminating interface");
-//			errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
-//			return;
-//		}
-//		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin",
-//				new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
 		i++;
 		start = System.currentTimeMillis();
 		long timer;
