@@ -16,7 +16,7 @@ public class Tag {
 	public String type;
 	public String[] attributes;
 	
-	public HashMap<String,String> labelMap;																		// label -> rule
+	public HashMap<String,String> ruleMap;																		// label -> rule
 	
 	public Tag (String id, String serial, String type, String[] attributes) {
 		this.node = Node.SENSOR;
@@ -25,7 +25,7 @@ public class Tag {
 		this.address = null;
 		this.type = type;
 		this.attributes = attributes;
-		labelMap = null;
+		ruleMap = null;
 	}
 	
 	public Tag (String id, String serial, String[] attributes) {
@@ -35,7 +35,7 @@ public class Tag {
 		this.address = null;
 		this.type = "act";
 		this.attributes = attributes;
-		labelMap = null;
+		ruleMap = null;
 	}
 	
 	public Tag (Node node, String id, String description, String[] attributes) {
@@ -47,14 +47,14 @@ public class Tag {
 				this.address = null;
 				this.type = description;
 				this.attributes = attributes;
-				labelMap = new HashMap<String,String>();
+				ruleMap = new HashMap<String,String>();
 				for (int i=0; i<attributes.length; i++) {
 					String[] splits;
 					splits = attributes[i].split(": ");
 					if (splits.length>1)
-						labelMap.put(splits[1],splits[0]);
+						ruleMap.put(splits[1],splits[0]);
 					else
-						labelMap.put(splits[0],"");
+						ruleMap.put(splits[0],"");
 					// TODO: syntax check on label
 				}
 				break;
@@ -62,9 +62,9 @@ public class Tag {
 				this.address = description;
 				this.type = "act";
 				this.attributes = attributes;
-				labelMap = new HashMap<String,String>();
+				ruleMap = new HashMap<String,String>();
 				for (int i=0; i<attributes.length; i++) {
-					labelMap.put(attributes[i],"");
+					ruleMap.put(attributes[i],"");
 				}
 				break;
 			case USER:

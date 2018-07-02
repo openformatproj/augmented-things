@@ -28,4 +28,8 @@ public class Format {
 		return format.parse(splits[0]).doubleValue();
 	}
 	
+	public static boolean contains(String type) {
+		return formatMap.containsKey(type);
+	}
+	
 }

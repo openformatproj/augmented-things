@@ -64,13 +64,6 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-			if (sw!=1 && sw!=2) {
-				debugStream.out("Bad request, mode=" + mode, i);
-				response = new Response(ResponseCode.BAD_REQUEST);
-				exchange.respond(response);
-				i++;
-				return;
-			}
 			String serial = getUriValue(exchange,"ser",1);
 			if (serial==null || !isValidSerial(serial)) {
 				if (serial!=null)
@@ -190,7 +183,7 @@ class ADN_MN extends ADN {
 				}
 				String type = getUriValue(exchange,"type",2);
 				if (type!=null) {
-					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
+					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&key=<RESERVED>,&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
 					if (!isValidType(type)) {
 						debugStream.out("Bad request, type=" + type, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
@@ -383,7 +376,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					try {
-						subscriber.insert(tag0.id,tag0.type,label0,tag0.labelMap.get(label0),tag1.id,tag1.address,label1);
+						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1);
 					} catch (InvalidRuleException e) {
 						outStream.out2("failed");
 						errStream.out(e,0,Severity.LOW);
@@ -695,14 +688,14 @@ class ADN_MN extends ADN {
 					}
 					String label0 = getUriValue(exchange,"lab",2);
 					String label1 = getUriValue(exchange,"lab",3);
-					if (!isValidLabel(label0,tag0)) {
+					if (label0==null || !isValidLabel(label0,tag0)) {
 						debugStream.out("Bad request, lab=" + label0, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
 					}
-					if (!isValidLabel(label1,tag1)) {
+					if (label1==null || !isValidLabel(label1,tag1)) {
 						debugStream.out("Bad request, lab=" + label1, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);

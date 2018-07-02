@@ -5,6 +5,7 @@ import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Tag;
 
 //import java.util.Arrays;
@@ -60,22 +61,21 @@ public class ADN extends CoapResource {
 	
 	protected boolean isValidSerial(String serial) {
 		// TODO
-		return serial!=null && !serial.isEmpty();
+		return !serial.isEmpty();
 	}
 	
 	protected boolean isValidId(String id) {
 		// TODO (really needed?)
-		return id!=null && !id.isEmpty();
+		return !id.isEmpty();
 	}
 	
 	protected boolean isValidType(String type) {
-		// TODO
-		return type!=null && !type.isEmpty();
+		return !type.isEmpty() && Format.contains(type);
 	}
 	
 	protected boolean areValidAttributes(String[] attributes, Integer k) {
 		for (int i=0; i<attributes.length; i++) {
-			if (attributes[i]==null || attributes[i].isEmpty()) {
+			if (attributes[i].isEmpty()) {
 				k = new Integer(i);
 				return false;
 			}
@@ -84,7 +84,7 @@ public class ADN extends CoapResource {
 	}
 	
 	protected boolean isValidLocation(String location) {
-		if (location==null || location.isEmpty())
+		if (location.isEmpty())
 			return false;
 		try {
 			Integer.parseInt(location);
@@ -96,21 +96,16 @@ public class ADN extends CoapResource {
 	
 	protected boolean isValidAddress(String address) {
 		// TODO
-		return address!=null && !address.isEmpty();
+		return !address.isEmpty();
 	}
 	
 	protected boolean isValidKey(String key) {
 		// TODO
-		return key!=null && !key.isEmpty();
+		return !key.isEmpty();
 	}
 	
 	protected boolean isValidLabel(String label, Tag tag) {
-//		Set<String> s = new HashSet<String>(Arrays.asList(tag.labels()));
-//		if (s.contains(label))
-//			return true;
-//		else
-//			return false;
-		return tag.labelMap.containsKey(label);
+		return tag.ruleMap.containsKey(label);
 	}
 
 }
