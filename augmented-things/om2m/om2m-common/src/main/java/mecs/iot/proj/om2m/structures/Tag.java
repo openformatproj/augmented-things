@@ -1,5 +1,6 @@
 package mecs.iot.proj.om2m.structures;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,7 +8,7 @@ import java.util.regex.Pattern;
 import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.structures.exceptions.NoRuleException;
 
-public class Tag {
+public class Tag implements Serializable {
 	
 	public Node node;
 	public String id;
@@ -17,6 +18,8 @@ public class Tag {
 	public String[] attributes;
 	
 	public HashMap<String,String> ruleMap;																		// label -> rule
+	
+	private static final long serialVersionUID = 1L;
 	
 	public Tag (String id, String serial, String type, String[] attributes) {
 		this.node = Node.SENSOR;

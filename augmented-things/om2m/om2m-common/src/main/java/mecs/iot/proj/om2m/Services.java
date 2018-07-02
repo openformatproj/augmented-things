@@ -3,6 +3,7 @@ package mecs.iot.proj.om2m;
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.structures.Constants;
 
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -246,7 +247,6 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		JSONObject obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-//		obj.put("con",String.format("%.3f",value)+" "+ measureUnit);
 		obj.put("con",content);
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
@@ -287,6 +287,54 @@ public class Services {
 	
 	public String uri() {
 		return path.uri();
+	}
+	
+	public CoapResponse oM2Mput(String key, Serializable value, String[] uri, int i) throws URISyntaxException {
+		path.change(uri);
+		Request request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,3));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		JSONObject obj = new JSONObject();
+		obj.put("rn",key);
+		JSONObject root = new JSONObject();
+		root.put("m2m:cnt",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.send(request, Code.POST);
+		// TODO: manage response
+		path.down(key);
+		request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,4));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		obj = new JSONObject();
+		obj.put("cnf","text/plain:0");
+		obj.put("con",value);
+		root = new JSONObject();
+		root.put("m2m:cin",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		return client.send(request, Code.POST);
+	}
+	
+	public CoapResponse oM2Mremove(String[] uri, int i) throws URISyntaxException {
+		path.change(uri);
+		Request request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,4));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		JSONObject obj = new JSONObject();
+		obj.put("cnf","text/plain:0");
+		obj.put("con","");
+		JSONObject root = new JSONObject();
+		root.put("m2m:cin",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		return client.send(request, Code.POST);
 	}
 	
 	public static String getKeyFromAttribute(String attr) {
