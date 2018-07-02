@@ -6,6 +6,7 @@ import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 import mecs.iot.proj.om2m.Client;
+import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
@@ -54,6 +55,8 @@ public class Subscriber {
 					0, Severity.LOW);
 			throw new StateCreationException();
 		}
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), 0);
 		debugStream.out("Posting resourceMap",0);
 		cseClient.stepCount();
 		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","resourceMap",cseClient.getCount());
@@ -72,6 +75,8 @@ public class Subscriber {
 					0, Severity.LOW);
 			throw new StateCreationException();
 		}
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), 0);
 	}
 	
 	public void insert(String sender, String type, String receiver, String address) {

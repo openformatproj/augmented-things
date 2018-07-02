@@ -43,9 +43,9 @@ class ADN_MN extends ADN {
 		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();
 		userMap = new HashMap<String,String>();
-		outStream.out1("Posting state",i);
+		outStream.out("Posting state",i);
 		CoapResponse response;
-		outStream.out1_2("posting main AE");
+		outStream.out1("Posting main AE",i);
 		cseClient.stepCount();
 		response = cseClient.services.postAE("state",cseClient.getCount());
 		if (response==null) {
@@ -63,7 +63,9 @@ class ADN_MN extends ADN {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		outStream.out1_2("posting tagMap");
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		outStream.out1_2("done, posting tagMap");
 		cseClient.stepCount();
 		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","tagMap",cseClient.getCount());
 		if (response==null) {
@@ -81,7 +83,9 @@ class ADN_MN extends ADN {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		outStream.out1_2("posting userMap");
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		outStream.out1_2("done, posting userMap");
 		cseClient.stepCount();
 		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","userMap",cseClient.getCount());
 		if (response==null) {
@@ -99,7 +103,9 @@ class ADN_MN extends ADN {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		outStream.out1_2("posting subscription state");
+		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
 		outStream.out2("done");
 		subscriptionsEnabled = true;
