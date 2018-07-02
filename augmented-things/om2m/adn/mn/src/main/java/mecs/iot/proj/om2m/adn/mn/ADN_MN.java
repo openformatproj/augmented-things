@@ -44,6 +44,24 @@ class ADN_MN extends ADN {
 		userMap = new HashMap<String,String>();
 		outStream.out1("Posting state",i);
 		CoapResponse response;
+		outStream.out1_2("posting main AE");
+		cseClient.stepCount();
+		response = cseClient.services.postAE("state",cseClient.getCount());
+		if (response==null) {
+			outStream.out2("failed");
+			errStream.out("Unable to post AE to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			outStream.out2("failed. Terminating interface");
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response.getCode(),
+					i, Severity.LOW);
+			return;
+		}
 		outStream.out1_2("posting tagMap");
 		cseClient.stepCount();
 		response = cseClient.services.postContainer("state","tagMap",cseClient.getCount());
@@ -52,7 +70,7 @@ class ADN_MN extends ADN {
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
@@ -70,7 +88,7 @@ class ADN_MN extends ADN {
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed");
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
