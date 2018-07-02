@@ -187,7 +187,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (response_==null) {
+					if (response_==null || response_.getCode()!=ResponseCode.CONTENT) {
 						outStream.out2("failed");
 						errStream.out("Unable to read from " + cseClient.services.uri(),
 								i, Severity.LOW);
