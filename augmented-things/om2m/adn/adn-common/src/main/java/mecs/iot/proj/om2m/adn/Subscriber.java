@@ -43,7 +43,7 @@ public class Subscriber {
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			debugStream.out("failed. Terminating interface",0);
+			debugStream.out("failed",0);
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
@@ -61,7 +61,7 @@ public class Subscriber {
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			debugStream.out("failed. Terminating interface",0);
+			debugStream.out("failed",0);
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
