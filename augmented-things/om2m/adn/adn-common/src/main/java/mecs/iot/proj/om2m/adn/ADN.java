@@ -42,7 +42,7 @@ public class ADN extends CoapResource {
 		outStream = new OutStream(name);
 		debugStream = new DebugStream(name,debug);
 		errStream = new ErrStream(name);
-		i = 1;
+		i = 0;
 		this.console = console;
 	}
 

@@ -111,6 +111,7 @@ class ADN_MN extends ADN {
 		subscriptionsEnabled = true;
 //		notificationId = "";
 //		notificationAddress = "";
+		i++;
 	}
 
 	@Override
