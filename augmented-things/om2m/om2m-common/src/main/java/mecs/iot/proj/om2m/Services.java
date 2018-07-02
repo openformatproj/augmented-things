@@ -218,14 +218,9 @@ public class Services {
 		if (path.level==0) {
 			path.down(name1);
 			path.down(name2);
-			path.down(name3);
 		}
 		if (path.level==1) {
 			path.down(name2);
-			path.down(name3);
-		}
-		if (path.level==2) {
-			path.down(name3);
 		}
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,3));
@@ -233,7 +228,7 @@ public class Services {
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		JSONObject obj = new JSONObject();
-		obj.put("rn","data");
+		obj.put("rn",name3);
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
