@@ -26,14 +26,51 @@ public class Subscriber {
 	private Client cseClient;
 	private String context;
 	
-	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) {
+	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) throws URISyntaxException {
 		// TODO: pull from OM2M
-		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
-		resourceMap = new HashMap<String,String>();
 		this.debugStream = debugStream;
 		this.errStream = errStream;
 		this.cseClient = cseClient;
 		this.context = context;
+		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
+		resourceMap = new HashMap<String,String>();
+		CoapResponse response;
+		debugStream.out("Posting subscriptionMap",0);
+		cseClient.stepCount();
+		response = cseClient.services.postContainer("state","subscriptionMap",cseClient.getCount());
+		if (response==null) {
+			debugStream.out("failed",0);
+			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			debugStream.out("failed. Terminating interface",0);
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
+						0, Severity.LOW);
+			else
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
+					0, Severity.LOW);
+			return;
+		}
+		debugStream.out("Posting resourceMap",0);
+		cseClient.stepCount();
+		response = cseClient.services.postContainer("state","resourceMap",cseClient.getCount());
+		if (response==null) {
+			debugStream.out("failed",0);
+			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			debugStream.out("failed. Terminating interface",0);
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
+						0, Severity.LOW);
+			else
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
+					0, Severity.LOW);
+			return;
+		}
 	}
 	
 	public void insert(String sender, String type, String receiver, String address) {

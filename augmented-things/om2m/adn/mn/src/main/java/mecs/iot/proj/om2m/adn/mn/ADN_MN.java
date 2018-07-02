@@ -30,7 +30,7 @@ import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 class ADN_MN extends ADN {
 
 	private HashMap<String,Tag> tagMap;																					// serial -> tag
-	private HashMap<String,String> userMap;																				// serial -> user id
+	private HashMap<String,String> userMap;																				// user id -> address
 	private boolean subscriptionsEnabled;
 	private String notificationId;
 	private String notificationAddress;
@@ -39,13 +39,53 @@ class ADN_MN extends ADN {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
-		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
 		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();
 		userMap = new HashMap<String,String>();
+		outStream.out1("Posting state",i);
+		CoapResponse response;
+		outStream.out1_2("posting tagMap");
+		cseClient.stepCount();
+		response = cseClient.services.postContainer("state","tagMap",cseClient.getCount());
+		if (response==null) {
+			outStream.out2("failed");
+			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			outStream.out2("failed. Terminating interface");
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
+					i, Severity.LOW);
+			return;
+		}
+		outStream.out1_2("posting userMap");
+		cseClient.stepCount();
+		response = cseClient.services.postContainer("state","userMap",cseClient.getCount());
+		if (response==null) {
+			outStream.out2("failed");
+			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+			return;
+		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+			outStream.out2("failed. Terminating interface");
+			if (!response.getResponseText().isEmpty())
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
+						", reason: " + response.getResponseText(),
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
+					i, Severity.LOW);
+			return;
+		}
+		outStream.out1_2("posting subscription state");
+		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
+		outStream.out2("done");
 		subscriptionsEnabled = true;
-		notificationId = "";
-		notificationAddress = "";
+//		notificationId = "";
+//		notificationAddress = "";
 	}
 
 	@Override
