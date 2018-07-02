@@ -64,7 +64,7 @@ class ADN_MN extends ADN {
 		}
 		outStream.out1_2("posting tagMap");
 		cseClient.stepCount();
-		response = cseClient.services.postContainer("state","tagMap",cseClient.getCount());
+		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","tagMap",cseClient.getCount());
 		if (response==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
@@ -82,7 +82,7 @@ class ADN_MN extends ADN {
 		}
 		outStream.out1_2("posting userMap");
 		cseClient.stepCount();
-		response = cseClient.services.postContainer("state","userMap",cseClient.getCount());
+		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","userMap",cseClient.getCount());
 		if (response==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);

@@ -214,6 +214,33 @@ public class Services {
 		return client.send(request, Code.POST);
 	}
 	
+	public CoapResponse postContainer(String name1, String name2, String name3, int i) throws URISyntaxException {
+		if (path.level==0) {
+			path.down(name1);
+			path.down(name2);
+			path.down(name3);
+		}
+		if (path.level==1) {
+			path.down(name2);
+			path.down(name3);
+		}
+		if (path.level==2) {
+			path.down(name3);
+		}
+		Request request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,3));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		JSONObject obj = new JSONObject();
+		obj.put("rn","data");
+		JSONObject root = new JSONObject();
+		root.put("m2m:cnt",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		return client.send(request, Code.POST);
+	}
+	
 	public CoapResponse postContentInstance(String content, int i) throws URISyntaxException {
 		if (path.level==2)
 			path.down("data");

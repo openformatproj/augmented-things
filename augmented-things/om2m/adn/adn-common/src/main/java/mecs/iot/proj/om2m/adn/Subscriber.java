@@ -37,7 +37,7 @@ public class Subscriber {
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap",0);
 		cseClient.stepCount();
-		response = cseClient.services.postContainer("state","subscriptionMap",cseClient.getCount());
+		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","subscriptionMap",cseClient.getCount());
 		if (response==null) {
 			debugStream.out("failed",0);
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
@@ -55,7 +55,7 @@ public class Subscriber {
 		}
 		debugStream.out("Posting resourceMap",0);
 		cseClient.stepCount();
-		response = cseClient.services.postContainer("state","resourceMap",cseClient.getCount());
+		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","resourceMap",cseClient.getCount());
 		if (response==null) {
 			debugStream.out("failed",0);
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
