@@ -79,29 +79,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	}
 	
 	/*
-	 * MN registration (sensor)
-	 */
-//	protected CoapResponse register(Tag tag) {
-//		Request request = new Request(Code.POST);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(tag.id));
-//		request.getOptions().addUriQuery("ser" + "=" + tag.serial);
-//		request.getOptions().addUriQuery("type" + "=" + tag.type);
-//		String payload = "";
-//		for (int i=0; i<tag.attributes.length; i++) {
-//			if (i!=tag.attributes.length-1)
-//				payload += tag.attributes[i] + ",";
-//			else
-//				payload += tag.attributes[i];
-//		}
-//		request.setPayload(payload);
-//		//request.setTimedOut(true);
-//		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
-//		return send(request, Code.POST);
-//	}
-	
-	/*
 	 * MN registration (sensor and actuator)
 	 */
 	protected CoapResponse register(Tag tag, String reference, Node node) {

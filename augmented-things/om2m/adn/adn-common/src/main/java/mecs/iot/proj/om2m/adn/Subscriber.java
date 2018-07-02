@@ -18,9 +18,8 @@ import java.util.ArrayList;
 
 public class Subscriber {
 	
-	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource -> list of subscriptions
-	private HashMap<String,String> keyMap;
-//	private String lastResource;
+	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource id -> list of subscriptions
+	private HashMap<String,String> resourceMap;																// cnt key -> resource id
 	
 	private DebugStream debugStream;
 	private ErrStream errStream;
@@ -30,7 +29,7 @@ public class Subscriber {
 	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) {
 		// TODO: pull from OM2M
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
-		keyMap = new HashMap<String,String>();
+		resourceMap = new HashMap<String,String>();
 		this.debugStream = debugStream;
 		this.errStream = errStream;
 		this.cseClient = cseClient;
@@ -47,7 +46,6 @@ public class Subscriber {
 			subscriptionMap.put(sender,subs);
 			// TODO: push to OM2M
 		}
-//		lastResource = sender;
 	}
 	
 	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
@@ -60,31 +58,18 @@ public class Subscriber {
 			subscriptionMap.put(sender,subs);
 			// TODO: push to OM2M
 		}
-//		lastResource = sender;
 	}
-	
-//	public boolean containsResource(String sender) {
-//		return keyMap.containsValue(sender);
-//	}
-	
-//	public boolean containsKey(String pi) {
-//		return piMap.containsKey(pi);
-//	}
 	
 	public void bind(String id, String key) {
-		keyMap.put(key,id);
+		resourceMap.put(key,id);
 	}
-	
-//	public void bindToLastResource(String pi) {
-//		piMap.put(pi,lastResource);
-//	}
 	
 	public ArrayList<Subscription> get(String pi) {
-		return subscriptionMap.get(keyMap.get(pi));
+		return subscriptionMap.get(resourceMap.get(pi));
 	}
 	
-	public String getName(String key) {
-		return keyMap.get(key);
+	public String getResourceId(String key) {
+		return resourceMap.get(key);
 	}
 	
 	public void remove(String id, Node node, int k) throws URISyntaxException {

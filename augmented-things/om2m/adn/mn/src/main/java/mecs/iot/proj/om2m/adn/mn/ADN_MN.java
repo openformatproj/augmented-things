@@ -29,8 +29,8 @@ import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
 class ADN_MN extends ADN {
 
-	private HashMap<String,Tag> tagMap;
-	private HashMap<String,String> userMap;
+	private HashMap<String,Tag> tagMap;																					// serial -> tag
+	private HashMap<String,String> userMap;																				// serial -> user id
 	private boolean subscriptionsEnabled;
 	private String notificationId;
 	private String notificationAddress;
@@ -489,7 +489,7 @@ class ADN_MN extends ADN {
 									break;
 								case USER:
 									try {
-										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subscriber.getName(key)+": "+con);
+										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subscriber.getResourceId(key)+": "+con);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
 										errStream.out(e,0,Severity.MEDIUM);
