@@ -299,8 +299,9 @@ class ADN_MN extends ADN {
 					tagMap.put(serial,tag);
 					String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "tagMap"};
 					CoapResponse response_ = null;
+					cseClient.stepCount();
 					try {
-						response_ = cseClient.services.oM2Mput(serial,tag,uri_,i);
+						response_ = cseClient.services.oM2Mput(serial,tag,uri_,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,0,Severity.MEDIUM);
@@ -370,8 +371,9 @@ class ADN_MN extends ADN {
 				userMap.put(id,address);
 				String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "userMap"};
 				CoapResponse response_ = null;
+				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(id,address,uri_,i);
+					response_ = cseClient.services.oM2Mput(id,address,uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,0,Severity.MEDIUM);
@@ -738,8 +740,9 @@ class ADN_MN extends ADN {
 				userMap.remove(id);
 				String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "userMap", id};
 				CoapResponse response_ = null;
+				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mremove(uri_,i);
+					response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,0,Severity.MEDIUM);
@@ -880,8 +883,9 @@ class ADN_MN extends ADN {
 					}
 					tagMap.remove(serial0);
 					String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "tagMap", serial0};
+					cseClient.stepCount();
 					try {
-						response_ = cseClient.services.oM2Mremove(uri_,i);
+						response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,0,Severity.MEDIUM);
