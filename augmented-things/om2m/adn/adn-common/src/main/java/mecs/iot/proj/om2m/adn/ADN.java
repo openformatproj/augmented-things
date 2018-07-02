@@ -70,7 +70,7 @@ public class ADN extends CoapResource {
 	}
 	
 	protected boolean isValidType(String type) {
-		return !type.isEmpty() && Format.contains(type);
+		return !type.isEmpty() && (Format.contains(type) || type.equals("act"));
 	}
 	
 	protected boolean areValidAttributes(String[] attributes, Integer k) {
