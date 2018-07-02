@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.adn.mn;
 
 import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Command;
@@ -36,7 +37,7 @@ public class App
         	Command exit = (s) -> {console.terminate(); server.destroy(); adn.notificationClient.destroy(); adn.cseClient.destroy(); return "Exiting";};
     		console.add("exit",exit,0,"Terminate this adn","exit");
         	console.start();
-    	} catch (URISyntaxException e) {
+    	} catch (URISyntaxException | StateCreationException e) {
     		errStream.out(e,0,Severity.MEDIUM);
 		}
     }

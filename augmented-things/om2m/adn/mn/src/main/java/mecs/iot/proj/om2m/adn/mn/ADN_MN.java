@@ -17,6 +17,7 @@ import org.json.JSONException;
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.adn.Subscription;
+import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.adn.Subscriber;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
@@ -35,7 +36,7 @@ class ADN_MN extends ADN {
 	private String notificationId;
 	private String notificationAddress;
 
-	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
+	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException, StateCreationException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
@@ -50,7 +51,7 @@ class ADN_MN extends ADN {
 		if (response==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post AE to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
 			outStream.out2("failed. Terminating interface");
 			if (!response.getResponseText().isEmpty())
@@ -60,7 +61,7 @@ class ADN_MN extends ADN {
 			else
 				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		}
 		outStream.out1_2("posting tagMap");
 		cseClient.stepCount();
@@ -68,7 +69,7 @@ class ADN_MN extends ADN {
 		if (response==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
 			outStream.out2("failed");
 			if (!response.getResponseText().isEmpty())
@@ -78,7 +79,7 @@ class ADN_MN extends ADN {
 			else
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		}
 		outStream.out1_2("posting userMap");
 		cseClient.stepCount();
@@ -86,7 +87,7 @@ class ADN_MN extends ADN {
 		if (response==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
 			outStream.out2("failed");
 			if (!response.getResponseText().isEmpty())
@@ -96,7 +97,7 @@ class ADN_MN extends ADN {
 			else
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
 					i, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		}
 		outStream.out1_2("posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,context);

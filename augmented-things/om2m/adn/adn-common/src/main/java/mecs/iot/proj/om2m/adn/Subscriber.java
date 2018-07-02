@@ -6,6 +6,7 @@ import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 import mecs.iot.proj.om2m.Client;
+import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;
@@ -26,7 +27,7 @@ public class Subscriber {
 	private Client cseClient;
 	private String context;
 	
-	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) throws URISyntaxException {
+	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) throws URISyntaxException, StateCreationException {
 		// TODO: pull from OM2M
 		this.debugStream = debugStream;
 		this.errStream = errStream;
@@ -41,7 +42,7 @@ public class Subscriber {
 		if (response==null) {
 			debugStream.out("failed",0);
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
 			debugStream.out("failed",0);
 			if (!response.getResponseText().isEmpty())
@@ -51,7 +52,7 @@ public class Subscriber {
 			else
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
 					0, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		}
 		debugStream.out("Posting resourceMap",0);
 		cseClient.stepCount();
@@ -59,7 +60,7 @@ public class Subscriber {
 		if (response==null) {
 			debugStream.out("failed",0);
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
 			debugStream.out("failed",0);
 			if (!response.getResponseText().isEmpty())
@@ -69,7 +70,7 @@ public class Subscriber {
 			else
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
 					0, Severity.LOW);
-			return;
+			throw new StateCreationException();
 		}
 	}
 	
