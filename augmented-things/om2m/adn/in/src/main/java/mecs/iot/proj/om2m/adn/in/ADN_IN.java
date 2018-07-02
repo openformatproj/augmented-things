@@ -7,28 +7,18 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
-//import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
-//import mecs.iot.proj.om2m.adn.Subscriber;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
-//import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.MN;
-import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Tag;
 
 class ADN_IN extends ADN {
 	
-//	private HashMap<String,Tag> tagMap;																					// serial -> tag
-//	private HashMap<String,String> userMap;																				// serial -> user id
 	private HashMap<String,MN> mnMap;																					// serial -> MN
 
 	ADN_IN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 //		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
-//		subscriber = new Subscriber();
-//		tagMap = new HashMap<String,Tag>();
-//		userMap = new HashMap<String,String>();
 		mnMap = new HashMap<String,MN>();
 	}
 	
@@ -91,113 +81,6 @@ class ADN_IN extends ADN {
 	}
 	
 	@Override
-	
-//	synchronized public void handlePOST(CoapExchange exchange) {
-//		Response response = null;
-//		String id = getUriValue(exchange,"id",0);
-//		if (id!=null) {
-//			if (!isValidId(id)) {
-//				debugStream.out("Bad request, id=" + id, i);
-//				response = new Response(ResponseCode.BAD_REQUEST);
-//				exchange.respond(response);
-//				i++;
-//				return;
-//			}
-//			String serial = getUriValue(exchange,"ser",1);
-//			if (serial!=null) {
-//				if (!isValidSerial(serial)) {
-//					debugStream.out("Bad request, ser=" + serial, i);
-//					response = new Response(ResponseCode.BAD_REQUEST);
-//					exchange.respond(response);
-//					i++;
-//					return;
-//				}
-//				String type = getUriValue(exchange,"type",2);
-//				if (type!=null) {
-//					// node IN registration and localization (id=<ID>&ser=<SERIAL>&type=<TYPE>&loc=<LOC>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
-//					if (!isValidType(type)) {
-//						debugStream.out("Bad request, type=" + type, i);
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					String location = getUriValue(exchange,"loc",3);
-//					if (!isValidLocation(location)) {
-//						debugStream.out("Bad request, loc=" + location, i);
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					String payload = exchange.getRequestText();
-//					String[] attributes = payload.split(",");
-//					Integer k = new Integer(0);
-//					if (!areValidAttributes(attributes,k)) {
-//						debugStream.out("Bad request, attribute=" + attributes[k], i);
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					Tag tag = null;
-//					if (type.equals("act")) {
-//						String address = getUriValue(exchange,"addr",4);
-//						if (address==null || !isValidAddress(address)) {
-//							if (address!=null)
-//								debugStream.out("Bad request, addr=" + address, i);
-//							else
-//								debugStream.out("Bad request, addr", i);
-//							response = new Response(ResponseCode.BAD_REQUEST);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
-//						tag = new Tag(Node.ACTUATOR,id,address,attributes);
-//					} else {
-//						tag = new Tag(Node.SENSOR,id,type,attributes);
-//					}
-//					MN mn = Db.mnMap.get(Integer.parseInt(location));
-//					if (mn==null) {
-//						debugStream.out("MN with location \"" + location + "\" is not registered", i);
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					outStream.out("Registering node \"" + id + "\" (serial \"" + serial + "\") on MN \"" + mn.id + "\"", i);
-//					tagMap.put(serial,tag);
-//					mnMap.put(serial,mn);
-//					response = new Response(ResponseCode.CREATED);
-//					response.setPayload(mn.id + "," + mn.address);
-//				} else {
-//					debugStream.out("Bad request, type not specified", i);
-//					response = new Response(ResponseCode.BAD_REQUEST);
-//				}
-//			} else {
-//				// user IN registration (id=<ID>&addr=<URI>)
-//				String address = getUriValue(exchange,"addr",1);
-//				if (address==null || !isValidAddress(address)) {
-//					if (address!=null)
-//						debugStream.out("Bad request, addr=" + address, i);
-//					else
-//						debugStream.out("Bad request, addr", i);
-//					response = new Response(ResponseCode.BAD_REQUEST);
-//					exchange.respond(response);
-//					i++;
-//					return;
-//				}
-//				outStream.out("Registering user \"" + id + "\" (address \"" + address + "\")", i);
-//				userMap.put(id,address);
-//				response = new Response(ResponseCode.CREATED);
-//			}
-//		} else {
-//			debugStream.out("Bad request, id not specified", i);
-//			response = new Response(ResponseCode.BAD_REQUEST);
-//		}
-//		exchange.respond(response);
-//		i++;
-//	}
 	
 	synchronized public void handlePOST(CoapExchange exchange) {
 		Response response = null;

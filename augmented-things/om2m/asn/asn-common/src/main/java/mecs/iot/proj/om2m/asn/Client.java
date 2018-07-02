@@ -30,52 +30,32 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	}
 	
 	/*
-	 * IN registration (sensor)
+	 * Locate node
 	 */
-	protected CoapResponse register(Tag tag, int location) {
+	protected CoapResponse locate(String id, String serial, int location) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(tag.id));
-		request.getOptions().addUriQuery("ser" + "=" + tag.serial);
-		request.getOptions().addUriQuery("type" + "=" + tag.type);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(id));
+		request.getOptions().addUriQuery("ser" + "=" + serial);
 		request.getOptions().addUriQuery("loc" + "=" + Integer.toString(location));
-		String payload = "";
-		for (int i=0; i<tag.attributes.length; i++) {
-			if (i!=tag.attributes.length-1)
-				payload += tag.attributes[i] + ",";
-			else
-				payload += tag.attributes[i];
-		}
-		request.setPayload(payload);
 		//request.setTimedOut(true);
-		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
+		debugStream.out("Sent location request to " + services.uri(), i);
 		return send(request, Code.POST);
 	}
 	
 	/*
-	 * IN registration (actuator)
+	 * Locate user
 	 */
-	protected CoapResponse register(Tag tag, String address, int location) {
-		Request request = new Request(Code.POST);
+	protected CoapResponse locate(String serial) {
+		Request request = new Request(Code.GET);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(tag.id));
-		request.getOptions().addUriQuery("ser" + "=" + tag.serial);
-		request.getOptions().addUriQuery("type" + "=" + "act");
-		request.getOptions().addUriQuery("loc" + "=" + Integer.toString(location));
-		request.getOptions().addUriQuery("addr" + "=" + address);
-		String payload = "";
-		for (int i=0; i<tag.attributes.length; i++) {
-			if (i!=tag.attributes.length-1)
-				payload += tag.attributes[i] + ",";
-			else
-				payload += tag.attributes[i];
-		}
-		request.setPayload(payload);
+		request.getOptions().addUriQuery("mode" + "=" + Integer.toString(0));
+		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
-		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
-		return send(request, Code.POST);
+		debugStream.out("Sent location request to " + services.uri(), i);
+		return send(request, Code.GET);
 	}
 	
 	/*
@@ -268,35 +248,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 			return response.getResponseText();
 		else
 			return "Error: " + response.getCode().toString();
-	}
-	
-	/*
-	 * Locate node
-	 */
-	protected CoapResponse locate(String id, String serial, int location) {
-		Request request = new Request(Code.POST);
-		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(id));
-		request.getOptions().addUriQuery("ser" + "=" + serial);
-		request.getOptions().addUriQuery("loc" + "=" + Integer.toString(location));
-		//request.setTimedOut(true);
-		debugStream.out("Sent location request to " + services.uri(), i);
-		return send(request, Code.POST);
-	}
-	
-	/*
-	 * Locate user
-	 */
-	protected CoapResponse locate(String serial) {
-		Request request = new Request(Code.GET);
-		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("mode" + "=" + Integer.toString(0));
-		request.getOptions().addUriQuery("ser" + "=" + serial);
-		//request.setTimedOut(true);
-		debugStream.out("Sent location request to " + services.uri(), i);
-		return send(request, Code.GET);
 	}
 	
 	/*

@@ -41,8 +41,6 @@ public class RemoteInterface extends Client {
 	
 	public void run() {
 		outStream.out("Starting interface", i);
-//		outStream.out1("Registering to IN", i);
-//		CoapResponse response = register(tag,location);
 		outStream.out1("Locating node", i);
 		CoapResponse response = locate(tag.id,tag.serial,location);
 		if (response==null) {
