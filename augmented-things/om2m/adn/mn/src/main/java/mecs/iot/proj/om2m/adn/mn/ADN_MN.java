@@ -46,63 +46,63 @@ class ADN_MN extends ADN {
 		outStream.out("Posting state",i);
 		outStream.out1("Posting main AE",i);
 		cseClient.stepCount();
-		CoapResponse response = cseClient.services.postAE("state",cseClient.getCount());
-		if (response==null) {
+		CoapResponse response_ = cseClient.services.postAE("state",cseClient.getCount());
+		if (response_==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post AE to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
 			throw new StateCreationException();
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+		} else if (response_.getCode()!=ResponseCode.CREATED && response_.getCode()!=ResponseCode.FORBIDDEN) {
 			outStream.out2("failed. Terminating interface");
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
+			if (!response_.getResponseText().isEmpty())
+				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response_.getCode() +
+						", reason: " + response_.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response.getCode(),
+				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response_.getCode(),
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae",
+		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:ae",
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting tagMap");
 		cseClient.stepCount();
-		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","tagMap",cseClient.getCount());
-		if (response==null) {
+		response_ = cseClient.services.postContainer(context+Constants.mnPostfix,"state","tagMap",cseClient.getCount());
+		if (response_==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
 			throw new StateCreationException();
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+		} else if (response_.getCode()!=ResponseCode.CREATED && response_.getCode()!=ResponseCode.FORBIDDEN) {
 			outStream.out2("failed");
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
+			if (!response_.getResponseText().isEmpty())
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode() +
+						", reason: " + response_.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode(),
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:cnt",
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting userMap");
 		cseClient.stepCount();
-		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","userMap",cseClient.getCount());
-		if (response==null) {
+		response_ = cseClient.services.postContainer(context+Constants.mnPostfix,"state","userMap",cseClient.getCount());
+		if (response_==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
 			throw new StateCreationException();
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+		} else if (response_.getCode()!=ResponseCode.CREATED && response_.getCode()!=ResponseCode.FORBIDDEN) {
 			outStream.out2("failed");
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
+			if (!response_.getResponseText().isEmpty())
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode() +
+						", reason: " + response_.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
+				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode(),
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
+		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:cnt",
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
@@ -187,9 +187,16 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (response_==null || response_.getCode()!=ResponseCode.CONTENT) {
+					if (response_==null) {
 						outStream.out2("failed");
-						errStream.out("Unable to read from " + cseClient.services.uri(),
+						errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					} else if (response_.getCode()!=ResponseCode.CONTENT) {
+						outStream.out2("failed");
+						errStream.out("Unable to read from " + cseClient.services.uri() + ", response: " + response_.getCode(),
 								i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
@@ -310,7 +317,14 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+					if (response_==null) {
+						outStream.out2("failed");
+						errStream.out("Unable to register node on CSE, timeout expired", i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					} else if (response_.getCode()!=ResponseCode.CREATED) {
 						outStream.out2("failed");
 						errStream.out("Unable to register node on CSE, response: " + response_.getCode(),
 								i, Severity.LOW);
@@ -354,7 +368,16 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						subscriber.insert(tag.id,tag.type,id,address);
+						try {
+							subscriber.insert(tag.id,tag.type,id,address,i);
+						} catch (URISyntaxException | StateCreationException e) {
+							outStream.out2("failed");
+							errStream.out(e,i,Severity.LOW);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
 						subscriptionsEnabled = false;																	// Disable subscription service while waiting for confirmation
 						response = new Response(ResponseCode.CONTINUE);
 					} else {
@@ -390,7 +413,14 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+				if (response_==null) {
+					outStream.out2("failed");
+					errStream.out("Unable to register user on CSE, timeout expired", i, Severity.LOW);
+					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+					exchange.respond(response);
+					i++;
+					return;
+				} else if (response_.getCode()!=ResponseCode.CREATED) {
 					outStream.out2("failed");
 					errStream.out("Unable to register user on CSE, response: " + response_.getCode(),
 							i, Severity.LOW);
@@ -483,8 +513,8 @@ class ADN_MN extends ADN {
 						return;
 					}
 					try {
-						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1);
-					} catch (InvalidRuleException e) {
+						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
+					} catch (URISyntaxException | StateCreationException | InvalidRuleException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.LOW);
 						response = new Response(ResponseCode.BAD_REQUEST);
@@ -515,7 +545,14 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+						if (response_==null) {
+							outStream.out2("failed");
+							errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						} else if (response_.getCode()!=ResponseCode.CHANGED) {
 							outStream.out2("failed");
 							errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
 									i, Severity.LOW);
@@ -600,7 +637,14 @@ class ADN_MN extends ADN {
 									}
 									break;
 							}
-							if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+							if (response_==null) {
+								outStream.out2("failed");
+								errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							} else if (response_.getCode()!=ResponseCode.CHANGED) {
 								outStream.out2("failed");
 								errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
 										i, Severity.LOW);
@@ -672,7 +716,14 @@ class ADN_MN extends ADN {
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.setPayload(label);
 		CoapResponse response_ = notificationClient.send(request, Code.PUT);
-		if (response_==null || response_.getCode()!=ResponseCode.CHANGED) {
+		if (response_==null) {
+			outStream.out2("failed");
+			errStream.out("Unable to write on actuator \"" + tag.id + "\", timeout expired", i, Severity.LOW);
+			response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+			exchange.respond(response);
+			i++;
+			return;
+		} else if (response_.getCode()!=ResponseCode.CHANGED) {
 			outStream.out2("failed");
 			errStream.out("Unable to write on actuator \"" + tag.id + "\", response: " + response_.getCode(),
 					i, Severity.LOW);
@@ -767,7 +818,14 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+				if (response_==null) {
+					outStream.out2("failed");
+					errStream.out("Unable to remove user from CSE, timeout expired", i, Severity.LOW);
+					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+					exchange.respond(response);
+					i++;
+					return;
+				} else if (response_.getCode()!=ResponseCode.CREATED) {
 					outStream.out2("failed");
 					errStream.out("Unable to remove user from CSE, response: " + response_.getCode(),
 							i, Severity.LOW);
@@ -817,14 +875,20 @@ class ADN_MN extends ADN {
 					String label0 = getUriValue(exchange,"lab",2);
 					String label1 = getUriValue(exchange,"lab",3);
 					if (label0==null || !isValidLabel(label0,tag0)) {
-						debugStream.out("Bad request, lab=" + label0, i);
+						if (label0!=null)
+							debugStream.out("Bad request, lab=" + label0, i);
+						else
+							debugStream.out("Bad request, lab", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
 					}
 					if (label1==null || !isValidLabel(label1,tag1)) {
-						debugStream.out("Bad request, lab=" + label1, i);
+						if (label1!=null)
+							debugStream.out("Bad request, lab=" + label1, i);
+						else
+							debugStream.out("Bad request, lab", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
@@ -880,7 +944,14 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-							if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
+							if (response_==null) {
+								outStream.out2("failed");
+								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", timeout expired", i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							} else if (response_.getCode()!=ResponseCode.DELETED) {
 								outStream.out2("failed");
 								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", response: " + response_.getCode(),
 										i, Severity.LOW);
@@ -918,7 +989,14 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+					if (response_==null) {
+						outStream.out2("failed");
+						errStream.out("Unable to remove node from CSE, timeout expired", i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					} else if (response_.getCode()!=ResponseCode.CREATED) {
 						outStream.out2("failed");
 						errStream.out("Unable to remove node from CSE, response: " + response_.getCode(),
 								i, Severity.LOW);
