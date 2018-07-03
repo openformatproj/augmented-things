@@ -356,6 +356,16 @@ class ADN_MN extends ADN {
 						notificationId = id;
 						notificationAddress = address;
 						outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
+						try {
+							subscriber.insert(tag.id,tag.type,id,address,i);
+						} catch (URISyntaxException | StateCreationException e) {
+							outStream.out2("failed");
+							errStream.out(e,i,Severity.LOW);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
 						String[] uri = new String[] {context + Constants.mnPostfix, tag.id, "data"};
 						cseClient.stepCount();
 						try {
@@ -364,16 +374,6 @@ class ADN_MN extends ADN {
 							outStream.out2("failed");
 							errStream.out(e,i,Severity.MEDIUM);
 							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-						try {
-							subscriber.insert(tag.id,tag.type,id,address,i);
-						} catch (URISyntaxException | StateCreationException e) {
-							outStream.out2("failed");
-							errStream.out(e,i,Severity.LOW);
-							response = new Response(ResponseCode.BAD_REQUEST);
 							exchange.respond(response);
 							i++;
 							return;
@@ -500,6 +500,16 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
+					try {
+						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
+					} catch (URISyntaxException | StateCreationException | InvalidRuleException e) {
+						outStream.out2("failed");
+						errStream.out(e,i,Severity.LOW);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					String[] uri = new String[] {context + Constants.mnPostfix, tag0.id, "data"};
 					cseClient.stepCount();
 					try {
@@ -508,16 +518,6 @@ class ADN_MN extends ADN {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					try {
-						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
-					} catch (URISyntaxException | StateCreationException | InvalidRuleException e) {
-						outStream.out2("failed");
-						errStream.out(e,i,Severity.LOW);
-						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
