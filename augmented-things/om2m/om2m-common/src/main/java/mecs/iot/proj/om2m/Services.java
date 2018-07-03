@@ -2,6 +2,7 @@ package mecs.iot.proj.om2m;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Severity;
 
 import java.io.Serializable;
 import java.net.URISyntaxException;
@@ -12,7 +13,7 @@ import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.Option;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.CoAP.Code;
-
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -195,11 +196,11 @@ public class Services {
 	
 	public CoapResponse postContainer(String name1, String name2, int i) throws URISyntaxException {
 		if (path.level==0) {
-			path.down(name1);
-			path.down(name2);
+			path.down(name1,false);
+			path.down(name2,true);
 		}
 		if (path.level==1) {
-			path.down(name2);
+			path.down(name2,true);
 		}
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,3));
@@ -217,11 +218,11 @@ public class Services {
 	
 	public CoapResponse postContainer(String name1, String name2, String name3, int i) throws URISyntaxException {
 		if (path.level==0) {
-			path.down(name1);
-			path.down(name2);
+			path.down(name1,false);
+			path.down(name2,true);
 		}
 		if (path.level==1) {
-			path.down(name2);
+			path.down(name2,true);
 		}
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,3));
@@ -239,7 +240,7 @@ public class Services {
 	
 	public CoapResponse postContentInstance(String content, int i) throws URISyntaxException {
 		if (path.level==2)
-			path.down("data");
+			path.down("data",true);
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -302,9 +303,11 @@ public class Services {
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
 		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
-		client.send(request, Code.POST);
-		// TODO: manage response
-		path.down(key);
+		CoapResponse response = client.send(request, Code.POST);
+		if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
+			return response;
+		}
+		path.down(key,true);
 		request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));

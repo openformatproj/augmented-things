@@ -310,7 +310,15 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					// TODO: handle response_
+					if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+						outStream.out2("failed");
+						errStream.out("Unable to register node on CSE, response: " + response_.getCode(),
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					// node lookout (id=<ID>&ser=<SERIAL>)
@@ -382,7 +390,15 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				// TODO: handle response_
+				if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+					outStream.out2("failed");
+					errStream.out("Unable to register user on CSE, response: " + response_.getCode(),
+							i, Severity.LOW);
+					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+					exchange.respond(response);
+					i++;
+					return;
+				}
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
@@ -751,7 +767,15 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				// TODO: handle response_
+				if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+					outStream.out2("failed");
+					errStream.out("Unable to remove user from CSE, response: " + response_.getCode(),
+							i, Severity.LOW);
+					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+					exchange.respond(response);
+					i++;
+					return;
+				}
 				response = new Response(ResponseCode.DELETED);
 			}
 		} else {
@@ -894,7 +918,15 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					// TODO: handle response_
+					if (response_==null || response_.getCode()!=ResponseCode.CREATED) {
+						outStream.out2("failed");
+						errStream.out("Unable to remove node from CSE, response: " + response_.getCode(),
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 					response = new Response(ResponseCode.DELETED);
 				}
 			} else {
