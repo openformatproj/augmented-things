@@ -156,7 +156,7 @@ class ADN_MN extends ADN {
 					String payload = "";
 					for (int j=0; j<attributes.length; j++) {
 						if (j!=attributes.length-1)
-							payload += attributes[j] + ",";
+							payload += attributes[j] + ", ";
 						else
 							payload += attributes[j];
 					}
@@ -257,7 +257,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					String payload = exchange.getRequestText();
-					String[] attributes = payload.split(",");
+					String[] attributes = payload.split(", ");
 					Integer k = new Integer(0);
 					if (!areValidAttributes(attributes,k)) {
 						debugStream.out("Bad request, attribute=" + attributes[k], i);

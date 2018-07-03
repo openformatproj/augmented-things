@@ -80,7 +80,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		String payload = "";
 		for (int i=0; i<tag.attributes.length; i++) {
 			if (i!=tag.attributes.length-1)
-				payload += tag.attributes[i] + ",";
+				payload += tag.attributes[i] + ", ";
 			else
 				payload += tag.attributes[i];
 		}
