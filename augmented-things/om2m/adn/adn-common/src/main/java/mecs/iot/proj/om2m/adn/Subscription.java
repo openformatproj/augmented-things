@@ -1,15 +1,19 @@
 package mecs.iot.proj.om2m.adn;
 
+import java.io.Serializable;
+
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
-public class Subscription {
+public class Subscription implements Serializable {
 	
 	public Terminal sender;
 	public String event;
-	public Controller controller;
+	public transient Controller controller;
 	public Terminal receiver;
 	public String action;
+	
+	private static final long serialVersionUID = 1L;
 	
 	Subscription(String sender, String type, String receiver, String address) {
 		this.sender = new Terminal(sender,type,null,Node.SENSOR);
