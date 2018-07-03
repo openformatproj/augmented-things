@@ -116,6 +116,7 @@ public class RemoteInterface extends Client {
 		String ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
 				new String[] {"ri"}, new Class<?>[] {String.class});												// Example: "/augmented-things-MN-cse/cnt-67185819"
 		String key = Services.getKeyFromAttribute(ri);																// Example: "67185819"
+		// TODO: if Container is already present, extract ri anyway
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
