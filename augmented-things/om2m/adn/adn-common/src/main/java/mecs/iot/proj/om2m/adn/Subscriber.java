@@ -92,7 +92,7 @@ public class Subscriber {
 			CoapResponse response;
 			debugStream.out("Posting subscriptionMap",i);
 			cseClient.stepCount();
-			response = cseClient.services.oM2Mput(sender,subs,uri,cseClient.getCount());
+			response = cseClient.services.oM2Mput(sender,subs.toArray(),uri,cseClient.getCount());
 			if (response==null) {
 				debugStream.out("failed",i);
 				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
