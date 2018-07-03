@@ -79,32 +79,63 @@ public class Subscriber {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), 0);
 	}
 	
-	public void insert(String sender, String type, String receiver, String address) {
+	public void insert(String sender, String type, String receiver, String address, int i) throws URISyntaxException, StateCreationException {
 		Subscription ref = new Subscription(sender,type,receiver,address);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
+			// TODO
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-			// TODO: push to OM2M
+			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
+			CoapResponse response;
+			debugStream.out("Posting subscriptionMap",i);
+			cseClient.stepCount();
+			response = cseClient.services.oM2Mput(sender,subs,uri,cseClient.getCount());
+			if (response==null) {
+				debugStream.out("failed",i);
+				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
+				throw new StateCreationException();
+			} else if (response.getCode()!=ResponseCode.CREATED) {
+				debugStream.out("failed",i);
+				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
+						i, Severity.LOW);
+				throw new StateCreationException();
+			}
 		}
 	}
 	
-	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
+	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action, int i) throws URISyntaxException, StateCreationException, InvalidRuleException {
 		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
+			// TODO
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-			// TODO: push to OM2M
+			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
+			CoapResponse response;
+			debugStream.out("Posting subscriptionMap",i);
+			cseClient.stepCount();
+			response = cseClient.services.oM2Mput(sender,subs,uri,cseClient.getCount());
+			if (response==null) {
+				debugStream.out("failed",i);
+				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
+				throw new StateCreationException();
+			} else if (response.getCode()!=ResponseCode.CREATED) {
+				debugStream.out("failed",i);
+				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
+						i, Severity.LOW);
+				throw new StateCreationException();
+			}
 		}
 	}
 	
 	public void bind(String id, String key) {
 		resourceMap.put(key,id);
+		// TODO
 	}
 	
 	public ArrayList<Subscription> get(String pi) {
