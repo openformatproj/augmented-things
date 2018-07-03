@@ -181,7 +181,7 @@ class ADN_MN extends ADN {
 						response_ = cseClient.services.getResource(uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
+						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						i++;
@@ -304,7 +304,7 @@ class ADN_MN extends ADN {
 						response_ = cseClient.services.oM2Mput(serial,tag,uri_,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
+						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						i++;
@@ -348,7 +348,7 @@ class ADN_MN extends ADN {
 							cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
 						} catch (URISyntaxException e) {
 							outStream.out2("failed");
-							errStream.out(e,0,Severity.MEDIUM);
+							errStream.out(e,i,Severity.MEDIUM);
 							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 							exchange.respond(response);
 							i++;
@@ -384,7 +384,7 @@ class ADN_MN extends ADN {
 					response_ = cseClient.services.oM2Mput(id,address,uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
-					errStream.out(e,0,Severity.MEDIUM);
+					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					i++;
@@ -476,7 +476,7 @@ class ADN_MN extends ADN {
 						cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
+						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						i++;
@@ -486,7 +486,7 @@ class ADN_MN extends ADN {
 						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1);
 					} catch (InvalidRuleException e) {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.LOW);
+						errStream.out(e,i,Severity.LOW);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
@@ -509,7 +509,7 @@ class ADN_MN extends ADN {
 							response_ = forwardNotification(notificationId,notificationAddress,"OK");					// Warn the requester about completed subscription
 						} catch (URISyntaxException e) {
 							outStream.out2("failed");
-							errStream.out(e,0,Severity.MEDIUM);
+							errStream.out(e,i,Severity.MEDIUM);
 							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 							exchange.respond(response);
 							i++;
@@ -527,7 +527,7 @@ class ADN_MN extends ADN {
 						subscriptionsEnabled = true;
 					} else {
 						outStream.out2("failed");
-						errStream.out("Unexpected confirmation",0,Severity.MEDIUM);
+						errStream.out("Unexpected confirmation",i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						i++;
@@ -567,7 +567,7 @@ class ADN_MN extends ADN {
 										value = Format.unpack(splits[1],subs.get(j).sender.type);
 									} catch (ParseException e) {
 										outStream.out2("failed");
-										errStream.out(e,0,Severity.MEDIUM);
+										errStream.out(e,i,Severity.MEDIUM);
 										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 										exchange.respond(response);
 										i++;
@@ -579,7 +579,7 @@ class ADN_MN extends ADN {
 											response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
 										} catch (URISyntaxException e) {
 											outStream.out2("failed");
-											errStream.out(e,0,Severity.MEDIUM);
+											errStream.out(e,i,Severity.MEDIUM);
 											response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 											exchange.respond(response);
 											i++;
@@ -592,7 +592,7 @@ class ADN_MN extends ADN {
 										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subscriber.getResourceId(key)+": "+con);
 									} catch (URISyntaxException e) {
 										outStream.out2("failed");
-										errStream.out(e,0,Severity.MEDIUM);
+										errStream.out(e,i,Severity.MEDIUM);
 										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 										exchange.respond(response);
 										i++;
@@ -661,7 +661,7 @@ class ADN_MN extends ADN {
 			notificationClient.connect(tag.address,false);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed");
-			errStream.out(e,0,Severity.MEDIUM);
+			errStream.out(e,i,Severity.MEDIUM);
 			response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 			exchange.respond(response);
 			i++;
@@ -732,7 +732,7 @@ class ADN_MN extends ADN {
 					subscriber.remove(tag.id,id,i);
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
-					errStream.out(e,0,Severity.MEDIUM);
+					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					i++;
@@ -747,7 +747,7 @@ class ADN_MN extends ADN {
 					subscriber.remove(id,Node.USER,i);
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
-					errStream.out(e,0,Severity.MEDIUM);
+					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					i++;
@@ -761,7 +761,7 @@ class ADN_MN extends ADN {
 					response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
-					errStream.out(e,0,Severity.MEDIUM);
+					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					i++;
@@ -835,7 +835,7 @@ class ADN_MN extends ADN {
 						subscriber.remove(tag0.id,label0,tag1.id,label1,i);
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
+						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						i++;
@@ -861,7 +861,7 @@ class ADN_MN extends ADN {
 								subscriber.remove(tag0.id,Node.SENSOR,i);
 							} catch (URISyntaxException e) {
 								outStream.out2("failed");
-								errStream.out(e,0,Severity.MEDIUM);
+								errStream.out(e,i,Severity.MEDIUM);
 								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 								exchange.respond(response);
 								i++;
@@ -874,7 +874,7 @@ class ADN_MN extends ADN {
 								response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 							} catch (URISyntaxException e) {
 								outStream.out2("failed");
-								errStream.out(e,0,Severity.MEDIUM);
+								errStream.out(e,i,Severity.MEDIUM);
 								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 								exchange.respond(response);
 								i++;
@@ -895,7 +895,7 @@ class ADN_MN extends ADN {
 								subscriber.remove(tag0.id,Node.ACTUATOR,i);
 							} catch (URISyntaxException e) {
 								outStream.out2("failed");
-								errStream.out(e,0,Severity.MEDIUM);
+								errStream.out(e,i,Severity.MEDIUM);
 								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 								exchange.respond(response);
 								i++;
@@ -912,7 +912,7 @@ class ADN_MN extends ADN {
 						response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
-						errStream.out(e,0,Severity.MEDIUM);
+						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						i++;
