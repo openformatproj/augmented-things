@@ -103,6 +103,7 @@ public class Subscriber {
 						i, Severity.LOW);
 				throw new StateCreationException();
 			}
+			debugStream.out("Done",i);
 		}
 	}
 	
@@ -130,6 +131,7 @@ public class Subscriber {
 						i, Severity.LOW);
 				throw new StateCreationException();
 			}
+			debugStream.out("Done",i);
 		}
 	}
 	
