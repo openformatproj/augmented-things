@@ -17,7 +17,7 @@ public class Subscription implements Serializable {
 	
 	Subscription(String sender, String type, String receiver, String address) {
 		this.sender = new Terminal(sender,type,null,Node.SENSOR);
-		this.action = null;
+		this.event = null;
 		this.controller = null;
 		this.receiver = new Terminal(receiver,null,address,Node.USER);
 		this.action = null;
