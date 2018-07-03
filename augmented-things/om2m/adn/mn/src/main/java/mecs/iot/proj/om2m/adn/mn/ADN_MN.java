@@ -13,6 +13,7 @@ import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
@@ -404,7 +405,7 @@ class ADN_MN extends ADN {
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(id,address,uri_,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(id,new JSONObject().put("address",address),uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);

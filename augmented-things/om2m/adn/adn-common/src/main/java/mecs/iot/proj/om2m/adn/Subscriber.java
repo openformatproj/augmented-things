@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.Services;
@@ -91,8 +92,9 @@ public class Subscriber {
 			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
 			CoapResponse response;
 			debugStream.out("Posting subscriptionMap",i);
+			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
 			cseClient.stepCount();
-			response = cseClient.services.oM2Mput(sender,subs.toArray(new Subscription[] {}),uri,cseClient.getCount());
+			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
 			if (response==null) {
 				debugStream.out("failed",i);
 				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
@@ -119,8 +121,9 @@ public class Subscriber {
 			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
 			CoapResponse response;
 			debugStream.out("Posting subscriptionMap",i);
+			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
 			cseClient.stepCount();
-			response = cseClient.services.oM2Mput(sender,subs.toArray(new Subscription[] {}),uri,cseClient.getCount());
+			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
 			if (response==null) {
 				debugStream.out("failed",i);
 				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
