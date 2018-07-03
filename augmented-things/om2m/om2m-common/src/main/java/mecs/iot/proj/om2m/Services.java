@@ -2,7 +2,6 @@ package mecs.iot.proj.om2m;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Severity;
 
 import java.io.Serializable;
 import java.net.URISyntaxException;
@@ -20,11 +19,11 @@ import org.json.JSONObject;
 public class Services {
 	
 	private Client client;
-	private Path path;
+	private PathManager pathManager;
 	
 	public Services (Client client, String uri) {
 		this.client = client;
-		path = new Path(client,uri,4);
+		pathManager = new PathManager(client,uri,4);
 	}
 	
 	private static String parseJSONObject(JSONObject obj, String attr, Class<?> Type) throws JSONException {
@@ -167,13 +166,13 @@ public class Services {
 	}
 	
 	public CoapResponse getResource(String[] uri, int i) throws URISyntaxException {
-		path.change(uri);
+		pathManager.change(uri);
 		Request request = new Request(Code.GET); 										// Create a GET request
 		request.getOptions().addOption(new Option(267,1));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		client.debugStream.out("Sent access request to " + path.uri(), i);
+		client.debugStream.out("Sent access request to " + pathManager.uri(), i);
 		return client.send(request, Code.GET);
 	}
 	
@@ -190,17 +189,17 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:ae",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent AE creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent AE creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
 	
 	public CoapResponse postContainer(String name1, String name2, int i) throws URISyntaxException {
-		if (path.level==0) {
-			path.down(name1,false);
-			path.down(name2,true);
+		if (pathManager.level==0) {
+			pathManager.down(name1,false);
+			pathManager.down(name2,true);
 		}
-		if (path.level==1) {
-			path.down(name2,true);
+		if (pathManager.level==1) {
+			pathManager.down(name2,true);
 		}
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,3));
@@ -212,17 +211,17 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
 	
 	public CoapResponse postContainer(String name1, String name2, String name3, int i) throws URISyntaxException {
-		if (path.level==0) {
-			path.down(name1,false);
-			path.down(name2,true);
+		if (pathManager.level==0) {
+			pathManager.down(name1,false);
+			pathManager.down(name2,true);
 		}
-		if (path.level==1) {
-			path.down(name2,true);
+		if (pathManager.level==1) {
+			pathManager.down(name2,true);
 		}
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,3));
@@ -234,13 +233,13 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
 	
 	public CoapResponse postContentInstance(String content, int i) throws URISyntaxException {
-		if (path.level==2)
-			path.down("data",true);
+		if (pathManager.level==2)
+			pathManager.down("data",true);
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -252,12 +251,12 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
 	
 	public void postSubscription(String observer, String id, String[] uri, int i) throws URISyntaxException {
-		path.change(uri);
+		pathManager.change(uri);
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,23));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -271,27 +270,27 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:sub",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Subscription creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Subscription creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		client.sendAsync(request, Code.POST);
 	}
 	
 	public CoapResponse deleteSubscription(String[] uri, int i) throws URISyntaxException {
-		path.change(uri);
+		pathManager.change(uri);
 		Request request = new Request(Code.DELETE);
 		request.getOptions().addOption(new Option(267,23));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		client.debugStream.out("Sent Subscription deletion to " + path.uri(), i);
+		client.debugStream.out("Sent Subscription deletion to " + pathManager.uri(), i);
 		return client.send(request, Code.DELETE);
 	}
 	
 	public String uri() {
-		return path.uri();
+		return pathManager.uri();
 	}
 	
 	public CoapResponse oM2Mput(String key, Serializable value, String[] uri, int i) throws URISyntaxException {
-		path.change(uri);
+		pathManager.change(uri);
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,3));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -302,12 +301,12 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		CoapResponse response = client.send(request, Code.POST);
 		if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
 			return response;
 		}
-		path.down(key,true);
+		pathManager.down(key,true);
 		request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -319,12 +318,12 @@ public class Services {
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
 	
 	public CoapResponse oM2Mremove(String[] uri, int i) throws URISyntaxException {
-		path.change(uri);
+		pathManager.change(uri);
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -336,7 +335,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + path.uri(), i);
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
 	

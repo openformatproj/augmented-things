@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.net.URISyntaxException;
 
-class Path {
+class PathManager {
 	
 	private Client client;
 	private List<String> uri;
 	int level;
 	
-	Path(Client client, String uri, int capacity) {
+	PathManager(Client client, String uri, int capacity) {
 		this.client = client;
 		this.uri = new ArrayList<String>(capacity);
 		this.uri.add(uri);
@@ -41,10 +41,11 @@ class Path {
 		client.connect(uri(),false);
 	}
 	
-	void down(String uri) throws URISyntaxException {
+	void down(String uri, boolean connect) throws URISyntaxException {
 		level += 1;
 		this.uri.add(uri);
-		client.connect(uri(),false);
+		if (connect)
+			client.connect(uri(),false);
 	}
 	
 	void up() throws URISyntaxException {
