@@ -372,7 +372,7 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		JSONObject obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-		obj.put("con","");
+		obj.put("con","()");
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
