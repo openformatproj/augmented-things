@@ -782,7 +782,7 @@ class ADN_MN extends ADN {
 				outStream.out1("Handling removal of lookout between user \"" + id + "\" and serial \"" + serial + "\"", i);
 				try {
 					subscriber.remove(tag.id,id,i);
-				} catch (URISyntaxException e) {
+				} catch (URISyntaxException | StateCreationException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -797,7 +797,7 @@ class ADN_MN extends ADN {
 				outStream.out1("Handling removal of user \"" + id + "\"", i);
 				try {
 					subscriber.remove(id,Node.USER,i);
-				} catch (URISyntaxException e) {
+				} catch (URISyntaxException | StateCreationException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -898,7 +898,7 @@ class ADN_MN extends ADN {
 					outStream.out1("Handling removal of link between serial \"" + serial0 + "\" and serial \"" + serial1 + "\"", i);
 					try {
 						subscriber.remove(tag0.id,label0,tag1.id,label1,i);
-					} catch (URISyntaxException e) {
+					} catch (URISyntaxException | StateCreationException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -924,7 +924,7 @@ class ADN_MN extends ADN {
 						case SENSOR:
 							try {
 								subscriber.remove(tag0.id,Node.SENSOR,i);
-							} catch (URISyntaxException e) {
+							} catch (URISyntaxException | StateCreationException e) {
 								outStream.out2("failed");
 								errStream.out(e,i,Severity.MEDIUM);
 								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -965,7 +965,7 @@ class ADN_MN extends ADN {
 						case ACTUATOR:
 							try {
 								subscriber.remove(tag0.id,Node.ACTUATOR,i);
-							} catch (URISyntaxException e) {
+							} catch (URISyntaxException | StateCreationException e) {
 								outStream.out2("failed");
 								errStream.out(e,i,Severity.MEDIUM);
 								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);

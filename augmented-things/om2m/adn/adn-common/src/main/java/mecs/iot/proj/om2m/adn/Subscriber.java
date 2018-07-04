@@ -84,28 +84,29 @@ public class Subscriber {
 		Subscription ref = new Subscription(sender,type,receiver,address);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
-			// TODO
+			oM2Mput(sender,subscriptionMap.get(sender),i);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
-			CoapResponse response;
-			debugStream.out("Posting subscriptionMap...",i);
-			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
-			cseClient.stepCount();
-			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
-			if (response==null) {
-				debugStream.out("failed",i);
-				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
-				throw new StateCreationException();
-			} else if (response.getCode()!=ResponseCode.CREATED) {
-				debugStream.out("failed",i);
-				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
-						i, Severity.LOW);
-				throw new StateCreationException();
-			}
-			debugStream.out("...done",i);
+//			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
+//			CoapResponse response;
+//			debugStream.out("Posting subscriptionMap...",i);
+//			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
+//			cseClient.stepCount();
+//			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
+//			if (response==null) {
+//				debugStream.out("failed",i);
+//				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
+//				throw new StateCreationException();
+//			} else if (response.getCode()!=ResponseCode.CREATED) {
+//				debugStream.out("failed",i);
+//				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
+//						i, Severity.LOW);
+//				throw new StateCreationException();
+//			}
+//			debugStream.out("...done",i);
+			oM2Mput(sender,subs,i);
 		}
 	}
 	
@@ -113,34 +114,35 @@ public class Subscriber {
 		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
 			subscriptionMap.get(sender).add(ref);
-			// TODO
+			oM2Mput(sender,subscriptionMap.get(sender),i);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
-			CoapResponse response;
-			debugStream.out("Posting subscriptionMap...",i);
-			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
-			cseClient.stepCount();
-			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
-			if (response==null) {
-				debugStream.out("failed",i);
-				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
-				throw new StateCreationException();
-			} else if (response.getCode()!=ResponseCode.CREATED) {
-				debugStream.out("failed",i);
-				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
-						i, Severity.LOW);
-				throw new StateCreationException();
-			}
-			debugStream.out("...done",i);
+//			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
+//			CoapResponse response;
+//			debugStream.out("Posting subscriptionMap...",i);
+//			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
+//			cseClient.stepCount();
+//			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
+//			if (response==null) {
+//				debugStream.out("failed",i);
+//				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
+//				throw new StateCreationException();
+//			} else if (response.getCode()!=ResponseCode.CREATED) {
+//				debugStream.out("failed",i);
+//				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
+//						i, Severity.LOW);
+//				throw new StateCreationException();
+//			}
+//			debugStream.out("...done",i);
+			oM2Mput(sender,subs,i);
 		}
 	}
 	
-	public void bind(String id, String key) {
-		resourceMap.put(key,id);
-		// TODO
+	public void bind(String sender, String key) {
+		resourceMap.put(key,sender);
+		// TODO: push to OM2M
 	}
 	
 	public ArrayList<Subscription> get(String pi) {
@@ -151,11 +153,12 @@ public class Subscriber {
 		return resourceMap.get(key);
 	}
 	
-	public void remove(String id, Node node, int k) throws URISyntaxException {
+	public void remove(String sender, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
-				subscriptionMap.remove(id);
-				// TODO: push to OM2M
+				subscriptionMap.remove(sender);
+				oM2Mput(sender,new ArrayList<Subscription>(),k);
+				deleteSubscription(sender, k);																// ? TODO
 				break;
 			case ACTUATOR:
 			case USER:
@@ -164,9 +167,9 @@ public class Subscriber {
 				for (int i=0; i<resources.length; i++) {
 					subs = subscriptionMap.get(resources[i]);
 					for (int j=0; j<subs.size(); j++) {
-						if (subs.get(j).receiver.id.equals(id))
+						if (subs.get(j).receiver.id.equals(sender))
 							subs.remove(j);																	// Remove all subscriptions containing the receiver
-							// TODO: push to OM2M
+							oM2Mput(sender,subs,k);
 					}
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
 						deleteSubscription(resources[i], k);
@@ -176,26 +179,26 @@ public class Subscriber {
 		}
 	}
 	
-	public void remove(String sender, String receiver, int k) throws URISyntaxException {
+	public void remove(String sender, String receiver, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
 		for (int j=0; j<subs.size(); j++) {
 			if (subs.get(j).receiver.id.equals(receiver))
 				subs.remove(j);																				// Remove all subscriptions containing the receiver
-				// TODO: push to OM2M
+				oM2Mput(sender,subs,k);
 		}
 		if (subs.size()==0) {
 			deleteSubscription(sender, k);
 		}
 	}
 	
-	public void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException {
+	public void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
 		Subscription ref;
 		for (int j=0; j<subs.size(); j++) {
 			ref = subs.get(j);
 			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
 				subs.remove(j);																				// Remove all subscriptions both containing the receiver and matching the pair event/action
-				// TODO: push to OM2M
+				oM2Mput(sender,subs,k);
 		}
 		if (subs.size()==0) {
 			deleteSubscription(sender, k);
@@ -209,11 +212,30 @@ public class Subscriber {
 		cseClient.stepCount();
 		response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 		if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(), //
+			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(),
 					k, Severity.LOW);
 		}
 		subscriptionMap.remove(resource);
-		// TODO: push to OM2M
+	}
+	
+	private void oM2Mput (String sender, ArrayList<Subscription> subs, int i) throws URISyntaxException, StateCreationException {
+		String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
+		CoapResponse response;
+		debugStream.out("Posting subscriptionMap...",i);
+		JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
+		cseClient.stepCount();
+		response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
+		if (response==null) {
+			debugStream.out("failed",i);
+			errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
+			throw new StateCreationException();
+		} else if (response.getCode()!=ResponseCode.CREATED) {
+			debugStream.out("failed",i);
+			errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
+					i, Severity.LOW);
+			throw new StateCreationException();
+		}
+		debugStream.out("...done",i);
 	}
 
 }
