@@ -321,7 +321,7 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-		obj.put("con",content.toJSON());
+		obj.put("con",pack(content.toJSON().toString()));
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
@@ -354,7 +354,7 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-		obj.put("con",content);
+		obj.put("con",pack(content.toString()));
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
@@ -385,6 +385,10 @@ public class Services {
 	
 	public static String getPathFromKey(String key) {
 		return "/cnt-" + key;
+	}
+	
+	public static String pack (String json) {
+		return json.replace("{","(").replace("}",")").replace("(\"","(").replace("\")",")").replace("[\"","[").replace("\"]","]").replace("\":",":").replace(":\"",":").replace("\",",",").replace(",\"",",");
 	}
 
 }
