@@ -396,15 +396,6 @@ public class Services {
 		// Replace curly brackets with round brackets
 		packTable.add(new String[] {"{","("});
 		packTable.add(new String[] {"}",")"});
-		// Remove quotes
-//		packTable.add(new String[] {"(\"","("});
-//		packTable.add(new String[] {"\")",")"});
-//		packTable.add(new String[] {"[\"","["});
-//		packTable.add(new String[] {"\"]","]"});
-//		packTable.add(new String[] {"\":",":"});
-//		packTable.add(new String[] {":\"",":"});
-//		packTable.add(new String[] {"\",",","});
-//		packTable.add(new String[] {",\"",","});
 		
 		// Replace round brackets with curly brackets
 		unpackTable.add(new String[] {"(","{"});
