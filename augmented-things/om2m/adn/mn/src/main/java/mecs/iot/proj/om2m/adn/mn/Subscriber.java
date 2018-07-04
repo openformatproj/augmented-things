@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.adn;
+package mecs.iot.proj.om2m.adn.mn;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.Services;
-import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
+import mecs.iot.proj.om2m.adn.mn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;

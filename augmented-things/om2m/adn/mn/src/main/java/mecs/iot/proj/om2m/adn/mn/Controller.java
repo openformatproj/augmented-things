@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.adn;
+package mecs.iot.proj.om2m.adn.mn;
 
 import mecs.iot.proj.om2m.structures.Rule;
 import mecs.iot.proj.om2m.structures.Tag;

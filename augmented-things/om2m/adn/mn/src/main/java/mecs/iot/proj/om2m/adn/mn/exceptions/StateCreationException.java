@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.adn.exceptions;
+package mecs.iot.proj.om2m.adn.mn.exceptions;
 
 public class StateCreationException extends Exception {
 	

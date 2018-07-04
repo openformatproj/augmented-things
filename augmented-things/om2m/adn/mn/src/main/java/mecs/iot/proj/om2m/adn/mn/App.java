@@ -1,7 +1,7 @@
 package mecs.iot.proj.om2m.adn.mn;
 
 import mecs.iot.proj.om2m.Services;
-import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
+import mecs.iot.proj.om2m.adn.mn.exceptions.*;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Command;
@@ -27,7 +27,7 @@ public class App
     {
     	final Console console = new Console(id,host,false,debug);
     	try {
-    		final ADN_MN adn = new ADN_MN(id,host,Constants.context,Constants.context,debug,console);
+    		final ADN_MN adn = new ADN_MN(id,host,Constants.context,Constants.context,debug,console,"augmented-things-MN");
     		CoapServer server = new CoapServer(Constants.mnADNPort);
         	outStream.out1("Adding ADN on " + Constants.adnProtocol + "localhost" + Constants._mnADNPort + "/" + adn.getName(), 0);
         	server.add(adn);
@@ -37,7 +37,7 @@ public class App
         	Command exit = (s) -> {console.terminate(); server.destroy(); adn.notificationClient.destroy(); adn.cseClient.destroy(); return "Exiting";};
     		console.add("exit",exit,0,"Terminate this adn","exit");
         	console.start();
-    	} catch (URISyntaxException | StateCreationException e) {
+    	} catch (URISyntaxException | StateCreationException | RegistrationException e) {
     		errStream.out(e,0,Severity.MEDIUM);
 		}
     }

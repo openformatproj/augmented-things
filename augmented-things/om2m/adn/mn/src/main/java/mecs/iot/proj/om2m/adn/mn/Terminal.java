@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.adn;
+package mecs.iot.proj.om2m.adn.mn;
 
 import org.json.JSONObject;
 
