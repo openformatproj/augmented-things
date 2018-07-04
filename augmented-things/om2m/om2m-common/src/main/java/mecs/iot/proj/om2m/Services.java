@@ -5,6 +5,7 @@ import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.californium.core.CoapResponse;
@@ -321,7 +322,7 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-		obj.put("con",pack(content.toJSON().toString()));
+		obj.put("con",packJSON(content.toJSON().toString()));
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
@@ -354,7 +355,7 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		obj = new JSONObject();
 		obj.put("cnf","text/plain:0");
-		obj.put("con",pack(content.toString()));
+		obj.put("con",packJSON(content.toString()));
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
@@ -387,8 +388,46 @@ public class Services {
 		return "/cnt-" + key;
 	}
 	
-	public static String pack (String json) {
-		return json.replace("{","(").replace("}",")").replace("(\"","(").replace("\")",")").replace("[\"","[").replace("\"]","]").replace("\":",":").replace(":\"",":").replace("\",",",").replace(",\"",",");
+	private static ArrayList<String[]> packTable = new ArrayList<String[]>();
+	private static ArrayList<String[]> unpackTable = new ArrayList<String[]>();
+	
+	static {
+		
+		// Replace curly brackets with round brackets
+		packTable.add(new String[] {"{","("});
+		packTable.add(new String[] {"}",")"});
+		// Remove quotes
+//		packTable.add(new String[] {"(\"","("});
+//		packTable.add(new String[] {"\")",")"});
+//		packTable.add(new String[] {"[\"","["});
+//		packTable.add(new String[] {"\"]","]"});
+//		packTable.add(new String[] {"\":",":"});
+//		packTable.add(new String[] {":\"",":"});
+//		packTable.add(new String[] {"\",",","});
+//		packTable.add(new String[] {",\"",","});
+		
+		// Replace round brackets with curly brackets
+		unpackTable.add(new String[] {"(","{"});
+		unpackTable.add(new String[] {")","}"});
+		
+	}
+	
+	public static String packJSON (String json) {
+		String[] pair = new String[2];
+		for (int i=0; i<packTable.size(); i++) {
+			pair = packTable.get(i);
+			json = json.replace(pair[0],pair[1]);
+		}
+		return json;
+	}
+	
+	public static String unpackJSON (String json) {
+		String[] pair = new String[2];
+		for (int i=0; i<unpackTable.size(); i++) {
+			pair = unpackTable.get(i);
+			json = json.replace(pair[0],pair[1]);
+		}
+		return json;
 	}
 
 }
