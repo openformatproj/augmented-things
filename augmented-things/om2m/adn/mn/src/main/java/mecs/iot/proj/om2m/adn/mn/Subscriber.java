@@ -11,7 +11,6 @@ import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.adn.mn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
-import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
@@ -24,23 +23,24 @@ public class Subscriber {
 	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource id -> list of subscriptions
 	private HashMap<String,String> resourceMap;																// cnt key -> resource id
 	
+	private String cseBaseName;
+	
 	private DebugStream debugStream;
 	private ErrStream errStream;
 	private Client cseClient;
-	private String context;
 	
-	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String context) throws URISyntaxException, StateCreationException {
+	public Subscriber(DebugStream debugStream, ErrStream errStream, Client cseClient, String cseBaseName) throws URISyntaxException, StateCreationException {
 		// TODO: pull from OM2M
 		this.debugStream = debugStream;
 		this.errStream = errStream;
 		this.cseClient = cseClient;
-		this.context = context;
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
 		resourceMap = new HashMap<String,String>();
+		this.cseBaseName = cseBaseName;
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap",0);
 		cseClient.stepCount();
-		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","subscriptionMap",cseClient.getCount());
+		response = cseClient.services.postContainer(cseBaseName,"state","subscriptionMap",cseClient.getCount());
 		if (response==null) {
 			debugStream.out("failed",0);
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
@@ -60,7 +60,7 @@ public class Subscriber {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), 0);
 		debugStream.out("Posting resourceMap",0);
 		cseClient.stepCount();
-		response = cseClient.services.postContainer(context+Constants.mnPostfix,"state","resourceMap",cseClient.getCount());
+		response = cseClient.services.postContainer(cseBaseName,"state","resourceMap",cseClient.getCount());
 		if (response==null) {
 			debugStream.out("failed",0);
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", 0, Severity.LOW);
@@ -207,7 +207,7 @@ public class Subscriber {
 	
 	private void deleteSubscription(String resource, int k) throws URISyntaxException {
 		debugStream.out("Deleting subscription on \"" + resource + "\"", k);
-		String[] uri = new String[] {context + Constants.mnPostfix, resource, "data", "subscription"};
+		String[] uri = new String[] {cseBaseName, resource, "data", "subscription"};
 		CoapResponse response_ = null;
 		cseClient.stepCount();
 		response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
@@ -219,7 +219,7 @@ public class Subscriber {
 	}
 	
 	private void oM2Mput (String sender, ArrayList<Subscription> subs, int i) throws URISyntaxException, StateCreationException {
-		String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
+		String[] uri = new String[] {cseBaseName, "state", "subscriptionMap"};
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap...",i);
 		JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));

@@ -38,8 +38,9 @@ class ADN_MN extends ADN {
 	private String notificationId;
 	private String notificationAddress;
 
-	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console, String name) throws URISyntaxException, StateCreationException, RegistrationException {
+	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console, String cseBaseName) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
+		this.cseBaseName = cseBaseName;
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
 		// TODO: pull from OM2M
@@ -68,7 +69,7 @@ class ADN_MN extends ADN {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting tagMap");
 		cseClient.stepCount();
-		response_ = cseClient.services.postContainer(context+Constants.mnPostfix,"state","tagMap",cseClient.getCount());
+		response_ = cseClient.services.postContainer(cseBaseName,"state","tagMap",cseClient.getCount());
 		if (response_==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
@@ -88,7 +89,7 @@ class ADN_MN extends ADN {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting userMap");
 		cseClient.stepCount();
-		response_ = cseClient.services.postContainer(context+Constants.mnPostfix,"state","userMap",cseClient.getCount());
+		response_ = cseClient.services.postContainer(cseBaseName,"state","userMap",cseClient.getCount());
 		if (response_==null) {
 			outStream.out2("failed");
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
@@ -107,7 +108,7 @@ class ADN_MN extends ADN {
 		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:cnt",
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting subscription state");
-		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
+		subscriber = new Subscriber(debugStream,errStream,cseClient,cseBaseName);
 		outStream.out1_2("done, registering to IN");
 		Client tempClient = new Client(Services.joinIdHost(id+"_TEMPclient",host), Constants.adnProtocol + Constants.getInAddress() + Constants._inADNPort + "/" + context, debug);
 		Request request = new Request(Code.POST);
@@ -197,7 +198,7 @@ class ADN_MN extends ADN {
 					}
 					outStream.out1("Handling reading on sensor with serial \"" + serial + "\"", i);
 					String id = tag.id;
-					String[] uri = new String[] {context + Constants.mnPostfix, id, "data", "la"};
+					String[] uri = new String[] {cseBaseName, id, "data", "la"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
@@ -327,7 +328,7 @@ class ADN_MN extends ADN {
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					tagMap.put(serial,tag);
-					String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "tagMap"};
+					String[] uri_ = new String[] {cseBaseName, "state", "tagMap"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
@@ -389,7 +390,7 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						String[] uri = new String[] {context + Constants.mnPostfix, tag.id, "data"};
+						String[] uri = new String[] {cseBaseName, tag.id, "data"};
 						cseClient.stepCount();
 						try {
 							cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
@@ -423,7 +424,7 @@ class ADN_MN extends ADN {
 				}
 				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
 				userMap.put(id,address);
-				String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "userMap"};
+				String[] uri_ = new String[] {cseBaseName, "state", "userMap"};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
@@ -533,7 +534,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					String[] uri = new String[] {context + Constants.mnPostfix, tag0.id, "data"};
+					String[] uri = new String[] {cseBaseName, tag0.id, "data"};
 					cseClient.stepCount();
 					try {
 						cseClient.services.postSubscription(Constants._mnADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
@@ -828,7 +829,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				userMap.remove(id);
-				String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "userMap", id};
+				String[] uri_ = new String[] {cseBaseName, "state", "userMap", id};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
@@ -955,7 +956,7 @@ class ADN_MN extends ADN {
 								return;
 							}
 							outStream.out1_2("deleting subscription on \"" + tag0.id + "\"");
-							uri = new String[] {context + Constants.mnPostfix, tag0.id, "data", "subscription"};
+							uri = new String[] {cseBaseName, tag0.id, "data", "subscription"};
 							cseClient.stepCount();
 							try {
 								response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
@@ -1000,7 +1001,7 @@ class ADN_MN extends ADN {
 							break;
 					}
 					tagMap.remove(serial0);
-					String[] uri_ = new String[] {context + Constants.mnPostfix, "state", "tagMap", serial0};
+					String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial0};
 					cseClient.stepCount();
 					try {
 						response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());

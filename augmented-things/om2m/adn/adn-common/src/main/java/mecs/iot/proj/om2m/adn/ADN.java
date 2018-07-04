@@ -23,6 +23,8 @@ public class ADN extends CoapResource {
 	protected String name;
 	protected String context;
 	
+	protected String cseBaseName;
+	
 	protected OutStream outStream;
 	protected DebugStream debugStream;
 	protected ErrStream errStream;

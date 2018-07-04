@@ -17,8 +17,8 @@ public class Constants {
 
 	final public static String context;
 	final public static String root;
-	final public static String inPostfix;
-	final public static String mnPostfix;
+	final private static String inPostfix;
+	final private static String mnPostfix;
 	final public static String inCSEPostfix;
 	final public static String mnCSEPostfix;
 
