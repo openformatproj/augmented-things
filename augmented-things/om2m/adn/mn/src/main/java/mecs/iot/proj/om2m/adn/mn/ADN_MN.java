@@ -114,7 +114,7 @@ class ADN_MN extends ADN {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(name));
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(cseBaseName));
 		tempClient.stepCount();
 		response_ = tempClient.send(request, Code.POST);
 		if (response_==null) {
