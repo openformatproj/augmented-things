@@ -4,16 +4,18 @@ public class MN {
 	
 	public String id;
 	public String address;
+	public boolean active;
 	
 	public MN(String id, String address) {
 		this.id = id;
 		this.address = address;
+		this.active = false;
 	}
 	
 	@Override
 	
 	public String toString() {
-		return "id=" + id + ", address=" + address;
+		return "id=" + id + ", address=" + address + ", active=" + active;
 	}
 	
 	@Override

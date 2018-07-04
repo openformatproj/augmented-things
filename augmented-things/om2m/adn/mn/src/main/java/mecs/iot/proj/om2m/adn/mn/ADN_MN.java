@@ -17,9 +17,7 @@ import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
-import mecs.iot.proj.om2m.adn.Subscription;
-import mecs.iot.proj.om2m.adn.exceptions.StateCreationException;
-import mecs.iot.proj.om2m.adn.Subscriber;
+import mecs.iot.proj.om2m.adn.mn.exceptions.*;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.structures.Constants;
@@ -33,11 +31,12 @@ class ADN_MN extends ADN {
 
 	private HashMap<String,Tag> tagMap;																					// serial -> tag
 	private HashMap<String,String> userMap;																				// user id -> address
+	private Subscriber subscriber;
 	private boolean subscriptionsEnabled;
 	private String notificationId;
 	private String notificationAddress;
 
-	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException, StateCreationException {
+	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console, String name) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
 		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
 		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
@@ -107,10 +106,31 @@ class ADN_MN extends ADN {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,context);
+		outStream.out1_2("done, registering to IN");
+		Client tempClient = new Client(Services.joinIdHost(id+"_TEMPclient",host), Constants.adnProtocol + Constants.getInAddress() + Constants._inADNPort + "/" + context, debug);
+		Request request = new Request(Code.POST);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(name));
+		tempClient.stepCount();
+		response_ = tempClient.send(request, Code.POST);
+		if (response_==null) {
+			outStream.out2("failed");
+			errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", timeout expired", i, Severity.LOW);
+			throw new RegistrationException();
+		} else if (response_.getCode()!=ResponseCode.CREATED) {
+			outStream.out2("failed");
+			if (!response_.getResponseText().isEmpty())
+				errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", response: " + response_.getCode() +
+						", reason: " + response_.getResponseText(),
+						i, Severity.LOW);
+			else
+				errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", response: " + response_.getCode(),
+					i, Severity.LOW);
+			throw new RegistrationException();
+		}
 		outStream.out2("done");
 		subscriptionsEnabled = true;
-//		notificationId = "";
-//		notificationAddress = "";
 		i++;
 	}
 
@@ -144,7 +164,7 @@ class ADN_MN extends ADN {
 			Tag tag = tagMap.get(serial);
 			switch (sw) {
 				case 1:
-					// attributes query (mode=1&ser=<SERIAL>)		
+					// attributes query (mode=1&ser=<SERIAL>)
 					if (tag==null || tag.node==Node.USER) {
 						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as an endpoint node", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
