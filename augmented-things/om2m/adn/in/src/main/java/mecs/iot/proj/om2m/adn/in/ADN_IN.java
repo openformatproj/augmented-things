@@ -7,10 +7,13 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
+import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.MN;
+import mecs.iot.proj.om2m.structures.Severity;
 
 class ADN_IN extends ADN {
 	
@@ -18,7 +21,7 @@ class ADN_IN extends ADN {
 
 	ADN_IN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
 		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
-//		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
+		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
 		mnMap = new HashMap<String,MN>();
 	}
 	
@@ -147,9 +150,20 @@ class ADN_IN extends ADN {
 				i++;
 				return;
 			}
-			outStream.out1("Activating MN \"" + id + "\"", i);
+			outStream.out1("Registering MN \"" + id + "\"", i);
 			mns[index].active = true;
-			// TODO: subscribe to MN state
+			String[] uri = new String[] {mns[index].id,"state"};
+			cseClient.stepCount();
+			try {
+				cseClient.services.postSubscription(Constants._inADNPort+"/"+getName(),"subscription",uri,cseClient.getCount());
+			} catch (URISyntaxException e) {
+				outStream.out2("failed");
+				errStream.out(e,i,Severity.MEDIUM);
+				response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+				exchange.respond(response);
+				i++;
+				return;
+			}
 			response = new Response(ResponseCode.CREATED);
 		}
 		exchange.respond(response);
