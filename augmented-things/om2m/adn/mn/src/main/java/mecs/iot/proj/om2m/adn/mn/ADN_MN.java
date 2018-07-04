@@ -29,6 +29,8 @@ import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
 class ADN_MN extends ADN {
 
+	public Client notificationClient;
+	
 	private HashMap<String,Tag> tagMap;																					// serial -> tag
 	private HashMap<String,String> userMap;																				// user id -> address
 	private Subscriber subscriber;
