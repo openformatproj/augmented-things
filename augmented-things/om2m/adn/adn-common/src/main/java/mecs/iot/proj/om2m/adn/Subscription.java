@@ -44,8 +44,7 @@ public class Subscription implements JSONSerializable {
 		Subscription[] subs = new Subscription[2];
 		subs[0] = new Subscription("sender", "type", "receiver", "address");
 		subs[1] = new Subscription("sender", "type", "receiver", "address");
-		JSONObject obj = Services.vectorizeJSON(subs);
-		System.out.println(obj);
+		System.out.println(Services.pack(Services.vectorizeJSON(subs).toString()));
 	}
 	
 }

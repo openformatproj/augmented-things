@@ -91,7 +91,7 @@ public class Subscriber {
 			subscriptionMap.put(sender,subs);
 			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
 			CoapResponse response;
-			debugStream.out("Posting subscriptionMap",i);
+			debugStream.out("Posting subscriptionMap...",i);
 			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
 			cseClient.stepCount();
 			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
@@ -105,7 +105,7 @@ public class Subscriber {
 						i, Severity.LOW);
 				throw new StateCreationException();
 			}
-			debugStream.out("Done",i);
+			debugStream.out("...done",i);
 		}
 	}
 	
@@ -120,7 +120,7 @@ public class Subscriber {
 			subscriptionMap.put(sender,subs);
 			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
 			CoapResponse response;
-			debugStream.out("Posting subscriptionMap",i);
+			debugStream.out("Posting subscriptionMap...",i);
 			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
 			cseClient.stepCount();
 			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
@@ -134,7 +134,7 @@ public class Subscriber {
 						i, Severity.LOW);
 				throw new StateCreationException();
 			}
-			debugStream.out("Done",i);
+			debugStream.out("...done",i);
 		}
 	}
 	
