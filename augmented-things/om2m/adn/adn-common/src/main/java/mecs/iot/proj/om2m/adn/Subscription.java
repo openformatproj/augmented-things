@@ -42,9 +42,11 @@ public class Subscription implements JSONSerializable {
 	
 	public static void main(String[] args) {
 		Subscription[] subs = new Subscription[2];
-		subs[0] = new Subscription("sender", "type", "receiver", "address");
-		subs[1] = new Subscription("sender", "type", "receiver", "address");
-		System.out.println(Services.pack(Services.vectorizeJSON(subs).toString()));
+		subs[0] = new Subscription("sensor1.alessandro", "tempC", "user.ALESSANDRO-K7NR", "coap://192.168.0.107:5691/augmented-things");
+		subs[1] = new Subscription("sensor2.alessandro", "tempC", "user.ALESSANDRO-K7NR", "coap://192.168.0.107:5691/augmented-things");
+		System.out.println(Services.vectorizeJSON(subs).toString());
+		System.out.println(Services.packJSON(Services.vectorizeJSON(subs).toString()));
+		System.out.println(Services.unpackJSON(Services.packJSON(Services.vectorizeJSON(subs).toString())));
 	}
 	
 }
