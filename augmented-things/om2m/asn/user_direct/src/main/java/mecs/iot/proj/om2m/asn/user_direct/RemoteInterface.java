@@ -14,7 +14,6 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 class RemoteInterface extends Client {
 	
 	private String serial;
-	private String context;
 	private String id;
 	
 	private String address;
@@ -25,7 +24,6 @@ class RemoteInterface extends Client {
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
 		super(Services.joinIdHost(id+"/remote",host), uri, debug);
 		this.serial = console.getSerial();
-		this.context = context;
 		this.id = Services.joinIdHost(id,host);
 		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;
 		CommandList list = new CommandList(this,console,this.id);
@@ -62,7 +60,7 @@ class RemoteInterface extends Client {
 		String address = response.getResponseText(); 																// MN address
 		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + Constants.mnCSE);
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
@@ -89,7 +87,7 @@ class RemoteInterface extends Client {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, connecting to ADN");
 		try {
-			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
+			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);

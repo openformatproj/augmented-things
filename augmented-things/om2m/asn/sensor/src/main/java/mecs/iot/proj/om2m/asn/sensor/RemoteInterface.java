@@ -18,7 +18,6 @@ public class RemoteInterface extends Client {
 	
 	private double value;
 	private double fluctuation;
-	private String context;
 	private Tag tag;
 	private int location;
 	private long duration;
@@ -30,7 +29,6 @@ public class RemoteInterface extends Client {
 		super(tag.id, uri, debug);
 		this.value = value;
 		this.fluctuation = fluctuation;
-		this.context = context;
 		this.tag = tag;
 		this.location = location;
 		this.duration = duration;
@@ -63,7 +61,7 @@ public class RemoteInterface extends Client {
 		String address = mnData[1];
 		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + Constants.mnCSE);
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
@@ -119,7 +117,7 @@ public class RemoteInterface extends Client {
 		// TODO: if Container is already present, extract ri anyway
 		outStream.out1_2("done, connecting to ADN");
 		try {
-			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
+			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
@@ -144,7 +142,7 @@ public class RemoteInterface extends Client {
 		}
 		outStream.out1_2("done, connecting to CSE for publishing");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + Constants.mnCSE + Services.getPathFromKey(key));
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot + "/" + Services.getPathFromKey(key));
 		} catch (URISyntaxException e) {
 			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");

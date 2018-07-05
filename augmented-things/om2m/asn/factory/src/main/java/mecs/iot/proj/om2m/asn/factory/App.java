@@ -15,7 +15,7 @@ public class App
 	
 	final private static String host = Constants.getComputerName();
 	final private static String context = Constants.context;
-	final private static String address = Constants.adnProtocol + Constants.getInAddress() + Constants._inADNPort + "/" + context;
+	final private static String address = Constants.adnProtocol + Constants.getInAddress() + Constants.inADNRoot;
 	final private static String ip = Constants.getIp();
 	final private static boolean debug = true;
 	

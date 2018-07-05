@@ -29,7 +29,7 @@ public class App
 		try {
 			final ADN_IN adn = new ADN_IN(id,host,debug,console);
 			CoapServer server = new CoapServer(Constants.inADNPort);
-			outStream.out1("Adding ADN on " + Constants.adnProtocol + "localhost" + Constants._inADNPort + "/" + adn.getName(), 0);
+			outStream.out1("Adding ADN on " + Constants.adnProtocol + "localhost" + Constants.inADNRoot, 0);
 			server.add(adn);
 			outStream.out1_2("done. Starting server");
 			server.start();

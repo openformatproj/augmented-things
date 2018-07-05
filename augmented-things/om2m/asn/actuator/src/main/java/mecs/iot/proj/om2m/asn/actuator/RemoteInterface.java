@@ -16,7 +16,6 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 public class RemoteInterface extends Client {
 	
-	private String context;
 	private Tag tag;
 	private int location;
 	private long duration;
@@ -27,7 +26,6 @@ public class RemoteInterface extends Client {
 
 	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String ip, int port, String id, String host, long duration) throws URISyntaxException, ActionNumberMismatchException {
 		super(tag.id, uri, debug);
-		this.context = context;
 		this.tag = tag;
 		this.location = location;
 		this.duration = duration;
@@ -88,7 +86,7 @@ public class RemoteInterface extends Client {
 		String address = mnData[1]; 																				// MN address
 		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + Constants.mnCSE);
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
@@ -115,7 +113,7 @@ public class RemoteInterface extends Client {
 				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
 		outStream.out1_2("done, connecting to ADN");
 		try {
-			connect(Constants.adnProtocol + address + Constants._mnADNPort + "/" + context);
+			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);

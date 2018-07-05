@@ -14,7 +14,7 @@ public class App
 	final private static String id = "sensor";
 	final private static String host = Constants.getComputerName();
 	final private static String context = Constants.context;
-	final private static String address = Constants.adnProtocol + Constants.getInAddress() + Constants._inADNPort + "/" + context;
+	final private static String address = Constants.adnProtocol + Constants.getInAddress() + Constants.inADNRoot;
 	final private static boolean debug = true;
 	
 	final private static Tag tag = new Tag(Services.joinIdHost(id,host),"0x0001","tempC",new String[]{"event"});

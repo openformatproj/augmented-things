@@ -10,33 +10,23 @@ public class Constants {
 	final public static String cseProtocol;
 	final public static String adnProtocol;
 
-	final public static int inCSEPort;
-	final public static int mnCSEPort;
+	final private static int inCSEPort;
+	final private static int mnCSEPort;
 	final public static int inADNPort;
 	final public static int mnADNPort;
 	
 	final public static String context;
 	
+	final private static String root;
 	final private static String inCSEPostfix;
 	final private static String mnCSEPostfix;
 
-	//final private static String inId;
-	//final private static String mnId;
-
+	final public static String inCSERoot;
+	final public static String mnCSERoot;
+	final public static String inADNRoot;
+	final public static String mnADNRoot;
+	
 	final public static int streamCharacters;
-
-	final public static String _inCSEPort;
-	final public static String _mnCSEPort;
-	final public static String _inADNPort;
-	final public static String _mnADNPort;
-	
-	final private static String root;
-
-	final public static String inRoot;
-	final public static String mnRoot;
-	
-	final public static String inCSE;
-	final public static String mnCSE;
 	
 	private static Configuration asn = null;
 
@@ -112,7 +102,7 @@ public class Constants {
 		try {
 			str = conf.getAttribute("mecs.iot.proj.om2m.root");
 		} catch (Exception e) {
-			str = "~/";
+			str = "~";
 		} finally {
 			root = (String) str;
 		}
@@ -130,20 +120,6 @@ public class Constants {
 		} finally {
 			mnCSEPostfix = (String) str;
 		}
-//		try {
-//			str = conf.getAttribute("mecs.iot.proj.om2m.inId");
-//		} catch (Exception e) {
-//			str = "IN-ADN";
-//		} finally {
-//			inId = (String) str;
-//		}
-//		try {
-//			str = conf.getAttribute("mecs.iot.proj.om2m.mnId");
-//		} catch (Exception e) {
-//			str = "MN-ADN";
-//		} finally {
-//			mnId = (String) str;
-//		}
 		try {
 			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.streamCharacters"));
 		} catch (Exception e) {
@@ -151,14 +127,10 @@ public class Constants {
 		} finally {
 			streamCharacters = (int) str;
 		}
-		_inCSEPort = ":" + Integer.toString(inCSEPort);
-		_mnCSEPort = ":" + Integer.toString(mnCSEPort);
-		_inADNPort = ":" + Integer.toString(inADNPort);
-		_mnADNPort = ":" + Integer.toString(mnADNPort);
-		inRoot = _inCSEPort + "/" + root;
-		mnRoot = _mnCSEPort + "/" + root;
-		inCSE = context + inCSEPostfix;
-		mnCSE = context + mnCSEPostfix;
+		inCSERoot = ":" + Integer.toString(inCSEPort) + "/" + root + "/" + context + inCSEPostfix;
+		mnCSERoot = ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + context + mnCSEPostfix;
+		inADNRoot = ":" + Integer.toString(inADNPort) + "/" + context;
+		mnADNRoot = ":" + Integer.toString(mnADNPort) + "/" + context;
 	}
 
 	public static String getComputerName() {

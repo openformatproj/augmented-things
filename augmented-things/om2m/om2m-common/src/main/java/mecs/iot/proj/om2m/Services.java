@@ -385,7 +385,7 @@ public class Services {
 	}
 	
 	public static String getPathFromKey(String key) {
-		return "/cnt-" + key;
+		return "cnt-" + key;
 	}
 	
 	private static ArrayList<String[]> packTable = new ArrayList<String[]>();
