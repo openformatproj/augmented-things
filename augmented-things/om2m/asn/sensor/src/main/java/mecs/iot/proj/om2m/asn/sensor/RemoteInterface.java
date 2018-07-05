@@ -56,12 +56,12 @@ public class RemoteInterface extends Client {
 						i, Severity.LOW);
 			return;
 		}
-		String[] mnData = response.getResponseText().split(","); 													// MN address and id
+		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String id = mnData[0];
 		String address = mnData[1];
-		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
+		outStream.out1_2("done, received \"" + id + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnCSERoot);
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot(id));
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
@@ -142,7 +142,7 @@ public class RemoteInterface extends Client {
 		}
 		outStream.out1_2("done, connecting to CSE for publishing");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnCSERoot + "/" + Services.getPathFromKey(key));
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot(id) + "/" + Services.getPathFromKey(key));
 		} catch (URISyntaxException e) {
 			deleteNodeAsync(tag.serial);
 			outStream.out2("failed. Terminating interface");

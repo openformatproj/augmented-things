@@ -21,7 +21,7 @@ class ADN_IN extends ADN {
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
-		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inCSERoot, debug);
+		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inCSERoot(id), debug);
 		mnMap = new HashMap<String,MN>();
 	}
 	
@@ -65,7 +65,7 @@ class ADN_IN extends ADN {
 					}
 					outStream.out1("Handling user localization for serial \"" + serial + "\"", i);
 					response = new Response(ResponseCode.CONTENT);
-					response.setPayload(mn.address);
+					response.setPayload(mn.id + ", " + mn.address);
 					break;
 				default:
 					debugStream.out("Bad request, mode=" + mode, i);
@@ -130,7 +130,7 @@ class ADN_IN extends ADN {
 			outStream.out1("Associating node \"" + id + "\" with serial \"" + serial + "\" to MN \"" + mn.id + "\"", i);
 			mnMap.put(serial,mn);
 			response = new Response(ResponseCode.CREATED);
-			response.setPayload(mn.id + "," + mn.address);
+			response.setPayload(mn.id + ", " + mn.address);
 		} else {
 			// MN registration (id=<ID>)
 			MN[] mns = Db.mnMap.values().toArray(new MN[] {});

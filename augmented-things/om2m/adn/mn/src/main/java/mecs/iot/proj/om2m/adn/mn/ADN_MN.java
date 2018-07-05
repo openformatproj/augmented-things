@@ -41,7 +41,7 @@ class ADN_MN extends ADN {
 
 	ADN_MN(String id, String host, boolean debug, Console console) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(id,host,debug,console);
-		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnCSERoot, debug);
+		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnCSERoot(id), debug);
 		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
 		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();

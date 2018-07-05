@@ -18,11 +18,10 @@ public class Constants {
 	final public static String context;
 	
 	final private static String root;
-	final private static String inCSEPostfix;
-	final private static String mnCSEPostfix;
+	final private static String csePostfix;
 
-	final public static String inCSERoot;
-	final public static String mnCSERoot;
+	//final private static String inCSERoot;
+	//final private static String mnCSERoot;
 	final public static String inADNRoot;
 	final public static String mnADNRoot;
 	
@@ -108,18 +107,11 @@ public class Constants {
 			root = (String) str;
 		}
 		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.inCSEPostfix");
+			str = conf.getAttribute("mecs.iot.proj.om2m.csePostfix");
 		} catch (Exception e) {
-			str = "-IN-cse";
+			str = "-cse";
 		} finally {
-			inCSEPostfix = (String) str;
-		}
-		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.mnCSEPostfix");
-		} catch (Exception e) {
-			str = "-MN-cse";
-		} finally {
-			mnCSEPostfix = (String) str;
+			csePostfix = (String) str;
 		}
 		try {
 			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.streamCharacters"));
@@ -128,10 +120,18 @@ public class Constants {
 		} finally {
 			streamCharacters = (int) str;
 		}
-		inCSERoot = ":" + Integer.toString(inCSEPort) + "/" + root + "/" + context + inCSEPostfix;
-		mnCSERoot = ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + context + mnCSEPostfix;
+		//inCSERoot = ":" + Integer.toString(inCSEPort) + "/" + root + "/" + context + "-IN" + csePostfix;
+		//mnCSERoot = ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + context + "-MN" + csePostfix;
 		inADNRoot = ":" + Integer.toString(inADNPort) + "/" + context;
 		mnADNRoot = ":" + Integer.toString(mnADNPort) + "/" + context;
+	}
+	
+	public static String inCSERoot (String id) {
+		return ":" + Integer.toString(inCSEPort) + "/" + root + "/" + id + csePostfix;
+	}
+	
+	public static String mnCSERoot (String id) {
+		return ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + id + csePostfix;
 	}
 
 	public static String getComputerName() {
