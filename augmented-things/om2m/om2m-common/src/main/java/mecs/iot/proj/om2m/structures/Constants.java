@@ -1,5 +1,6 @@
 package mecs.iot.proj.om2m.structures;
 
+import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.structures.Configuration;
 
 //import java.io.IOException;
@@ -30,6 +31,7 @@ public class Constants {
 	final public static String remotePath = "http://thingstalk.altervista.org/augmented-things/configuration";
 	
 	private static Configuration asn = null;
+	private static Configuration adn = null;
 
 	static {
 		Configuration conf = null;
@@ -162,49 +164,82 @@ public class Constants {
 	        return "unknown_host";
 	}
 	
-	private static void loadASN() {
+	private static void loadASN(DebugStream debugStream, int i) {
 		if (asn==null) {
 			try {
 				asn = new Configuration ("/configuration/asn.ini",Pack.JAR,Type.INI);
-				System.out.println("Found local configuration file (ASN)");
+				debugStream.out("Found local configuration file (ASN)",i);
 			} catch (Exception e0) {
 				try {
 					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini",Pack.MAVEN,Type.INI);
-					System.out.println("Found local configuration file (ASN)");
+					debugStream.out("Found local configuration file (ASN)",i);
 				} catch (Exception e1) {
 					try {
-						asn = new Configuration ("http://thingstalk.altervista.org/augmented-things/configuration/asn.ini",Pack.REMOTE,Type.INI);
-						System.out.println("Found remote configuration file (ASN)");
+						asn = new Configuration (remotePath+"/asn.ini",Pack.REMOTE,Type.INI);
+						debugStream.out("Found remote configuration file (ASN)",i);
 					} catch (Exception e2) {
-						System.out.println("No configuration files found, using default values");
+						debugStream.out("No configuration files found, using default values",i);
 					}
 				}
 			}
 		}
 	}
 	
-	public static String inAddress() {
-		loadASN();
+	private static void loadADN(DebugStream debugStream, int i) {
+		if (adn==null) {
+			try {
+				adn = new Configuration ("/configuration/adn.ini",Pack.JAR,Type.INI);
+				debugStream.out("Found local configuration file (ADN)",i);
+			} catch (Exception e0) {
+				try {
+					adn = new Configuration ("../adn-common/src/main/resources/configuration/adn.ini",Pack.MAVEN,Type.INI);
+					debugStream.out("Found local configuration file (ADN)",i);
+				} catch (Exception e1) {
+					try {
+						adn = new Configuration (remotePath+"/adn.ini",Pack.REMOTE,Type.INI);
+						debugStream.out("Found remote configuration file (ADN)",i);
+					} catch (Exception e2) {
+						debugStream.out("No configuration files found, using default values",i);
+					}
+				}
+			}
+		}
+	}
+	
+	public static String inAddressASN(DebugStream debugStream, int i) {
+		loadASN(debugStream,i);
 		String str = null;
 		try {
 			str = asn.getAttribute("mecs.iot.proj.om2m.inAddress");
 		} catch (Exception e) {
 			str = "127.0.0.1";
 		}
-		System.out.println("\tinAddress="+str);
+		debugStream.out("\tinAddress="+str,i);
+		return str;
+	}
+	
+	public static String inAddressADN(DebugStream debugStream, int i) {
+		loadADN(debugStream,i);
+		String str = null;
+		try {
+			str = adn.getAttribute("mecs.iot.proj.om2m.inAddress");
+		} catch (Exception e) {
+			str = "127.0.0.1";
+		}
+		debugStream.out("\tinAddress="+str,i);
 		return str;
 	}
 	
 	// TODO: retrieve current machine IP (for subscriptions)
-	public static String ip() {
-		loadASN();
+	public static String ip(DebugStream debugStream, int i) {
+		loadASN(debugStream,i);
 		String str = null;
 		try {
 			str = asn.getAttribute("mecs.iot.proj.om2m.ip");
 		} catch (Exception e) {
-			str = "localhost";
+			str = "127.0.0.1";
 		}
-		System.out.println("\tip="+str);
+		debugStream.out("\tip="+str,i);
 		return str;
 	}
 

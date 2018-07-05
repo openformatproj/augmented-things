@@ -11,6 +11,7 @@ import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.factory.dashboard.Interface;
 import mecs.iot.proj.om2m.structures.Configuration;
+import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Pack;
 import mecs.iot.proj.om2m.structures.Tag;
 import mecs.iot.proj.om2m.structures.Type;
@@ -48,7 +49,7 @@ class Remotes {
 				System.out.println("Found local factory");
 			} catch (Exception e1) {
 				try {
-					conf = new Configuration ("http://thingstalk.altervista.org/augmented-things/configuration/factory.xml",Pack.REMOTE,Type.XML);
+					conf = new Configuration (Constants.remotePath+"/factory.xml",Pack.REMOTE,Type.XML);
 					System.out.println("Found remote factory");
 				} catch (Exception e2) {
 					//e1.printStackTrace();
