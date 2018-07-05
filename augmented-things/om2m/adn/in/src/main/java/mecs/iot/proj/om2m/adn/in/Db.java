@@ -12,6 +12,7 @@ public class Db {
 	final public static HashMap<Integer,MN> mnMap = new HashMap<Integer,MN>();
 
 	static {
+		// TODO: attach System.out to a stream
 		Configuration db = null;
 		String[][] mn = null;
 		try {

@@ -31,6 +31,7 @@ public class Constants {
 	private static Configuration asn = null;
 
 	static {
+		// TODO: attach System.out to a stream
 		Configuration conf = null;
 		Object str = null;
 		try {

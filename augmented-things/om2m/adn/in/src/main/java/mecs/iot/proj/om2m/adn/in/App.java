@@ -15,8 +15,7 @@ import org.eclipse.californium.core.CoapServer;
 public class App
 {
 	
-	//final private static String id = Constants.inId;
-	final private static String id = "augmented-things-IN";
+	final private static String id = "augmented-things-IN"; // TODO: load from ini
 	final private static String host = Constants.getComputerName();
 	final private static boolean debug = true;
 	
