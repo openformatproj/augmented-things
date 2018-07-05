@@ -33,16 +33,16 @@ class ADN_MN extends ADN {
 	
 	private HashMap<String,Tag> tagMap;																					// serial -> tag
 	private HashMap<String,String> userMap;																				// user id -> address
+	
 	private Subscriber subscriber;
 	private boolean subscriptionsEnabled;
 	private String notificationId;
 	private String notificationAddress;
 
-	ADN_MN(String id, String host, String uri, String context, boolean debug, Console console, String cseBaseName) throws URISyntaxException, StateCreationException, RegistrationException {
-		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
-		this.cseBaseName = cseBaseName;
-		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + context + Constants.mnCSEPostfix, debug);
-		notificationClient = new Client(Services.joinIdHost(id+"_ATclient",host),debug);
+	ADN_MN(String id, String host, boolean debug, Console console) throws URISyntaxException, StateCreationException, RegistrationException {
+		super(id,host,debug,console);
+		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnRoot + Constants.mnCSE, debug);
+		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
 		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();
 		userMap = new HashMap<String,String>();
@@ -110,7 +110,7 @@ class ADN_MN extends ADN {
 		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,cseBaseName);
 		outStream.out1_2("done, registering to IN");
-		Client tempClient = new Client(Services.joinIdHost(id+"_TEMPclient",host), Constants.adnProtocol + Constants.getInAddress() + Constants._inADNPort + "/" + context, debug);
+		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.adnProtocol + Constants.getInAddress() + Constants._inADNPort + "/" + Constants.context, debug);
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);

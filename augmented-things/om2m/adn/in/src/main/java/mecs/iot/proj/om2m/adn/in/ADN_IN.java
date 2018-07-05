@@ -19,9 +19,9 @@ class ADN_IN extends ADN {
 	
 	private HashMap<String,MN> mnMap;																					// serial -> MN
 
-	ADN_IN(String id, String host, String uri, String context, boolean debug, Console console) throws URISyntaxException {
-		super(Services.joinIdHost(id+"_server",host), uri, context, debug, console);
-		cseClient = new Client(Services.joinIdHost(id+"_CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + context + Constants.inCSEPostfix, debug);
+	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
+		super(id,host,debug,console);
+		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inRoot + Constants.inCSE, debug);
 		mnMap = new HashMap<String,MN>();
 	}
 	

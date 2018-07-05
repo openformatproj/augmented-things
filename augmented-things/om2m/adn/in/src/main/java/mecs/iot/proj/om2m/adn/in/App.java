@@ -15,7 +15,8 @@ import org.eclipse.californium.core.CoapServer;
 public class App
 {
 	
-	final private static String id = Constants.inId;
+	//final private static String id = Constants.inId;
+	final private static String id = "augmented-things-IN";
 	final private static String host = Constants.getComputerName();
 	final private static boolean debug = true;
 	
@@ -26,14 +27,14 @@ public class App
     {
     	final Console console = new Console(id,host,false,debug);
 		try {
-			final ADN_IN adn = new ADN_IN(id,host,Constants.context,Constants.context,debug,console);
+			final ADN_IN adn = new ADN_IN(id,host,debug,console);
 			CoapServer server = new CoapServer(Constants.inADNPort);
 			outStream.out1("Adding ADN on " + Constants.adnProtocol + "localhost" + Constants._inADNPort + "/" + adn.getName(), 0);
 			server.add(adn);
 			outStream.out1_2("done. Starting server");
 			server.start();
 			outStream.out2("done");
-			Command exit = (s) -> {console.terminate(); server.destroy();/* adn.notificationClient.destroy(); */adn.cseClient.destroy(); return "Exiting";};
+			Command exit = (s) -> {console.terminate(); server.destroy(); adn.cseClient.destroy(); return "Exiting";};
 			console.add("exit",exit,0,"Terminate this adn","exit");
 			console.start();
 		} catch (URISyntaxException e) {

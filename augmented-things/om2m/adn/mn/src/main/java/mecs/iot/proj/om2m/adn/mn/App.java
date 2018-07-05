@@ -16,7 +16,8 @@ import org.eclipse.californium.core.CoapServer;
 public class App
 {
 	
-	final private static String id = Constants.mnId;
+	//final private static String id = Constants.mnId;
+	final private static String id = "augmented-things-MN"; // TODO: load from ini
 	final private static String host = Constants.getComputerName();
 	final private static boolean debug = true;
 	
@@ -27,7 +28,7 @@ public class App
     {
     	final Console console = new Console(id,host,false,debug);
     	try {
-    		final ADN_MN adn = new ADN_MN(id,host,Constants.context,Constants.context,debug,console,"augmented-things-MN");
+    		final ADN_MN adn = new ADN_MN(id,host,debug,console);
     		CoapServer server = new CoapServer(Constants.mnADNPort);
         	outStream.out1("Adding ADN on " + Constants.adnProtocol + "localhost" + Constants._mnADNPort + "/" + adn.getName(), 0);
         	server.add(adn);

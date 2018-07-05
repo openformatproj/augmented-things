@@ -1,28 +1,23 @@
 package mecs.iot.proj.om2m.adn;
 
 import mecs.iot.proj.om2m.Client;
+import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
+import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Tag;
 
-//import java.util.Arrays;
-//import java.util.HashSet;
 import java.util.List;
-//import java.util.Set;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
 public class ADN extends CoapResource {
 	
-	public Client cseClient;
-	
 	protected String name;
-	protected String context;
-	
 	protected String cseBaseName;
 	
 	protected OutStream outStream;
@@ -32,12 +27,14 @@ public class ADN extends CoapResource {
 	protected Console console;
 	
 	protected int i;
+	
+	public Client cseClient;
 
-	protected ADN(String name, String uri, String context, boolean debug, Console console) {
-		super(uri);
+	protected ADN(String cseBaseName, String host, boolean debug, Console console) {
+		super(Constants.context);
 		setObservable(true);
-		this.name = name;
-		this.context = context;
+		this.name = Services.joinIdHost(cseBaseName+"/server",host);
+		this.cseBaseName = cseBaseName;
 		outStream = new OutStream(name);
 		debugStream = new DebugStream(name,debug);
 		errStream = new ErrStream(name);

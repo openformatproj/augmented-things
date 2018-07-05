@@ -32,8 +32,8 @@ public class RemoteInterface extends Client {
 		this.location = location;
 		this.duration = duration;
 		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;
-		ActuationUnit unit = new ActuationUnit(Services.joinIdHost(id+"_unit",host),tag.attributes,actions);
-		createNotificationServer(Services.joinIdHost(id+"_ATserver",host),context,debug,unit,port);
+		ActuationUnit unit = new ActuationUnit(Services.joinIdHost(id+"/unit",host),tag.attributes,actions);
+		createNotificationServer(Services.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
 	}
 	
 	private class Watchdog extends Thread {
@@ -88,7 +88,7 @@ public class RemoteInterface extends Client {
 		String address = mnData[1]; 																				// MN address
 		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
+			connect(Constants.cseProtocol + address + Constants.mnRoot + Constants.mnCSE);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);

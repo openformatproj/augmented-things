@@ -23,7 +23,7 @@ class RemoteInterface extends Client {
 	private boolean executing;
 
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
-		super(Services.joinIdHost(id+"_remote",host), uri, debug);
+		super(Services.joinIdHost(id+"/remote",host), uri, debug);
 		this.serial = console.getSerial();
 		this.context = context;
 		this.id = Services.joinIdHost(id,host);
@@ -34,8 +34,8 @@ class RemoteInterface extends Client {
 		}
 		this.console = console;
 		executing = true;
-		ConsoleWrapper unit = new ConsoleWrapper(Services.joinIdHost(id+"_unit",host),console);
-		createNotificationServer(Services.joinIdHost(id+"_ATserver",host),context,debug,unit,port);
+		ConsoleWrapper unit = new ConsoleWrapper(Services.joinIdHost(id+"/unit",host),console);
+		createNotificationServer(Services.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ class RemoteInterface extends Client {
 		String address = response.getResponseText(); 																// MN address
 		outStream.out1_2("done, received " + address + " as MN address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnRoot + context + Constants.mnCSEPostfix);
+			connect(Constants.cseProtocol + address + Constants.mnRoot + Constants.mnCSE);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);

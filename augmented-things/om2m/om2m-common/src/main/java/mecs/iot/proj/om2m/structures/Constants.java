@@ -14,16 +14,14 @@ public class Constants {
 	final public static int mnCSEPort;
 	final public static int inADNPort;
 	final public static int mnADNPort;
-
+	
 	final public static String context;
-	final public static String root;
-	final private static String inPostfix;
-	final private static String mnPostfix;
-	final public static String inCSEPostfix;
-	final public static String mnCSEPostfix;
+	
+	final private static String inCSEPostfix;
+	final private static String mnCSEPostfix;
 
-	final public static String inId;
-	final public static String mnId;
+	//final private static String inId;
+	//final private static String mnId;
 
 	final public static int streamCharacters;
 
@@ -31,9 +29,14 @@ public class Constants {
 	final public static String _mnCSEPort;
 	final public static String _inADNPort;
 	final public static String _mnADNPort;
+	
+	final private static String root;
 
 	final public static String inRoot;
 	final public static String mnRoot;
+	
+	final public static String inCSE;
+	final public static String mnCSE;
 	
 	private static Configuration asn = null;
 
@@ -114,20 +117,6 @@ public class Constants {
 			root = (String) str;
 		}
 		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.inPostfix");
-		} catch (Exception e) {
-			str = "-IN";
-		} finally {
-			inPostfix = (String) str;
-		}
-		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.mnPostfix");
-		} catch (Exception e) {
-			str = "-MN";
-		} finally {
-			mnPostfix = (String) str;
-		}
-		try {
 			str = conf.getAttribute("mecs.iot.proj.om2m.inCSEPostfix");
 		} catch (Exception e) {
 			str = "-IN-cse";
@@ -141,20 +130,20 @@ public class Constants {
 		} finally {
 			mnCSEPostfix = (String) str;
 		}
-		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.inId");
-		} catch (Exception e) {
-			str = "IN-ADN";
-		} finally {
-			inId = (String) str;
-		}
-		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.mnId");
-		} catch (Exception e) {
-			str = "MN-ADN";
-		} finally {
-			mnId = (String) str;
-		}
+//		try {
+//			str = conf.getAttribute("mecs.iot.proj.om2m.inId");
+//		} catch (Exception e) {
+//			str = "IN-ADN";
+//		} finally {
+//			inId = (String) str;
+//		}
+//		try {
+//			str = conf.getAttribute("mecs.iot.proj.om2m.mnId");
+//		} catch (Exception e) {
+//			str = "MN-ADN";
+//		} finally {
+//			mnId = (String) str;
+//		}
 		try {
 			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.streamCharacters"));
 		} catch (Exception e) {
@@ -168,6 +157,8 @@ public class Constants {
 		_mnADNPort = ":" + Integer.toString(mnADNPort);
 		inRoot = _inCSEPort + "/" + root;
 		mnRoot = _mnCSEPort + "/" + root;
+		inCSE = context + inCSEPostfix;
+		mnCSE = context + mnCSEPostfix;
 	}
 
 	public static String getComputerName() {
