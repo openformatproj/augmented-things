@@ -183,19 +183,18 @@ class ADN_IN extends ADN {
 			if (notification.contains("m2m:vrq")) {
 				outStream.out1("Handling subscription confirmation", i);
 			} else {
-//				String con = null;
-//				try {
-//					con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"},
-//							new String[] {"con"}, new Class<?>[] {String.class},false);
-//				} catch (JSONException e) {
-//					debugStream.out("Received invalid notification", i);
-//					response = new Response(ResponseCode.BAD_REQUEST);
-//					exchange.respond(response);
-//					i++;
-//					return;
-//				}
-//				outStream.out1("Handling notification with JSON: " + con, i);
-				outStream.out1("Received (test): " + notification, i);
+				String rn = null;																						// serial, user id or resource id
+				try {
+					rn = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cnt"},
+							new String[] {"rn"}, new Class<?>[] {String.class},false);
+				} catch (JSONException e) {
+					debugStream.out("Received invalid notification", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				outStream.out1("Handling notification with JSON: " + rn, i);
 			}
 			response = new Response(ResponseCode.CREATED);
 		}
