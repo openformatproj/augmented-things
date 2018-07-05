@@ -152,8 +152,15 @@ class ADN_IN extends ADN {
 			}
 			outStream.out1("Registering MN \"" + id + "\"", i);
 			mns[index].active = true;
-			String[] uri = new String[] {mns[index].id,"state"};
 			cseClient.stepCount();
+			try {
+				cseClient.connect(Constants.cseProtocol + mns[index].address + Constants.mnCSERoot(mns[index].id));
+			} catch (URISyntaxException e) {
+				outStream.out2("failed");
+				errStream.out(e, i, Severity.MEDIUM);
+				return;
+			}
+			String[] uri = new String[] {mns[index].id,"state"};
 			try {
 				cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.inADNRoot,"subscription",uri,cseClient.getCount());
 			} catch (URISyntaxException e) {
