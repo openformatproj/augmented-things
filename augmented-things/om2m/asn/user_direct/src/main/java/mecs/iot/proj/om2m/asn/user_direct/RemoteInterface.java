@@ -58,11 +58,11 @@ class RemoteInterface extends Client {
 			return;
 		}
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
-		String id = mnData[0];
+		String name = mnData[0];
 		String address = mnData[1];
-		outStream.out1_2("done, received \"" + id + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
+		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnCSERoot(id));
+			connect(Constants.cseProtocol + address + Constants.mnCSERoot(name));
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
