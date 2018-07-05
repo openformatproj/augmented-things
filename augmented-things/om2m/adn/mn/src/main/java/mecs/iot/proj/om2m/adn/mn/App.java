@@ -36,7 +36,7 @@ public class App
 					name = new Configuration (Constants.remotePath+"/name.ini",Pack.REMOTE,Type.INI);
 					System.out.println("Found remote configuration file (MN)");
 				} catch (Exception e2) {
-					System.out.println("No configuration files found, using default values");
+					System.out.println("No configuration files (MN) found, using default values");
 				}
 			}
 		}

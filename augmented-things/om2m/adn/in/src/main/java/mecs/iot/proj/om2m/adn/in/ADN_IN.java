@@ -35,17 +35,17 @@ class ADN_IN extends ADN {
 		String[][] mn = null;
 		try {
 			db = new Configuration ("/configuration/db.ini",Pack.JAR,Type.INI);
-			debugStream.out("Found local database",i);
+			debugStream.out("Found local configuration file (IN)",i);
 		} catch (Exception e0) {
 			try {
 				db = new Configuration ("src/main/resources/configuration/db.ini",Pack.MAVEN,Type.INI);
-				debugStream.out("Found local database",i);
+				debugStream.out("Found local configuration file (IN)",i);
 			} catch (Exception e1) {
 				try {
 					db = new Configuration (Constants.remotePath+"/db.ini",Pack.REMOTE,Type.INI);
-					debugStream.out("Found remote database",i);
+					debugStream.out("Found remote configuration file (IN)",i);
 				} catch (Exception e2) {
-					debugStream.out("No databases found, using default values",i);
+					debugStream.out("No configuration files (IN) found, using default values",i);
 				}
 			}
 		}
@@ -58,7 +58,7 @@ class ADN_IN extends ADN {
 		}
 		for (int j=0; j<mn.length; j++) {
 			locationMap.put(j, new MN(mn[j][0],mn[j][1]));
-			debugStream.out("\t"+mn[j][0]+","+mn[j][1],i);
+			// debugStream.out("\t"+mn[j][0]+","+mn[j][1],i);
 		}
 		i++;
 	}

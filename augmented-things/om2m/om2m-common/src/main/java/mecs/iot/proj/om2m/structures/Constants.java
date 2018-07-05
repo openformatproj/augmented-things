@@ -178,7 +178,7 @@ public class Constants {
 						asn = new Configuration (remotePath+"/asn.ini",Pack.REMOTE,Type.INI);
 						debugStream.out("Found remote configuration file (ASN)",i);
 					} catch (Exception e2) {
-						debugStream.out("No configuration files found, using default values",i);
+						debugStream.out("No configuration files (ASN) found, using default values",i);
 					}
 				}
 			}
@@ -199,7 +199,7 @@ public class Constants {
 						adn = new Configuration (remotePath+"/adn.ini",Pack.REMOTE,Type.INI);
 						debugStream.out("Found remote configuration file (ADN)",i);
 					} catch (Exception e2) {
-						debugStream.out("No configuration files found, using default values",i);
+						debugStream.out("No configuration files (ADN) found, using default values",i);
 					}
 				}
 			}
@@ -214,7 +214,7 @@ public class Constants {
 		} catch (Exception e) {
 			str = "127.0.0.1";
 		}
-		debugStream.out("\tinAddress="+str,i);
+		// debugStream.out("\tinAddress="+str,i);
 		return str;
 	}
 	
@@ -226,7 +226,7 @@ public class Constants {
 		} catch (Exception e) {
 			str = "127.0.0.1";
 		}
-		debugStream.out("\tinAddress="+str,i);
+		// debugStream.out("\tinAddress="+str,i);
 		return str;
 	}
 	
