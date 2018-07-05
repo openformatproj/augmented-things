@@ -40,7 +40,7 @@ public class RemoteInterface extends Client {
 		private long start_;
 		
 		Watchdog (Client lock) {
-			super(Services.joinIdHost("watchdog",Constants.getComputerName()));
+			super(Services.joinIdHost("watchdog",Constants.computerName()));
 			this.lock = lock;
 			setDaemon(true);
 		}

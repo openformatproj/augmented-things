@@ -14,10 +14,10 @@ public class App
 {
 	
 	final private static String id = "actuator";
-	final private static String host = Constants.getComputerName();
+	final private static String host = Constants.computerName();
 	final private static String context = Constants.context;
-	final private static String address = Constants.adnProtocol + Constants.getInAddress() + Constants.inADNRoot;
-	final private static String ip = Constants.getIp();
+	final private static String address = Constants.adnProtocol + Constants.inAddress() + Constants.inADNRoot;
+	final private static String ip = Constants.ip();
 	final private static boolean debug = true;
 	
 	final private static Tag tag = new Tag(Services.joinIdHost(id,host),"0x0002",new String[]{"action1","action2"});

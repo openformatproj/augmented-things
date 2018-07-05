@@ -110,7 +110,7 @@ class ADN_MN extends ADN {
 		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,cseBaseName);
 		outStream.out1_2("done, registering to IN");
-		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.adnProtocol + Constants.getInAddress() + Constants.inADNRoot, debug);
+		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.adnProtocol + Constants.inAddress() + Constants.inADNRoot, debug);
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);

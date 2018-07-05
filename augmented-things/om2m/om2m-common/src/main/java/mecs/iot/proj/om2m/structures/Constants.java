@@ -133,15 +133,15 @@ public class Constants {
 		mnADNRoot = ":" + Integer.toString(mnADNPort) + "/" + context;
 	}
 	
-	public static String inCSERoot (String id) {
+	public static String inCSERoot(String id) {
 		return ":" + Integer.toString(inCSEPort) + "/" + root + "/" + id + csePostfix;
 	}
 	
-	public static String mnCSERoot (String id) {
+	public static String mnCSERoot(String id) {
 		return ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + id + csePostfix;
 	}
 
-	public static String getComputerName() {
+	public static String computerName() {
 		Map<String, String> env = System.getenv();
 		// Ubuntu systems require to "export HOSTNAME" before running the Java code, otherwise env.containsKey("HOSTNAME")==false
 //		try {
@@ -183,7 +183,7 @@ public class Constants {
 		}
 	}
 	
-	public static String getInAddress() {
+	public static String inAddress() {
 		loadASN();
 		String str = null;
 		try {
@@ -196,7 +196,7 @@ public class Constants {
 	}
 	
 	// TODO: retrieve current machine IP (for subscriptions)
-	public static String getIp() {
+	public static String ip() {
 		loadASN();
 		String str = null;
 		try {

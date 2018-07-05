@@ -26,15 +26,15 @@ public class App
 		String str = null;
 		try {
 			name = new Configuration ("/configuration/name.ini",Pack.JAR,Type.INI);
-			System.out.println("Found local configuration file");
+			System.out.println("Found local configuration file (MN)");
 		} catch (Exception e0) {
 			try {
 				name = new Configuration ("src/main/resources/configuration/name.ini",Pack.MAVEN,Type.INI);
-				System.out.println("Found local configuration file");
+				System.out.println("Found local configuration file (MN)");
 			} catch (Exception e1) {
 				try {
 					name = new Configuration (Constants.remotePath+"/name.ini",Pack.REMOTE,Type.INI);
-					System.out.println("Found remote configuration file");
+					System.out.println("Found remote configuration file (MN)");
 				} catch (Exception e2) {
 					System.out.println("No configuration files found, using default values");
 				}
@@ -49,7 +49,7 @@ public class App
 		}
 	}
 	
-	final private static String host = Constants.getComputerName();
+	final private static String host = Constants.computerName();
 	final private static boolean debug = true;
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));

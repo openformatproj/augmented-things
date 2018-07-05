@@ -16,7 +16,7 @@ public class App
 {
 	
 	final private static String id = Constants.inId;
-	final private static String host = Constants.getComputerName();
+	final private static String host = Constants.computerName();
 	final private static boolean debug = true;
 	
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
