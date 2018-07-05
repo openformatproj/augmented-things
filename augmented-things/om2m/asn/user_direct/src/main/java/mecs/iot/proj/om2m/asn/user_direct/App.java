@@ -19,7 +19,7 @@ public class App
 	final private static String ip = Constants.getIp();
 	final private static boolean debug = true;
 	
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
+	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
 	
     public static void main( String[] args )
     {

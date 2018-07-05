@@ -20,8 +20,8 @@ public class App
 	final private static String host = Constants.getComputerName();
 	final private static boolean debug = true;
 	
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
-	final private static OutStream outStream = new OutStream(Services.joinIdHost("main",host));
+	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
+	final private static OutStream outStream = new OutStream(Services.joinIdHost(id+"/main",host));
 	
     public static void main( String[] args )
     {

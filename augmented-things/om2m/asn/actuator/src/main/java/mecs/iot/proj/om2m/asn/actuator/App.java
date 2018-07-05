@@ -26,7 +26,7 @@ public class App
 	final private static Action action1 = () -> {/* System.out.println("*************************"); An action */};
 	final private static Action action2 = () -> {};
 	
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
+	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
 	
     public static void main( String[] args )
     {

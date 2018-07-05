@@ -20,7 +20,7 @@ public class App
 	final private static Tag tag = new Tag(Services.joinIdHost(id,host),"0x0001","tempC",new String[]{"event"});
 	final private static int location = 0;
 	
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost("main",host));
+	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
 	
     public static void main( String[] args )
     {
