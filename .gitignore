@@ -21,6 +21,7 @@
 
 # Configuration files
 asn.ini
+adn.ini
 db.ini
 name.ini
 factory.xml
