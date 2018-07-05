@@ -272,7 +272,7 @@ public class Services {
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
 		JSONObject obj = new JSONObject();
 		obj.put("rn",id);
-		obj.put("nu",Constants.adnProtocol+"localhost"+observer);
+		obj.put("nu",observer);
 		// obj.put("nct",1);
 		obj.put("nct",2);
 		JSONObject root = new JSONObject();

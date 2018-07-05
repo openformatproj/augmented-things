@@ -393,7 +393,7 @@ class ADN_MN extends ADN {
 						String[] uri = new String[] {cseBaseName, tag.id, "data"};
 						cseClient.stepCount();
 						try {
-							cseClient.services.postSubscription(Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
+							cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
 						} catch (URISyntaxException e) {
 							outStream.out2("failed");
 							errStream.out(e,i,Severity.MEDIUM);
@@ -537,7 +537,7 @@ class ADN_MN extends ADN {
 					String[] uri = new String[] {cseBaseName, tag0.id, "data"};
 					cseClient.stepCount();
 					try {
-						cseClient.services.postSubscription(Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
+						cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
