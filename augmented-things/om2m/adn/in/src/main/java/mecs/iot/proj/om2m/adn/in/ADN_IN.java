@@ -30,6 +30,7 @@ class ADN_IN extends ADN {
 		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inCSERoot(id), debug);
 		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
+		locationMap = new HashMap<Integer,MN>();
 		Configuration db = null;
 		String[][] mn = null;
 		try {
