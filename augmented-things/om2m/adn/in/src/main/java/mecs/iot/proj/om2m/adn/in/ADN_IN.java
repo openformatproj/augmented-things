@@ -4,9 +4,9 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
+import org.json.JSONException;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
@@ -19,11 +19,13 @@ import mecs.iot.proj.om2m.structures.Severity;
 class ADN_IN extends ADN {
 	
 	private HashMap<String,MN> mnMap;																					// serial -> MN
+	private String[] subscriptions;
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
 		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inCSERoot(id), debug);
 		mnMap = new HashMap<String,MN>();
+		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
 	}
 	
 	@Override
@@ -159,16 +161,19 @@ class ADN_IN extends ADN {
 					errStream.out(e, i, Severity.MEDIUM);
 					return;
 				}
-				String[] uri = new String[] {mns[index].id,"state"};
-				try {
-					cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.inADNRoot,"subscription",uri,cseClient.getCount());
-				} catch (URISyntaxException e) {
-					outStream.out2("failed");
-					errStream.out(e,i,Severity.MEDIUM);
-					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-					exchange.respond(response);
-					i++;
-					return;
+				String[] uri;
+				for (int j=0; j<subscriptions.length; j++) {
+					uri = new String[] {mns[index].id,"state",subscriptions[j]};
+					try {
+						cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.inADNRoot,"subscription",uri,cseClient.getCount());
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,i,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
 				}
 				response = new Response(ResponseCode.CREATED);
 			}
@@ -178,8 +183,17 @@ class ADN_IN extends ADN {
 			if (notification.contains("m2m:vrq")) {
 				outStream.out1("Handling subscription confirmation", i);
 			} else {
-				String con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"},
-						new String[] {"con"}, new Class<?>[] {String.class},false);
+				String con = null;
+				try {
+					con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"},
+							new String[] {"con"}, new Class<?>[] {String.class},false);
+				} catch (JSONException e) {
+					debugStream.out("Received invalid notification", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
 				outStream.out1("Handling notification with JSON: " + con, i);
 			}
 			response = new Response(ResponseCode.CREATED);
