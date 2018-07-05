@@ -12,20 +12,54 @@ import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.MN;
+import mecs.iot.proj.om2m.structures.Pack;
 import mecs.iot.proj.om2m.structures.Severity;
+import mecs.iot.proj.om2m.structures.Type;
 
 class ADN_IN extends ADN {
 	
-	private HashMap<String,MN> mnMap;																					// serial -> MN
+	private HashMap<String,MN> serialMap;																					// serial -> MN
 	private String[] subscriptions;
+	private HashMap<Integer,MN> locationMap;
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
 		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inCSERoot(id), debug);
-		mnMap = new HashMap<String,MN>();
+		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
+		Configuration db = null;
+		String[][] mn = null;
+		try {
+			db = new Configuration ("/configuration/db.ini",Pack.JAR,Type.INI);
+			debugStream.out("Found local database",i);
+		} catch (Exception e0) {
+			try {
+				db = new Configuration ("src/main/resources/configuration/db.ini",Pack.MAVEN,Type.INI);
+				debugStream.out("Found local database",i);
+			} catch (Exception e1) {
+				try {
+					db = new Configuration (Constants.remotePath+"/db.ini",Pack.REMOTE,Type.INI);
+					debugStream.out("Found remote database",i);
+				} catch (Exception e2) {
+					debugStream.out("No databases found, using default values",i);
+				}
+			}
+		}
+		try {
+			mn = db.getAttributeList("mecs.iot.proj.om2m.mnList",2);
+		} catch (Exception e) {
+			mn = new String[1][2];
+			mn[0][0] = "augmented-things-MN";
+			mn[0][1] = "127.0.0.1";
+		}
+		for (int j=0; j<mn.length; j++) {
+			locationMap.put(j, new MN(mn[j][0],mn[j][1]));
+			debugStream.out("\t"+mn[j][0]+","+mn[j][1],i);
+		}
+		i++;
 	}
 	
 	@Override
@@ -55,7 +89,7 @@ class ADN_IN extends ADN {
 				i++;
 				return;
 			}
-			MN mn = mnMap.get(serial);
+			MN mn = serialMap.get(serial);
 			switch (sw) {
 				case 0:
 					// user localization (mode=0&ser=<SERIAL>)
@@ -120,7 +154,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				MN mn = Db.mnMap.get(Integer.parseInt(location));
+				MN mn = locationMap.get(Integer.parseInt(location));
 				if (mn==null || !mn.active) {
 					debugStream.out("MN with location \"" + location + "\" is not registered", i);
 					response = new Response(ResponseCode.BAD_REQUEST);
@@ -129,12 +163,12 @@ class ADN_IN extends ADN {
 					return;
 				}
 				outStream.out1("Associating node \"" + id + "\" with serial \"" + serial + "\" to MN \"" + mn.id + "\"", i);
-				mnMap.put(serial,mn);
+				serialMap.put(serial,mn);
 				response = new Response(ResponseCode.CREATED);
 				response.setPayload(mn.id + ", " + mn.address);
 			} else {
 				// MN registration (id=<ID>)
-				MN[] mns = Db.mnMap.values().toArray(new MN[] {});
+				MN[] mns = locationMap.values().toArray(new MN[] {});
 				int index = 0;
 				boolean found = false;
 				for (int i=0; i<mns.length; i++) {

@@ -20,17 +20,18 @@ public class Constants {
 	final private static String root;
 	final private static String csePostfix;
 
-	//final private static String inCSERoot;
-	//final private static String mnCSERoot;
 	final public static String inADNRoot;
 	final public static String mnADNRoot;
 	
+	final public static String inId;
+	
 	final public static int streamCharacters;
+	
+	final public static String remotePath = "http://thingstalk.altervista.org/augmented-things/configuration";
 	
 	private static Configuration asn = null;
 
 	static {
-		// TODO: attach System.out to a stream
 		Configuration conf = null;
 		Object str = null;
 		try {
@@ -42,10 +43,9 @@ public class Constants {
 				System.out.println("Found local configuration file");
 			} catch (Exception e1) {
 				try {
-					conf = new Configuration ("http://thingstalk.altervista.org/augmented-things/configuration/config.ini",Pack.REMOTE,Type.INI);
+					conf = new Configuration (remotePath+"/config.ini",Pack.REMOTE,Type.INI);
 					System.out.println("Found remote configuration file");
 				} catch (Exception e2) {
-					//e1.printStackTrace();
 					System.out.println("No configuration files found, using default values");
 				}
 			}
@@ -112,6 +112,13 @@ public class Constants {
 			str = "-cse";
 		} finally {
 			csePostfix = (String) str;
+		}
+		try {
+			str = conf.getAttribute("mecs.iot.proj.om2m.inId");
+		} catch (Exception e) {
+			str = "augmented-things-IN";
+		} finally {
+			inId = (String) str;
 		}
 		try {
 			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.streamCharacters"));

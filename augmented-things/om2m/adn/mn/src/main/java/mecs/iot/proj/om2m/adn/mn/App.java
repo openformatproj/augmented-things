@@ -6,8 +6,11 @@ import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Pack;
 import mecs.iot.proj.om2m.structures.Severity;
+import mecs.iot.proj.om2m.structures.Type;
 
 import java.net.URISyntaxException;
 
@@ -16,7 +19,36 @@ import org.eclipse.californium.core.CoapServer;
 public class App
 {
 	
-	final private static String id = "augmented-things-MN"; // TODO: load from ini
+	final private static String id;
+	
+	static {
+		Configuration name = null;
+		String str = null;
+		try {
+			name = new Configuration ("/configuration/name.ini",Pack.JAR,Type.INI);
+			System.out.println("Found local configuration file");
+		} catch (Exception e0) {
+			try {
+				name = new Configuration ("src/main/resources/configuration/name.ini",Pack.MAVEN,Type.INI);
+				System.out.println("Found local configuration file");
+			} catch (Exception e1) {
+				try {
+					name = new Configuration (Constants.remotePath+"/name.ini",Pack.REMOTE,Type.INI);
+					System.out.println("Found remote configuration file");
+				} catch (Exception e2) {
+					System.out.println("No configuration files found, using default values");
+				}
+			}
+		}
+		try {
+			str = name.getAttribute("mecs.iot.proj.om2m.mnId");
+		} catch (Exception e) {
+			str = "augmented-things-MN";
+		} finally {
+			id = str;
+		}
+	}
+	
 	final private static String host = Constants.getComputerName();
 	final private static boolean debug = true;
 	
