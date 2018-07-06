@@ -18,6 +18,8 @@ public class Tag implements JSONSerializable {
 	public String type;
 	public String[] attributes;
 	
+	private String cseBaseName;
+	
 	public HashMap<String,String> ruleMap;																		// label -> rule
 	
 	public Tag (String id, String serial, String type, String[] attributes) {
@@ -40,7 +42,7 @@ public class Tag implements JSONSerializable {
 		ruleMap = null;
 	}
 	
-	public Tag (Node node, String id, String description, String[] attributes) {
+	public Tag (Node node, String id, String description, String[] attributes, String cseBaseName) {
 		this.node = node;
 		this.id = id;
 		this.serial = null;
@@ -72,6 +74,7 @@ public class Tag implements JSONSerializable {
 			case USER:
 				break;
 		}
+		this.cseBaseName = cseBaseName;
 	}
 	
 	public static Rule parseRule(String rule) throws NoRuleException, InvalidRuleException {
@@ -188,6 +191,8 @@ public class Tag implements JSONSerializable {
 		for (int i=0; i<attributes.length; i++) {
 			obj.append("attributes",attributes[i]);
 		}
+		if (cseBaseName!=null)
+			obj.put("mn",cseBaseName);
 		return obj;
 	}
 	

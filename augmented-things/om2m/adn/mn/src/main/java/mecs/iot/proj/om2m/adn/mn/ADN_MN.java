@@ -309,7 +309,7 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						tag = new Tag(Node.ACTUATOR,id,address,attributes);
+						tag = new Tag(Node.ACTUATOR,id,address,attributes,cseBaseName);
 					} else {
 						String key = getUriValue(exchange,"key",3);
 						if (key==null || !isValidKey(key)) {
@@ -323,7 +323,7 @@ class ADN_MN extends ADN {
 							return;
 						}
 						subscriber.bind(id,key);
-						tag = new Tag(Node.SENSOR,id,type,attributes);
+						tag = new Tag(Node.SENSOR,id,type,attributes,cseBaseName);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					tagMap.put(serial,tag);
@@ -425,9 +425,12 @@ class ADN_MN extends ADN {
 				userMap.put(id,address);
 				String[] uri_ = new String[] {cseBaseName, "state", "userMap"};
 				CoapResponse response_ = null;
+				JSONObject obj = new JSONObject();
+				obj.put("address",address);
+				obj.put("mn",cseBaseName);
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(id,new JSONObject().put("address",address),uri_,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(id,obj,uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);

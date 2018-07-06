@@ -89,23 +89,6 @@ public class Subscriber {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-//			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
-//			CoapResponse response;
-//			debugStream.out("Posting subscriptionMap...",i);
-//			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
-//			cseClient.stepCount();
-//			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
-//			if (response==null) {
-//				debugStream.out("failed",i);
-//				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
-//				throw new StateCreationException();
-//			} else if (response.getCode()!=ResponseCode.CREATED) {
-//				debugStream.out("failed",i);
-//				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
-//						i, Severity.LOW);
-//				throw new StateCreationException();
-//			}
-//			debugStream.out("...done",i);
 			oM2Mput(sender,subs,i);
 		}
 	}
@@ -119,23 +102,6 @@ public class Subscriber {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-//			String[] uri = new String[] {context + Constants.mnPostfix, "state", "subscriptionMap"};
-//			CoapResponse response;
-//			debugStream.out("Posting subscriptionMap...",i);
-//			JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
-//			cseClient.stepCount();
-//			response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
-//			if (response==null) {
-//				debugStream.out("failed",i);
-//				errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
-//				throw new StateCreationException();
-//			} else if (response.getCode()!=ResponseCode.CREATED) {
-//				debugStream.out("failed",i);
-//				errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
-//						i, Severity.LOW);
-//				throw new StateCreationException();
-//			}
-//			debugStream.out("...done",i);
 			oM2Mput(sender,subs,i);
 		}
 	}
@@ -222,7 +188,8 @@ public class Subscriber {
 		String[] uri = new String[] {cseBaseName, "state", "subscriptionMap"};
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap...",i);
-		JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}));
+		JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}),"subs");
+		obj.put("mn",cseBaseName);
 		cseClient.stepCount();
 		response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
 		if (response==null) {
