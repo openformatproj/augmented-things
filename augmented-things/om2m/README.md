@@ -5,19 +5,25 @@ This module contains all om2m modules (ADNs and endpoint nodes). Each ADN module
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
-to change a MN name, you have to contextualize the following line in [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) (after copying it in the previous folder)
+to change a MN name, you have to contextualize the following lines in [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) (after copying it in the previous folder)
 ```
 org.eclipse.om2m.cseBaseName=augmented-things-MN
+org.eclipse.om2m.cseBaseId=augmented-things-MN-cse
 ```
-by replacing ```augmented-things-MN``` with the actual value (for instance, ```greenhouse-MN```). The other file in which this name must be inserted is [```./om2m/adn/in/src/main/resources/configuration/db.ini```](http://thingstalk.altervista.org/augmented-things/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle node.
+by replacing ```augmented-things-MN``` with the actual value (for instance, ```greenhouse-MN```). The content of ```org.eclipse.om2m.cseBaseId``` must be kept consistent by adding to the main identifier the postfix ```-cse```. The other files in which this name must be inserted are
 
-The last configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini), which contains the IP address of the infrastructure node and the IP address of the local machine. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
+* [```./om2m/adn/mn/src/main/resources/configuration/name.ini```](http://thingstalk.altervista.org/augmented-things/configuration/name.ini)
+* [```./om2m/adn/in/src/main/resources/configuration/db.ini```](http://thingstalk.altervista.org/augmented-things/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle-node
+
+no more than one MN can be active on the same host.
+
+The fourth configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini), which contains the IP address of the infrastructure node and the IP address of the local machine. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
 ```
 org.eclipse.om2m.remoteCseAddress=127.0.0.1
 ```
-(replace ```127.0.0.1``` with a qualified address if IN and MN run on different machines). These two files can contain different addresses only if one of them is ```127.0.0.1``` (```localhost```), meaning that either all running ASNs or the MN are executing on the same machine of the IN. For more information about configuration, check the documentation.
+(replace ```127.0.0.1``` with a qualified address if IN and MN run on different machines). These two files can contain different addresses only if one of them is ```127.0.0.1``` (```localhost```), meaning that either all running ASNs or the MN are executing on the same machine of the IN. The same holds for the fifth and last configuration file, [```./om2m/adn/adn-common/src/main/resources/configuration/adn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/adn.ini), which is instead used by the middle-node. For more information about configuration, check the documentation.
 
-**Note**: [```./om2m/adn/in/src/main/resources/configuration/db.ini```](http://thingstalk.altervista.org/augmented-things/configuration/db.ini) and [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini) are not included in this repository and must be added manually into the right folders.
+**Note**: ```name.ini```, ```db.ini```, ```asn.ini``` and ```adn.ini``` are not included in this repository and must be added manually into the right folders.
 
 ## Generating .jar files
 From Eclipse, right click on
