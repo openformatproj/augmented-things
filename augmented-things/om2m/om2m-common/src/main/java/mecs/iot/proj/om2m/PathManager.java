@@ -32,13 +32,15 @@ class PathManager {
 	
 	void change(String[] uri) throws URISyntaxException {
 		level = uri.length;
-		for (int i=this.uri.size()-1; i>0; i--) {
-			this.uri.remove(i);
+		if (level>0) {
+			for (int i=this.uri.size()-1; i>0; i--) {
+				this.uri.remove(i);
+			}
+			for(int i=0; i<level; i++) {
+				this.uri.add(uri[i]);
+			}
+			client.connect(uri(),false);
 		}
-		for(int i=0; i<level; i++) {
-			this.uri.add(uri[i]);
-		}
-		client.connect(uri(),false);
 	}
 	
 	void down(String uri, boolean connect) throws URISyntaxException {
