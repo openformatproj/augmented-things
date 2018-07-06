@@ -235,8 +235,9 @@ class ADN_IN extends ADN {
 				outStream.out1("Handling Container notification with JSON: " + ri + ", " + rn, i);
 				// TODO: subscribe to that container
 				cseClient.stepCount();
+				String uri = ri.substring(3);
 				try {
-					cseClient.connect(Constants.adnProtocol+"localhost"+Constants.inCSERoot()+ri);
+					cseClient.connect(Constants.adnProtocol+"localhost"+Constants.mnCSERoot()+uri);
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e, i, Severity.MEDIUM);
