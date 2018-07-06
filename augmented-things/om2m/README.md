@@ -47,7 +47,7 @@ and click on Run. All .jar files can be found in the ```<package>/target``` fold
    * actuator
    * user_direct
 
-even though they can be launched from whatever location in the directory structure, their configuration doesn't rely on what is contained in the Maven project. It must be changed by opening them as an archive and by modifying the files contained in the ```.\configuration``` folder.
+even though they can be launched from whatever location in the directory structure, their configuration doesn't rely on what is contained in the Maven project. It must be changed by opening them as an archive and by modifying the files contained in the ```./configuration``` folder.
 
 Executables can also be launched from Eclipse. Right click on ```App.java``` and then Run As -> Java Application to launch them.
 
