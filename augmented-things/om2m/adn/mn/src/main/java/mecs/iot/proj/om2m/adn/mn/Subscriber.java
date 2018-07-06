@@ -124,7 +124,6 @@ public class Subscriber {
 	public void remove(String sender, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
-				// subscriptionMap.remove(sender);
 				oM2Mput(sender,new ArrayList<Subscription>(),k);
 				deleteSubscription(sender, k);																// ? TODO
 				break;
@@ -189,7 +188,7 @@ public class Subscriber {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		// subscriptionMap.remove(resource);
+		subscriptionMap.remove(resource);
 		debugStream.out("...done",i);
 	}
 	
