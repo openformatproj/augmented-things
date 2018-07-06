@@ -83,8 +83,9 @@ public class Subscriber {
 	public void insert(String sender, String type, String receiver, String address, int i) throws URISyntaxException, StateCreationException {
 		Subscription ref = new Subscription(sender,type,receiver,address);
 		if (subscriptionMap.containsKey(sender)) {
-			subscriptionMap.get(sender).add(ref);
-			oM2Mput(sender,subscriptionMap.get(sender),i);
+			ArrayList<Subscription> subs = subscriptionMap.get(sender);
+			subs.add(ref);
+			oM2Mput(sender,subs,i);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
@@ -96,8 +97,9 @@ public class Subscriber {
 	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action, int i) throws URISyntaxException, StateCreationException, InvalidRuleException {
 		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
-			subscriptionMap.get(sender).add(ref);
-			oM2Mput(sender,subscriptionMap.get(sender),i);
+			ArrayList<Subscription> subs = subscriptionMap.get(sender);
+			subs.add(ref);
+			oM2Mput(sender,subs,i);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
@@ -122,7 +124,7 @@ public class Subscriber {
 	public void remove(String sender, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
-				subscriptionMap.remove(sender);
+				// subscriptionMap.remove(sender);
 				oM2Mput(sender,new ArrayList<Subscription>(),k);
 				deleteSubscription(sender, k);																// ? TODO
 				break;
@@ -171,17 +173,24 @@ public class Subscriber {
 		}
 	}
 	
-	private void deleteSubscription(String resource, int k) throws URISyntaxException {
-		debugStream.out("Deleting subscription on \"" + resource + "\"", k);
+	private void deleteSubscription(String resource, int i) throws URISyntaxException, StateCreationException {
 		String[] uri = new String[] {cseBaseName, resource, "data", "subscription"};
-		CoapResponse response_ = null;
+		CoapResponse response = null;
+		debugStream.out("Deleting subscription on \"" + resource + "\"", i);
 		cseClient.stepCount();
-		response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-		if (response_==null || response_.getCode()!=ResponseCode.DELETED) {
-			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response_.getCode(),
-					k, Severity.LOW);
+		response = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+		if (response==null) {
+			debugStream.out("failed",i);
+			errStream.out("Unable to delete subscription on \"" + resource + "\", timeout expired" , i, Severity.LOW);
+			throw new StateCreationException();
+		} else if (response.getCode()!=ResponseCode.DELETED) {
+			debugStream.out("failed",i);
+			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response.getCode(),
+					i, Severity.LOW);
+			throw new StateCreationException();
 		}
-		subscriptionMap.remove(resource);
+		// subscriptionMap.remove(resource);
+		debugStream.out("...done",i);
 	}
 	
 	private void oM2Mput (String sender, ArrayList<Subscription> subs, int i) throws URISyntaxException, StateCreationException {
@@ -189,6 +198,7 @@ public class Subscriber {
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap...",i);
 		JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}),"subs");
+		obj.put("id",sender);
 		obj.put("mn",cseBaseName);
 		cseClient.stepCount();
 		response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());

@@ -20,6 +20,8 @@ public class Tag implements JSONSerializable {
 	
 	private String cseBaseName;
 	
+	public boolean active;
+	
 	public HashMap<String,String> ruleMap;																		// label -> rule
 	
 	public Tag (String id, String serial, String type, String[] attributes) {
@@ -75,6 +77,7 @@ public class Tag implements JSONSerializable {
 				break;
 		}
 		this.cseBaseName = cseBaseName;
+		this.active = true;
 	}
 	
 	public static Rule parseRule(String rule) throws NoRuleException, InvalidRuleException {
@@ -193,6 +196,8 @@ public class Tag implements JSONSerializable {
 		}
 		if (cseBaseName!=null)
 			obj.put("mn",cseBaseName);
+		if (cseBaseName!=null)
+			obj.put("active",active);
 		return obj;
 	}
 	

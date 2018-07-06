@@ -22,6 +22,7 @@ import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
+import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
@@ -32,7 +33,7 @@ class ADN_MN extends ADN {
 	public Client notificationClient;
 	
 	private HashMap<String,Tag> tagMap;																					// serial -> tag
-	private HashMap<String,String> userMap;																				// user id -> address
+	private HashMap<String,User> userMap;																				// user id -> user
 	
 	private Subscriber subscriber;
 	private boolean subscriptionsEnabled;
@@ -45,7 +46,7 @@ class ADN_MN extends ADN {
 		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
 		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();
-		userMap = new HashMap<String,String>();
+		userMap = new HashMap<String,User>();
 		outStream.out("Posting state",i);
 		outStream.out1("Posting main AE",i);
 		cseClient.stepCount();
@@ -368,8 +369,8 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						String address = userMap.get(id);
-						if (address==null) {
+						User user = userMap.get(id);
+						if (user==null) {
 							debugStream.out("User \"" + id + "\" is not registered on this MN", i);
 							response = new Response(ResponseCode.BAD_REQUEST);
 							exchange.respond(response);
@@ -377,10 +378,10 @@ class ADN_MN extends ADN {
 							return;
 						}
 						notificationId = id;
-						notificationAddress = address;
+						notificationAddress = user.address;
 						outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
 						try {
-							subscriber.insert(tag.id,tag.type,id,address,i);
+							subscriber.insert(tag.id,tag.type,id,user.address,i);
 						} catch (URISyntaxException | StateCreationException e) {
 							outStream.out2("failed");
 							errStream.out(e,i,Severity.LOW);
@@ -422,15 +423,13 @@ class ADN_MN extends ADN {
 					return;
 				}
 				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
-				userMap.put(id,address);
+				User user = new User(id,address,cseBaseName);
+				userMap.put(id,user);
 				String[] uri_ = new String[] {cseBaseName, "state", "userMap"};
 				CoapResponse response_ = null;
-				JSONObject obj = new JSONObject();
-				obj.put("address",address);
-				obj.put("mn",cseBaseName);
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(id,obj,uri_,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(id,user,uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
@@ -517,14 +516,15 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					notificationAddress = userMap.get(notificationId);
-					if (notificationAddress==null) {
+					User user = userMap.get(notificationId);
+					if (user==null) {
 						debugStream.out("User \"" + notificationId + "\" is not registered on this MN", i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
 						return;
 					}
+					notificationAddress = user.address;
 					outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
 					try {
 						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
@@ -778,8 +778,8 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-			String address = userMap.get(id);
-			if (address==null) {
+			User user = userMap.get(id);
+			if (user==null) {
 				debugStream.out("User \"" + id + "\" is not registered on this MN", i);
 				response = new Response(ResponseCode.BAD_REQUEST);
 				exchange.respond(response);
@@ -830,12 +830,15 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				userMap.remove(id);
+				//userMap.remove(id);
+				user = userMap.get(id);
+				user.active = false;
 				String[] uri_ = new String[] {cseBaseName, "state", "userMap", id};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
+					// response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(id,user,uri_,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
@@ -1002,11 +1005,13 @@ class ADN_MN extends ADN {
 						case USER:
 							break;
 					}
-					tagMap.remove(serial0);
+					// tagMap.remove(serial0);
+					tag0.active = false;
 					String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial0};
 					cseClient.stepCount();
 					try {
-						response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
+						// response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
+						response_ = cseClient.services.oM2Mput(serial0,tag0,uri_,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
@@ -1057,4 +1062,31 @@ class ADN_MN extends ADN {
 		return notificationClient.send(request, Code.PUT);
 	}
 
+}
+
+class User implements JSONSerializable {
+	
+	String address;
+	
+	private String id;
+	private String cseBaseName;
+	
+	boolean active;
+	
+	User(String id, String address, String cseBaseName) {
+		this.id = id;
+		this.address = address;
+		this.active = true;
+		this.cseBaseName = cseBaseName;
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("id",id);
+		obj.put("address",address);
+		obj.put("mn",cseBaseName);
+		obj.put("active",active);
+		return obj;
+	}
+	
 }
