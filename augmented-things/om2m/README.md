@@ -15,13 +15,13 @@ by replacing ```augmented-things-MN``` with the actual value (for instance, ```g
 * [```./om2m/adn/mn/src/main/resources/configuration/name.ini```](http://thingstalk.altervista.org/augmented-things/configuration/name.ini)
 * [```./om2m/adn/in/src/main/resources/configuration/db.ini```](http://thingstalk.altervista.org/augmented-things/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle-node
 
-no more than one MN can be active on the same host.
+the MN configuration file must also contain the IN address
+```
+org.eclipse.om2m.remoteCseAddress=9.9.9.0
+```
+this is necessary for it to correctly find its coordinator. The same address must be inserted into a fourth configuration file, [```./om2m/adn/adn-common/src/main/resources/configuration/adn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/adn.ini), which is used by the ADN instead. No more than one MN can be active on the same host.
 
-The fourth configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini), which contains the IP address of the infrastructure node and the IP address of the local machine. The IN address must be inserted in the MN configuration file [```./om2m/adn/mn/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/adn/mn/configuration/config.ini) too, in order for that node to be able to find its OM2M root
-```
-org.eclipse.om2m.remoteCseAddress=127.0.0.1
-```
-(replace ```127.0.0.1``` with a qualified address if IN and MN run on different machines). These two files can contain different addresses only if one of them is ```127.0.0.1``` (```localhost```), meaning that either all running ASNs or the MN are executing on the same machine of the IN. The same holds for the fifth and last configuration file, [```./om2m/adn/adn-common/src/main/resources/configuration/adn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/adn.ini), which is instead used by the middle-node. For more information about configuration, check the documentation.
+The last configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini), which contains the IN address and the local machine's IP. For more information about configuration, check the documentation.
 
 **Note**: ```name.ini```, ```db.ini```, ```asn.ini``` and ```adn.ini``` are not included in this repository and must be added manually into the right folders.
 
