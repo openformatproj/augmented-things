@@ -234,6 +234,24 @@ class ADN_IN extends ADN {
 				}
 				outStream.out1("Handling Container notification with JSON: " + ri + ", " + rn, i);
 				// TODO: subscribe to that container
+				cseClient.stepCount();
+				try {
+					cseClient.connect(Constants.adnProtocol+"localhost"+Constants.inCSERoot()+ri);
+				} catch (URISyntaxException e) {
+					outStream.out2("failed");
+					errStream.out(e, i, Severity.MEDIUM);
+					return;
+				}
+				try {
+					cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.inADNRoot,"subscription",new String[]{},cseClient.getCount());
+				} catch (URISyntaxException e) {
+					outStream.out2("failed");
+					errStream.out(e,i,Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
+					i++;
+					return;
+				} 
 			} else if (notification.contains("m2m:cin")) {
 				String con = null;																						// serial, user id or resource id
 				try {
@@ -247,6 +265,7 @@ class ADN_IN extends ADN {
 					return;
 				}
 				outStream.out1("Handling Content Instance notification with JSON: " + con, i);
+				// TODO: manage cin
 			} else {
 				outStream.out1("Received unexpected notification", i);
 			}

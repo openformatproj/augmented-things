@@ -142,6 +142,14 @@ public class Constants {
 	public static String mnCSERoot(String id) {
 		return ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + id + csePostfix;
 	}
+	
+	public static String inCSERoot() {
+		return ":" + Integer.toString(inCSEPort) + "/" + root;
+	}
+	
+	public static String mnCSERoot() {
+		return ":" + Integer.toString(mnCSEPort) + "/" + root;
+	}
 
 	public static String computerName() {
 		Map<String, String> env = System.getenv();
