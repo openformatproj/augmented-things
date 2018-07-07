@@ -137,11 +137,11 @@ public class Subscriber {
 		return resourceMap.get(key);
 	}
 	
-	public void remove(String sender, Node node, int k) throws URISyntaxException, StateCreationException {
+	public void remove(String id, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
-				oM2Mput(sender,new ArrayList<Subscription>(),false,k);
-				deleteSubscription(sender, k);																// ? TODO
+				oM2Mput(id,new ArrayList<Subscription>(),false,k);
+				deleteSubscription(id, k);																	// ? TODO
 				break;
 			case ACTUATOR:
 			case USER:
@@ -150,9 +150,9 @@ public class Subscriber {
 				for (int i=0; i<resources.length; i++) {
 					subs = subscriptionMap.get(resources[i]);
 					for (int j=0; j<subs.size(); j++) {
-						if (subs.get(j).receiver.id.equals(sender))
+						if (subs.get(j).receiver.id.equals(id))
 							subs.remove(j);																	// Remove all subscriptions containing the receiver
-							oM2Mput(sender,subs,false,k);
+							oM2Mput(subs.get(j).sender.id,subs,false,k);
 					}
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
 						deleteSubscription(resources[i], k);
