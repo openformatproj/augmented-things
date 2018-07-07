@@ -209,14 +209,19 @@ public class Subscriber {
 	}
 	
 	private void oM2Mput (String sender, ArrayList<Subscription> subs, boolean createContainer, int i) throws URISyntaxException, StateCreationException {
-		String[] uri = new String[] {cseBaseName, "state", "subscriptionMap"};
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap...",i);
 		JSONObject obj = Services.toJSONArray(subs.toArray(new Subscription[] {}),"subs");
 		obj.put("id",sender);
 		obj.put("mn",cseBaseName);
 		cseClient.stepCount();
-		response = cseClient.services.oM2Mput(sender,obj,uri,createContainer,cseClient.getCount());
+		if (createContainer) {
+			String[] uri = new String[] {cseBaseName, "state", "subscriptionMap"};
+			response = cseClient.services.oM2Mput(sender,obj,uri,true,cseClient.getCount());
+		} else {
+			String[] uri = new String[] {cseBaseName, "state", "subscriptionMap", sender};
+			response = cseClient.services.oM2Mput(sender,obj,uri,false,cseClient.getCount());
+		}	
 		if (response==null) {
 			debugStream.out("failed",i);
 			errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);
