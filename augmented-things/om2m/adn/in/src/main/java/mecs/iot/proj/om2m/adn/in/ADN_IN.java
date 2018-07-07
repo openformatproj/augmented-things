@@ -303,7 +303,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out1_2("Getting initial state with JSON: " + con);
+				outStream.out1_2("getting initial state with JSON: " + con);
 				String json = Services.unpackJSON(con.substring(4));
 				// TODO
 			} else if (notification.contains("m2m:cin")) {
