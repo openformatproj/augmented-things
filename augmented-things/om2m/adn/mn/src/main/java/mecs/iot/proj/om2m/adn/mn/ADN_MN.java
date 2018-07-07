@@ -371,12 +371,16 @@ class ADN_MN extends ADN {
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					boolean createContainer;
-					if (tagMap.containsKey(serial))
+					String[] uri_;
+					if (tagMap.containsKey(serial)) {
 						createContainer = false;
-					else
+						uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
+					}
+					else {
 						createContainer = true;
+						uri_ = new String[] {cseBaseName, "state", "tagMap"};
+					}
 					tagMap.put(serial,tag);
-					String[] uri_ = new String[] {cseBaseName, "state", "tagMap"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
@@ -472,13 +476,17 @@ class ADN_MN extends ADN {
 				}
 				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
 				boolean createContainer;
-				if (userMap.containsKey(id))
+				String[] uri_;
+				if (userMap.containsKey(id)) {
 					createContainer = false;
-				else
+					uri_ = new String[] {cseBaseName, "state", "userMap", id};
+				}
+				else {
 					createContainer = true;
+					uri_ = new String[] {cseBaseName, "state", "userMap"};
+				}
 				User user = new User(id,address,cseBaseName);
 				userMap.put(id,user);
-				String[] uri_ = new String[] {cseBaseName, "state", "userMap"};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
