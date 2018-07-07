@@ -93,60 +93,6 @@ public class Services {
 		return parse;
 	}
 	
-//	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType, boolean debug) throws JSONException {
-//		JSONObject root = null;
-//		try {
-//			root = new JSONObject(json);
-//		} catch (JSONException e) {
-//			throw e;
-//		}
-//		JSONObject obj = null;
-//		try {
-//			obj = (JSONObject) root.get(outerAttr);
-//		} catch (JSONException e) {
-//			throw e;
-//		}
-//		String parse = "";
-//		for (int i=0; i<attr.length; i++) {
-//			try {
-//				parse += parseJSONObject(obj,attr[i],attrType[i]);
-//			} catch (JSONException e) {
-//				throw e;
-//			}
-//			if (i<attr.length-1)
-//				parse += ", ";
-//		}
-//		return parse;
-//	}
-//	
-//	public static String parseJSON(String json, String[] outerAttr, String[] attr, Class<?>[] attrType, boolean debug) throws JSONException {
-//		JSONObject root = null;
-//		try {
-//			root = new JSONObject(json);
-//		} catch (JSONException e) {
-//			throw e;
-//		}
-//		JSONObject obj = root;
-//		for (int i=0; i<outerAttr.length; i++) {
-//			try {
-//				obj = (JSONObject) obj.get(outerAttr[i]);
-//			} catch (JSONException e) {
-//				throw e;
-//			}
-//		}
-//		String parse = "";
-//		for (int i=0; i<attr.length; i++) {
-//			try {
-//				parse += parseJSONObject(obj,attr[i],attrType[i]);
-//			} catch (JSONException e) {
-//				throw e;
-//			}
-//			if (i<attr.length-1)
-//				parse += ", ";
-//		}
-//		return parse;
-//	}
-	
 	public static String parseCoapRequest(Request request) {
 		List<String> list = request.getOptions().getUriQuery();
 		String str = "";

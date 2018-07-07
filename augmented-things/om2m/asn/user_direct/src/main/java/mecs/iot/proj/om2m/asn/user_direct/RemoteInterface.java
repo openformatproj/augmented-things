@@ -92,7 +92,7 @@ class RemoteInterface extends Client {
 					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
 		} catch (JSONException e) {
 			outStream.out2("failed");
-			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			errStream.out(e, i, Severity.MEDIUM);
 			throw e;
 		}
 		debugStream.out("Received JSON: " + json, i);

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
@@ -56,8 +57,16 @@ public class Subscriber {
 					0, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), 0);
+		String json = null;
+		try {
+			json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			debugStream.out("failed",0);
+			errStream.out(e, 0, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, 0);
 		debugStream.out("Posting resourceMap",0);
 		cseClient.stepCount();
 		response = cseClient.services.postContainer(cseBaseName,"state","resourceMap",cseClient.getCount());
@@ -76,8 +85,15 @@ public class Subscriber {
 					0, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), 0);
+		try {
+			json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			debugStream.out("failed",0);
+			errStream.out(e, 0, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, 0);
 	}
 	
 	public void insert(String sender, String type, String receiver, String address, int i) throws URISyntaxException, StateCreationException {

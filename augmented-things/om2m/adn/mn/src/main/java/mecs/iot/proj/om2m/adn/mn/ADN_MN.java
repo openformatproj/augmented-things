@@ -72,7 +72,7 @@ class ADN_MN extends ADN {
 					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
 		} catch (JSONException e) {
 			outStream.out2("failed");
-			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			errStream.out(e, i, Severity.MEDIUM);
 			throw e;
 		}
 		debugStream.out("Received JSON: " + json, i);
@@ -100,7 +100,7 @@ class ADN_MN extends ADN {
 					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
 		} catch (JSONException e) {
 			outStream.out2("failed");
-			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			errStream.out(e, i, Severity.MEDIUM);
 			throw e;
 		}
 		debugStream.out("Received JSON: " + json, i);
@@ -128,7 +128,7 @@ class ADN_MN extends ADN {
 					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
 		} catch (JSONException e) {
 			outStream.out2("failed");
-			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			errStream.out(e, i, Severity.MEDIUM);
 			throw e;
 		}
 		debugStream.out("Received JSON: " + json, i);
@@ -258,7 +258,7 @@ class ADN_MN extends ADN {
 								new String[] {"con"}, new Class<?>[] {String.class});
 					} catch (JSONException e) {
 						outStream.out2("failed");
-						errStream.out("Received invalid response", i, Severity.MEDIUM);
+						errStream.out(e, i, Severity.MEDIUM);
 						throw e;
 					}
 					response.setPayload(id + ": " + con);
@@ -650,6 +650,7 @@ class ADN_MN extends ADN {
 						//		new String[] {"sur"}, new Class<?>[] {String.class});
 					} catch (JSONException e) {
 						debugStream.out("Received invalid notification", i);
+						errStream.out(e, i, Severity.MEDIUM);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;

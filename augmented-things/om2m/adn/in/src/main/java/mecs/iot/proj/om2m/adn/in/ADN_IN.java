@@ -227,6 +227,7 @@ class ADN_IN extends ADN {
 							new String[] {"rn"}, new Class<?>[] {String.class});
 				} catch (JSONException e) {
 					debugStream.out("Received invalid notification", i);
+					errStream.out(e, i, Severity.MEDIUM);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
@@ -302,6 +303,7 @@ class ADN_IN extends ADN {
 							new String[] {"con"}, new Class<?>[] {String.class});
 				} catch (JSONException e) {
 					debugStream.out("Received invalid notification", i);
+					errStream.out(e, i, Severity.MEDIUM);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					i++;
