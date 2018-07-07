@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.json.JSONException;
 
 public class RemoteInterface extends Client {
 	
@@ -110,8 +111,16 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		String json = null;
+		try {
+			json = Services.parseJSON(response.getResponseText(), "m2m:ae",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			outStream.out2("failed");
+			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, i);
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants.mnADNRoot);

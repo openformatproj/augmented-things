@@ -26,72 +26,20 @@ public class Services {
 		pathManager = new PathManager(client,uri,4);
 	}
 	
-	private static String parseJSONObject(JSONObject obj, String attr, Class<?> Type) throws JSONException {
+	private static String parseJSONObject(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
 		Object attribute = null;
 		attribute = obj.get(attr);
-		if (Type==Integer.class) {
+		if (attrType==Integer.class) {
 			return attr + "=" + Integer.toString((Integer)attribute);
-		} else if (Type==String.class) {
+		} else if (attrType==String.class) {
 			return attr + "=" + (String)attribute;
+		} else if (attrType==Boolean.class) {
+			return attr + "=" + (boolean)attribute;
 		} else
 			return null;
 	}
 	
-	public static String parseJSON(String json, String type, String[] attr, Class<?>[] Type) {
-		JSONObject root = null;
-		try {
-			root = new JSONObject(json);
-		} catch (JSONException e) {
-			return "Invalid JSON: " + json;
-		}
-		JSONObject obj = null;
-		try {
-			obj = (JSONObject) root.get(type);
-		} catch (JSONException e) {
-			return "Invalid JSON type \"" + type + "\": " + json;
-		}
-		String parse = "";
-		for (int i=0; i<attr.length; i++) {
-			try {
-				parse += parseJSONObject(obj,attr[i],Type[i]);
-			} catch (JSONException e) {
-				return "Invalid JSON attribute \"" + attr[i] + "\": " + json;
-			}
-			if (i<attr.length-1)
-				parse += ", ";
-		}
-		return parse;
-	}
-	
-	public static String parseJSON(String json, String[] type, String[] attr, Class<?>[] Type) {
-		JSONObject root = null;
-		try {
-			root = new JSONObject(json);
-		} catch (JSONException e) {
-			return "Invalid JSON: " + json;
-		}
-		JSONObject obj = root;
-		for (int i=0; i<type.length; i++) {
-			try {
-				obj = (JSONObject) obj.get(type[i]);
-			} catch (JSONException e) {
-				return "Invalid JSON type \"" + type[i] + "\": " + json;
-			}
-		}
-		String parse = "";
-		for (int i=0; i<attr.length; i++) {
-			try {
-				parse += parseJSONObject(obj,attr[i],Type[i]);
-			} catch (JSONException e) {
-				return "Invalid JSON attribute \"" + attr[i] + "\": " + json;
-			}
-			if (i<attr.length-1)
-				parse += ", ";
-		}
-		return parse;
-	}
-	
-	public static String parseJSON(String json, String type, String[] attr, Class<?>[] Type, boolean debug) throws JSONException {
+	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
 		JSONObject root = null;
 		try {
 			root = new JSONObject(json);
@@ -100,14 +48,14 @@ public class Services {
 		}
 		JSONObject obj = null;
 		try {
-			obj = (JSONObject) root.get(type);
+			obj = (JSONObject) root.get(outerAttr);
 		} catch (JSONException e) {
 			throw e;
 		}
 		String parse = "";
 		for (int i=0; i<attr.length; i++) {
 			try {
-				parse += parseJSONObject(obj,attr[i],Type[i]);
+				parse += parseJSONObject(obj,attr[i],attrType[i]);
 			} catch (JSONException e) {
 				throw e;
 			}
@@ -117,7 +65,7 @@ public class Services {
 		return parse;
 	}
 	
-	public static String parseJSON(String json, String[] type, String[] attr, Class<?>[] Type, boolean debug) throws JSONException {
+	public static String parseJSON(String json, String[] outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
 		JSONObject root = null;
 		try {
 			root = new JSONObject(json);
@@ -125,9 +73,9 @@ public class Services {
 			throw e;
 		}
 		JSONObject obj = root;
-		for (int i=0; i<type.length; i++) {
+		for (int i=0; i<outerAttr.length; i++) {
 			try {
-				obj = (JSONObject) obj.get(type[i]);
+				obj = (JSONObject) obj.get(outerAttr[i]);
 			} catch (JSONException e) {
 				throw e;
 			}
@@ -135,7 +83,7 @@ public class Services {
 		String parse = "";
 		for (int i=0; i<attr.length; i++) {
 			try {
-				parse += parseJSONObject(obj,attr[i],Type[i]);
+				parse += parseJSONObject(obj,attr[i],attrType[i]);
 			} catch (JSONException e) {
 				throw e;
 			}
@@ -144,6 +92,60 @@ public class Services {
 		}
 		return parse;
 	}
+	
+//	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType, boolean debug) throws JSONException {
+//		JSONObject root = null;
+//		try {
+//			root = new JSONObject(json);
+//		} catch (JSONException e) {
+//			throw e;
+//		}
+//		JSONObject obj = null;
+//		try {
+//			obj = (JSONObject) root.get(outerAttr);
+//		} catch (JSONException e) {
+//			throw e;
+//		}
+//		String parse = "";
+//		for (int i=0; i<attr.length; i++) {
+//			try {
+//				parse += parseJSONObject(obj,attr[i],attrType[i]);
+//			} catch (JSONException e) {
+//				throw e;
+//			}
+//			if (i<attr.length-1)
+//				parse += ", ";
+//		}
+//		return parse;
+//	}
+//	
+//	public static String parseJSON(String json, String[] outerAttr, String[] attr, Class<?>[] attrType, boolean debug) throws JSONException {
+//		JSONObject root = null;
+//		try {
+//			root = new JSONObject(json);
+//		} catch (JSONException e) {
+//			throw e;
+//		}
+//		JSONObject obj = root;
+//		for (int i=0; i<outerAttr.length; i++) {
+//			try {
+//				obj = (JSONObject) obj.get(outerAttr[i]);
+//			} catch (JSONException e) {
+//				throw e;
+//			}
+//		}
+//		String parse = "";
+//		for (int i=0; i<attr.length; i++) {
+//			try {
+//				parse += parseJSONObject(obj,attr[i],attrType[i]);
+//			} catch (JSONException e) {
+//				throw e;
+//			}
+//			if (i<attr.length-1)
+//				parse += ", ";
+//		}
+//		return parse;
+//	}
 	
 	public static String parseCoapRequest(Request request) {
 		List<String> list = request.getOptions().getUriQuery();

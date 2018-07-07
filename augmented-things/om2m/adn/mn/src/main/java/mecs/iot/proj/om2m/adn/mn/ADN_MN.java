@@ -66,8 +66,16 @@ class ADN_MN extends ADN {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:ae",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		String json = null;
+		try {
+			json = Services.parseJSON(response_.getResponseText(), "m2m:ae",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			outStream.out2("failed");
+			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, i);
 		outStream.out1_2("done, posting tagMap");
 		cseClient.stepCount();
 		response_ = cseClient.services.postContainer(cseBaseName,"state","tagMap",cseClient.getCount());
@@ -86,8 +94,16 @@ class ADN_MN extends ADN {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:cnt",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		json = null;
+		try {
+			json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			outStream.out2("failed");
+			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, i);
 		outStream.out1_2("done, posting userMap");
 		cseClient.stepCount();
 		response_ = cseClient.services.postContainer(cseBaseName,"state","userMap",cseClient.getCount());
@@ -106,8 +122,16 @@ class ADN_MN extends ADN {
 					i, Severity.LOW);
 			throw new StateCreationException();
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response_.getResponseText(), "m2m:cnt",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		json = null;
+		try {
+			json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			outStream.out2("failed");
+			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, i);
 		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,cseBaseName);
 		outStream.out1_2("done, registering to IN");
@@ -228,8 +252,15 @@ class ADN_MN extends ADN {
 						return;
 					}
 					response = new Response(ResponseCode.CONTENT);
-					String con = Services.parseJSON(response_.getResponseText(), "m2m:cin",
-							new String[] {"con"}, new Class<?>[] {String.class});
+					String con = null;
+					try {
+						con = Services.parseJSON(response_.getResponseText(), "m2m:cin",
+								new String[] {"con"}, new Class<?>[] {String.class});
+					} catch (JSONException e) {
+						outStream.out2("failed");
+						errStream.out("Received invalid response", i, Severity.MEDIUM);
+						throw e;
+					}
 					response.setPayload(id + ": " + con);
 					break;
 				default:
@@ -601,11 +632,11 @@ class ADN_MN extends ADN {
 					String con = null;
 					// String sur = null;
 					try {
-						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "/augmented-things-MN-cse/cnt-67185819"
-								new String[] {"pi"}, new Class<?>[] {String.class},false);
-						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "36,404 °C"
-								new String[] {"con"}, new Class<?>[] {String.class},false);
-						// sur = Services.parseJSON(notification, "m2m:sgn", 											// Example: "/augmented-things-MN-cse/sub-730903481"
+						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "pi=/augmented-things-MN-cse/cnt-67185819"
+								new String[] {"pi"}, new Class<?>[] {String.class});
+						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "con=36,404 °C"
+								new String[] {"con"}, new Class<?>[] {String.class});
+						// sur = Services.parseJSON(notification, "m2m:sgn", 											// Example: "sur=/augmented-things-MN-cse/sub-730903481"
 						//		new String[] {"sur"}, new Class<?>[] {String.class});
 					} catch (JSONException e) {
 						debugStream.out("Received invalid notification", i);
@@ -624,10 +655,11 @@ class ADN_MN extends ADN {
 								case SENSOR:
 									break;
 								case ACTUATOR:
-									String[] splits = con.split("con=");
+									// String[] splits = con.split("con=");
 									double value;
 									try {
-										value = Format.unpack(splits[1],subs.get(j).sender.type);
+										// value = Format.unpack(splits[1],subs.get(j).sender.type);
+										value = Format.unpack(con.substring(4),subs.get(j).sender.type);
 									} catch (ParseException e) {
 										outStream.out2("failed");
 										errStream.out(e,i,Severity.MEDIUM);

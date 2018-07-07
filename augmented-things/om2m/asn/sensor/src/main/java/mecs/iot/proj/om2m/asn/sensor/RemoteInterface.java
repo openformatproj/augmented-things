@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.json.JSONException;
 
 public class RemoteInterface extends Client {
 	
@@ -84,8 +85,16 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:ae",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
+		String json = null;
+		try {
+			json = Services.parseJSON(response.getResponseText(), "m2m:ae",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+		} catch (JSONException e) {
+			outStream.out2("failed");
+			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, i);
 		outStream.out1_2("done, posting Container");
 		try {
 			response = services.postContainer(name,Services.normalizeName(tag.id),i);
@@ -109,10 +118,19 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cnt",
-				new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class}), i);
-		String ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
-				new String[] {"ri"}, new Class<?>[] {String.class});												// Example: "/augmented-things-MN-cse/cnt-67185819"
+		json = null;
+		String ri = null;
+		try {
+			json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+			ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+					new String[] {"ri"}, new Class<?>[] {String.class});											// Example: "/augmented-things-MN-cse/cnt-67185819"
+		} catch (JSONException e) {
+			outStream.out2("failed");
+			errStream.out("Received invalid response", i, Severity.MEDIUM);
+			throw e;
+		}
+		debugStream.out("Received JSON: " + json, i);
 		String key = Services.getKeyFromAttribute(ri);																// Example: "67185819"
 		// TODO: if Container is already present, extract ri anyway
 		outStream.out1_2("done, connecting to ADN");
@@ -169,8 +187,15 @@ public class RemoteInterface extends Client {
 				errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 				return;
 			}
-			debugStream.out("Received JSON: " + Services.parseJSON(response.getResponseText(), "m2m:cin",
-					new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class}), i);
+			try {
+				json = Services.parseJSON(response.getResponseText(), "m2m:cin",
+						new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class});
+			} catch (JSONException e) {
+				outStream.out2("failed");
+				errStream.out("Received invalid response", i, Severity.MEDIUM);
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
 			outStream.out2("done");
 			i++;
 			timer = System.currentTimeMillis();
