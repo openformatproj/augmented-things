@@ -298,24 +298,29 @@ public class Services {
 		return pathManager.uri();
 	}
 	
-	public CoapResponse oM2Mput(String key, JSONSerializable content, String[] uri, int i) throws URISyntaxException {
+	public CoapResponse oM2Mput(String key, JSONSerializable content, String[] uri, boolean createContainer, int i) throws URISyntaxException {
 		pathManager.change(uri);
-		Request request = new Request(Code.POST);
-		request.getOptions().addOption(new Option(267,3));
-		request.getOptions().addOption(new Option(256,"admin:admin"));
-		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
-		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		JSONObject obj = new JSONObject();
-		obj.put("rn",key);
-		JSONObject root = new JSONObject();
-		root.put("m2m:cnt",obj);
-		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
-		CoapResponse response = client.send(request, Code.POST);
-		if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
-			return response;
+		Request request = null;
+		JSONObject obj = null;
+		JSONObject root = null;
+		if (createContainer) {
+			request = new Request(Code.POST);
+			request.getOptions().addOption(new Option(267,3));
+			request.getOptions().addOption(new Option(256,"admin:admin"));
+			request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+			request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+			obj = new JSONObject();
+			obj.put("rn",key);
+			root = new JSONObject();
+			root.put("m2m:cnt",obj);
+			request.setPayload(root.toString());
+			client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+			CoapResponse response = client.send(request, Code.POST);
+			if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
+				return response;
+			}
+			pathManager.down(key,true);
 		}
-		pathManager.down(key,true);
 		request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -331,24 +336,29 @@ public class Services {
 		return client.send(request, Code.POST);
 	}
 	
-	public CoapResponse oM2Mput(String key, JSONObject content, String[] uri, int i) throws URISyntaxException {
+	public CoapResponse oM2Mput(String key, JSONObject content, String[] uri, boolean createContainer, int i) throws URISyntaxException {
 		pathManager.change(uri);
-		Request request = new Request(Code.POST);
-		request.getOptions().addOption(new Option(267,3));
-		request.getOptions().addOption(new Option(256,"admin:admin"));
-		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
-		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		JSONObject obj = new JSONObject();
-		obj.put("rn",key);
-		JSONObject root = new JSONObject();
-		root.put("m2m:cnt",obj);
-		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
-		CoapResponse response = client.send(request, Code.POST);
-		if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
-			return response;
+		Request request = null;
+		JSONObject obj = null;
+		JSONObject root = null;
+		if (createContainer) {
+			request = new Request(Code.POST);
+			request.getOptions().addOption(new Option(267,3));
+			request.getOptions().addOption(new Option(256,"admin:admin"));
+			request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+			request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+			obj = new JSONObject();
+			obj.put("rn",key);
+			root = new JSONObject();
+			root.put("m2m:cnt",obj);
+			request.setPayload(root.toString());
+			client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+			CoapResponse response = client.send(request, Code.POST);
+			if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
+				return response;
+			}
+			pathManager.down(key,true);
 		}
-		pathManager.down(key,true);
 		request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,4));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
@@ -363,23 +373,6 @@ public class Services {
 		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
 		return client.send(request, Code.POST);
 	}
-	
-//	public CoapResponse oM2Mremove(String[] uri, int i) throws URISyntaxException {
-//		pathManager.change(uri);
-//		Request request = new Request(Code.POST);
-//		request.getOptions().addOption(new Option(267,4));
-//		request.getOptions().addOption(new Option(256,"admin:admin"));
-//		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
-//		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-//		JSONObject obj = new JSONObject();
-//		obj.put("cnf","text/plain:0");
-//		obj.put("con","()");
-//		JSONObject root = new JSONObject();
-//		root.put("m2m:cin",obj);
-//		request.setPayload(root.toString());
-//		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
-//		return client.send(request, Code.POST);
-//	}
 	
 	public static String getKeyFromAttribute(String attr) {
 		return attr.split("cnt-")[1];

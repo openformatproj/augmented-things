@@ -85,12 +85,12 @@ public class Subscriber {
 		if (subscriptionMap.containsKey(sender)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(sender);
 			subs.add(ref);
-			oM2Mput(sender,subs,i);
+			oM2Mput(sender,subs,false,i);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-			oM2Mput(sender,subs,i);
+			oM2Mput(sender,subs,true,i);
 		}
 	}
 	
@@ -99,12 +99,12 @@ public class Subscriber {
 		if (subscriptionMap.containsKey(sender)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(sender);
 			subs.add(ref);
-			oM2Mput(sender,subs,i);
+			oM2Mput(sender,subs,false,i);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
 			subscriptionMap.put(sender,subs);
-			oM2Mput(sender,subs,i);
+			oM2Mput(sender,subs,true,i);
 		}
 	}
 	
@@ -124,7 +124,7 @@ public class Subscriber {
 	public void remove(String sender, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
-				oM2Mput(sender,new ArrayList<Subscription>(),k);
+				oM2Mput(sender,new ArrayList<Subscription>(),false,k);
 				deleteSubscription(sender, k);																// ? TODO
 				break;
 			case ACTUATOR:
@@ -136,7 +136,7 @@ public class Subscriber {
 					for (int j=0; j<subs.size(); j++) {
 						if (subs.get(j).receiver.id.equals(sender))
 							subs.remove(j);																	// Remove all subscriptions containing the receiver
-							oM2Mput(sender,subs,k);
+							oM2Mput(sender,subs,false,k);
 					}
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
 						deleteSubscription(resources[i], k);
@@ -151,7 +151,7 @@ public class Subscriber {
 		for (int j=0; j<subs.size(); j++) {
 			if (subs.get(j).receiver.id.equals(receiver))
 				subs.remove(j);																				// Remove all subscriptions containing the receiver
-				oM2Mput(sender,subs,k);
+				oM2Mput(sender,subs,false,k);
 		}
 		if (subs.size()==0) {
 			deleteSubscription(sender, k);
@@ -165,7 +165,7 @@ public class Subscriber {
 			ref = subs.get(j);
 			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
 				subs.remove(j);																				// Remove all subscriptions both containing the receiver and matching the pair event/action
-				oM2Mput(sender,subs,k);
+				oM2Mput(sender,subs,false,k);
 		}
 		if (subs.size()==0) {
 			deleteSubscription(sender, k);
@@ -192,7 +192,7 @@ public class Subscriber {
 		debugStream.out("...done",i);
 	}
 	
-	private void oM2Mput (String sender, ArrayList<Subscription> subs, int i) throws URISyntaxException, StateCreationException {
+	private void oM2Mput (String sender, ArrayList<Subscription> subs, boolean createContainer, int i) throws URISyntaxException, StateCreationException {
 		String[] uri = new String[] {cseBaseName, "state", "subscriptionMap"};
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap...",i);
@@ -200,7 +200,7 @@ public class Subscriber {
 		obj.put("id",sender);
 		obj.put("mn",cseBaseName);
 		cseClient.stepCount();
-		response = cseClient.services.oM2Mput(sender,obj,uri,cseClient.getCount());
+		response = cseClient.services.oM2Mput(sender,obj,uri,createContainer,cseClient.getCount());
 		if (response==null) {
 			debugStream.out("failed",i);
 			errStream.out("Unable to register subscription on CSE, timeout expired", i, Severity.LOW);

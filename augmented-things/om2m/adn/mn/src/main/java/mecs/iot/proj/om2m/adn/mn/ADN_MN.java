@@ -358,12 +358,17 @@ class ADN_MN extends ADN {
 						tag = new Tag(Node.SENSOR,id,type,attributes,cseBaseName);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
+					boolean createContainer;
+					if (tagMap.containsKey(serial))
+						createContainer = false;
+					else
+						createContainer = true;
 					tagMap.put(serial,tag);
 					String[] uri_ = new String[] {cseBaseName, "state", "tagMap"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
-						response_ = cseClient.services.oM2Mput(serial,tag,uri_,cseClient.getCount());
+						response_ = cseClient.services.oM2Mput(serial,tag,uri_,createContainer,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
@@ -454,13 +459,18 @@ class ADN_MN extends ADN {
 					return;
 				}
 				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
+				boolean createContainer;
+				if (userMap.containsKey(id))
+					createContainer = false;
+				else
+					createContainer = true;
 				User user = new User(id,address,cseBaseName);
 				userMap.put(id,user);
 				String[] uri_ = new String[] {cseBaseName, "state", "userMap"};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(id,user,uri_,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(id,user,uri_,createContainer,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
@@ -870,7 +880,7 @@ class ADN_MN extends ADN {
 				cseClient.stepCount();
 				try {
 					// response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
-					response_ = cseClient.services.oM2Mput(id,user,uri_,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(id,user,uri_,false,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
@@ -1043,7 +1053,7 @@ class ADN_MN extends ADN {
 					cseClient.stepCount();
 					try {
 						// response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
-						response_ = cseClient.services.oM2Mput(serial0,tag0,uri_,cseClient.getCount());
+						response_ = cseClient.services.oM2Mput(serial0,tag0,uri_,false,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
