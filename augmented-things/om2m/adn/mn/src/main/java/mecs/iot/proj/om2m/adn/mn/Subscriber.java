@@ -151,8 +151,8 @@ public class Subscriber {
 					subs = subscriptionMap.get(resources[i]);
 					for (int j=0; j<subs.size(); j++) {
 						if (subs.get(j).receiver.id.equals(id))
-							subs.remove(j);																	// Remove all subscriptions containing the receiver
 							oM2Mput(subs.get(j).sender.id,subs,false,k);
+							subs.remove(j);																	// Remove all subscriptions containing the receiver
 					}
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
 						deleteSubscription(resources[i], k);
