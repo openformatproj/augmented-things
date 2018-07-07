@@ -151,9 +151,9 @@ public class Subscriber {
 					subs = subscriptionMap.get(resources[i]);
 					for (int j=0; j<subs.size(); j++) {
 						if (subs.get(j).receiver.id.equals(id))
-							oM2Mput(subs.get(j).sender.id,subs,false,k);
 							subs.remove(j);																	// Remove all subscriptions containing the receiver
 					}
+					oM2Mput(resources[i],subs,false,k);
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
 						deleteSubscription(resources[i], k);
 					}
@@ -167,8 +167,8 @@ public class Subscriber {
 		for (int j=0; j<subs.size(); j++) {
 			if (subs.get(j).receiver.id.equals(receiver))
 				subs.remove(j);																				// Remove all subscriptions containing the receiver
-				oM2Mput(sender,subs,false,k);
 		}
+		oM2Mput(sender,subs,false,k);
 		if (subs.size()==0) {
 			deleteSubscription(sender, k);
 		}
@@ -181,8 +181,8 @@ public class Subscriber {
 			ref = subs.get(j);
 			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
 				subs.remove(j);																				// Remove all subscriptions both containing the receiver and matching the pair event/action
-				oM2Mput(sender,subs,false,k);
 		}
+		oM2Mput(sender,subs,false,k);
 		if (subs.size()==0) {
 			deleteSubscription(sender, k);
 		}
