@@ -95,7 +95,7 @@ class RemoteInterface extends Client {
 //			errStream.out(e, i, Severity.MEDIUM);
 //			throw e;
 //		}
-		debugStream.out("Received JSON: " + json, i);
+		debugStream.out("Received JSON: " + json + ", response: " + response.getCode(), i);
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
