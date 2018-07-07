@@ -4,7 +4,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONException;
@@ -252,49 +251,49 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				String[] uri = new String[] {"la"};
-				CoapResponse response_ = null;
-				cseClient.stepCount();
-				try {
-					response_ = cseClient.services.getResource(uri,cseClient.getCount());
-				} catch (URISyntaxException e) {
-					outStream.out2("failed");
-					errStream.out(e,i,Severity.MEDIUM);
-					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				if (response_==null) {
-					outStream.out2("failed");
-					errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-					exchange.respond(response);
-					i++;
-					return;
-				} else if (response_.getCode()!=ResponseCode.CONTENT) {
-					outStream.out2("failed");
-					errStream.out("Unable to read from " + cseClient.services.uri() + ", response: " + response_.getCode(),
-							i, Severity.LOW);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				String con = null;																						// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
-				try {
-					con = Services.parseJSON(response_.getResponseText(), "m2m:cin",
-							new String[] {"con"}, new Class<?>[] {String.class});
-				} catch (JSONException e) {
-					outStream.out2("failed");
-					errStream.out("Content of " + cseClient.services.uri() + " is invalid", i, Severity.MEDIUM);
-					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				outStream.out1_2("Getting initial state with JSON: " + con);
-				String json = Services.unpackJSON(con.substring(4));
+//				String[] uri = new String[] {"la"};
+//				CoapResponse response_ = null;
+//				cseClient.stepCount();
+//				try {
+//					response_ = cseClient.services.getResource(uri,cseClient.getCount());
+//				} catch (URISyntaxException e) {
+//					outStream.out2("failed");
+//					errStream.out(e,i,Severity.MEDIUM);
+//					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//					exchange.respond(response);
+//					i++;
+//					return;
+//				}
+//				if (response_==null) {
+//					outStream.out2("failed");
+//					errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+//					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+//					exchange.respond(response);
+//					i++;
+//					return;
+//				} else if (response_.getCode()!=ResponseCode.CONTENT) {
+//					outStream.out2("failed");
+//					errStream.out("Unable to read from " + cseClient.services.uri() + ", response: " + response_.getCode(),
+//							i, Severity.LOW);
+//					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+//					exchange.respond(response);
+//					i++;
+//					return;
+//				}
+//				String con = null;																						// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
+//				try {
+//					con = Services.parseJSON(response_.getResponseText(), "m2m:cin",
+//							new String[] {"con"}, new Class<?>[] {String.class});
+//				} catch (JSONException e) {
+//					outStream.out2("failed");
+//					errStream.out("Content of " + cseClient.services.uri() + " is invalid", i, Severity.MEDIUM);
+//					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//					exchange.respond(response);
+//					i++;
+//					return;
+//				}
+//				outStream.out1_2("Getting initial state with JSON: " + con);
+//				String json = Services.unpackJSON(con.substring(4));
 				// TODO
 			} else if (notification.contains("m2m:cin")) {
 				String con = null;																						// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
@@ -309,7 +308,7 @@ class ADN_IN extends ADN {
 					return;
 				}
 				outStream.out1("Handling Content Instance notification with JSON: " + con, i);
-				String json = Services.unpackJSON(con.substring(4));
+//				String json = Services.unpackJSON(con.substring(4));
 				// TODO
 			} else {
 				outStream.out1("Received unexpected notification", i);
