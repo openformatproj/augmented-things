@@ -220,11 +220,14 @@ class ADN_IN extends ADN {
 			} else if (notification.contains("m2m:cnt")) {
 				String ri = null;
 				String rn = null;
+				String la;
 				try {
 					ri = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cnt"},
 							new String[] {"ri"}, new Class<?>[] {String.class});
 					rn = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cnt"},
 							new String[] {"rn"}, new Class<?>[] {String.class});
+					la = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cnt"},
+							new String[] {"la"}, new Class<?>[] {String.class});
 				} catch (JSONException e) {
 					debugStream.out("Received invalid notification", i);
 					errStream.out(e, i, Severity.MEDIUM);
@@ -233,7 +236,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out1("Handling Container notification with JSON: " + ri + ", " + rn, i);
+				outStream.out1("Handling Container notification with JSON: " + ri + ", " + rn + ", " + la, i);
 				cseClient.stepCount();
 				try {
 					cseClient.connect(Constants.adnProtocol+"localhost"+Constants.mnCSERoot()+ri.substring(3));
