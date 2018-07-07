@@ -219,7 +219,7 @@ class ADN_IN extends ADN {
 				outStream.out1("Handling subscription confirmation", i);
 			} else if (notification.contains("m2m:cnt")) {
 				String ri = null;
-				String rn = null;																						// serial, user id or resource id
+				String rn = null;
 				try {
 					ri = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cnt"},
 							new String[] {"ri"}, new Class<?>[] {String.class});

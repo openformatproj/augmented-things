@@ -191,7 +191,7 @@ public class Subscriber {
 	private void deleteSubscription(String resource, int i) throws URISyntaxException, StateCreationException {
 		String[] uri = new String[] {cseBaseName, resource, "data", "subscription"};
 		CoapResponse response = null;
-		debugStream.out("Deleting subscription on \"" + resource + "\"", i);
+		debugStream.out("Deleting subscription on \"" + resource + "\"...", i);
 		cseClient.stepCount();
 		response = cseClient.services.deleteSubscription(uri,cseClient.getCount());
 		if (response==null) {
