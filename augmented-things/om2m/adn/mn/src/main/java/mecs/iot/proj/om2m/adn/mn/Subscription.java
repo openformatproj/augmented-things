@@ -48,9 +48,9 @@ public class Subscription implements JSONSerializable {
 			e.printStackTrace();
 		}
 		subs[1] = new Subscription("sensor.alessandro", "tempC", "user.ALESSANDRO-K7NR", "coap://192.168.0.107:5691/augmented-things");
-		System.out.println(Services.vectorizeJSON(subs,"subs").toString());
-		System.out.println(Services.packJSON(Services.vectorizeJSON(subs,"subs").toString()));
-		System.out.println(Services.unpackJSON(Services.packJSON(Services.vectorizeJSON(subs,"subs").toString())));
+		System.out.println(Services.toJSONArray(subs,"subs").toString());
+		System.out.println(Services.packJSON(Services.toJSONArray(subs,"subs").toString()));
+		System.out.println(Services.unpackJSON(Services.packJSON(Services.toJSONArray(subs,"subs").toString())));
 	}
 	
 }

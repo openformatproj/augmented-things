@@ -163,7 +163,7 @@ public class Services {
 		return name.replace('@','.');
 	}
 	
-	public static JSONObject vectorizeJSON(JSONSerializable[] json, String attribute) {
+	public static JSONObject toJSONArray(JSONSerializable[] json, String attribute) {
 		JSONObject obj = new JSONObject();
 		for (int i=0; i<json.length; i++)
 			obj.append(attribute,json[i].toJSON());

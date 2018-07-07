@@ -196,7 +196,7 @@ public class Subscriber {
 		String[] uri = new String[] {cseBaseName, "state", "subscriptionMap"};
 		CoapResponse response;
 		debugStream.out("Posting subscriptionMap...",i);
-		JSONObject obj = Services.vectorizeJSON(subs.toArray(new Subscription[] {}),"subs");
+		JSONObject obj = Services.toJSONArray(subs.toArray(new Subscription[] {}),"subs");
 		obj.put("id",sender);
 		obj.put("mn",cseBaseName);
 		cseClient.stepCount();
