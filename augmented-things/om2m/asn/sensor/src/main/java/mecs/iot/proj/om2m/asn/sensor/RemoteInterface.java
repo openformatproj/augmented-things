@@ -85,16 +85,20 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		String json = null;
-		try {
-			json = Services.parseJSON(response.getResponseText(), "m2m:ae",
-					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-		} catch (JSONException e) {
-			outStream.out2("failed");
-			errStream.out(e, i, Severity.MEDIUM);
-			throw e;
+		if (response.getCode()==ResponseCode.FORBIDDEN) {
+			debugStream.out(response.getResponseText(), i);
+		} else {
+			String json = null;
+			try {
+				json = Services.parseJSON(response.getResponseText(), "m2m:ae",
+						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+			} catch (JSONException e) {
+				outStream.out2("failed");
+				errStream.out(e, i, Severity.MEDIUM);
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
 		}
-		debugStream.out("Received JSON: " + json, i);
 		outStream.out1_2("done, posting Container");
 		try {
 			response = services.postContainer(name,Services.normalizeName(tag.id),i);
@@ -118,21 +122,25 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		json = null;
 		String ri = null;
-		try {
-			json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
-					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-			ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
-					new String[] {"ri"}, new Class<?>[] {String.class});											// Example: "/augmented-things-MN-cse/cnt-67185819"
-		} catch (JSONException e) {
-			outStream.out2("failed");
-			errStream.out(e, i, Severity.MEDIUM);
-			throw e;
+		if (response.getCode()==ResponseCode.FORBIDDEN) {
+			debugStream.out(response.getResponseText(), i);
+			// TODO: if Container is already present, extract ri anyway
+		} else {
+			String json = null;
+			try {
+				json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+				ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+						new String[] {"ri"}, new Class<?>[] {String.class});										// Example: "/augmented-things-MN-cse/cnt-67185819"
+			} catch (JSONException e) {
+				outStream.out2("failed");
+				errStream.out(e, i, Severity.MEDIUM);
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
 		}
-		debugStream.out("Received JSON: " + json, i);
 		String key = Services.getKeyFromAttribute(ri);																// Example: "67185819"
-		// TODO: if Container is already present, extract ri anyway
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
@@ -187,6 +195,7 @@ public class RemoteInterface extends Client {
 				errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
 				return;
 			}
+			String json = null;
 			try {
 				json = Services.parseJSON(response.getResponseText(), "m2m:cin",
 						new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class});

@@ -86,16 +86,20 @@ class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		String json = null;
-//		try {
-			json = Services.parseJSON(response.getResponseText(), "m2m:ae",
-					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-//		} catch (JSONException e) {
-//			outStream.out2("failed");
-//			errStream.out(e, i, Severity.MEDIUM);
-//			throw e;
-//		}
-		debugStream.out("Received JSON: " + json + ", response: " + response.getCode(), i);
+		if (response.getCode()==ResponseCode.FORBIDDEN) {
+			debugStream.out(response.getResponseText(), i);
+		} else {
+			String json = null;
+			try {
+				json = Services.parseJSON(response.getResponseText(), "m2m:ae",
+						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+			} catch (JSONException e) {
+				outStream.out2("failed");
+				errStream.out(e, i, Severity.MEDIUM);
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
+		}
 		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
