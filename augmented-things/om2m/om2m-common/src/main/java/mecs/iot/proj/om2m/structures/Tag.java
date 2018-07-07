@@ -196,8 +196,7 @@ public class Tag implements JSONSerializable {
 		}
 		if (cseBaseName!=null)
 			obj.put("mn",cseBaseName);
-		if (cseBaseName!=null)
-			obj.put("active",active);
+		obj.put("active",active);
 		return obj;
 	}
 	
