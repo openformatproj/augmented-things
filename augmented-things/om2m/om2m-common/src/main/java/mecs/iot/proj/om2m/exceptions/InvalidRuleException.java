@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.structures.exceptions;
+package mecs.iot.proj.om2m.exceptions;
 
 public class InvalidRuleException extends Exception {
 	

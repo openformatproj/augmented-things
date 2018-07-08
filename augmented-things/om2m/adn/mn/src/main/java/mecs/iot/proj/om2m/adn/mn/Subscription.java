@@ -3,9 +3,9 @@ package mecs.iot.proj.om2m.adn.mn;
 import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
 public class Subscription implements JSONSerializable {
 	

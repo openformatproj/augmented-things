@@ -1,10 +1,10 @@
 package mecs.iot.proj.om2m.adn.mn;
 
+import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
+import mecs.iot.proj.om2m.exceptions.NoRuleException;
 import mecs.iot.proj.om2m.structures.Rule;
 import mecs.iot.proj.om2m.structures.Tag;
 import mecs.iot.proj.om2m.structures.Token;
-import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
-import mecs.iot.proj.om2m.structures.exceptions.NoRuleException;
 
 public class Controller {
 	

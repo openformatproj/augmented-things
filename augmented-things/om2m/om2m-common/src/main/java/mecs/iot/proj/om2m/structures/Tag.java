@@ -6,8 +6,8 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
-import mecs.iot.proj.om2m.structures.exceptions.NoRuleException;
+import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
+import mecs.iot.proj.om2m.exceptions.NoRuleException;
 
 public class Tag implements JSONSerializable {
 	

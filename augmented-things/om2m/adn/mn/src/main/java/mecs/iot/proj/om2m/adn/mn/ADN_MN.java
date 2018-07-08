@@ -20,13 +20,13 @@ import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.adn.mn.exceptions.*;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
-import mecs.iot.proj.om2m.structures.exceptions.InvalidRuleException;
 
 class ADN_MN extends ADN {
 
@@ -1023,7 +1023,7 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-							outStream.out1_2("deleting subscription on \"" + tag0.id + "\"");
+							outStream.out1_2("done, deleting subscription on \"" + tag0.id + "\"");
 							uri = new String[] {cseBaseName, tag0.id, "data", "subscription"};
 							cseClient.stepCount();
 							try {
