@@ -13,6 +13,7 @@ import org.eclipse.californium.core.coap.Option;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.CoAP.Code;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +28,7 @@ public class Services {
 	}
 	
 	private static String parseJSONObject(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
-		Object attribute = null;
-		attribute = obj.get(attr);
+		Object attribute = obj.get(attr);
 		if (attrType==Integer.class) {
 			return attr + "=" + Integer.toString((Integer)attribute);
 		} else if (attrType==String.class) {
@@ -37,6 +37,78 @@ public class Services {
 			return attr + "=" + (boolean)attribute;
 		} else
 			return null;
+	}
+	
+	private static String parseJSONObject_(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
+		Object attribute = obj.get(attr);
+		if (attrType==Integer.class) {
+			return Integer.toString((Integer)attribute);
+		} else if (attrType==String.class) {
+			return (String)attribute;
+		} else if (attrType==Boolean.class) {
+			return (String)attribute;
+		} else
+			return null;
+	}
+	
+	private static String[] parseJSONArray_(JSONObject obj, String attr) throws JSONException {
+		JSONArray jsonArray = obj.getJSONArray(attr);
+		List<Object> attributes = jsonArray.toList();
+		return attributes.toArray(new String[] {});
+	}
+	
+	public static String parseJSONObject(String json, String attr, Class<?> attrType) throws JSONException {
+		JSONObject obj = null;
+		try {
+			obj = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		String parse = null;
+		try {
+			parse = parseJSONObject_(obj,attr,attrType);
+		} catch (JSONException e) {
+			throw e;
+		}
+		return parse;
+	}
+	
+	public static String parseJSONObject(String json, String outerAttr, String attr, Class<?> attrType) throws JSONException {
+		JSONObject root = null;
+		try {
+			root = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		JSONObject obj = null;
+		try {
+			obj = (JSONObject) root.get(outerAttr);
+		} catch (JSONException e) {
+			throw e;
+		}
+		String parse = null;
+		try {
+			parse = parseJSONObject_(obj,attr,attrType);
+		} catch (JSONException e) {
+			throw e;
+		}
+		return parse;
+	}
+	
+	public static String[] parseJSONArray(String json, String attr) {
+		JSONObject obj = null;
+		try {
+			obj = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		String[] parse = null;
+		try {
+			parse = parseJSONArray_(obj,attr);
+		} catch (JSONException e) {
+			throw e;
+		}
+		return parse;
 	}
 	
 	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {

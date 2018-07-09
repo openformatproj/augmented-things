@@ -11,6 +11,7 @@ import org.json.JSONException;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
+import mecs.iot.proj.om2m.adn.in.exceptions.NotFoundMNException;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.structures.Configuration;
@@ -25,6 +26,8 @@ class ADN_IN extends ADN {
 	private HashMap<String,MN> serialMap;																					// serial -> MN
 	private String[] subscriptions;
 	private HashMap<Integer,MN> locationMap;
+	
+	private Cloud cloud;
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
@@ -211,6 +214,7 @@ class ADN_IN extends ADN {
 						return;
 					}
 				}
+				cloud.addMN(id);
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
@@ -303,9 +307,18 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				outStream.out1_2("getting initial state with JSON: " + con);
+				outStream.out1_2("done, getting initial state with JSON: " + con);
 				String json = Services.unpackJSON(con.substring(4));
-				// TODO
+				try {
+					cloud.add(json,i);
+				} catch (JSONException | NotFoundMNException e) {
+					outStream.out2("failed");
+					errStream.out(e, i, Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
+					i++;
+					return;
+				}
 			} else if (notification.contains("m2m:cin")) {
 				String con = null;																						// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
 				try {
@@ -321,7 +334,16 @@ class ADN_IN extends ADN {
 				}
 				outStream.out1("Handling Content Instance notification with JSON: " + con, i);
 				String json = Services.unpackJSON(con.substring(4));
-				// TODO
+				try {
+					cloud.add(json,i);
+				} catch (JSONException | NotFoundMNException e) {
+					outStream.out2("failed");
+					errStream.out(e, i, Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
+					i++;
+					return;
+				}
 			} else {
 				outStream.out1("Received unexpected notification", i);
 			}
