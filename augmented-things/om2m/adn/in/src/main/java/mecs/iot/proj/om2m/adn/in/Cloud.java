@@ -80,14 +80,14 @@ class Cloud {
 							users.add(receiverId);
 						}
 					}
+					root.resetSubscriptions(k);
+					for (int i=0; i<actuators.size(); i++)
+						root.addSubscription(id,events.get(i),actuators.get(i),actions.get(i),k);
+					for (int i=0; i<users.size(); i++)
+						root.addSubscription(id,users.get(i),k);
 				} catch (JSONException e3) {
-					throw new JSONException("Invalid JSON");
+					;
 				}
-				root.resetSubscriptions(k);
-				for (int i=0; i<actuators.size(); i++)
-					root.addSubscription(id,events.get(i),actuators.get(i),actions.get(i),k);
-				for (int i=0; i<users.size(); i++)
-					root.addSubscription(id,users.get(i),k);
 			}
 		}
 	}
@@ -123,7 +123,7 @@ class MN {
 	}
 	
 	void removeTag(String id, int k) {
-		debugStream.out("Removing endpoint node \"" + id + "\" to the cloud", k);
+		debugStream.out("Removing endpoint node \"" + id + "\" from the cloud", k);
 		tagMap.remove(id);
 	}
 	
@@ -133,7 +133,7 @@ class MN {
 	}
 	
 	void removeUser(String id, int k) {
-		debugStream.out("Removing user \"" + id + "\" to the cloud", k);
+		debugStream.out("Removing user \"" + id + "\" from the cloud", k);
 		userMap.remove(id);
 	}
 	
