@@ -64,6 +64,7 @@ class ADN_IN extends ADN {
 			locationMap.put(j, new MN(mn[j][0],mn[j][1]));
 			// debugStream.out("\t"+mn[j][0]+","+mn[j][1],i);
 		}
+		cloud = new Cloud(debugStream);
 		i++;
 	}
 	
