@@ -114,12 +114,12 @@ class MN {
 	}
 	
 	void addTag(String id, String type, String[] attributes, int k) {
-		debugStream.out("Adding endpoint node \"" + id + "\" to the cloud", k);
+		debugStream.out("Adding endpoint node (sensor) \"" + id + "\" to the cloud", k);
 		tagMap.put(id,new Tag(id,type,attributes));
 	}
 	
 	void addTag(String id, String[] attributes, int k) {
-		debugStream.out("Adding endpoint node \"" + id + "\" to the cloud", k);
+		debugStream.out("Adding endpoint node (actuator) \"" + id + "\" to the cloud", k);
 		tagMap.put(id,new Tag(id,attributes));
 	}
 	
@@ -166,7 +166,7 @@ class MN {
 	
 	void removeSubscriptions(String sender, int k, boolean show) {
 		if (show)
-			debugStream.out("Deleting subscriptions on \"" + sender + "\"", k);
+			debugStream.out("Deleting subscriptions on \"" + sender + "\" from the cloud", k);
 		subscriptionMap.remove(sender);
 	}
 	
