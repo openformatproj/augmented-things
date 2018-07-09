@@ -80,15 +80,18 @@ class Cloud {
 							users.add(receiverId);
 						}
 					}
-					root.resetSubscriptions(k);
+					root.removeSubscriptions(id,k,false);
 					for (int i=0; i<actuators.size(); i++)
 						root.addSubscription(id,events.get(i),actuators.get(i),actions.get(i),k);
 					for (int i=0; i<users.size(); i++)
 						root.addSubscription(id,users.get(i),k);
 				} catch (JSONException e3) {
-					;
+					root.removeSubscriptions(id,k,true);
+					return;
 				}
+				return;
 			}
+			return;
 		}
 	}
 
@@ -163,9 +166,10 @@ class MN {
 		}
 	}
 	
-	void resetSubscriptions(int k) {
-		debugStream.out("Restoring subscription state", k);
-		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
+	void removeSubscriptions(String sender, int k, boolean show) {
+		if (show)
+			debugStream.out("Deleting subscriptions on \"" + id + "\"", k);
+		subscriptionMap.remove(sender);
 	}
 	
 }
