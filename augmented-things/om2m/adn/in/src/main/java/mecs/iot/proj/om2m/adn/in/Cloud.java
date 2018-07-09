@@ -42,7 +42,7 @@ class Cloud {
 			throw new NotFoundMNException();
 		try {
 			type = Services.parseJSONObject(json,"type",String.class);
-			active = Services.parseJSONObject(json,"active",String.class);
+			active = Services.parseJSONObject(json,"active",Boolean.class);
 			attributes = Services.parseJSONArray(json,"attributes");
 			if (Boolean.parseBoolean(active)) {
 				if (type.equals("act"))
@@ -55,7 +55,7 @@ class Cloud {
 		} catch (JSONException e1) {
 			try {
 				address = Services.parseJSONObject(json,"address",String.class);
-				active = Services.parseJSONObject(json,"active",String.class);
+				active = Services.parseJSONObject(json,"active",Boolean.class);
 				if (Boolean.parseBoolean(active))
 					root.addUser(id,address,k);
 				else

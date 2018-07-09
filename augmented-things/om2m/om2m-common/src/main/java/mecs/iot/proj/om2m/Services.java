@@ -45,6 +45,8 @@ public class Services {
 			return Integer.toString((Integer)attribute);
 		} else if (attrType==String.class) {
 			return (String)attribute;
+		} else if (attrType==Boolean.class) {
+			return "" + (boolean)attribute;
 		} else
 			return null;
 	}
