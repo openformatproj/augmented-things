@@ -270,24 +270,27 @@ class ADN_IN extends ADN {
 					return;
 				}
 				CoapResponse response_ = null;
-				try {
-					response_ = cseClient.services.getResource(new String[]{},cseClient.getCount());
-				} catch (URISyntaxException e) {
-					outStream.out2("failed");
-					errStream.out(e,i,Severity.MEDIUM);
-					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				if (response_==null) {
-					outStream.out2("failed");
-					errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-					exchange.respond(response);
-					i++;
-					return;
-				} else if (response_.getCode()!=ResponseCode.CONTENT) {
+				do {
+					try {
+						response_ = cseClient.services.getResource(new String[]{},cseClient.getCount());
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,i,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (response_==null) {
+						outStream.out2("failed");
+						errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+				} while(!hasBeenFound(response_));
+				if (response_.getCode()!=ResponseCode.CONTENT) {
 					outStream.out2("failed");
 					errStream.out("Unable to read from " + cseClient.services.uri() + ", response: " + response_.getCode(),
 							i, Severity.LOW);
@@ -356,5 +359,18 @@ class ADN_IN extends ADN {
 	}
 	
 	// TODO: middle-node removal
+	
+	private boolean hasBeenFound(CoapResponse response) {
+		if (response.getCode().equals(ResponseCode.NOT_FOUND)) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		else
+			return true;
+	}
 
 }
