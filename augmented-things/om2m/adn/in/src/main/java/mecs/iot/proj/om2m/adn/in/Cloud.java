@@ -168,7 +168,7 @@ class MN {
 	
 	void removeSubscriptions(String sender, int k, boolean show) {
 		if (show)
-			debugStream.out("Deleting subscriptions on \"" + id + "\"", k);
+			debugStream.out("Deleting subscriptions on \"" + sender + "\"", k);
 		subscriptionMap.remove(sender);
 	}
 	
