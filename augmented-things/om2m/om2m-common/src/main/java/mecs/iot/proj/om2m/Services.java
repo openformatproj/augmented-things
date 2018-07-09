@@ -5,6 +5,7 @@ import mecs.iot.proj.om2m.structures.JSONSerializable;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.californium.core.CoapResponse;
@@ -51,10 +52,9 @@ public class Services {
 			return null;
 	}
 	
-	private static String[] parseJSONArray_(JSONObject obj, String attr) throws JSONException {
+	private static List<Object> parseJSONArray_(JSONObject obj, String attr) throws JSONException {
 		JSONArray jsonArray = obj.getJSONArray(attr);
-		List<Object> attributes = jsonArray.toList();
-		return attributes.toArray(new String[] {});
+		return jsonArray.toList();
 	}
 	
 	public static String parseJSONObject(String json, String attr, Class<?> attrType) throws JSONException {
@@ -95,20 +95,51 @@ public class Services {
 		return parse;
 	}
 	
-	public static String[] parseJSONArray(String json, String attr) {
-		JSONObject obj = null;
+	@SuppressWarnings("unchecked")
+	
+	public static String[] parseJSONArray(String json, String[] outerAttr, String attr) throws JSONException, IndexOutOfBoundsException {
+		JSONObject root = null;
 		try {
-			obj = new JSONObject(json);
+			root = new JSONObject(json);
 		} catch (JSONException e) {
 			throw e;
 		}
-		String[] parse = null;
+		List<Object> jsonList = null;
 		try {
-			parse = parseJSONArray_(obj,attr);
-		} catch (JSONException e) {
+			jsonList = parseJSONArray_(root,outerAttr[0]);
+		} catch (JSONException | IndexOutOfBoundsException e) {
 			throw e;
 		}
-		return parse;
+		ArrayList<String> attributes = new ArrayList<String>();
+		HashMap<String,Object> map = null;
+		for (int j=0; j<jsonList.size(); j++) {
+			if (attr==null) {
+				if (outerAttr.length==1) {
+					attributes.add((String)jsonList.get(j));
+				} else {
+					map = (HashMap<String,Object>)jsonList.get(j);
+					for (int i=1; i<outerAttr.length-1; i++) {
+						try {
+							map = (HashMap<String,Object>)map.get(outerAttr[i]);
+						} catch (JSONException e) {
+							throw e;
+						}
+					}
+					attributes.add((String)map.get(outerAttr[outerAttr.length-1]));
+				}
+			} else {
+				map = (HashMap<String,Object>)jsonList.get(j);
+				for (int i=1; i<outerAttr.length; i++) {
+					try {
+						map = (HashMap<String,Object>)map.get(outerAttr[i]);
+					} catch (JSONException e) {
+						throw e;
+					}
+				}
+				attributes.add((String)map.get(attr));
+			}
+		}
+		return attributes.toArray(new String[] {});
 	}
 	
 	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
@@ -431,6 +462,60 @@ public class Services {
 			json = json.replace(pair[0],pair[1]);
 		}
 		return json;
+	}
+	
+	public static void main (String[] args) {
+		String json = "{" + 
+				"   \"mn\":\"augmented-things-MN\"," + 
+				"   \"subs\":[" + 
+				"      {" + 
+				"         \"receiver\":{" + 
+				"            \"node\":\"ACTUATOR\"," + 
+				"            \"address\":\"coap://127.0.0.1:5690/augmented-things\"," + 
+				"            \"id\":\"actuator.alessandro\"" + 
+				"         }," + 
+				"         \"sender\":{" + 
+				"            \"node\":\"SENSOR\"," + 
+				"            \"id\":\"sensor.alessandro\"," + 
+				"            \"type\":\"tempC\"" + 
+				"         }," + 
+				"         \"action\":\"action1\"," + 
+				"         \"event\":\"event\"" + 
+				"      }," + 
+				"      {" + 
+				"         \"receiver\":{" + 
+				"            \"node\":\"USER\"," + 
+				"            \"address\":\"coap://192.168.0.107:5691/augmented-things\"," + 
+				"            \"id\":\"user.ALESSANDRO-K7NR\"" + 
+				"         },\r\n" + 
+				"         \"sender\":{" + 
+				"            \"node\":\"SENSOR\"," + 
+				"            \"id\":\"sensor.alessandro\"," + 
+				"            \"type\":\"tempC\"" + 
+				"         }" + 
+				"      }" + 
+				"   ]," + 
+				"   \"id\":\"sensor.alessandro\"" + 
+				"}";
+		String[] v1 = parseJSONArray(json,new String[] {"subs","receiver"},"id");
+		String[] v2 = parseJSONArray(json,new String[] {"subs"},"event");
+		for (int i=0;i<v1.length; i++)
+			System.out.println(v1[i]);
+		for (int i=0;i<v2.length; i++)
+			System.out.println(v2[i]);
+		json = "{" + 
+				"   \"mn\":\"augmented-things-MN\"," + 
+				"   \"active\":true," + 
+				"   \"attributes\":[" + 
+				"      \"action1\"," + 
+				"      \"action2\"" + 
+				"   ]," + 
+				"   \"id\":\"actuator.alessandro\"," + 
+				"   \"type\":\"act\"" + 
+				"}";
+		String[] v3 = parseJSONArray(json,new String[] {"attributes"},null);
+		for (int i=0;i<v3.length; i++)
+			System.out.println(v3[i]);
 	}
 
 }

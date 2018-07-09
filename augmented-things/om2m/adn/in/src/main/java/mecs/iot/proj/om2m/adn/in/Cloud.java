@@ -43,7 +43,7 @@ class Cloud {
 		try {
 			type = Services.parseJSONObject(json,"type",String.class);
 			active = Services.parseJSONObject(json,"active",Boolean.class);
-			attributes = Services.parseJSONArray(json,"attributes");
+			attributes = Services.parseJSONArray(json,new String[] {"attributes"},null);
 			if (Boolean.parseBoolean(active)) {
 				if (type.equals("act"))
 					root.addTag(id,attributes,k);
@@ -66,18 +66,16 @@ class Cloud {
 				ArrayList<String> events = new ArrayList<String>();
 				ArrayList<String> actions = new ArrayList<String>();
 				try {
-					String[] subs = Services.parseJSONArray(json,"subs");
-					String receiverType;
-					String receiverId;
-					for (int i=0; i<subs.length; i++) {
-						receiverType = Services.parseJSONObject(subs[i],"receiver","node",String.class); // TODO: check type
-						receiverId = Services.parseJSONObject(subs[i],"receiver","id",String.class);
-						if (receiverType.equals(Node.ACTUATOR)) {
-							actuators.add(receiverId);
-							events.add(Services.parseJSONObject(subs[i],"event",String.class));
-							actions.add(Services.parseJSONObject(subs[i],"action",String.class));
-						} else if (receiverType.equals(Node.USER)) {
-							users.add(receiverId);
+					String[] receivers = Services.parseJSONArray(json,new String[] {"subs","receiver"},"id");
+					String[] evs = Services.parseJSONArray(json,new String[] {"subs"},"event");
+					String[] acs = Services.parseJSONArray(json,new String[] {"subs"},"action");
+					for (int i=0; i<receivers.length; i++) {
+						if (evs[i]!=null && acs[i]!=null) {
+							actuators.add(receivers[i]);
+							events.add(evs[i]);
+							actions.add(acs[i]);
+						} else {
+							users.add(receivers[i]);
 						}
 					}
 					root.removeSubscriptions(id,k,false);
