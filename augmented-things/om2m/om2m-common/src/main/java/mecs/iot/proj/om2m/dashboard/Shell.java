@@ -1,42 +1,93 @@
 package mecs.iot.proj.om2m.dashboard;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.JTextPane;
+
+import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.om2m.structures.Constants;
 
 class Shell implements Interface {
 	
 	private JFrame frame;
-	private JLabel login;
-	private JLabel out;
+	private JTextPane out;
+	private JTextPane outAsync;
 	private JTextField commandLine;
 	
+	private final int offsetX = 20;
+	private final int offsetY = 10;
+	private final int commandLineHeight = 30;
+	private final int loginWidth = 350;
+	private final int commandLineWidth = 400;
+	private final int submitWidth = 100;
+	private final int outHeight = 300;
+	private final int asyncLabelHeight = 30;
+	
 	Shell(Console console) {
-		frame = new JFrame("AT Shell");
-		login = new JLabel();
-		out = new JLabel();
-		commandLine = new JTextField();
-		JButton submit = new JButton("Submit");
-		submit.addActionListener((arg0)->{wake();});
-		frame.add(submit);
-		frame.add(login);
-		frame.add(out);
-		frame.add(commandLine);
-		frame.setSize(800,300);
-		frame.setResizable(false);
-		frame.setLayout(null);
-		login.setBounds(10, 10, 200, 30);
-		out.setBounds(10, 50, 500, 200);
-		out.setVerticalAlignment(SwingConstants.TOP);
-		commandLine.setBounds(210, 10, 400, 30);
-		submit.setBounds(650, 10, 100, 30);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JLabel login = new JLabel();
+		login.setBounds(offsetX, offsetY, loginWidth, commandLineHeight);
 		if (console!=null)
 			login.setText(console.getName()+">");
 		else
-			login.setText("login");
+			login.setText("augmented-things-IN/console@ALESSANDRO-K7NR"+">");
+		login.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
+		
+		commandLine = new JTextField();
+		commandLine.setBorder(null);
+		commandLine.setBounds(loginWidth+2*offsetX, offsetY, commandLineWidth, commandLineHeight);
+		commandLine.setFont(new Font("Ubuntu Mono",Font.PLAIN,14));
+		
+		JButton submit = new JButton("Submit");
+		submit.addActionListener((arg0)->{wake();});
+		submit.setBounds(loginWidth+commandLineWidth+3*offsetX, offsetY, submitWidth, commandLineHeight);
+		submit.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
+		
+		final int frameWidth = loginWidth+commandLineWidth+submitWidth+4*offsetX;
+		final int frameWidth_ = loginWidth+commandLineWidth+submitWidth+2*offsetX;
+		
+		out = new JTextPane();
+		out.setBounds(offsetX, commandLineHeight+2*offsetY, frameWidth_, outHeight);
+		out.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
+		out.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), 
+	            BorderFactory.createEmptyBorder(10,10,10,10)));
+		
+		JLabel asyncLabel = new JLabel();
+		asyncLabel.setBounds(offsetX, commandLineHeight+outHeight+3*offsetY, frameWidth_, asyncLabelHeight);
+		asyncLabel.setText("Notifications:");
+		asyncLabel.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
+		
+		outAsync = new JTextPane();
+		outAsync.setBounds(offsetX, commandLineHeight+outHeight+asyncLabelHeight+4*offsetY, frameWidth_, outHeight);
+		outAsync.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
+		outAsync.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), 
+	            BorderFactory.createEmptyBorder(10,10,10,10)));
+		
+		final int frameHeight = commandLineHeight+outHeight+asyncLabelHeight+outHeight+5*offsetY;
+		
+		frame = new JFrame("AT Shell");
+		frame.add(out);
+		frame.add(outAsync);
+		frame.add(commandLine);
+		frame.add(login);
+		frame.add(submit);
+		frame.add(asyncLabel);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(frameWidth,frameHeight);
+		frame.setResizable(false);
+		frame.setLayout(null);
+		
+		out.setBackground(frame.getBackground());
+		outAsync.setBackground(frame.getBackground());
+		commandLine.setBackground(frame.getBackground());
+		
 	}
 	
 	@Override
@@ -64,14 +115,20 @@ class Shell implements Interface {
 	
 	@Override
 	
-	public void out(String str) {
-		out.setText(str);
+	public void out(String str, boolean isJSON) {
+		if (isJSON)
+			out.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
+		else
+			out.setText(str);
 	}
 	
 	@Override
 	
-	public void outAsync(String str) {
-		out.setText(str);
+	public void outAsync(String str, boolean isJSON) {
+		if (isJSON)
+			outAsync.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
+		else
+			outAsync.setText(str);
 	}
 	
 	@Override
@@ -87,10 +144,11 @@ class Shell implements Interface {
 	
 	public static void main(String[] args) {
 	    Shell shell = new Shell(null);
+	    shell.outAsync("Async content",false);
 	    shell.start();
 	    while (true) {
 		    String str = shell.in();
-		    shell.out(str);
+		    shell.out(str,false);
 	    }
 	}
 
