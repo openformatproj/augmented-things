@@ -17,7 +17,7 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		text[0] = new String[] {"mns","Query the active mn","mns"};
 		text[1] = new String[] {"nodes","Query the nodes attached to a mn","nodes -<MN>"};
 		text[2] = new String[] {"users","Query the users attached to a mn","users -<MN>"};
-		text[3] = new String[] {"subs","Query the subscriptions active for a given resource","subs -<MN> -<ID>"};
+		text[3] = new String[] {"subs","Query the subscriptions active on a given resource","subs -<MN> -<ID>"};
 	}
 
 }
