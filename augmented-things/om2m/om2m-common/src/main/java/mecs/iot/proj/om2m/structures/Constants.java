@@ -30,6 +30,9 @@ public class Constants {
 	
 	final public static String remotePath = "http://thingstalk.altervista.org/augmented-things/configuration";
 	
+	final public static String newLine = "//";
+	final public static String tab = "/.";
+	
 	private static Configuration asn = null;
 	private static Configuration adn = null;
 
