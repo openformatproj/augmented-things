@@ -85,10 +85,10 @@ class Cloud {
 						root.addSubscription(id,events.get(i),actuators.get(i),actions.get(i),k);
 					for (int i=0; i<users.size(); i++)
 						root.addSubscription(id,users.get(i),k);
-					root.putJSONSubscriptions(json);
+					root.putJSONSubscriptions(id,json);
 				} catch (JSONException e3) {
 					root.removeSubscriptions(id,k,true);
-					root.putJSONSubscriptions(json);
+					root.putJSONSubscriptions(id,json);
 					return;
 				}
 				return;
@@ -110,8 +110,8 @@ class Cloud {
 		return mnMap.get(mn).getJSONUser();
 	}
 	
-	String getJSONSubscriptions(String mn) {
-		return mnMap.get(mn).getJSONSubscriptions();
+	String getJSONSubscriptions(String mn, String id) {
+		return mnMap.get(mn).getJSONSubscriptions(id);
 	}
 
 }
@@ -127,9 +127,19 @@ class MN {
 	private DebugStream debugStream;
 	
 	private class JSONState {
-		String tag;
-		String user;
-		String subscriptions;
+		JSON tag;
+		JSON user;
+		HashMap<String,JSON> subscriptions;
+	}
+	
+	private class JSON {
+		String content;
+		JSON() {
+			this.content = null;
+		}
+		JSON(String content) {
+			this.content = content;
+		}
 	}
 	
 	private JSONState jsonState;
@@ -140,6 +150,9 @@ class MN {
 		userMap = new HashMap<String,User>();
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
 		this.debugStream = debugStream;
+		jsonState.tag = new JSON();
+		jsonState.user = new JSON();
+		jsonState.subscriptions = new HashMap<String,JSON>();
 	}
 	
 	void addTag(String id, String type, String[] attributes, int k) {
@@ -200,27 +213,30 @@ class MN {
 	}
 	
 	void putJSONTag(String json) {
-		jsonState.tag = json;
+		jsonState.tag.content = json;
 	}
 	
 	void putJSONUser(String json) {
-		jsonState.user = json;
+		jsonState.user.content = json;
 	}
 	
-	void putJSONSubscriptions(String json) {
-		jsonState.subscriptions = json;
+	void putJSONSubscriptions(String id, String json) {
+		if (jsonState.subscriptions.containsKey(id))
+			jsonState.subscriptions.get(id).content = json;
+		else
+			jsonState.subscriptions.put(id,new JSON(json));
 	}
 	
 	String getJSONTag() {
-		return jsonState.tag;
+		return jsonState.tag.content;
 	}
 	
 	String getJSONUser() {
-		return jsonState.user;
+		return jsonState.user.content;
 	}
 	
-	String getJSONSubscriptions() {
-		return jsonState.subscriptions;
+	String getJSONSubscriptions(String id) {
+		return jsonState.subscriptions.get(id).content;
 	}
 	
 //	String getNodes() {
