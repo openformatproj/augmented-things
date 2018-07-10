@@ -8,7 +8,6 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
@@ -221,10 +220,7 @@ class ADN_IN extends ADN {
 					}
 				}
 				cloud.addMN(id);
-				JSONObject obj = new JSONObject();
-				obj.put("mn",id);
-				obj.put("active",true);
-				console.interf.outAsync(obj.toString(),true);
+				console.interf.outAsync(cloud.getJSONMN(id),true);
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {

@@ -24,6 +24,14 @@ class Cloud {
 		mnMap.put(id,new MN(id,debugStream));
 	}
 	
+	String getJSONMN(String id) {
+		return mnMap.get(id).toJSON().toString();
+	}
+	
+	void removeMN(String id) {
+		mnMap.get(id).active = false;
+	}
+	
 	void add(String json, int k) throws JSONException, NotFoundMNException {
 		String mn = null;
 		String id = null;
@@ -63,7 +71,7 @@ class Cloud {
 	}
 	
 	String getJSONMNs() {
-		String[] mns = mnMap.keySet().toArray(new String[] {});
+		MN[] mns = mnMap.values().toArray(new MN[] {});
 		return Services.toJSONArray(mns,"mns").toString();
 	}
 	
@@ -84,9 +92,10 @@ class Cloud {
 
 }
 
-class MN {
+class MN implements JSONSerializable {
 	
 	private String id;
+	boolean active;
 	
 	HashMap<String,JSON> tagMap;																	// serial -> tag
 	HashMap<String,JSON> userMap;																	// user id -> user
@@ -96,6 +105,7 @@ class MN {
 	
 	MN(String id, DebugStream debugStream) {
 		this.id = id;
+		this.active = true;
 		tagMap = new HashMap<String,JSON>();
 		userMap = new HashMap<String,JSON>();
 		subscriptionMap = new HashMap<String,JSON>();
@@ -121,6 +131,15 @@ class MN {
 	void addSubscription(String id, String json, int k) {
 		debugStream.out("Changing subscription state of \"" + id + "\" on MN \"" + this.id + "\"", k);
 		subscriptionMap.put(id,new JSON(json));
+	}
+
+	@Override
+	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("mn",id);
+		obj.put("active",active);
+		return obj;
 	}
 	
 }
