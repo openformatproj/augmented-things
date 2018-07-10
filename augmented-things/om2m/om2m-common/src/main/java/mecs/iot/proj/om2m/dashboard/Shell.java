@@ -14,7 +14,7 @@ class Shell implements Interface {
 	private JTextField commandLine;
 	
 	Shell(Console console) {
-		frame = new JFrame("AT Console");
+		frame = new JFrame("AT Shell");
 		login = new JLabel();
 		out = new JLabel();
 		commandLine = new JTextField();

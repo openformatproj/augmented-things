@@ -220,7 +220,7 @@ class ADN_IN extends ADN {
 					}
 				}
 				cloud.addMN(id);
-				console.interf.outAsync(cloud.getJSONMN());
+				console.interf.outAsync(cloud.getJSONMNs());
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
