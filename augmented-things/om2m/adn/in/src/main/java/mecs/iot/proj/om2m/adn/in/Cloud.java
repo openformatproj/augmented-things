@@ -103,17 +103,23 @@ class MN {
 	}
 	
 	void addTag(String id, String json, int k) {
-		debugStream.out("Adding endpoint node (sensor) \"" + id + "\" to MN \"" + this.id + "\"", k);
+		if (tagMap.containsKey(id))
+			debugStream.out("Adding endpoint node \"" + id + "\" to MN \"" + this.id + "\"", k);
+		else
+			debugStream.out("Changing endpoint node \"" + id + "\" state on MN \"" + this.id + "\"", k);
 		tagMap.put(id,new JSON(json));
 	}
 	
 	void addUser(String id, String json, int k) {
-		debugStream.out("Adding user \"" + id + "\" to MN \"" + this.id + "\"", k);
+		if (userMap.containsKey(id))
+			debugStream.out("Adding user \"" + id + "\" to MN \"" + this.id + "\"", k);
+		else
+			debugStream.out("Changing user \"" + id + "\" state on MN \"" + this.id + "\"", k);
 		userMap.put(id,new JSON(json));
 	}
 	
 	void addSubscription(String id, String json, int k) {
-		debugStream.out("Adding subscription on \"" + id + "\" to MN \"" + this.id + "\"", k);
+		debugStream.out("Changing subscription state of \"" + id + "\" on MN \"" + this.id + "\"", k);
 		subscriptionMap.put(id,new JSON(json));
 	}
 	
