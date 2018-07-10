@@ -219,6 +219,13 @@ public class Services {
 		return obj;
 	}
 	
+	public static JSONObject toJSONArray(String[] value, String attribute) {
+		JSONObject obj = new JSONObject();
+		for (int i=0; i<value.length; i++)
+			obj.append(attribute,value[i]);
+		return obj;
+	}
+	
 	public static String joinIdHost(String id, String host) {
 		return id + "@" + host;
 	}

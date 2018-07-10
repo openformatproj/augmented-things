@@ -52,6 +52,7 @@ class Cloud {
 			}
 			else
 				root.removeTag(id,k);
+			root.putJSONTag(json);
 		} catch (JSONException e1) {
 			try {
 				address = Services.parseJSONObject(json,"address",String.class);
@@ -60,6 +61,7 @@ class Cloud {
 					root.addUser(id,address,k);
 				else
 					root.removeUser(id,k);
+				root.putJSONUser(json);
 			} catch (JSONException e2) {
 				ArrayList<String> actuators = new ArrayList<String>();
 				ArrayList<String> users = new ArrayList<String>();
@@ -83,8 +85,10 @@ class Cloud {
 						root.addSubscription(id,events.get(i),actuators.get(i),actions.get(i),k);
 					for (int i=0; i<users.size(); i++)
 						root.addSubscription(id,users.get(i),k);
+					root.putJSONSubscriptions(json);
 				} catch (JSONException e3) {
 					root.removeSubscriptions(id,k,true);
+					root.putJSONSubscriptions(json);
 					return;
 				}
 				return;
@@ -92,18 +96,43 @@ class Cloud {
 			return;
 		}
 	}
+	
+	String getJSONMN() {
+		String[] ids = mnMap.keySet().toArray(new String[] {});
+		return Services.toJSONArray(ids,"subs").toString();
+	}
+	
+	String getJSONTag(String mn) {
+		return mnMap.get(mn).getJSONTag();
+	}
+	
+	String getJSONUser(String mn) {
+		return mnMap.get(mn).getJSONUser();
+	}
+	
+	String getJSONSubscriptions(String mn) {
+		return mnMap.get(mn).getJSONSubscriptions();
+	}
 
 }
 
 class MN {
 	
-	public String id;
+	private String id;
 	
 	private HashMap<String,Tag> tagMap;																		// serial -> tag
 	private HashMap<String,User> userMap;																	// user id -> user
 	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource id -> list of subscriptions
 	
 	private DebugStream debugStream;
+	
+	private class JSONState {
+		String tag;
+		String user;
+		String subscriptions;
+	}
+	
+	private JSONState jsonState;
 	
 	MN(String id, DebugStream debugStream) {
 		this.id = id;
@@ -169,6 +198,72 @@ class MN {
 			debugStream.out("Deleting subscriptions on \"" + sender + "\" from the cloud", k);
 		subscriptionMap.remove(sender);
 	}
+	
+	void putJSONTag(String json) {
+		jsonState.tag = json;
+	}
+	
+	void putJSONUser(String json) {
+		jsonState.user = json;
+	}
+	
+	void putJSONSubscriptions(String json) {
+		jsonState.subscriptions = json;
+	}
+	
+	String getJSONTag() {
+		return jsonState.tag;
+	}
+	
+	String getJSONUser() {
+		return jsonState.user;
+	}
+	
+	String getJSONSubscriptions() {
+		return jsonState.subscriptions;
+	}
+	
+//	String getNodes() {
+//		String str = "";
+//		Iterator<Tag> iterator = tagMap.values().iterator();
+//		while (iterator.hasNext()) {
+//			str += iterator.next().toString();
+//			if (iterator.hasNext())
+//				str += ",";
+//		}
+//		return str;
+//	}
+//	
+//	String getUsers() {
+//		String str = "";
+//		Iterator<User> iterator = userMap.values().iterator();
+//		while (iterator.hasNext()) {
+//			str += iterator.next().toString();
+//			if (iterator.hasNext())
+//				str += ",";
+//		}
+//		return str;
+//	}
+//	
+//	String getSubscriptions() {
+//		String str = "";
+//		Iterator<String> iteratorId = subscriptionMap.keySet().iterator();
+//		String id;
+//		while (iteratorId.hasNext()) {
+//			id = iteratorId.next();
+//			Iterator<Subscription> iteratorSubs = subscriptionMap.get(id).iterator();
+//			str += "{\"" + id + "\":\"[";
+//			while (iteratorSubs.hasNext()) {
+//				str += iteratorSubs.next().toString();
+//				if (iteratorSubs.hasNext())
+//					str += ",";
+//			}
+//			str += "]";
+//			if (iteratorId.hasNext())
+//				str += ",";
+//		}
+//		return str;
+//	}
 	
 }
 

@@ -27,7 +27,7 @@ class ADN_IN extends ADN {
 	private String[] subscriptions;
 	private HashMap<Integer,MN> locationMap;
 	
-	private Cloud cloud;
+	Cloud cloud;
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
@@ -65,6 +65,10 @@ class ADN_IN extends ADN {
 			// debugStream.out("\t"+mn[j][0]+","+mn[j][1],i);
 		}
 		cloud = new Cloud(debugStream);
+		CommandList list = new CommandList(this,console);
+		for (int i=0; i<list.numCommands; i++) {
+			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2]);
+		}
 		i++;
 	}
 	
@@ -216,6 +220,7 @@ class ADN_IN extends ADN {
 					}
 				}
 				cloud.addMN(id);
+				console.interf.outAsync(cloud.getJSONMN());
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
@@ -323,6 +328,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
+				console.interf.outAsync(json);
 			} else if (notification.contains("m2m:cin")) {
 				String con = null;																						// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
 				try {
@@ -348,6 +354,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
+				console.interf.outAsync(json);
 			} else {
 				outStream.out1("Received unexpected notification", i);
 			}
