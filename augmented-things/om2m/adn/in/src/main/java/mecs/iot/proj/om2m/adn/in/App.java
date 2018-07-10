@@ -24,6 +24,7 @@ public class App
 	
     public static void main( String[] args )
     {
+    	/* Replace true with your interface implementation */
     	final Console console = new Console(id,host,true,debug);
 		try {
 			final ADN_IN adn = new ADN_IN(id,host,debug,console);
