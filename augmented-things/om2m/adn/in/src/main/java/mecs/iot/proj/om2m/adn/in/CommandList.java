@@ -15,9 +15,9 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		commands[2] = (options) -> adn.cloud.getJSONUser(options[0]);
 		commands[3] = (options) -> adn.cloud.getJSONSubscriptions(options[0],options[1]);
 		text[0] = new String[] {"mns","Query for the active middle-nodes","mns"};
-		text[1] = new String[] {"nodes","Query for the nodes attached to a mn","nodes -<mn>"};
-		text[2] = new String[] {"users","Query for the users attached to a mn","users -<mn>"};
-		text[3] = new String[] {"subs","Query for the subscriptions active for a given sensor","subs -<mn> -<id>"};
+		text[1] = new String[] {"nodes","Query for the nodes attached to a mn","nodes -<MN>"};
+		text[2] = new String[] {"users","Query for the users attached to a mn","users -<MN>"};
+		text[3] = new String[] {"subs","Query for the subscriptions active for a given sensor","subs -<MN> -<ID>"};
 	}
 
 }
