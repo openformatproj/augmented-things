@@ -130,6 +130,11 @@ class MN {
 		JSON tag;
 		JSON user;
 		HashMap<String,JSON> subscriptions;
+		JSONState() {
+			tag = new JSON();
+			user = new JSON();
+			subscriptions = new HashMap<String,JSON>();
+		}
 	}
 	
 	private class JSON {
@@ -150,9 +155,7 @@ class MN {
 		userMap = new HashMap<String,User>();
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
 		this.debugStream = debugStream;
-		jsonState.tag = new JSON();
-		jsonState.user = new JSON();
-		jsonState.subscriptions = new HashMap<String,JSON>();
+		jsonState = new JSONState();
 	}
 	
 	void addTag(String id, String type, String[] attributes, int k) {
