@@ -2,7 +2,6 @@ package mecs.iot.proj.om2m.dashboard;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;

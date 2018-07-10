@@ -1,7 +1,6 @@
 package mecs.iot.proj.om2m;
 
 import mecs.iot.proj.om2m.Client;
-import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 
 import java.net.URISyntaxException;
