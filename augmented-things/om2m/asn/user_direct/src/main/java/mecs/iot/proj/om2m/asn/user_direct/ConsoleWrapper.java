@@ -19,14 +19,14 @@ class ConsoleWrapper implements Unit {
 	@Override
 	
 	public void sendAck(String str) {
-		console.interf.out(str);
+		console.interf.out(str,false);
 	}
 	
 	@Override
 	
 	public Response sendContent(String str) {
 		if (str.contains("con=")) {
-			console.interf.outAsync(str);
+			console.interf.outAsync(str,false);
 			return new Response(ResponseCode.CHANGED);
 		} else {
 			return new Response(ResponseCode.BAD_REQUEST);

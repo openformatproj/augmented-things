@@ -220,7 +220,7 @@ class ADN_IN extends ADN {
 					}
 				}
 				cloud.addMN(id);
-				console.interf.outAsync(cloud.getJSONMNs());
+				console.interf.outAsync(cloud.getJSONMNs(),true);
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
@@ -328,7 +328,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				console.interf.outAsync(json);
+				console.interf.outAsync(json,true);
 			} else if (notification.contains("m2m:cin")) {
 				String con = null;																						// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
 				try {
@@ -354,7 +354,7 @@ class ADN_IN extends ADN {
 					i++;
 					return;
 				}
-				console.interf.outAsync(json);
+				console.interf.outAsync(json,true);
 			} else {
 				outStream.out1("Received unexpected notification", i);
 			}

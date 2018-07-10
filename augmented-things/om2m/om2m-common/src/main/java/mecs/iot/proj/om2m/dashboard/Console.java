@@ -16,7 +16,7 @@ public class Console extends Thread {
 	private int i;
 	
 	public Console(String id, String host, boolean enabled, boolean debug) {
-		super(Services.joinIdHost(id+"_console",host));
+		super(Services.joinIdHost(id+"/console",host));
 		this.enabled = enabled;
 		if (enabled) {
 			interf = new Shell(this);
@@ -24,13 +24,13 @@ public class Console extends Thread {
 		// scan = new Scanner(System.in);
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
-		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
-		debugStream = new DebugStream(Services.joinIdHost(id+"_console",host),debug);
+		outStream = new OutStream(Services.joinIdHost(id+"/console",host));
+		debugStream = new DebugStream(Services.joinIdHost(id+"/console",host),debug);
 		i = 0;
 	}
 	
 	public Console(String id, String host, Interface interf, boolean debug) {
-		super(Services.joinIdHost(id+"_console",host));
+		super(Services.joinIdHost(id+"/console",host));
 		// scan = new Scanner(System.in);
 		if (interf!=null) {
 			this.enabled = true;
@@ -40,8 +40,8 @@ public class Console extends Thread {
 		}
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
-		outStream = new OutStream(Services.joinIdHost(id+"_console",host));
-		debugStream = new DebugStream(Services.joinIdHost(id+"_console",host),debug);
+		outStream = new OutStream(Services.joinIdHost(id+"/console",host));
+		debugStream = new DebugStream(Services.joinIdHost(id+"/console",host),debug);
 		i = 0;
 	}
 	
@@ -78,7 +78,7 @@ public class Console extends Thread {
 					int commandsFound = sections.length-1;
 					int commands = cnt.numOptions;
 					if (commandsFound<commands) {
-						interf.out(name + " has " + cnt.numOptions + " mandatory number of options to specify");
+						interf.out(name + " has " + cnt.numOptions + " mandatory number of options to specify",false);
 					} else {
 						if (commands>0) {
 							String[] options = new String[commands];
@@ -86,17 +86,17 @@ public class Console extends Thread {
 								options[i] = sections[i+1];
 							}
 							if (options[0].equals("help")) {
-								interf.out(cnt.help);
+								interf.out(cnt.help,false);
 							} else {
-								interf.out(cnt.command.execute(options));
+								interf.out(cnt.command.execute(options),false);
 							}
 						} else if (commandsFound>0) {
 							String firstOption = sections[1];
 							if (firstOption.equals("help")) {
-								interf.out(cnt.help);
+								interf.out(cnt.help,false);
 							}
 						} else {
-							interf.out(cnt.command.execute(null));
+							interf.out(cnt.command.execute(null),false);
 						}
 					}
 				} else if (name.equals("ls /commands")) {
@@ -106,10 +106,10 @@ public class Console extends Thread {
 						for (String c: list) {
 							o += c + ": " + commandMap.get(c).help + "\r\n";
 						}
-						interf.out(o);
+						interf.out(o,false);
 					}
 				} else {
-					interf.out(name + " is not a valid command");
+					interf.out(name + " is not a valid command",false);
 				}
 			}
 			interf.terminate();
