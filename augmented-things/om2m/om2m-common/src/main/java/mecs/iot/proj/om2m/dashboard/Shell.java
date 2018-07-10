@@ -29,6 +29,8 @@ class Shell implements Interface {
 	private final int submitWidth = 100;
 	private final int outHeight = 300;
 	private final int asyncLabelHeight = 30;
+	private final Color bg = new Color(48,10,36);
+	private final Color fg = Color.WHITE;
 	
 	Shell(Console console) {
 		
@@ -37,30 +39,33 @@ class Shell implements Interface {
 		if (console!=null)
 			login.setText(console.getName()+">");
 		else
-			login.setText("augmented-things-IN/console@ALESSANDRO-K7NR"+">");
+			login.setText("login"+">");
 		login.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
-		login.setForeground(Color.WHITE);
+		login.setForeground(fg);
 		
 		commandLine = new JTextField();
 		commandLine.setBorder(null);
 		commandLine.setBounds(loginWidth+2*offsetX, offsetY, commandLineWidth, commandLineHeight);
+		commandLine.setBackground(bg);
 		commandLine.setFont(new Font("Ubuntu Mono",Font.PLAIN,14));
-		commandLine.setForeground(Color.WHITE);
-		commandLine.setCaretColor(Color.WHITE);
+		commandLine.setForeground(fg);
+		commandLine.setCaretColor(fg);
 		
 		JButton submit = new JButton("Submit");
 		submit.addActionListener((arg0)->{wake();});
 		submit.setBounds(loginWidth+commandLineWidth+3*offsetX, offsetY, submitWidth, commandLineHeight);
-		submit.setBackground(Color.WHITE);
+		submit.setBackground(fg);
 		submit.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
+		submit.setForeground(bg);
 		
 		final int frameWidth = loginWidth+commandLineWidth+submitWidth+4*offsetX;
 		final int frameWidth_ = loginWidth+commandLineWidth+submitWidth+2*offsetX;
 		
 		out = new JTextPane();
 		out.setBounds(offsetX, commandLineHeight+2*offsetY, frameWidth_, outHeight);
+		out.setBackground(bg);
 		out.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
-		out.setForeground(Color.WHITE);
+		out.setForeground(fg);
 		out.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), 
 	            BorderFactory.createEmptyBorder(10,10,10,10)));
 		
@@ -68,12 +73,13 @@ class Shell implements Interface {
 		asyncLabel.setBounds(offsetX, commandLineHeight+outHeight+3*offsetY, frameWidth_, asyncLabelHeight);
 		asyncLabel.setText("Notifications:");
 		asyncLabel.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
-		asyncLabel.setForeground(Color.WHITE);
+		asyncLabel.setForeground(fg);
 		
 		outAsync = new JTextPane();
 		outAsync.setBounds(offsetX, commandLineHeight+outHeight+asyncLabelHeight+4*offsetY, frameWidth_, outHeight);
+		outAsync.setBackground(bg);
 		outAsync.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
-		outAsync.setForeground(Color.WHITE);
+		outAsync.setForeground(fg);
 		outAsync.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), 
 	            BorderFactory.createEmptyBorder(10,10,10,10)));
 		
@@ -90,11 +96,7 @@ class Shell implements Interface {
 		frame.setSize(frameWidth,frameHeight);
 		frame.setResizable(false);
 		frame.setLayout(null);
-		frame.getContentPane().setBackground(new Color(48,10,36));
-		
-		out.setBackground(new Color(48,10,36));
-		outAsync.setBackground(new Color(48,10,36));
-		commandLine.setBackground(new Color(48,10,36));
+		frame.getContentPane().setBackground(bg);
 		
 	}
 	
