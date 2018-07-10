@@ -74,10 +74,11 @@ public class Console extends Thread {
 				String[] sections = str.split(" -");
 				String name = sections[0];
 				if (commandMap.containsKey(name)) {
+					CommandContainer cnt = commandMap.get(name);
 					int commandsFound = sections.length-1;
-					int commands = commandMap.get(name).numOptions;
+					int commands = cnt.numOptions;
 					if (commandsFound<commands) {
-						interf.out(name + " has " + commandMap.get(name).numOptions + " mandatory number of options to specify");
+						interf.out(name + " has " + cnt.numOptions + " mandatory number of options to specify");
 					} else {
 						if (commands>0) {
 							String[] options = new String[commands];
@@ -85,15 +86,20 @@ public class Console extends Thread {
 								options[i] = sections[i+1];
 							}
 							if (options[0].equals("help")) {
-								interf.out(commandMap.get(name).help);
+								interf.out(cnt.help);
 							} else {
-								interf.out(commandMap.get(name).command.execute(options));
+								interf.out(cnt.command.execute(options));
+							}
+						} else if (commandsFound>0) {
+							String firstOption = sections[1];
+							if (firstOption.equals("help")) {
+								interf.out(cnt.help);
 							}
 						} else {
-							interf.out(commandMap.get(name).command.execute(null));
+							interf.out(cnt.command.execute(null));
 						}
 					}
-				} else if (name.equals("ls")) {
+				} else if (name.equals("ls /commands")) {
 					for (int i=0; i<commandMap.size(); i++) {
 						ArrayList<String> list = new ArrayList<String>(commandMap.keySet());
 						String o = "";
