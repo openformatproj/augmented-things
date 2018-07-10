@@ -39,15 +39,19 @@ class Shell implements Interface {
 		else
 			login.setText("augmented-things-IN/console@ALESSANDRO-K7NR"+">");
 		login.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
+		login.setForeground(Color.WHITE);
 		
 		commandLine = new JTextField();
 		commandLine.setBorder(null);
 		commandLine.setBounds(loginWidth+2*offsetX, offsetY, commandLineWidth, commandLineHeight);
 		commandLine.setFont(new Font("Ubuntu Mono",Font.PLAIN,14));
+		commandLine.setForeground(Color.WHITE);
+		commandLine.setCaretColor(Color.WHITE);
 		
 		JButton submit = new JButton("Submit");
 		submit.addActionListener((arg0)->{wake();});
 		submit.setBounds(loginWidth+commandLineWidth+3*offsetX, offsetY, submitWidth, commandLineHeight);
+		submit.setBackground(Color.WHITE);
 		submit.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
 		
 		final int frameWidth = loginWidth+commandLineWidth+submitWidth+4*offsetX;
@@ -56,18 +60,21 @@ class Shell implements Interface {
 		out = new JTextPane();
 		out.setBounds(offsetX, commandLineHeight+2*offsetY, frameWidth_, outHeight);
 		out.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
-		out.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), 
+		out.setForeground(Color.WHITE);
+		out.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), 
 	            BorderFactory.createEmptyBorder(10,10,10,10)));
 		
 		JLabel asyncLabel = new JLabel();
 		asyncLabel.setBounds(offsetX, commandLineHeight+outHeight+3*offsetY, frameWidth_, asyncLabelHeight);
 		asyncLabel.setText("Notifications:");
 		asyncLabel.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
+		asyncLabel.setForeground(Color.WHITE);
 		
 		outAsync = new JTextPane();
 		outAsync.setBounds(offsetX, commandLineHeight+outHeight+asyncLabelHeight+4*offsetY, frameWidth_, outHeight);
 		outAsync.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
-		outAsync.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), 
+		outAsync.setForeground(Color.WHITE);
+		outAsync.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), 
 	            BorderFactory.createEmptyBorder(10,10,10,10)));
 		
 		final int frameHeight = commandLineHeight+outHeight+asyncLabelHeight+outHeight+5*offsetY;
@@ -83,10 +90,11 @@ class Shell implements Interface {
 		frame.setSize(frameWidth,frameHeight);
 		frame.setResizable(false);
 		frame.setLayout(null);
+		frame.getContentPane().setBackground(new Color(48,10,36));
 		
-		out.setBackground(frame.getBackground());
-		outAsync.setBackground(frame.getBackground());
-		commandLine.setBackground(frame.getBackground());
+		out.setBackground(new Color(48,10,36));
+		outAsync.setBackground(new Color(48,10,36));
+		commandLine.setBackground(new Color(48,10,36));
 		
 	}
 	
@@ -119,7 +127,7 @@ class Shell implements Interface {
 		if (isJSON)
 			out.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
 		else
-			out.setText(str);
+			out.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
 	}
 	
 	@Override
@@ -128,7 +136,7 @@ class Shell implements Interface {
 		if (isJSON)
 			outAsync.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
 		else
-			outAsync.setText(str);
+			outAsync.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
 	}
 	
 	@Override
