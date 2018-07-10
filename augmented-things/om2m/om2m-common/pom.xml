@@ -28,6 +28,13 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
+  <repositories>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>Californium Repository</name>
+      <url>https://repo.eclipse.org/content/repositories/californium/</url>
+    </repository>
+  </repositories>
   <dependencyManagement>
     <dependencies>
       <dependency>
