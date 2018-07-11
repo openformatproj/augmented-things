@@ -93,7 +93,7 @@ class Shell implements Interface {
 		frame.add(asyncLabel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(frameWidth,frameHeight);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setLayout(null);
 		frame.getContentPane().setBackground(bg);
 		
@@ -126,18 +126,18 @@ class Shell implements Interface {
 	
 	public void out(String str, boolean isJSON) {
 		if (isJSON)
-			out.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
+			out.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 		else
-			out.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
+			out.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 	}
 	
 	@Override
 	
 	public void outAsync(String str, boolean isJSON) {
 		if (isJSON)
-			outAsync.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
+			outAsync.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 		else
-			outAsync.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"\t"));
+			outAsync.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 	}
 	
 	@Override
@@ -153,7 +153,39 @@ class Shell implements Interface {
 	
 	public static void main(String[] args) {
 	    Shell shell = new Shell(null);
-	    shell.outAsync("Async content",false);
+	    String json = "{" + 
+				"   \"mn\":\"augmented-things-MN\"," + 
+				"   \"subs\":[" + 
+				"      {" + 
+				"         \"receiver\":{" + 
+				"            \"node\":\"ACTUATOR\"," + 
+				"            \"address\":\"coap://127.0.0.1:5690/augmented-things\"," + 
+				"            \"id\":\"actuator.alessandro\"" + 
+				"         }," + 
+				"         \"sender\":{" + 
+				"            \"node\":\"SENSOR\"," + 
+				"            \"id\":\"sensor.alessandro\"," + 
+				"            \"type\":\"tempC\"" + 
+				"         }," + 
+				"         \"action\":\"action1\"," + 
+				"         \"event\":\"event\"" + 
+				"      }," + 
+				"      {" + 
+				"         \"receiver\":{" + 
+				"            \"node\":\"USER\"," + 
+				"            \"address\":\"coap://192.168.0.107:5691/augmented-things\"," + 
+				"            \"id\":\"user.ALESSANDRO-K7NR\"" + 
+				"         },\r\n" + 
+				"         \"sender\":{" + 
+				"            \"node\":\"SENSOR\"," + 
+				"            \"id\":\"sensor.alessandro\"," + 
+				"            \"type\":\"tempC\"" + 
+				"         }" + 
+				"      }" + 
+				"   ]," + 
+				"   \"id\":\"sensor.alessandro\"" + 
+				"}";
+	    shell.outAsync(json,true);
 	    shell.start();
 	    while (true) {
 		    String str = shell.in();
