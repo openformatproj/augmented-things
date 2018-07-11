@@ -100,12 +100,13 @@ class Cloud {
 	}
 	
 	String getJSONSubscriptions(String mn, String id) {
+		String id_ = Services.normalizeName(id);
 		if (mnMap.containsKey(mn)) {
-			if (mnMap.get(mn).subscriptionMap.containsKey(id)) {
-				JSON sub = mnMap.get(mn).subscriptionMap.get(id);
+			if (mnMap.get(mn).subscriptionMap.containsKey(id_)) {
+				JSON sub = mnMap.get(mn).subscriptionMap.get(id_);
 				return sub.toJSON().toString();
 			} else {
-				return "Node \"" + id + "\" is not registered on MN \"" + mn + "\" as a sensor";
+				return "Node \"" + id + "\" is not registered on MN \"" + mn + "\" as a sensor or hasn't active subscriptions";
 			}
 		} else {
 			return "MN \"" + mn + "\" is not registered";
