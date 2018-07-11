@@ -221,7 +221,18 @@ class ADN_IN extends ADN {
 					}
 				}
 				cloud.addMN(id);
-				console.interf.outAsync(cloud.getJSONMN(id),true);
+				String json = null;
+				try {
+					json = cloud.getJSONMN(id);
+				} catch (NotFoundMNException e) {
+					outStream.out2("failed");
+					errStream.out(e,i,Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				console.interf.outAsync(json,true);
 				response = new Response(ResponseCode.CREATED);
 			}
 		} else {

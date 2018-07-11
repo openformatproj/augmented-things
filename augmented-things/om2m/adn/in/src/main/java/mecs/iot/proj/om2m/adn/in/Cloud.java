@@ -24,12 +24,18 @@ class Cloud {
 		mnMap.put(id,new MN(id,debugStream));
 	}
 	
-	String getJSONMN(String id) {
-		return mnMap.get(id).toJSON().toString();
+	String getJSONMN(String id) throws NotFoundMNException {
+		if (mnMap.containsKey(id))
+			return mnMap.get(id).toJSON().toString();
+		else
+			throw new NotFoundMNException();
 	}
 	
-	void removeMN(String id) {
-		mnMap.get(id).active = false;
+	void removeMN(String id) throws NotFoundMNException {
+		if (mnMap.containsKey(id))
+			mnMap.get(id).active = false;
+		else
+			throw new NotFoundMNException();
 	}
 	
 	void add(String json, int k) throws JSONException, NotFoundMNException {
@@ -76,18 +82,34 @@ class Cloud {
 	}
 	
 	String getJSONNodes(String mn) {
-		JSON[] nodes = mnMap.get(mn).tagMap.values().toArray(new JSON[] {});
-		return Services.toJSONArray(nodes,"nodes").toString();
+		if (mnMap.containsKey(mn)) {
+			JSON[] nodes = mnMap.get(mn).tagMap.values().toArray(new JSON[] {});
+			return Services.toJSONArray(nodes,"nodes").toString();
+		} else {
+			return "MN \"" + mn + "\" is not registered";
+		}
 	}
 	
 	String getJSONUsers(String mn) {
-		JSON[] users = mnMap.get(mn).userMap.values().toArray(new JSON[] {});
-		return Services.toJSONArray(users,"users").toString();
+		if (mnMap.containsKey(mn)) {
+			JSON[] users = mnMap.get(mn).userMap.values().toArray(new JSON[] {});
+			return Services.toJSONArray(users,"users").toString();
+		} else {
+			return "MN \"" + mn + "\" is not registered";
+		}
 	}
 	
 	String getJSONSubscriptions(String mn, String id) {
-		JSON sub = mnMap.get(mn).subscriptionMap.get(id);
-		return sub.toJSON().toString();
+		if (mnMap.containsKey(mn)) {
+			if (mnMap.get(mn).subscriptionMap.containsKey(id)) {
+				JSON sub = mnMap.get(mn).subscriptionMap.get(id);
+				return sub.toJSON().toString();
+			} else {
+				return "Node \"" + id + "\" is not registered on MN \"" + mn + "\" as a sensor";
+			}
+		} else {
+			return "MN \"" + mn + "\" is not registered";
+		}
 	}
 
 }
