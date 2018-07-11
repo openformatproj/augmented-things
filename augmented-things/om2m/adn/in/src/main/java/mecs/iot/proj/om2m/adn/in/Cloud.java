@@ -86,8 +86,8 @@ class Cloud {
 	}
 	
 	String getJSONSubscriptions(String mn, String id) {
-		JSON[] subs = mnMap.get(mn).subscriptionMap.values().toArray(new JSON[] {});
-		return Services.toJSONArray(subs,"subs").toString();
+		JSON sub = mnMap.get(mn).subscriptionMap.get(id);
+		return sub.toJSON().toString();
 	}
 
 }
