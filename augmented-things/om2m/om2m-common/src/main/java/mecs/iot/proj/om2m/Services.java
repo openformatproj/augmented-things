@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m;
 
 import mecs.iot.proj.om2m.Client;
+import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 
 import java.net.URISyntaxException;
@@ -472,36 +473,54 @@ public class Services {
 	}
 	
 	public static String formatJSON (String json) {
-//		int level = 0;
-//		char[] chars = json.toCharArray();
-		String str = json;
-//		for (int i=0; i<chars.length; i++) {
-//			if (isOpeningSeparator(chars[i]) || chars[i]==',') {
-//				str = insertStringAfter(str,Constants.newLine,i);
-//				level++;
-//			} else if (isClosingSeparator(chars[i])) {
-//				str = insertStringBefore(str,Constants.newLine,i);
-//				level--;
-//			}
-//		}
+		int level = 0;
+		char[] chars;
+		String str = json.replace(" ","");
+		int characters = 1;
+		char character;
+		for (int i=0; i<characters; i++) {
+			chars = str.toCharArray();
+			character = chars[i];
+			characters = chars.length;
+			if (isOpeningParenthesis(character)) {
+				str = insertStringAfter(str,Constants.newLine,i);
+				level++;
+				for (int j=0; j<level; j++) {
+					str = insertStringAfter(str,Constants.tab,i+Constants.newLine.length());
+				}
+			} else if (character==',') {
+				for (int j=0; j<level; j++) {
+					str = insertStringAfter(str,Constants.tab,i);
+				}
+				str = insertStringAfter(str,Constants.newLine,i);
+			} else if (isClosingParenthesis(character)) {
+				str = insertStringBefore(str,Constants.newLine,i);
+				i += Constants.newLine.length();
+				level--;
+				for (int j=0; j<level; j++) {
+					str = insertStringBefore(str,Constants.tab,i);
+					i += Constants.tab.length();
+				}
+			}
+		}
 		return str;
 	}
 	
-//	private static boolean isOpeningSeparator(char c) {
-//		return c=='{' || c=='[';
-//	}
-//	
-//	private static boolean isClosingSeparator(char c) {
-//		return c=='}' || c==']';
-//	}
-//	
-//	private static String insertStringBefore(String str, String c, int position) {
-//		return str.substring(0,position) + c + str.substring(position,str.length());
-//	}
-//	
-//	private static String insertStringAfter(String str, String c, int position) {
-//		return str.substring(0,position+1) + c + str.substring(position+1,str.length());
-//	}
+	private static boolean isOpeningParenthesis(char c) {
+		return c=='{' || c=='[';
+	}
+	
+	private static boolean isClosingParenthesis(char c) {
+		return c=='}' || c==']';
+	}
+	
+	private static String insertStringBefore(String str, String c, int position) {
+		return str.substring(0,position) + c + str.substring(position,str.length());
+	}
+	
+	private static String insertStringAfter(String str, String c, int position) {
+		return str.substring(0,position+1) + c + str.substring(position+1,str.length());
+	}
 	
 	public static void main (String[] args) {
 		String json = "{" + 
