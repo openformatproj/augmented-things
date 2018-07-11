@@ -15,9 +15,9 @@ by replacing ```augmented-things-MN``` with the actual value (for instance, ```g
 * [```./om2m/adn/mn/src/main/resources/configuration/name.ini```](http://thingstalk.altervista.org/augmented-things/configuration/name.ini)
 * [```./om2m/adn/in/src/main/resources/configuration/db.ini```](http://thingstalk.altervista.org/augmented-things/configuration/db.ini): this file, which is used by IN for node and user localization, also requires the IP address of the middle-node
 
-the MN configuration file must also contain the IN address
+the MN configuration file must also contain the IN address, for instance (if they both run on the same machine)
 ```
-org.eclipse.om2m.remoteCseAddress=9.9.9.0
+org.eclipse.om2m.remoteCseAddress=127.0.0.1
 ```
 this is necessary for it to correctly find its coordinator. The same address must be inserted into a fourth configuration file, [```./om2m/adn/adn-common/src/main/resources/configuration/adn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/adn.ini), which is used by the ADN instead. No more than one MN can be active on the same host.
 
