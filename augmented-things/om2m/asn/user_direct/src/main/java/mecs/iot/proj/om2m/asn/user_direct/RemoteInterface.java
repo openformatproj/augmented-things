@@ -26,7 +26,7 @@ class RemoteInterface extends Client {
 		super(Services.joinIdHost(id+"/remote",host), uri, debug);
 		this.serial = console.getSerial();
 		this.id = Services.joinIdHost(id,host);
-		this.address = Constants.adnProtocol + ip + ":" + Integer.toString(port) + "/" + context;
+		this.address = Constants.protocol + ip + ":" + Integer.toString(port) + "/" + context;
 		CommandList list = new CommandList(this,console,this.id);
 		for (int i=0; i<list.numCommands; i++) {
 			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2]);
@@ -63,7 +63,7 @@ class RemoteInterface extends Client {
 		String address = mnData[1];
 		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
 		try {
-			connect(Constants.cseProtocol + address + Constants.mnCSERoot(name));
+			connect(Constants.protocol + address + Constants.mnCSERoot(name));
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);
@@ -102,7 +102,7 @@ class RemoteInterface extends Client {
 		}
 		outStream.out1_2("done, connecting to ADN");
 		try {
-			connect(Constants.adnProtocol + address + Constants.mnADNRoot);
+			connect(Constants.protocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out(e, i, Severity.MEDIUM);

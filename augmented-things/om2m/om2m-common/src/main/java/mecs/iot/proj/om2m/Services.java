@@ -197,6 +197,20 @@ public class Services {
 		return parse;
 	}
 	
+	public static JSONObject toJSONArray(JSONSerializable[] json, String attribute) {
+		JSONObject obj = new JSONObject();
+		for (int i=0; i<json.length; i++)
+			obj.append(attribute,json[i].toJSON());
+		return obj;
+	}
+	
+	public static JSONObject toJSONArray(String[] value, String attribute) {
+		JSONObject obj = new JSONObject();
+		for (int i=0; i<value.length; i++)
+			obj.append(attribute,value[i]);
+		return obj;
+	}
+	
 	public static String parseCoapRequest(Request request) {
 		List<String> list = request.getOptions().getUriQuery();
 		String str = "";
@@ -211,20 +225,6 @@ public class Services {
 	
 	public static String normalizeName(String name) {
 		return name.replace('@','.');
-	}
-	
-	public static JSONObject toJSONArray(JSONSerializable[] json, String attribute) {
-		JSONObject obj = new JSONObject();
-		for (int i=0; i<json.length; i++)
-			obj.append(attribute,json[i].toJSON());
-		return obj;
-	}
-	
-	public static JSONObject toJSONArray(String[] value, String attribute) {
-		JSONObject obj = new JSONObject();
-		for (int i=0; i<value.length; i++)
-			obj.append(attribute,value[i]);
-		return obj;
 	}
 	
 	public static String joinIdHost(String id, String host) {
@@ -351,10 +351,6 @@ public class Services {
 		return client.send(request, Code.DELETE);
 	}
 	
-	public String uri() {
-		return pathManager.uri();
-	}
-	
 	public CoapResponse oM2Mput(String key, JSONSerializable content, String[] uri, boolean createContainer, int i) throws URISyntaxException {
 		pathManager.change(uri);
 		Request request = null;
@@ -437,6 +433,10 @@ public class Services {
 	
 	public static String getPathFromKey(String key) {
 		return "cnt-" + key;
+	}
+	
+	public String uri() {
+		return pathManager.uri();
 	}
 	
 	private static ArrayList<String[]> packTable = new ArrayList<String[]>();

@@ -8,8 +8,7 @@ import java.util.Map;
 
 public class Constants {
 
-	final public static String cseProtocol;
-	final public static String adnProtocol;
+	final public static String protocol;
 
 	final private static int inCSEPort;
 	final private static int mnCSEPort;
@@ -27,6 +26,7 @@ public class Constants {
 	final public static String inId;
 	
 	final public static int streamCharacters;
+	final public static double hysteresis;
 	
 	final public static String remotePath = "http://thingstalk.altervista.org/augmented-things/configuration";
 	
@@ -56,18 +56,11 @@ public class Constants {
 			}
 		}
 		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.cseProtocol");
+			str = conf.getAttribute("mecs.iot.proj.om2m.protocol");
 		} catch (Exception e) {
 			str = "coap://";
 		} finally {
-			cseProtocol = (String) str;
-		}
-		try {
-			str = conf.getAttribute("mecs.iot.proj.om2m.adnProtocol");
-		} catch (Exception e) {
-			str = "coap://";
-		} finally {
-			adnProtocol = (String) str;
+			protocol = (String) str;
 		}
 		try {
 			str = Integer.parseInt(conf.getAttribute("mecs.iot.proj.om2m.inCSEPort"));
@@ -132,8 +125,13 @@ public class Constants {
 		} finally {
 			streamCharacters = (int) str;
 		}
-		//inCSERoot = ":" + Integer.toString(inCSEPort) + "/" + root + "/" + context + "-IN" + csePostfix;
-		//mnCSERoot = ":" + Integer.toString(mnCSEPort) + "/" + root + "/" + context + "-MN" + csePostfix;
+		try {
+			str = Double.parseDouble(conf.getAttribute("mecs.iot.proj.om2m.hysteresis"));
+		} catch (Exception e) {
+			str = 0.2;
+		} finally {
+			hysteresis = (double) str;
+		}
 		inADNRoot = ":" + Integer.toString(inADNPort) + "/" + context;
 		mnADNRoot = ":" + Integer.toString(mnADNPort) + "/" + context;
 	}
@@ -250,7 +248,7 @@ public class Constants {
 		} catch (Exception e) {
 			str = "127.0.0.1";
 		}
-		debugStream.out("\tip="+str,i);
+		// debugStream.out("\tip="+str,i);
 		return str;
 	}
 

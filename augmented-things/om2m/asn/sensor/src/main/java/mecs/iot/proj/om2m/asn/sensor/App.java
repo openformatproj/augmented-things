@@ -20,7 +20,7 @@ public class App
 	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
 	
 	final private static String context = Constants.context;
-	final private static String address = Constants.adnProtocol + Constants.inAddressASN(debugStream,0) + Constants.inADNRoot;
+	final private static String address = Constants.protocol + Constants.inAddressASN(debugStream,0) + Constants.inADNRoot;
 	
 	final private static Tag tag = new Tag(Services.joinIdHost(id,host),"0x0001","tempC",new String[]{"event"});
 	final private static int location = 0;

@@ -42,7 +42,7 @@ class ADN_MN extends ADN {
 
 	ADN_MN(String id, String host, boolean debug, Console console) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(id,host,debug,console);
-		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.mnCSERoot(id), debug);
+		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.mnCSERoot(id), debug);
 		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
 		// TODO: pull from OM2M
 		tagMap = new HashMap<String,Tag>();
@@ -147,7 +147,7 @@ class ADN_MN extends ADN {
 		outStream.out1_2("done, posting subscription state");
 		subscriber = new Subscriber(debugStream,errStream,cseClient,cseBaseName);
 		outStream.out1_2("done, registering to IN");
-		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.adnProtocol + Constants.inAddressADN(debugStream,0) + Constants.inADNRoot, debug);
+		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.protocol + Constants.inAddressADN(debugStream,0) + Constants.inADNRoot, debug);
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -445,7 +445,7 @@ class ADN_MN extends ADN {
 						String[] uri = new String[] {cseBaseName, tag.id, "data"};
 						cseClient.stepCount();
 						try {
-							cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
+							cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
 						} catch (URISyntaxException e) {
 							outStream.out2("failed");
 							errStream.out(e,i,Severity.MEDIUM);
@@ -600,7 +600,7 @@ class ADN_MN extends ADN {
 					String[] uri = new String[] {cseBaseName, tag0.id, "data"};
 					cseClient.stepCount();
 					try {
-						cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
+						cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);

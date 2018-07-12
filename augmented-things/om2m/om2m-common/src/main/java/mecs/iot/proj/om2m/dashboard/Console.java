@@ -118,49 +118,6 @@ public class Console extends Thread {
 			outStream.out("Terminating console (no interface provided)", i);
 		}
 	}
-	
-	//TODO (GUI,commands)
-//	public void _run() {
-//		while (executing) {
-//			System.out.print(name+"> ");
-//			String command = scan.nextLine();
-//			String[] sections = command.split(" ");
-//			switch (commandMap.get(sections[0])) {
-//			case EXIT:
-//				executing = false;
-//				System.out.println("exiting");
-//				client.destroy();
-//				server.destroy();
-//				break;
-//			case LS:
-//				Tag_[] tags = tagMap.values().toArray(new Tag_[0]);
-//				String str = "Tags:\n";
-//				if (tags!=null && tags.length>0) {
-//					for (int i=0; i<tags.length; i++) {
-//						str += tags[i].toString() + "\n";
-//					}
-//				} else {
-//					str += "no registered tags yet\n";
-//				}
-//				if(mnMap!=null) {
-//					MN[] mn = mnMap.values().toArray(new MN[0]);
-//					str += "MNs:\n";
-//					if (mn!=null && mn.length>0) {
-//						for (int i=0; i<mn.length; i++) {
-//							str += mn[i].toString() + "\n";
-//						}
-//					} else {
-//						str += "no registered MNs\n";
-//					}
-//				}
-//				System.out.print(str);
-//				break;
-//			default:
-//				System.out.println("not valid command");
-//				break;
-//			}
-//		}
-//	}
 
 }
 

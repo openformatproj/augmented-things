@@ -31,7 +31,7 @@ class ADN_IN extends ADN {
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
-		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.cseProtocol + "localhost" + Constants.inCSERoot(id), debug);
+		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.inCSERoot(id), debug);
 		// TODO: create AE, pull/push internal state...
 		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
@@ -200,7 +200,7 @@ class ADN_IN extends ADN {
 				mns[index].active = true;
 				cseClient.stepCount();
 				try {
-					cseClient.connect(Constants.cseProtocol + mns[index].address + Constants.mnCSERoot(mns[index].id));
+					cseClient.connect(Constants.protocol + mns[index].address + Constants.mnCSERoot(mns[index].id));
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e, i, Severity.MEDIUM);
@@ -210,7 +210,7 @@ class ADN_IN extends ADN {
 				for (int j=0; j<subscriptions.length; j++) {
 					uri = new String[] {mns[index].id,"state",subscriptions[j]};
 					try {
-						cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.inADNRoot,"subscription",uri,cseClient.getCount());
+						cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.inADNRoot,"subscription",uri,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
@@ -262,14 +262,14 @@ class ADN_IN extends ADN {
 				outStream.out1("Handling Container notification with JSON: " + ri + ", " + rn + ", " + la, i);
 				cseClient.stepCount();
 				try {
-					cseClient.connect(Constants.adnProtocol+"localhost"+Constants.mnCSERoot()+ri.substring(3));
+					cseClient.connect(Constants.protocol+"localhost"+Constants.mnCSERoot()+ri.substring(3));
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e, i, Severity.MEDIUM);
 					return;
 				}
 				try {
-					cseClient.services.postSubscription(Constants.adnProtocol+"localhost"+Constants.inADNRoot,"subscription",new String[]{},cseClient.getCount());
+					cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.inADNRoot,"subscription",new String[]{},cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e,i,Severity.MEDIUM);
@@ -280,7 +280,7 @@ class ADN_IN extends ADN {
 				}
 				cseClient.stepCount();
 				try {
-					cseClient.connect(Constants.adnProtocol+"localhost"+Constants.mnCSERoot()+la.substring(3));
+					cseClient.connect(Constants.protocol+"localhost"+Constants.mnCSERoot()+la.substring(3));
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
 					errStream.out(e, i, Severity.MEDIUM);

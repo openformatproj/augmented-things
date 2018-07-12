@@ -141,7 +141,7 @@ public class Subscriber {
 		switch(node) {
 			case SENSOR:
 				oM2Mput(id,new ArrayList<Subscription>(),false,k);
-				deleteSubscription(id, k);																	// ? TODO
+				deleteSubscription(id, k);
 				break;
 			case ACTUATOR:
 			case USER:

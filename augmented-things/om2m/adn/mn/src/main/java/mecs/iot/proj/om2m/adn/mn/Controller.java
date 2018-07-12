@@ -2,6 +2,7 @@ package mecs.iot.proj.om2m.adn.mn;
 
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoRuleException;
+import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Rule;
 import mecs.iot.proj.om2m.structures.Tag;
 import mecs.iot.proj.om2m.structures.Token;
@@ -62,7 +63,7 @@ class Trigger {
 	Trigger(Token token, double threshold) {
 		this.token = token;
 		this.threshold = threshold;
-		this.hystheresis = 0.2; // TODO: load from .ini
+		this.hystheresis = Constants.hysteresis;
 		state = false;
 		started = false;
 	}
