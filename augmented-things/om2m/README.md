@@ -1,7 +1,7 @@
 # om2m
 
 ## Setting
-This module contains all om2m modules (ADNs and endpoint nodes). Each ADN module is provided with a configuration file, ```./om2m/adn/<ADN>/configuration/config.ini``` (replace ```<ADN>``` with either ```in``` or ```mn```), <strike>that must be copied inside the corresponding folder of the OSGi bundle</strike> (see [Update](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#Update)): in a typical Linux installation, such folder can be found in
+This module contains all om2m modules (ADNs and endpoint nodes). Each ADN module is provided with a configuration file, ```./om2m/adn/<ADN>/configuration/config.ini``` (replace ```<ADN>``` with either ```in``` or ```mn```), <strike>that must be copied inside the corresponding folder of the OSGi bundle</strike> (see [Update](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#update)): in a typical Linux installation, such folder can be found in
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
