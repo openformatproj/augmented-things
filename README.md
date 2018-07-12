@@ -1,5 +1,5 @@
 # Augmented Things
-This is a Maven project containing the source and configuration files needed by AT. In order for the application to work, be sure to have installed om2m on your hosts: see the (om2m installation procedure)[https://people.unipi.it/giacomo_tanganelli/teaching/om2m/om2m-installation/] for more information.
+This is a Maven project containing the source and configuration files needed by AT. In order for the application to work, be sure to have installed om2m on your hosts: see the [om2m installation procedure](https://people.unipi.it/giacomo_tanganelli/teaching/om2m/om2m-installation/) for more information.
 
 ## Documentation
 https://goo.gl/xUq2DM
