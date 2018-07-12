@@ -19,7 +19,7 @@ the MN configuration file must also contain the IN address, for instance (if the
 ```
 org.eclipse.om2m.remoteCseAddress=127.0.0.1
 ```
-this is necessary for it to correctly find its coordinator. The same address must be inserted into a fourth configuration file, [```./om2m/adn/adn-common/src/main/resources/configuration/adn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/adn.ini), which is used by the ADN instead. No more than one MN can be active on the same host.
+this is necessary for it to correctly find its coordinator. The same address must be inserted into a fourth configuration file, [```./om2m/adn/adn-common/src/main/resources/configuration/adn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/adn.ini), which is used by the ADN instead.
 
 The last configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini), which contains the IN address and the local machine's IP. For more information about configuration, check the documentation.
 
@@ -75,7 +75,15 @@ In order to launch an ADN, first go in the folder
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
-(replace ```<ADN>``` with either ```in``` or ```mn```) and launch the ```./start.sh``` shell command. If MN is launched before the IN, its CSE won't go in execution before the infrastructure node is active: only after the IN becomes visible, indeed, the MN can register and expose its services. After this, start the corresponding Java applications (from either Eclipse or by executing directly its .jar from Linux bash): this will launch the ADNs and connect them with the underlying CSEs. The IN application must be started before the others, in order for the MN ADNs to be able to find their coordinator. IN and MNs can be executed on the same physical machine.
+(replace ```<ADN>``` with either ```in``` or ```mn```) and launch the ```./start.sh``` shell command. If MN is launched before the IN, its CSE won't go in execution before the infrastructure node is active: only after the IN becomes visible, indeed, the MN can register and expose its services. Under the assumption that the IN is started before, that's what one will see after launching ```$HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.in-cse/target/products/in-cse/linux/gtk/x86_64/start.sh```
+
+![IN](https://github.com/openformatproj/augmented-things/blob/master/images/in.png "IN")
+
+after launching the MN, one will have to wait that the IN registers it and that, on turn, the MN receives the corresponding registration acknowledgment. At the end, one should see the following situation
+
+![MN](https://github.com/openformatproj/augmented-things/blob/master/images/mn.png "MN")
+
+only after this operation succeeds, it will be possible to launch the corresponding Java applications (from either Eclipse or by executing directly their .jar from Linux bash); this will execute the ADNs and connect them with the underlying CSEs. The IN application must be started before the others, in order for the MN to be able to find its ADN coordinator. IN can share a physical machine with one MN, but no more than one MN can be active on the same host.
 
 ### ASNs
 To run an ASN, simply run its Java executable. Please notice that ```mecs.iot.proj.om2m.asn.sensor.App``` and ```mecs.iot.proj.om2m.asn.actuator.App``` are actually mockups used for testing; the same holds for the factory application, which allows to launch an arbitrary number of nodes on the same JVM (check the [README](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/asn/factory/README.md) for more details). A real node can join the Augmented Things environment by replicating the communication procedure described in the documentation; some REST engines supporting CoAP, such as Erbium for Contiki, allow to implement it in a quite straightforward way.
