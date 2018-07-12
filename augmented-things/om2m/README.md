@@ -75,7 +75,7 @@ In order to launch an ADN, first go in the folder
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
-(replace ```<ADN>``` with either ```in``` or ```mn```) and launch the ```./start.sh``` shell command. If MN is launched before the IN, its CSE won't go in execution before the infrastructure node is active: only after the IN becomes visible, indeed, the MN can register and expose its services. Under the assumption that the IN is started before, that's what one will see after launching ```$HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.in-cse/target/products/in-cse/linux/gtk/x86_64/start.sh```
+(replace ```<ADN>``` with either ```in``` or ```mn```) and launch the ```./start.sh``` shell command. If MN is launched before the IN, its CSE won't go in execution before the infrastructure node is active: only after the IN becomes visible, indeed, the MN can register and expose its services. Under the assumption that the IN is started before, that's what one will see after executing the command ```$HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.in-cse/target/products/in-cse/linux/gtk/x86_64/start.sh```
 
 ![IN](https://github.com/openformatproj/augmented-things/blob/master/images/in.png "IN")
 
@@ -83,7 +83,7 @@ after launching the MN, one will have to wait that the IN registers it and that,
 
 ![MN](https://github.com/openformatproj/augmented-things/blob/master/images/mn.png "MN")
 
-only after this operation succeeds, it will be possible to launch the corresponding Java applications (from either Eclipse or by executing directly their .jar from Linux bash); this will execute the ADNs and connect them with the underlying CSEs. The IN application must be started before the others, in order for the MN to be able to find its ADN coordinator. IN can share a physical machine with one MN, but no more than one MN can be active on the same host.
+only after this operation succeeds, it will be possible to launch the corresponding Java applications (from either Eclipse or by executing directly their .jar from the Linux bash); this will execute the ADNs and connect them with the underlying CSEs. The IN application must be started before the others, in order for the MNs to be able to find their ADN coordinator. IN can share a physical machine with one MN, but no more than one MN can be active on the same host.
 
 ### ASNs
 To run an ASN, simply run its Java executable. Please notice that ```mecs.iot.proj.om2m.asn.sensor.App``` and ```mecs.iot.proj.om2m.asn.actuator.App``` are actually mockups used for testing; the same holds for the factory application, which allows to launch an arbitrary number of nodes on the same JVM (check the [README](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/asn/factory/README.md) for more details). A real node can join the Augmented Things environment by replicating the communication procedure described in the documentation; some REST engines supporting CoAP, such as Erbium for Contiki, allow to implement it in a quite straightforward way.
