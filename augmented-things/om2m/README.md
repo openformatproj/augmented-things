@@ -1,7 +1,7 @@
 # om2m
 
 ## Setting
-This module contains all om2m-related submodules (ADNs and endpoint nodes). Each ADN module is provided with a configuration file, ```./om2m/adn/<ADN>/configuration/config.ini``` (replace ```<ADN>``` with either ```in``` or ```mn```), <strike>that must be copied inside the corresponding folder of the OSGi bundle</strike> (see [Update](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#update)) just after the installation: in a typical Linux environment, such folder can be found in
+This module contains all om2m-related submodules (ADNs and endpoint nodes). Each ADN module is provided with a configuration file, ```./om2m/adn/<ADN>/configuration/config.ini``` (replace ```<ADN>``` with either ```in``` or ```mn```), <strike>that must be copied inside the corresponding folder of the OSGi bundle just after the installation</strike> (see [Update](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#update)): in a typical Linux environment, such folder can be found in
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
@@ -26,7 +26,7 @@ The last configuration file is [```./om2m/asn/asn-common/src/main/resources/conf
 **Note**: ```name.ini```, ```db.ini```, ```asn.ini``` and ```adn.ini``` are not included in this repository and must be added manually into the right folders.
 
 ### Update
-Due to the fact that plugin names contain their revision number, if replacing the whole configuration file doesn't work use the original one instead with only the following modifications
+Due to the fact that plugin names contain their revision number, if replacing the whole configuration files doesn't work use the original ones - the ones produced by Maven - instead with only the following modifications
 ```
 org.eclipse.om2m.dbReset=true
 org.eclipse.om2m.cseBaseName=augmented-things-IN
