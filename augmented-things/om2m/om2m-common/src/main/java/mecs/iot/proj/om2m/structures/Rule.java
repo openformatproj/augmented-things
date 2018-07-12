@@ -18,9 +18,9 @@ public class Rule {
 		String str = "Coefficients: ";
 		for (int i=0; i<coefficients.length; i++) {
 			if (i<coefficients.length-1)
-				str += Double.toString(coefficients[i]) + ", ";
+				str += "w[" + i + "]=" + Double.toString(coefficients[i]) + ", ";
 			else
-				str += Double.toString(coefficients[i]) + ". ";
+				str += "w[" + i + "]=" + Double.toString(coefficients[i]) + ". ";
 		}
 		str += "Token: " + token + ". ";
 		str += "Threshold: " + Double.toString(threshold) + ". ";

@@ -1,5 +1,6 @@
 package mecs.iot.proj.om2m.structures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,7 +92,26 @@ public class Tag implements JSONSerializable {
 				String token = matcher.group(2);
 				String threshold = matcher.group(3);
 				if (body!=null && token!=null && threshold!=null) {
-					String[] splits = body.split("[+-]"); // TODO: check if plus or minus
+					ArrayList<Sign> sgns = new ArrayList<Sign>();
+					char[] chars = body.toCharArray();
+					if (chars[0]=='+') {
+						sgns.add(Sign.PLUS);
+						body = body.substring(1);
+					} else if (chars[0]=='-') {
+						sgns.add(Sign.MINUS);
+						body = body.substring(1);
+					} else {
+						sgns.add(Sign.PLUS);
+					}
+					chars = body.toCharArray();
+					for (int i=0; i<chars.length; i++) {
+						if (chars[i]=='+')
+							sgns.add(Sign.PLUS);
+						else if (chars[i]=='-')
+							sgns.add(Sign.MINUS);
+					}
+					Sign[] signs = sgns.toArray(new Sign[] {});
+					String[] splits = body.split("[+-]");
 					Pattern placeholder = Pattern.compile("^\\[(\\d+)\\]$");
 					double[] coefficients = new double[splits.length];
 					boolean[] assigned = new boolean[splits.length];
@@ -115,6 +135,8 @@ public class Tag implements JSONSerializable {
 										} catch (NumberFormatException e) {
 											throw new InvalidRuleException();
 										}
+										if (signs[i]==Sign.MINUS)
+											coefficient = -coefficient;
 										coefficients[index] = coefficient;
 										assigned[index] = true;
 									} else {
@@ -137,7 +159,10 @@ public class Tag implements JSONSerializable {
 										throw new InvalidRuleException();
 									}
 									if (index<splits.length && !assigned[index]) {
-										coefficients[index] = 1.0;
+										if (signs[index]==Sign.PLUS)
+											coefficients[index] = 1.0;
+										else if (signs[index]==Sign.MINUS)
+											coefficients[index] = -1.0;
 										assigned[index] = true;
 									} else {
 										throw new InvalidRuleException();
@@ -201,7 +226,7 @@ public class Tag implements JSONSerializable {
 	}
 	
 	public static void main(String[] args) {
-		String rule = "(0.3*[1]-0.05*[0])>4.5";
+		String rule = "(-0.3*[1]+0.2*[3]-[2]-0.05*[0])>4.5";
 		try {
 			Rule r = parseRule(rule);
 			System.out.println(r);
@@ -210,4 +235,8 @@ public class Tag implements JSONSerializable {
 		}
 	}
 	
+}
+
+enum Sign {
+	PLUS, MINUS
 }
