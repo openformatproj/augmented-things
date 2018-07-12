@@ -1,7 +1,7 @@
 # om2m
 
 ## Setting
-This module contains all om2m modules (ADNs and endpoint nodes). Each ADN module is provided with a configuration file, ```./om2m/adn/<ADN>/configuration/config.ini``` (replace ```<ADN>``` with either ```in``` or ```mn```), that must be copied inside the corresponding folder of the OSGi bundle: in a typical Linux installation, such folder can be found in
+This module contains all om2m modules (ADNs and endpoint nodes). Each ADN module is provided with a configuration file, ```./om2m/adn/<ADN>/configuration/config.ini``` (replace ```<ADN>``` with either ```in``` or ```mn```), <strike>that must be copied inside the corresponding folder of the OSGi bundle</strike> (see [Update](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#Update)): in a typical Linux installation, such folder can be found in
 ```
 $HOME/git/om2m/org.eclipse.om2m/org.eclipse.om2m.site.<ADN>-cse/target/products/<ADN>-cse/linux/gtk/x86_64
 ```
@@ -24,6 +24,23 @@ this is necessary for it to correctly find its coordinator. The same address mus
 The last configuration file is [```./om2m/asn/asn-common/src/main/resources/configuration/asn.ini```](http://thingstalk.altervista.org/augmented-things/configuration/asn.ini), which contains the IN address and the local machine's IP. For more information about configuration, check the documentation.
 
 **Note**: ```name.ini```, ```db.ini```, ```asn.ini``` and ```adn.ini``` are not included in this repository and must be added manually into the right folders.
+
+###Update
+Due to the fact that plugin names contain their revision number, if replacing the whole configuration file doesn't work use the original one instead with only the following modifications
+```
+org.eclipse.om2m.dbReset=true
+org.eclipse.om2m.cseBaseName=augmented-things-IN
+org.eclipse.om2m.cseBaseId=augmented-things-IN-cse
+```
+for the in, and
+```
+org.eclipse.om2m.remoteCseId=augmented-things-IN-cse
+org.eclipse.om2m.dbReset=true
+org.eclipse.om2m.cseBaseName=augmented-things-MN
+org.eclipse.om2m.remoteCseName=augmented-things-IN
+org.eclipse.om2m.cseBaseId=augmented-things-MN-cse
+```
+for the mn (as above, replace ```augmented-things-MN``` with the name of your middle-node).
 
 ## Generating .jar files
 From Eclipse, right click on
