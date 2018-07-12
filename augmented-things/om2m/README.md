@@ -25,7 +25,7 @@ The last configuration file is [```./om2m/asn/asn-common/src/main/resources/conf
 
 **Note**: ```name.ini```, ```db.ini```, ```asn.ini``` and ```adn.ini``` are not included in this repository and must be added manually into the right folders.
 
-###Update
+### Update
 Due to the fact that plugin names contain their revision number, if replacing the whole configuration file doesn't work use the original one instead with only the following modifications
 ```
 org.eclipse.om2m.dbReset=true
