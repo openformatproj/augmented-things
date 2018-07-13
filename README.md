@@ -4,6 +4,17 @@ This is a Maven project containing the source and configuration files needed by 
 ## Documentation
 https://goo.gl/xUq2DM
 
+## Build project
+On Linux, run
+```
+git clone https://github.com/openformatproj/augmented-things.git
+```
+then, from the parent directory, execute
+```
+clean compile assembly:single
+```
+to produce the final .jar files. See [```om2m/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md) for usage information.
+
 ## Notes for collaborators
 To import this project in your Eclipse workspace
 * right click on Package Explorer -> Import -> Maven/Check out Maven Projects from SCM or File -> Import -> Maven/Check out Maven Projects
