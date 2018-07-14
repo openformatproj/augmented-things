@@ -1,9 +1,19 @@
 package mecs.iot.proj.om2m.asn;
 
+import java.util.Random;
+
 public class Physics {
 	
-	public static double randomFluctuation (double width) {
-		return 1+width*2*(Math.random()-0.5);
+	static Random rnd;
+	
+	public static double randomFluctuation (double deviation) {
+		return 1+deviation*(Math.random()-0.5);
+	}
+	
+	public static double randomGaussianFluctuation (double deviation) {
+		if (rnd==null)
+			rnd = new Random();
+		return 1+deviation*rnd.nextGaussian();
 	}
 
 }

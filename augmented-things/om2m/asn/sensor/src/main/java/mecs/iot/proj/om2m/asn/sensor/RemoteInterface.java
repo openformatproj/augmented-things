@@ -182,7 +182,7 @@ public class RemoteInterface extends Client {
 		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out1("Posting Content Instance", i);
 			try {
-				response = services.postContentInstance(Format.pack(value*Physics.randomFluctuation(fluctuation),tag.type),i);
+				response = services.postContentInstance(Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type),i);
 			} catch (URISyntaxException e) {
 				deleteNodeAsync(tag.serial);
 				outStream.out2("failed. Terminating interface");
