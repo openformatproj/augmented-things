@@ -1,20 +1,297 @@
+Found remote configuration file (MN)
 Found local configuration file
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-MN-ADN_server@alessandro	[DEBUG]	0) Connected to coap://localhost:5684/~/augmented-things-MN-cse
-main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5686/augmented-things... done. Starting server... done
-MN-ADN_console@alessandro	[INFO]	0) Starting console
-MN-ADN_console@alessandro	[INFO]	0) Terminating console (no interface provided)
-MN-ADN_server@alessandro	[INFO]	1) Registering node "sensor.ALESSANDRO-K7NR" (serial "0x0001")
-MN-ADN_server@alessandro	[INFO]	2) Registering user "user.ALESSANDRO-K7NR" (address "192.168.0.109:5690")
-MN-ADN_server@alessandro	[INFO]	3) Handling attributes querying for serial "0x0001"
-MN-ADN_server@alessandro	[INFO]	4) Handling sensor reading for serial "0x0001"
-MN-ADN_server@alessandro	[DEBUG]	0) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/
-                        	       	   data/la
-MN-ADN_server@alessandro	[DEBUG]	4) Sent GET to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/
-                        	       	   data/la
-MN-ADN_server@alessandro	[DEBUG]	0) Sent request to Coap server localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                        	       	   sensor.ALESSANDRO-K7NR/data/la
-MN-ADN_server@alessandro	[INFO]	5) Registering node "actuator.ALESSANDRO-K7NR" (serial "0x0002")
-
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	0) Connected to coap://localhost:5684/~/augmented-things-MN-cse
+augmented-things-MN/server@alessandro	[INFO]	0) Posting state
+augmented-things-MN/server@alessandro	[INFO]	0) Posting main AE...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	1) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID",
+                                        	       	   "rn":"state"}} to coap://localhost:5684/~/augmented-things-MN-cse
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	1) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse?
+                                        	       	   with payload <{"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"state"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=state, ty=2
+augmented-things-MN/server@alessandro	[INFO]	0) ...done, posting tagMap...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Sent Container creation with JSON: {"m2m:cnt":{"rn":"tagMap"}} to coap:/
+                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"tagMap"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=tagMap, ty=3
+augmented-things-MN/server@alessandro	[INFO]	0) ...done, posting userMap...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	3) Sent Container creation with JSON: {"m2m:cnt":{"rn":"userMap"}} to coap:/
+                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	3) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"userMap"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=userMap, ty=3
+augmented-things-MN/server@alessandro	[INFO]	0) ...done, posting subscription state...
+augmented-things-MN/server@alessandro	[DEBUG]	0) Posting subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	4) Sent Container creation with JSON: {"m2m:cnt":{"rn":"subscriptionMap"}}
+                                        	       	   to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	4) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"subscriptionMap"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=subscriptionMap, ty=3
+augmented-things-MN/server@alessandro	[DEBUG]	0) Posting resourceMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	5) Sent Container creation with JSON: {"m2m:cnt":{"rn":"resourceMap"}} to
+                                        	       	   coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	5) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"resourceMap"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=resourceMap, ty=3
+augmented-things-MN/server@alessandro	[INFO]	0) ...done, registering to IN...
+augmented-things-MN/server@alessandro	[DEBUG]	0) Found remote configuration file (ADN)
+augmented-things-MN/TEMPclient@alessandro	[DEBUG]	0) Connected to coap://127.0.0.1:5685/augmented-things
+augmented-things-MN/TEMPclient@alessandro	[DEBUG]	0) Sent POST request to coap://127.0.0.1:5685/augmented-things?id=augmented-things-MN
+                                         	       	   with payload <>
+augmented-things-MN/server@alessandro	[INFO]	0) ...done
+augmented-things-MN/main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5686/augmented-things... done. Starting server...
+                                   	      	    done
+augmented-things-MN/console@alessandro	[INFO]	0) Starting console
+augmented-things-MN/console@alessandro	[INFO]	0) Terminating console (no interface provided)
+augmented-things-MN/server@alessandro	[INFO]	1) Registering node "sensor.alessandro" with serial "0x0001"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/tagMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent Container creation with JSON: {"m2m:cnt":{"rn":"0x0001"}} to coap:/
+                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state/tagMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/tagMap? with payload <{"m2m:cnt":{"rn":"0x0001"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/tagMap/0x0001
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	   \"active\":true,\"attributes\":[\"event\"],\"id\":\"sensor.alessandro\",
+                                        	       	   \"type\":\"tempC\")","cnf":"text/plain:0"}} to coap://localhost:5684/
+                                        	       	   ~/augmented-things-MN-cse/augmented-things-MN/state/tagMap/0x0001
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/tagMap/0x0001? with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	   \"active\":true,\"attributes\":[\"event\"],\"id\":\"sensor.alessandro\",
+                                        	       	   \"type\":\"tempC\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	1) ...done
+augmented-things-MN/server@alessandro	[INFO]	2) Registering node "actuator.alessandro" with serial "0x0002"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/tagMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent Container creation with JSON: {"m2m:cnt":{"rn":"0x0002"}} to coap:/
+                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state/tagMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/tagMap? with payload <{"m2m:cnt":{"rn":"0x0002"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/tagMap/0x0002
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	   \"active\":true,\"attributes\":[\"action1\",\"action2\"],\"id\":\"actuator.alessandro\",
+                                        	       	   \"type\":\"act\")","cnf":"text/plain:0"}} to coap://localhost:5684/~/
+                                        	       	   augmented-things-MN-cse/augmented-things-MN/state/tagMap/0x0002
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/tagMap/0x0002? with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	   \"active\":true,\"attributes\":[\"action1\",\"action2\"],\"id\":\"actuator.alessandro\",
+                                        	       	   \"type\":\"act\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	2) ...done
+augmented-things-MN/server@alessandro	[INFO]	3) Registering user "user.alessandro" with address "coap://127.0.0.1:5691/augmented-things"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/userMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent Container creation with JSON: {"m2m:cnt":{"rn":"user.alessandro"}}
+                                        	       	   to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/userMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/userMap? with payload <{"m2m:cnt":{"rn":"user.alessandro"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/userMap/user.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	   \"address\":\"coap://127.0.0.1:5691/augmented-things\",\"active\":true,
+                                        	       	   \"id\":\"user.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
+                                        	       	   ~/augmented-things-MN-cse/augmented-things-MN/state/userMap/user.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/userMap/user.alessandro? with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	   \"address\":\"coap://127.0.0.1:5691/augmented-things\",\"active\":true,
+                                        	       	   \"id\":\"user.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	3) ...done
+augmented-things-MN/server@alessandro	[INFO]	4) Handling attributes querying for serial "0x0001"... done
+augmented-things-MN/server@alessandro	[INFO]	5) Handling attributes querying for serial "0x0002"... done
+augmented-things-MN/server@alessandro	[INFO]	6) Handling reading on sensor with serial "0x0001"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   sensor.alessandro/data/la
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/sensor.alessandro/data/la
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Sent GET request to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   sensor.alessandro/data/la? with payload <>
+augmented-things-MN/server@alessandro	[INFO]	6) ...done
+augmented-things-MN/server@alessandro	[INFO]	7) Subscribing user "user.alessandro" to resource with serial "0x0001"...
+augmented-things-MN/server@alessandro	[DEBUG]	7) Posting subscriptionMap...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent Container creation with JSON: {"m2m:cnt":{"rn":"sensor.alessandro"}}
+                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap? with payload <{"m2m:cnt":{"rn":"sensor.alessandro"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	    \"subs\":[(\"receiver\":(\"node\":\"USER\",\"address\":\"coap://127.0.0.1:5691/
+                                        	       	    augmented-things\",\"id\":\"user.alessandro\"),\"sender\":(\"node\":\"SENSOR\",
+                                        	       	    \"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],\"id\":\"sensor.alessandro\")",
+                                        	       	    "cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload
+                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"USER\",
+                                        	       	    \"address\":\"coap://127.0.0.1:5691/augmented-things\",\"id\":\"user.alessandro\"),
+                                        	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],
+                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	7) ...done
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent Subscription creation with JSON: {"m2m:sub":{"nu":"coap://localhost:5686/
+                                        	       	    augmented-things","rn":"subscription","nct":2}} to coap://localhost:5684/
+                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/sensor.alessandro/data
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent asynchronous POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:sub":{"nu":"coap:/
+                                        	       	    /localhost:5686/augmented-things","rn":"subscription","nct":2}}>
+augmented-things-MN/server@alessandro	[INFO]	7) ...done
+augmented-things-MN/server@alessandro	[INFO]	8) Handling subscription confirmation... forwarding notification to "null"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	1) Connected to coap://127.0.0.1:5691/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	1) Sent PUT request to coap://127.0.0.1:5691/augmented-things? with payload
+                                       	       	   <OK>
+augmented-things-MN/server@alessandro	[INFO]	8) ...done
+augmented-things-MN/server@alessandro	[INFO]	9) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	    con=37,609 °C... forwarding notification to "user.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	2) Connected to coap://127.0.0.1:5691/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	2) Sent PUT request to coap://127.0.0.1:5691/augmented-things? with payload
+                                       	       	   <sensor.alessandro: con=37,609 °C>
+augmented-things-MN/server@alessandro	[INFO]	9) ...done
+augmented-things-MN/server@alessandro	[INFO]	10) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	     con=34,337 °C... forwarding notification to "user.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	3) Connected to coap://127.0.0.1:5691/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	3) Sent PUT request to coap://127.0.0.1:5691/augmented-things? with payload
+                                       	       	   <sensor.alessandro: con=34,337 °C>
+augmented-things-MN/server@alessandro	[INFO]	10) ...done
+augmented-things-MN/server@alessandro	[INFO]	11) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	     con=36,914 °C... forwarding notification to "user.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	4) Connected to coap://127.0.0.1:5691/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	4) Sent PUT request to coap://127.0.0.1:5691/augmented-things? with payload
+                                       	       	   <sensor.alessandro: con=36,914 °C>
+augmented-things-MN/server@alessandro	[INFO]	11) ...done
+augmented-things-MN/server@alessandro	[INFO]	12) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	     con=37,698 °C... forwarding notification to "user.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	5) Connected to coap://127.0.0.1:5691/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	5) Sent PUT request to coap://127.0.0.1:5691/augmented-things? with payload
+                                       	       	   <sensor.alessandro: con=37,698 °C>
+augmented-things-MN/server@alessandro	[INFO]	12) ...done
+augmented-things-MN/server@alessandro	[INFO]	13) Handling removal of lookout between user "user.alessandro" and serial "0x0001"...
+augmented-things-MN/server@alessandro	[DEBUG]	13) Posting subscriptionMap...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
+                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/subscriptionMap/
+                                        	       	    sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload
+                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"id\":\"sensor.alessandro\")",
+                                        	       	    "cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	13) ...done
+augmented-things-MN/server@alessandro	[DEBUG]	13) Deleting subscription on "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data/subscription
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Sent Subscription deletion to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data/subscription
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Sent DELETE request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data/subscription? with payload <>
+augmented-things-MN/server@alessandro	[DEBUG]	13) ...done
+augmented-things-MN/server@alessandro	[INFO]	13) ...done
+augmented-things-MN/server@alessandro	[INFO]	14) Handling writing on actuator with serial "0x0002"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	6) Connected to coap://127.0.0.1:5690/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	6) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload <>
+                                       	       	   action1
+augmented-things-MN/server@alessandro	[INFO]	14) ...done
+augmented-things-MN/server@alessandro	[INFO]	15) Linking sensor with serial "0x0001" to actuator with serial "0x0002"...
+augmented-things-MN/server@alessandro	[DEBUG]	15) Posting subscriptionMap...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent Container creation with JSON: {"m2m:cnt":{"rn":"sensor.alessandro"}}
+                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap? with payload <{"m2m:cnt":{"rn":"sensor.alessandro"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	    \"subs\":[(\"receiver\":(\"node\":\"ACTUATOR\",\"address\":\"coap://
+                                        	       	    127.0.0.1:5690/augmented-things\",\"id\":\"actuator.alessandro\"),\"sender\":(\"node\":\"SENSOR\",
+                                        	       	    \"id\":\"sensor.alessandro\",\"type\":\"tempC\"),\"action\":\"action2\",
+                                        	       	    \"event\":\"event\")],\"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}}
+                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload
+                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"ACTUATOR\",
+                                        	       	    \"address\":\"coap://127.0.0.1:5690/augmented-things\",\"id\":\"actuator.alessandro\"),
+                                        	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\"),
+                                        	       	    \"action\":\"action2\",\"event\":\"event\")],\"id\":\"sensor.alessandro\")",
+                                        	       	    "cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	15) ...done
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent Subscription creation with JSON: {"m2m:sub":{"nu":"coap://localhost:5686/
+                                        	       	    augmented-things","rn":"subscription","nct":2}} to coap://localhost:5684/
+                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/sensor.alessandro/data
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent asynchronous POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:sub":{"nu":"coap:/
+                                        	       	    /localhost:5686/augmented-things","rn":"subscription","nct":2}}>
+augmented-things-MN/server@alessandro	[INFO]	15) ...done
+augmented-things-MN/server@alessandro	[INFO]	16) Handling subscription confirmation... forwarding notification to "null"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	7) Connected to coap://127.0.0.1:5691/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	7) Sent PUT request to coap://127.0.0.1:5691/augmented-things? with payload
+                                       	       	   <OK>
+augmented-things-MN/server@alessandro	[INFO]	16) ...done
+augmented-things-MN/server@alessandro	[INFO]	17) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	     con=36,874 °C... forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	8) Connected to coap://127.0.0.1:5690/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	8) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload
+                                       	       	   <action2>
+augmented-things-MN/server@alessandro	[INFO]	17) ...done
+augmented-things-MN/server@alessandro	[INFO]	18) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	     con=36,943 °C... forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	9) Connected to coap://127.0.0.1:5690/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	9) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload
+                                       	       	   <action2>
+augmented-things-MN/server@alessandro	[INFO]	18) ...done
+augmented-things-MN/server@alessandro	[INFO]	19) Handling notification with JSON: pi=/augmented-things-MN-cse/cnt-101898267,
+                                     	      	     con=37,164 °C... forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	10) Connected to coap://127.0.0.1:5690/augmented-things
+augmented-things-MN/ATclient@alessandro	[DEBUG]	10) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload
+                                       	       	    <action2>
+augmented-things-MN/server@alessandro	[INFO]	19) ...done
+augmented-things-MN/server@alessandro	[INFO]	20) Handling removal of link between serial "0x0001" and serial "0x0002"...
+augmented-things-MN/server@alessandro	[DEBUG]	20) Posting subscriptionMap...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
+                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/subscriptionMap/
+                                        	       	    sensor.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload
+                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"id\":\"sensor.alessandro\")",
+                                        	       	    "cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	20) ...done
+augmented-things-MN/server@alessandro	[DEBUG]	20) Deleting subscription on "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data/subscription
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent Subscription deletion to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data/subscription
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent DELETE request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data/subscription? with payload <>
+augmented-things-MN/server@alessandro	[DEBUG]	20) ...done
+augmented-things-MN/server@alessandro	[INFO]	20) ...done
+augmented-things-MN/server@alessandro	[INFO]	21) Handling removal of user "user.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/userMap/user.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	    \"address\":\"coap://127.0.0.1:5691/augmented-things\",\"active\":false,
+                                        	       	    \"id\":\"user.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
+                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/userMap/user.alessandro
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/userMap/user.alessandro? with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+                                        	       	    \"address\":\"coap://127.0.0.1:5691/augmented-things\",\"active\":false,
+                                        	       	    \"id\":\"user.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	21) ...done

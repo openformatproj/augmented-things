@@ -1,63 +1,288 @@
 Found local configuration file
-Found local configuration file (ASN)
-	inAddress=192.168.0.111
+sensor/main@alessandro	[DEBUG]	0) Found local configuration file (ASN)
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5685/augmented-things
-sensor@ALESSANDRO-K7NR	[INFO]	0) Starting interface
-sensor@ALESSANDRO-K7NR	[INFO]	0) Registering to IN...
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5685/augmented-things with payload "event"
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5685/augmented-things
-sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, received 192.168.0.111 as MN address, connecting...
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5686/augmented-things
-sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, registering to MN...
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5686/augmented-things with payload "event"
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5686/augmented-things
-sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, connecting to CSE...
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse
-sensor@ALESSANDRO-K7NR	[INFO]	0) ...done, posting AE
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"sensor.ALESSANDRO-K7NR"}} to
-                      	       	   coap://192.168.0.111:5684/~/augmented-things-MN-cse
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse
-sensor@ALESSANDRO-K7NR	[INFO]	0) Received JSON: rn=sensor.ALESSANDRO-K7NR, ty=2
-sensor@ALESSANDRO-K7NR	[INFO]	0) Posting Container
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:cnt":{"rn":"data"}} to coap://192.168.0.111:5684/~/augmented-things-MN-cse/
-                      	       	   augmented-things-MN/sensor.ALESSANDRO-K7NR
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                      	       	   sensor.ALESSANDRO-K7NR
-sensor@ALESSANDRO-K7NR	[INFO]	0) Received JSON: rn=data, ty=3
-sensor@ALESSANDRO-K7NR	[INFO]	0) Posting Content Instance
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/
-                      	       	   data
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:cin":{"con":"36,000 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
-                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                      	       	   sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[INFO]	0) Received JSON: ty=4, cnf=text/plain:0, con=36,000 °C
-sensor@ALESSANDRO-K7NR	[INFO]	1) Posting Content Instance
-sensor@ALESSANDRO-K7NR	[DEBUG]	1) Sent JSON: {"m2m:cin":{"con":"36,221 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
-                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[DEBUG]	1) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                      	       	   sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[INFO]	1) Received JSON: ty=4, cnf=text/plain:0, con=36,221 °C
-sensor@ALESSANDRO-K7NR	[INFO]	2) Posting Content Instance
-sensor@ALESSANDRO-K7NR	[DEBUG]	2) Sent JSON: {"m2m:cin":{"con":"36,723 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
-                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[DEBUG]	2) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                      	       	   sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[INFO]	2) Received JSON: ty=4, cnf=text/plain:0, con=36,723 °C
-sensor@ALESSANDRO-K7NR	[INFO]	3) Posting Content Instance
-sensor@ALESSANDRO-K7NR	[DEBUG]	3) Sent JSON: {"m2m:cin":{"con":"35,136 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
-                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[DEBUG]	3) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                      	       	   sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[INFO]	3) Received JSON: ty=4, cnf=text/plain:0, con=35,136 °C
-sensor@ALESSANDRO-K7NR	[INFO]	4) Posting Content Instance
-sensor@ALESSANDRO-K7NR	[DEBUG]	4) Sent JSON: {"m2m:cin":{"con":"37,016 °C","cnf":"text/plain:0"}} to coap://192.168.0.111:5684/
-                      	       	   ~/augmented-things-MN-cse/augmented-things-MN/sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[DEBUG]	4) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                      	       	   sensor.ALESSANDRO-K7NR/data
-sensor@ALESSANDRO-K7NR	[INFO]	4) Received JSON: ty=4, cnf=text/plain:0, con=37,016 °C
+sensor@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5685/augmented-things
+sensor@alessandro	[INFO]	0) Starting interface
+sensor@alessandro	[INFO]	0) Locating node...
+sensor@alessandro	[DEBUG]	0) Sent location request to coap://192.168.0.102:5685/augmented-things
+sensor@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5685/augmented-things?id=sensor.alessandro&ser=0x0001&loc=0
+                 	       	   with payload <>
+sensor@alessandro	[INFO]	0) ...done, received "augmented-things-MN" and "192.168.0.102" as MN id and address, connecting
+                 	      	   to CSE...
+sensor@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5684/~/augmented-things-MN-cse
+sensor@alessandro	[INFO]	0) ...done, posting AE...
+sensor@alessandro	[DEBUG]	0) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"sensor.alessandro"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse
+sensor@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse? with payload <{"m2m:ae":{"rr":"true",
+                 	       	   "api":"TempApp-ID","rn":"sensor.alessandro"}}>
+sensor@alessandro	[DEBUG]	0) Received JSON: rn=sensor.alessandro, ty=2
+sensor@alessandro	[INFO]	0) ...done, posting Container...
+sensor@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.alessandro
+sensor@alessandro	[DEBUG]	0) Sent Container creation with JSON: {"m2m:cnt":{"rn":"data"}} to coap://192.168.0.102:5684/~/
+                 	       	   augmented-things-MN-cse/augmented-things-MN/sensor.alessandro
+sensor@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                 	       	   sensor.alessandro? with payload <{"m2m:cnt":{"rn":"data"}}>
+sensor@alessandro	[DEBUG]	0) Received JSON: rn=data, ty=3
+sensor@alessandro	[INFO]	0) ...done, connecting to ADN...
+sensor@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5686/augmented-things
+sensor@alessandro	[INFO]	0) ...done, registering...
+sensor@alessandro	[DEBUG]	0) Sent registration request to coap://192.168.0.102:5686/augmented-things with payload <"event">
+sensor@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5686/augmented-things?id=sensor.alessandro&ser=0x0001&type=tempC&key=101898267
+                 	       	   with payload <event>
+sensor@alessandro	[INFO]	0) ...done, connecting to CSE for publishing...
+sensor@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[INFO]	0) ...done
+sensor@alessandro	[INFO]	1) Posting Content Instance...
+sensor@alessandro	[DEBUG]	1) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,332 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	1) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"35,332 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	1) Received JSON: ty=4, cnf=text/plain:0, con=35,332 °C
+sensor@alessandro	[INFO]	1) ...done
+sensor@alessandro	[INFO]	2) Posting Content Instance...
+sensor@alessandro	[DEBUG]	2) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,927 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	2) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"36,927 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	2) Received JSON: ty=4, cnf=text/plain:0, con=36,927 °C
+sensor@alessandro	[INFO]	2) ...done
+sensor@alessandro	[INFO]	3) Posting Content Instance...
+sensor@alessandro	[DEBUG]	3) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,179 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	3) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"35,179 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	3) Received JSON: ty=4, cnf=text/plain:0, con=35,179 °C
+sensor@alessandro	[INFO]	3) ...done
+sensor@alessandro	[INFO]	4) Posting Content Instance...
+sensor@alessandro	[DEBUG]	4) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,273 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	4) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"34,273 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	4) Received JSON: ty=4, cnf=text/plain:0, con=34,273 °C
+sensor@alessandro	[INFO]	4) ...done
+sensor@alessandro	[INFO]	5) Posting Content Instance...
+sensor@alessandro	[DEBUG]	5) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,478 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	5) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"35,478 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	5) Received JSON: ty=4, cnf=text/plain:0, con=35,478 °C
+sensor@alessandro	[INFO]	5) ...done
+sensor@alessandro	[INFO]	6) Posting Content Instance...
+sensor@alessandro	[DEBUG]	6) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,549 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	6) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"37,549 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	6) Received JSON: ty=4, cnf=text/plain:0, con=37,549 °C
+sensor@alessandro	[INFO]	6) ...done
+sensor@alessandro	[INFO]	7) Posting Content Instance...
+sensor@alessandro	[DEBUG]	7) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,313 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	7) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"36,313 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	7) Received JSON: ty=4, cnf=text/plain:0, con=36,313 °C
+sensor@alessandro	[INFO]	7) ...done
+sensor@alessandro	[INFO]	8) Posting Content Instance...
+sensor@alessandro	[DEBUG]	8) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,658 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	8) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"34,658 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	8) Received JSON: ty=4, cnf=text/plain:0, con=34,658 °C
+sensor@alessandro	[INFO]	8) ...done
+sensor@alessandro	[INFO]	9) Posting Content Instance...
+sensor@alessandro	[DEBUG]	9) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,129 °C","cnf":"text/plain:0"}}
+                 	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	9) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	   payload {"m2m:cin":{"con":"36,129 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	9) Received JSON: ty=4, cnf=text/plain:0, con=36,129 °C
+sensor@alessandro	[INFO]	9) ...done
+sensor@alessandro	[INFO]	10) Posting Content Instance...
+sensor@alessandro	[DEBUG]	10) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,241 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	10) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,241 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	10) Received JSON: ty=4, cnf=text/plain:0, con=34,241 °C
+sensor@alessandro	[INFO]	10) ...done
+sensor@alessandro	[INFO]	11) Posting Content Instance...
+sensor@alessandro	[DEBUG]	11) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,388 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	11) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,388 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	11) Received JSON: ty=4, cnf=text/plain:0, con=36,388 °C
+sensor@alessandro	[INFO]	11) ...done
+sensor@alessandro	[INFO]	12) Posting Content Instance...
+sensor@alessandro	[DEBUG]	12) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,248 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	12) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,248 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	12) Received JSON: ty=4, cnf=text/plain:0, con=34,248 °C
+sensor@alessandro	[INFO]	12) ...done
+sensor@alessandro	[INFO]	13) Posting Content Instance...
+sensor@alessandro	[DEBUG]	13) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,515 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	13) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,515 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	13) Received JSON: ty=4, cnf=text/plain:0, con=34,515 °C
+sensor@alessandro	[INFO]	13) ...done
+sensor@alessandro	[INFO]	14) Posting Content Instance...
+sensor@alessandro	[DEBUG]	14) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,031 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	14) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,031 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	14) Received JSON: ty=4, cnf=text/plain:0, con=36,031 °C
+sensor@alessandro	[INFO]	14) ...done
+sensor@alessandro	[INFO]	15) Posting Content Instance...
+sensor@alessandro	[DEBUG]	15) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,609 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	15) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"37,609 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	15) Received JSON: ty=4, cnf=text/plain:0, con=37,609 °C
+sensor@alessandro	[INFO]	15) ...done
+sensor@alessandro	[INFO]	16) Posting Content Instance...
+sensor@alessandro	[DEBUG]	16) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,337 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	16) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,337 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	16) Received JSON: ty=4, cnf=text/plain:0, con=34,337 °C
+sensor@alessandro	[INFO]	16) ...done
+sensor@alessandro	[INFO]	17) Posting Content Instance...
+sensor@alessandro	[DEBUG]	17) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,914 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	17) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,914 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	17) Received JSON: ty=4, cnf=text/plain:0, con=36,914 °C
+sensor@alessandro	[INFO]	17) ...done
+sensor@alessandro	[INFO]	18) Posting Content Instance...
+sensor@alessandro	[DEBUG]	18) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,698 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	18) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"37,698 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	18) Received JSON: ty=4, cnf=text/plain:0, con=37,698 °C
+sensor@alessandro	[INFO]	18) ...done
+sensor@alessandro	[INFO]	19) Posting Content Instance...
+sensor@alessandro	[DEBUG]	19) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,075 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	19) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"35,075 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	19) Received JSON: ty=4, cnf=text/plain:0, con=35,075 °C
+sensor@alessandro	[INFO]	19) ...done
+sensor@alessandro	[INFO]	20) Posting Content Instance...
+sensor@alessandro	[DEBUG]	20) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,382 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	20) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"35,382 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	20) Received JSON: ty=4, cnf=text/plain:0, con=35,382 °C
+sensor@alessandro	[INFO]	20) ...done
+sensor@alessandro	[INFO]	21) Posting Content Instance...
+sensor@alessandro	[DEBUG]	21) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,628 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	21) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,628 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	21) Received JSON: ty=4, cnf=text/plain:0, con=36,628 °C
+sensor@alessandro	[INFO]	21) ...done
+sensor@alessandro	[INFO]	22) Posting Content Instance...
+sensor@alessandro	[DEBUG]	22) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,437 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	22) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"35,437 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	22) Received JSON: ty=4, cnf=text/plain:0, con=35,437 °C
+sensor@alessandro	[INFO]	22) ...done
+sensor@alessandro	[INFO]	23) Posting Content Instance...
+sensor@alessandro	[DEBUG]	23) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,095 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	23) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,095 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	23) Received JSON: ty=4, cnf=text/plain:0, con=36,095 °C
+sensor@alessandro	[INFO]	23) ...done
+sensor@alessandro	[INFO]	24) Posting Content Instance...
+sensor@alessandro	[DEBUG]	24) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,527 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	24) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"35,527 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	24) Received JSON: ty=4, cnf=text/plain:0, con=35,527 °C
+sensor@alessandro	[INFO]	24) ...done
+sensor@alessandro	[INFO]	25) Posting Content Instance...
+sensor@alessandro	[DEBUG]	25) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,308 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	25) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,308 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	25) Received JSON: ty=4, cnf=text/plain:0, con=34,308 °C
+sensor@alessandro	[INFO]	25) ...done
+sensor@alessandro	[INFO]	26) Posting Content Instance...
+sensor@alessandro	[DEBUG]	26) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,002 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	26) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,002 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	26) Received JSON: ty=4, cnf=text/plain:0, con=36,002 °C
+sensor@alessandro	[INFO]	26) ...done
+sensor@alessandro	[INFO]	27) Posting Content Instance...
+sensor@alessandro	[DEBUG]	27) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,218 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	27) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"37,218 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	27) Received JSON: ty=4, cnf=text/plain:0, con=37,218 °C
+sensor@alessandro	[INFO]	27) ...done
+sensor@alessandro	[INFO]	28) Posting Content Instance...
+sensor@alessandro	[DEBUG]	28) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,258 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	28) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"37,258 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	28) Received JSON: ty=4, cnf=text/plain:0, con=37,258 °C
+sensor@alessandro	[INFO]	28) ...done
+sensor@alessandro	[INFO]	29) Posting Content Instance...
+sensor@alessandro	[DEBUG]	29) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,874 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	29) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,874 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	29) Received JSON: ty=4, cnf=text/plain:0, con=36,874 °C
+sensor@alessandro	[INFO]	29) ...done
+sensor@alessandro	[INFO]	30) Posting Content Instance...
+sensor@alessandro	[DEBUG]	30) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,943 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	30) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,943 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	30) Received JSON: ty=4, cnf=text/plain:0, con=36,943 °C
+sensor@alessandro	[INFO]	30) ...done
+sensor@alessandro	[INFO]	31) Posting Content Instance...
+sensor@alessandro	[DEBUG]	31) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,164 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	31) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"37,164 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	31) Received JSON: ty=4, cnf=text/plain:0, con=37,164 °C
+sensor@alessandro	[INFO]	31) ...done
+sensor@alessandro	[INFO]	32) Posting Content Instance...
+sensor@alessandro	[DEBUG]	32) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,228 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	32) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"36,228 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	32) Received JSON: ty=4, cnf=text/plain:0, con=36,228 °C
+sensor@alessandro	[INFO]	32) ...done
+sensor@alessandro	[INFO]	33) Posting Content Instance...
+sensor@alessandro	[DEBUG]	33) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,427 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	33) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,427 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	33) Received JSON: ty=4, cnf=text/plain:0, con=34,427 °C
+sensor@alessandro	[INFO]	33) ...done
+sensor@alessandro	[INFO]	34) Posting Content Instance...
+sensor@alessandro	[DEBUG]	34) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,838 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	34) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,838 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	34) Received JSON: ty=4, cnf=text/plain:0, con=34,838 °C
+sensor@alessandro	[INFO]	34) ...done
+sensor@alessandro	[INFO]	35) Posting Content Instance...
+sensor@alessandro	[DEBUG]	35) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,447 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	35) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"34,447 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	35) Received JSON: ty=4, cnf=text/plain:0, con=34,447 °C
+sensor@alessandro	[INFO]	35) ...done
+sensor@alessandro	[INFO]	36) Posting Content Instance...
+sensor@alessandro	[DEBUG]	36) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,303 °C","cnf":"text/plain:0"}}
+                 	       	    to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267
+sensor@alessandro	[DEBUG]	36) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse/cnt-101898267? with
+                 	       	    payload {"m2m:cin":{"con":"35,303 °C","cnf":"text/plain:0"}}
+sensor@alessandro	[DEBUG]	36) Received JSON: ty=4, cnf=text/plain:0, con=35,303 °C
+sensor@alessandro	[INFO]	36) ...done

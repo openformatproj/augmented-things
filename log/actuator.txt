@@ -1,28 +1,33 @@
 Found local configuration file
-Found local configuration file (ASN)
-	inAddress=192.168.0.111
-	ip=192.168.0.109
+actuator/main@alessandro	[DEBUG]	0) Found local configuration file (ASN)
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5685/augmented-things
-actuator@ALESSANDRO-K7NR	[INFO]	0) Starting interface
-actuator@ALESSANDRO-K7NR	[INFO]	0) Registering to IN...
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5685/augmented-things with payload
-                        	       	   "action1,action2"
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5685/augmented-things
-actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, received 192.168.0.111 as MN address, connecting...
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5686/augmented-things
-actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, registering to MN...
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.111:5686/augmented-things with payload
-                        	       	   "action1,action2"
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5686/augmented-things
-actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, connecting to CSE...
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.111:5684/~/augmented-things-MN-cse
-actuator@ALESSANDRO-K7NR	[INFO]	0) ...done, posting AE
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"actuator.ALESSANDRO-K7NR"}}
-                        	       	   to coap://192.168.0.111:5684/~/augmented-things-MN-cse
-actuator@ALESSANDRO-K7NR	[DEBUG]	0) Sent request to Coap server 192.168.0.111:5684/~/augmented-things-MN-cse
-actuator@ALESSANDRO-K7NR	[INFO]	0) Received JSON: rn=actuator.ALESSANDRO-K7NR, ty=2
-actuator@ALESSANDRO-K7NR	[INFO]	1) Waiting for notifications... received: "terminated" (by "watchdog@ALESSANDRO-K7NR")
-actuator@ALESSANDRO-K7NR	[INFO]	2) Terminating interface
+actuator@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5685/augmented-things
+actuator@alessandro	[INFO]	0) Starting interface
+actuator@alessandro	[INFO]	0) Locating node...
+actuator@alessandro	[DEBUG]	0) Sent location request to coap://192.168.0.102:5685/augmented-things
+actuator@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5685/augmented-things?id=actuator.alessandro&ser=0x0002&loc=0
+                   	       	   with payload <>
+actuator@alessandro	[INFO]	0) ...done, received "augmented-things-MN" and "192.168.0.102" as MN id and address, connecting
+                   	      	   to CSE...
+actuator@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5684/~/augmented-things-MN-cse
+actuator@alessandro	[INFO]	0) ...done, posting AE...
+actuator@alessandro	[DEBUG]	0) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"actuator.alessandro"}}
+                   	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse
+actuator@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse? with payload <{"m2m:ae":{"rr":"true",
+                   	       	   "api":"TempApp-ID","rn":"actuator.alessandro"}}>
+actuator@alessandro	[DEBUG]	0) Received JSON: rn=actuator.alessandro, ty=2
+actuator@alessandro	[INFO]	0) ...done, connecting to ADN...
+actuator@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5686/augmented-things
+actuator@alessandro	[INFO]	0) ...done, registering...
+actuator@alessandro	[DEBUG]	0) Sent registration request to coap://192.168.0.102:5686/augmented-things with payload <"action1,
+                   	       	    action2">
+actuator@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5686/augmented-things?id=actuator.alessandro&ser=0x0002&type=act&addr=coap:/
+                   	       	   /192.168.0.107:5690/augmented-things with payload <action1, action2>
+actuator@alessandro	[INFO]	0) ...done
+actuator@alessandro	[INFO]	1) Waiting for notifications...
+actuator/ATserver@alessandro	[INFO]	1) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	2) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	3) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	4) Handling notification "action2"... done
