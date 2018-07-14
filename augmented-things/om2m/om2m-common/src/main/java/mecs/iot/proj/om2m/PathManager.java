@@ -12,9 +12,9 @@ class PathManager {
 	private List<String> uri;
 	int level;
 	
-	PathManager(Client client, String uri, int capacity) {
+	PathManager(Client client, String uri) {
 		this.client = client;
-		this.uri = new ArrayList<String>(capacity);
+		this.uri = new ArrayList<String>();
 		this.uri.add(uri);
 		level = 0;
 	}

@@ -26,7 +26,7 @@ public class Services {
 	
 	public Services (Client client, String uri) {
 		this.client = client;
-		pathManager = new PathManager(client,uri,4);
+		pathManager = new PathManager(client,uri);
 	}
 	
 	private static String parseJSONObject(JSONObject obj, String attr, Class<?> attrType) throws JSONException {

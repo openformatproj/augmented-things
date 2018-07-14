@@ -35,7 +35,7 @@ class NotificationServer extends CoapResource {
 		Response response = null;
 		String str = exchange.getRequestText();
 		if (str.equals("OK")) {
-			outStream.out("Handling successful subscription",i);
+			outStream.out1("Handling successful subscription",i);
 			unit.sendAck(str);
 			response = new Response(ResponseCode.CHANGED);
 		} else {
