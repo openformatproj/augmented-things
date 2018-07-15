@@ -4,26 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>mecs.iot.proj</groupId>
-    <artifactId>adn</artifactId>
+    <artifactId>augmented-things</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>in</artifactId>
-  <name>in</name>
+  <artifactId>common</artifactId>
+  <name>common</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mainClass>om2m.adn.in.App</mainClass>
+    <mainClass>App</mainClass>
   </properties>
-  <dependencies>
-    <dependency>
-      <groupId>mecs.iot.proj</groupId>
-      <artifactId>adn-common</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>mecs.iot.proj</groupId>
-      <artifactId>common</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
 </project>

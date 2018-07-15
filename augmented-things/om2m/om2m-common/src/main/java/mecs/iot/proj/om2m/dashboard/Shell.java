@@ -12,6 +12,7 @@ import javax.swing.JTextPane;
 
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.Interface;
 
 class Shell implements Interface {
 	

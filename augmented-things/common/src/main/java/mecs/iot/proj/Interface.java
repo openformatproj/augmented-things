@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.dashboard;
+package mecs.iot.proj;
 
 public interface Interface {
 	

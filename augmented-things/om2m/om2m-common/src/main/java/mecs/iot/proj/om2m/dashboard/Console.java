@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.Interface;
 
 public class Console extends Thread {
 

@@ -20,6 +20,7 @@
   </dependencies>
   <modules>
   	<module>om2m</module>
+  	<module>common</module>
   </modules>
   <build>
     <pluginManagement>
