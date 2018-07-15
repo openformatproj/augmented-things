@@ -6,7 +6,7 @@ public class Physics {
 	
 	static Random rnd;
 	
-	public static double randomFluctuation (double deviation) {
+	public static double randomUniformFluctuation (double deviation) {
 		return 1+deviation*(Math.random()-0.5);
 	}
 	
