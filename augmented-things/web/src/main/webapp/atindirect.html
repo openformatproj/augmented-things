@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="atfavicon-firefox.ico">
+
+<title>AT infrastracture</title>
+
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.minmine.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/atindirect.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<header>
+		<div class="collapse bg-aquarium" id="navbarHeader">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 col-md-7 py-4">
+						<h4 class="text-white">About</h4>
+						<p class="text-muted">This site has been created in the
+							context of IOT exam project by Alessandro Trifoglio and Ilaria
+							Tono of MECS. Follow the project on GitHub and contact authors
+							for further improvements.</p>
+						<!-- Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information. -->
+					</div>
+					<div class="col-sm-4 offset-md-1 py-4">
+						<h4 class="text-white">Sources</h4>
+						<ul class="list-unstyled">
+							<li><a
+								href="https://github.com/openformatproj/augmented-things"
+								class="text-white">GitHub project</a></li>
+							<li><a href="#" class="text-white">Documentation</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="navbar navbar-dark bg-aquarium box-shadow">
+			<div class="container d-flex justify-content-between">
+				<a href="index.html" class="navbar-brand d-flex align-items-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="mr-2">
+						<path
+							d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+						<circle cx="12" cy="13" r="4"></circle></svg> <strong>AUGMENTED
+						THINGS</strong>
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarHeader" aria-controls="navbarHeader"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main role="main">
+
+	<section class="jumbotron text-center">
+
+		<div class="container">
+			<h1 class="jumbotron-heading">Infrastructure Map</h1>
+			<p class="lead text-muted">
+				Here is an overview of the cloud managed by the Infrastructure Node.
+				You can have a look of all connected Middle Nodes, with their
+				related tagged devices. Have a look of active relations and update
+				them.
+				<!--Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.-->
+			</p>
+			<p>
+				<!-- the following button MUST issue a request on the CoapClient -->
+				<button id="generalmap-btn" onclick="loadMap(this,'test-h'); changeText(this)" href="#"
+					class="btn btn-primary my-2" value="false">Issue middle nodes</button>
+				<button id="midnodemap-btn" onclick="" href="#" hidden
+					class="btn btn-secondary my-2" value="false">Disabled button</button>
+			</p>
+			<!-- NOTE	when an action is issued (make a list) something must happen to the opacity of the whole page: 
+          			it can get aqua-colored when a button is issued, masking in some way the fact that I am doing
+          			polling on the page.
+          -->
+		</div>
+	</section>
+
+
+	<!-- the following is shown only if the midnodemap-btn is pressed -->
+	<div class="album py-5 bg-light">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card mb-4 box-shadow">
+						<img class="card-img-top" src="img/pittsburg-garden.jpeg"
+							alt="Greenhouse thumbnail">
+						<div class="card-body">
+							<h3 class="card-text">GREENHOUSE</h3>
+							<p class="card-text">Control the sensors into greenhouse:
+								heat, humidity, pressure and so on.</p>
+							<!-- This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer. -->
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="btn-group">
+									<!-- Buttons should be assigned a behavior (link a js) -->
+									<button id="greenhuse-view"
+										onclick="loadnd('greenhouse-map'); upDate('modified-1')" type="button"
+										class="btn btn-sm btn-outline-secondary" value="false">View</button>
+								</div>
+								<!-- This small text allows to? Count last update?-->
+								<small id="modified-1" class="text-muted"></small>
+							</div>
+							<div id="greenhouse-map">
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card mb-4 box-shadow">
+						<img class="card-img-top" src="img/office.jpeg"
+							alt="Office thumbnail">
+						<div class="card-body">
+							<h3 class="card-text">OFFICE</h3>
+							<p class="card-text">Control sensors and actuators inside the
+								main office.</p>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="btn-group">
+									<button id="office-view" onclick="upDate('modified-2')"
+										type="button" class="btn btn-sm btn-outline-secondary"
+										value="false">View</button>
+								</div>
+
+								<small id="modified-2" class="text-muted"></small>
+							</div>
+							<div id="office-map" style="display:none">
+								<ul class="text-muted">
+									<li>Sensor</li>
+									<ul> 
+										<li>name: heat sensor</li>
+										<li>tagID: #0A15</li>
+										<li>value: 15C°</li>
+										<li>connected: none</li> <!-- some way to set undefined value -->
+									</ul>
+									<li>Sensor</li>
+									<ul> 
+										<li>name: humidity sensor</li>
+										<li>tagID: #0A3F</li>
+										<li>value: 15C°</li>
+										<li>connected: #1A22</li> 
+									</ul>
+									<li>Actuator</li>
+									<ul>
+										<li>name: watercan</li>
+										<li>tagID: #1A22</li>
+										<li>value: off</li>
+										<li>connected: #0A3F</li>
+									</ul>
+								<ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card mb-4 box-shadow">
+						<img class="card-img-top" src="img/interior-designers5.jpg"
+							alt="Home thumbnail">
+						<div class="card-body">
+							<h3 class="card-text">SMART HOME</h3>
+							<p class="card-text">Manage your domotics to interact with
+								alarms, conditioning, lighting, car and security.</p>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="btn-group">
+									<button id="home-view" type="button" onclick="upDate('modified-3')"
+										class="btn btn-sm btn-outline-secondary" value="false">View</button>
+								</div>
+								<small id='modified-3' class="text-muted"></small>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	</main>
+
+	<footer class="mastfoot mt-auto">
+		<div class="container-footer bg-aquarium">
+			<p class="small text-white">Template fully customized with &copy;
+				Bootstrap open-sources</p>
+			<p class="small text-white">
+				<a href="https://getbootstrap.com/" class="text-muted">Visit the
+					homepage</a> or read our <a
+					href="https://getbootstrap.com/docs/4.1/getting-started/introduction/"
+					class="text-muted">getting started guide</a>.
+			</p>
+			<!-- The following creates an oline browsing of my folder -->
+			<!--
+	    <p><a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
+	    -->
+		</div>
+	</footer>
+
+	<!-- core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/holder.min.js"></script>
+    <!-- my scripts -->
+	<script src="js/atindirect.js"></script>
+</body>
+</html>

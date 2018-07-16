@@ -1,0 +1,63 @@
+:root { -
+	-jumbotron-padding-y: 3rem;
+}
+
+.jumbotron {
+	padding-top: var(- -jumbotron-padding-y);
+	padding-bottom: var(- -jumbotron-padding-y);
+	margin-bottom: 0;
+	background-color: #fff;
+}
+
+@media ( min-width : 768px) {
+	.jumbotron {
+		padding-top: calc(var(- -jumbotron-padding-y)* 2);
+		padding-bottom: calc(var(- -jumbotron-padding-y)* 2);
+	}
+}
+
+.jumbotron p:last-child {
+	margin-bottom: 0;
+}
+
+.jumbotron-heading {
+	font-weight: 300;
+	font-variant: small-caps;
+}
+
+/* control this for left-right margin */
+.jumbotron .container {
+	max-width: 60rem;
+}
+
+footer {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+p {
+	margin-bottom: .25rem;
+}
+
+.box-shadow {
+	box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+/* For sticky footer */
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	margin-bottom: 60px; /* Margin bottom by footer height */
+}
+
+.footer {
+	position: absolute;
+	bottom: 0xp;
+	width: 100%;
+	height: 60px; /* Set the fixed height of the footer here */
+	line-height: 60px; /* Vertically center the text there */
+	background-color: #09cc99;
+}

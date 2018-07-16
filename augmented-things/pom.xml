@@ -21,6 +21,7 @@
   <modules>
   	<module>om2m</module>
   	<module>common</module>
+  	<module>web</module>
   </modules>
   <build>
     <pluginManagement>
