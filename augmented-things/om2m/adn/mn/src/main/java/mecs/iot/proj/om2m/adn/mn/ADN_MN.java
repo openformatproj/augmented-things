@@ -657,7 +657,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-				} else {
+				} else if (notification.contains("m2m:con")) {
 					String pi = null;
 					String con = null;
 					// String sur = null;
@@ -744,6 +744,12 @@ class ADN_MN extends ADN {
 							}
 						}
 					}
+				} else {
+					outStream.out("Received unexpected notification", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
 				}
 				response = new Response(ResponseCode.CREATED);
 			}

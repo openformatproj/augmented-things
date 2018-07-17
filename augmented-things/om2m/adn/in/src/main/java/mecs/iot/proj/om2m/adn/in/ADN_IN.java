@@ -125,6 +125,9 @@ class ADN_IN extends ADN {
 		} else {
 			debugStream.out("Bad request, mode not specified", i);
 			response = new Response(ResponseCode.BAD_REQUEST);
+			exchange.respond(response);
+			i++;
+			return;
 		}
 		exchange.respond(response);
 		outStream.out2("done");
@@ -368,7 +371,11 @@ class ADN_IN extends ADN {
 				}
 				console.interf.outAsync(json,true);
 			} else {
-				outStream.out1("Received unexpected notification", i);
+				outStream.out("Received unexpected notification", i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
 			}
 			response = new Response(ResponseCode.CREATED);
 		}
