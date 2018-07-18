@@ -271,7 +271,10 @@ class ADN_MN extends ADN {
 					} catch (JSONException e) {
 						outStream.out2("failed");
 						errStream.out(e, i, Severity.MEDIUM);
-						throw e;
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
 					}
 					response.setPayload(id + ": " + con);
 					break;
@@ -323,6 +326,7 @@ class ADN_MN extends ADN {
 				String type = getUriValue(exchange,"type",2);
 				if (type!=null) {
 					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&key=<RESERVED>,&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
+					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
 					if (!isValidType(type)) {
 						debugStream.out("Bad request, type=" + type, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
@@ -355,36 +359,35 @@ class ADN_MN extends ADN {
 						}
 						tag = new Tag(Node.ACTUATOR,id,address,attributes,cseBaseName);
 					} else {
-						String key = getUriValue(exchange,"key",3);
-						if (key==null || !isValidKey(key)) {
-							if (key!=null)
-								debugStream.out("Bad request, key=" + key, i);
-							else
-								debugStream.out("Bad request, key", i);
-							response = new Response(ResponseCode.BAD_REQUEST);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-						subscriber.bind(id,key);
+//						String key = getUriValue(exchange,"key",3);
+//						if (key==null || !isValidKey(key)) {
+//							if (key!=null)
+//								debugStream.out("Bad request, key=" + key, i);
+//							else
+//								debugStream.out("Bad request, key", i);
+//							response = new Response(ResponseCode.BAD_REQUEST);
+//							exchange.respond(response);
+//							i++;
+//							return;
+//						}
+//						subscriber.bind(id,key);
 						tag = new Tag(Node.SENSOR,id,type,attributes,cseBaseName);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
-					boolean createContainer;
+					boolean createState;
 					String[] uri_;
 					if (tagMap.containsKey(serial)) {
-						createContainer = false;
+						createState = false;
 						uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
 					}
 					else {
-						createContainer = true;
+						createState = true;
 						uri_ = new String[] {cseBaseName, "state", "tagMap"};
 					}
-					tagMap.put(serial,tag);
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
-						response_ = cseClient.services.oM2Mput(serial,tag,uri_,createContainer,cseClient.getCount());
+						response_ = cseClient.services.oM2Mput(serial,tag,uri_,createState,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");
 						errStream.out(e,i,Severity.MEDIUM);
@@ -395,20 +398,109 @@ class ADN_MN extends ADN {
 					}
 					if (response_==null) {
 						outStream.out2("failed");
-						errStream.out("Unable to register node on CSE, timeout expired", i, Severity.LOW);
+						errStream.out("Unable to register node \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
 						i++;
 						return;
 					} else if (response_.getCode()!=ResponseCode.CREATED) {
 						outStream.out2("failed");
-						errStream.out("Unable to register node on CSE, response: " + response_.getCode(),
+						errStream.out("Unable to register node \"" + id + "\" on CSE, response: " + response_.getCode(),
 								i, Severity.LOW);
 						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
 						exchange.respond(response);
 						i++;
 						return;
 					}
+					if (createState) {
+						cseClient.stepCount();
+						response_ = cseClient.services.postAE(id,cseClient.getCount());
+						if (response_==null) {
+							outStream.out2("failed");
+							errStream.out("Unable to register node \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						} else if (response_.getCode()!=ResponseCode.CREATED) {
+							outStream.out2("failed");
+							errStream.out("Unable to register node \"" + id + "\" on CSE, response: " + response_.getCode(),
+									i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						String json = null;
+						try {
+							json = Services.parseJSON(response_.getResponseText(), "m2m:ae",
+								new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+						} catch (JSONException e) {
+							outStream.out2("failed");
+							errStream.out(e, i, Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						debugStream.out("Received JSON: " + json, i);
+						cseClient.stepCount();
+						try {
+							response_ = cseClient.services.postContainer(cseBaseName,id,cseClient.getCount());
+						} catch (URISyntaxException e) {
+							outStream.out2("failed");
+							errStream.out(e,i,Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						if (response_==null) {
+							outStream.out2("failed");
+							errStream.out("Unable to register node \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						} else if (response_.getCode()!=ResponseCode.CREATED) {
+							outStream.out2("failed");
+							errStream.out("Unable to register node \"" + id + "\" on CSE, response: " + response_.getCode(),
+									i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						try {
+							json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+								new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+						} catch (JSONException e) {
+							outStream.out2("failed");
+							errStream.out(e, i, Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						debugStream.out("Received JSON: " + json, i);
+						if (tag.node==Node.SENSOR) {
+							String ri = null;
+							try {
+								ri = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+										new String[] {"ri"}, new Class<?>[] {String.class});							// Example: "/augmented-things-MN-cse/cnt-67185819"
+							} catch (JSONException e) {
+								outStream.out2("failed");
+								errStream.out(e, i, Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							String key = Services.getKeyFromAttribute(ri);												// Example: "67185819"
+							subscriber.bind(id,key);
+						}
+					}
+					tagMap.put(serial,tag);
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					// node lookout (id=<ID>&ser=<SERIAL>)
@@ -462,60 +554,152 @@ class ADN_MN extends ADN {
 					}
 				}
 			} else {
-				// user MN registration (id=<ID>&addr=<URI>)
 				String address = getUriValue(exchange,"addr",1);
-				if (address==null || !isValidAddress(address)) {
-					if (address!=null)
-						debugStream.out("Bad request, addr=" + address, i);
-					else
-						debugStream.out("Bad request, addr", i);
-					response = new Response(ResponseCode.BAD_REQUEST);
-					exchange.respond(response);
-					i++;
-					return;
+				if (address!=null) {
+					// user MN registration (id=<ID>&addr=<URI>)
+					if (/* address==null || */!isValidAddress(address)) {
+//						if (address!=null)
+							debugStream.out("Bad request, addr=" + address, i);
+//						else
+//							debugStream.out("Bad request, addr", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
+					boolean createState;
+					String[] uri_;
+					if (userMap.containsKey(id)) {
+						createState = false;
+						uri_ = new String[] {cseBaseName, "state", "userMap", id};
+					}
+					else {
+						createState = true;
+						uri_ = new String[] {cseBaseName, "state", "userMap"};
+					}
+					User user = new User(id,address,cseBaseName);
+					CoapResponse response_ = null;
+					cseClient.stepCount();
+					try {
+						response_ = cseClient.services.oM2Mput(id,user,uri_,createState,cseClient.getCount());
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,i,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (response_==null) {
+						outStream.out2("failed");
+						errStream.out("Unable to register user \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					} else if (response_.getCode()!=ResponseCode.CREATED) {
+						outStream.out2("failed");
+						errStream.out("Unable to register user \"" + id + "\" on CSE, response: " + response_.getCode(),
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (createState) {
+						cseClient.stepCount();
+						response_ = cseClient.services.postAE(id,cseClient.getCount());
+						if (response_==null) {
+							outStream.out2("failed");
+							errStream.out("Unable to register user \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						} else if (response_.getCode()!=ResponseCode.CREATED) {
+							outStream.out2("failed");
+							errStream.out("Unable to register user \"" + id + "\" on CSE, response: " + response_.getCode(),
+									i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						String json = null;
+						try {
+							json = Services.parseJSON(response_.getResponseText(), "m2m:ae",
+								new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+						} catch (JSONException e) {
+							outStream.out2("failed");
+							errStream.out(e, i, Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						debugStream.out("Received JSON: " + json, i);
+					}
+					userMap.put(id,user);
+					response = new Response(ResponseCode.CREATED);
+				} else {
+					// Content Instance posting (id=<ID>&con=<CON>)
+					String content = getUriValue(exchange,"con",1);
+					if (content==null || !isValidContent(content)) {
+						if (content!=null)
+							debugStream.out("Bad request, con=" + content, i);
+						else
+							debugStream.out("Bad request, con", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					outStream.out1("Posting Content Instance \"" + content + "\" on node \"" + id + "\"", i);
+					String[] uri = new String[] {cseBaseName, id, "data"};
+					CoapResponse response_ = null;
+					cseClient.stepCount();
+					try {
+						response_ = cseClient.services.postContentInstance(content,uri,cseClient.getCount());
+					} catch (URISyntaxException e) {
+						outStream.out2("failed");
+						errStream.out(e,i,Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					if (response_==null) {
+						outStream.out2("failed");
+						errStream.out("Unable to post Content Instance on node \"" + id + "\", timeout expired", i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					} else if (response_.getCode()!=ResponseCode.CREATED) {
+						outStream.out2("failed");
+						errStream.out("Unable to post Content Instance on node \"" + id + "\", response: " + response_.getCode(),
+								i, Severity.LOW);
+						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					String json = null;
+					try {
+						json = Services.parseJSON(response_.getResponseText(), "m2m:cin",
+								new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class});
+					} catch (JSONException e) {
+						outStream.out2("failed");
+						errStream.out(e, i, Severity.MEDIUM);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					debugStream.out("Received JSON: " + json, i);
+					response = new Response(ResponseCode.CREATED);
 				}
-				outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
-				boolean createContainer;
-				String[] uri_;
-				if (userMap.containsKey(id)) {
-					createContainer = false;
-					uri_ = new String[] {cseBaseName, "state", "userMap", id};
-				}
-				else {
-					createContainer = true;
-					uri_ = new String[] {cseBaseName, "state", "userMap"};
-				}
-				User user = new User(id,address,cseBaseName);
-				userMap.put(id,user);
-				CoapResponse response_ = null;
-				cseClient.stepCount();
-				try {
-					response_ = cseClient.services.oM2Mput(id,user,uri_,createContainer,cseClient.getCount());
-				} catch (URISyntaxException e) {
-					outStream.out2("failed");
-					errStream.out(e,i,Severity.MEDIUM);
-					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				if (response_==null) {
-					outStream.out2("failed");
-					errStream.out("Unable to register user on CSE, timeout expired", i, Severity.LOW);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-					exchange.respond(response);
-					i++;
-					return;
-				} else if (response_.getCode()!=ResponseCode.CREATED) {
-					outStream.out2("failed");
-					errStream.out("Unable to register user on CSE, response: " + response_.getCode(),
-							i, Severity.LOW);
-					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-					exchange.respond(response);
-					i++;
-					return;
-				}
-				response = new Response(ResponseCode.CREATED);
 			}
 		} else {
 			String serial0 = getUriValue(exchange,"ser",0);
@@ -1074,12 +1258,10 @@ class ADN_MN extends ADN {
 						case USER:
 							break;
 					}
-					// tagMap.remove(serial0);
 					tag0.active = false;
 					String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial0};
 					cseClient.stepCount();
 					try {
-						// response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
 						response_ = cseClient.services.oM2Mput(serial0,tag0,uri_,false,cseClient.getCount());
 					} catch (URISyntaxException e) {
 						outStream.out2("failed");

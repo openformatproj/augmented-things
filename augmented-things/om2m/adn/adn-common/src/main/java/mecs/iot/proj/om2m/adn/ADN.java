@@ -95,6 +95,11 @@ public class ADN extends CoapResource {
 		return !address.isEmpty();
 	}
 	
+	protected boolean isValidContent(String content) {
+		// TODO
+		return !content.isEmpty();
+	}
+	
 	protected boolean isValidKey(String key) {
 		// TODO
 		return !key.isEmpty();

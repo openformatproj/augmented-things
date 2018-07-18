@@ -321,6 +321,23 @@ public class Services {
 		return client.send(request, Code.POST);
 	}
 	
+	public CoapResponse postContentInstance(String content, String[] uri, int i) throws URISyntaxException {
+		pathManager.change(uri);
+		Request request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,4));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		JSONObject obj = new JSONObject();
+		obj.put("cnf","text/plain:0");
+		obj.put("con",content);
+		JSONObject root = new JSONObject();
+		root.put("m2m:cin",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		return client.send(request, Code.POST);
+	}
+	
 	public void postSubscription(String observer, String id, String[] uri, int i) throws URISyntaxException {
 		pathManager.change(uri);
 		Request request = new Request(Code.POST);

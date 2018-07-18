@@ -60,88 +60,89 @@ public class RemoteInterface extends Client {
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
-		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
-		try {
-			connect(Constants.protocol + address + Constants.mnCSERoot(name));
-		} catch (URISyntaxException e) {
-			outStream.out2("failed. Terminating interface");
-			errStream.out(e, i, Severity.MEDIUM);
-			return;
-		}
-		outStream.out1_2("done, posting AE");
-		response = services.postAE(Services.normalizeName(tag.id),i);
-		if (response==null) {
-			outStream.out2("failed. Terminating interface");
-			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			outStream.out2("failed. Terminating interface");
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
-						i, Severity.LOW);
-			else
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(),
-					i, Severity.LOW);
-			return;
-		}
-		if (response.getCode()==ResponseCode.FORBIDDEN) {
-			debugStream.out(response.getResponseText(), i);
-		} else {
-			String json = null;
-			try {
-				json = Services.parseJSON(response.getResponseText(), "m2m:ae",
-						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-			} catch (JSONException e) {
-				outStream.out2("failed");
-				errStream.out(e, i, Severity.MEDIUM);
-				throw e;
-			}
-			debugStream.out("Received JSON: " + json, i);
-		}
-		outStream.out1_2("done, posting Container");
-		try {
-			response = services.postContainer(name,Services.normalizeName(tag.id),i);
-		} catch (URISyntaxException e) {
-			outStream.out2("failed. Terminating interface");
-			errStream.out(e, i, Severity.MEDIUM);
-			return;
-		}
-		if (response==null) {
-			outStream.out2("failed. Terminating interface");
-			errStream.out("Unable to post Container to " + services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			outStream.out2("failed. Terminating interface");
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
-						i, Severity.LOW);
-			else
-				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode(),
-					i, Severity.LOW);
-			return;
-		}
-		String ri = null;
-		if (response.getCode()==ResponseCode.FORBIDDEN) {
-			debugStream.out(response.getResponseText(), i);
-			// TODO: if Container is already present, extract ri anyway
-		} else {
-			String json = null;
-			try {
-				json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
-						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-				ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
-						new String[] {"ri"}, new Class<?>[] {String.class});										// Example: "/augmented-things-MN-cse/cnt-67185819"
-			} catch (JSONException e) {
-				outStream.out2("failed");
-				errStream.out(e, i, Severity.MEDIUM);
-				throw e;
-			}
-			debugStream.out("Received JSON: " + json, i);
-		}
-		String key = Services.getKeyFromAttribute(ri);																// Example: "67185819"
-		outStream.out1_2("done, connecting to ADN");
+		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to ADN");
+//		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
+//		try {
+//			connect(Constants.protocol + address + Constants.mnCSERoot(name));
+//		} catch (URISyntaxException e) {
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out(e, i, Severity.MEDIUM);
+//			return;
+//		}
+//		outStream.out1_2("done, posting AE");
+//		response = services.postAE(Services.normalizeName(tag.id),i);
+//		if (response==null) {
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
+//			return;
+//		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+//			outStream.out2("failed. Terminating interface");
+//			if (!response.getResponseText().isEmpty())
+//				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() +
+//						", reason: " + response.getResponseText(),
+//						i, Severity.LOW);
+//			else
+//				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(),
+//					i, Severity.LOW);
+//			return;
+//		}
+//		if (response.getCode()==ResponseCode.FORBIDDEN) {
+//			debugStream.out(response.getResponseText(), i);
+//		} else {
+//			String json = null;
+//			try {
+//				json = Services.parseJSON(response.getResponseText(), "m2m:ae",
+//						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+//			} catch (JSONException e) {
+//				outStream.out2("failed");
+//				errStream.out(e, i, Severity.MEDIUM);
+//				throw e;
+//			}
+//			debugStream.out("Received JSON: " + json, i);
+//		}
+//		outStream.out1_2("done, posting Container");
+//		try {
+//			response = services.postContainer(name,Services.normalizeName(tag.id),i);
+//		} catch (URISyntaxException e) {
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out(e, i, Severity.MEDIUM);
+//			return;
+//		}
+//		if (response==null) {
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out("Unable to post Container to " + services.uri() + ", timeout expired", i, Severity.LOW);
+//			return;
+//		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+//			outStream.out2("failed. Terminating interface");
+//			if (!response.getResponseText().isEmpty())
+//				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode() +
+//						", reason: " + response.getResponseText(),
+//						i, Severity.LOW);
+//			else
+//				errStream.out("Unable to post Container to " + services.uri() + ", response: " + response.getCode(),
+//					i, Severity.LOW);
+//			return;
+//		}
+//		String ri = null;
+//		if (response.getCode()==ResponseCode.FORBIDDEN) {
+//			debugStream.out(response.getResponseText(), i);
+//			// TODO: if Container is already present, extract ri anyway
+//		} else {
+//			String json = null;
+//			try {
+//				json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+//						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+//				ri = Services.parseJSON(response.getResponseText(), "m2m:cnt",
+//						new String[] {"ri"}, new Class<?>[] {String.class});										// Example: "/augmented-things-MN-cse/cnt-67185819"
+//			} catch (JSONException e) {
+//				outStream.out2("failed");
+//				errStream.out(e, i, Severity.MEDIUM);
+//				throw e;
+//			}
+//			debugStream.out("Received JSON: " + json, i);
+//		}
+//		String key = Services.getKeyFromAttribute(ri);																// Example: "67185819"
+//		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.protocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
@@ -150,7 +151,8 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering");
-		response = register(tag,key,Node.SENSOR);
+//		response = register(tag,key,Node.SENSOR);
+		response = register(tag,null,Node.SENSOR);
 		if (response==null) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
@@ -166,45 +168,46 @@ public class RemoteInterface extends Client {
 					i, Severity.LOW);
 			return;
 		}
-		outStream.out1_2("done, connecting to CSE for publishing");
-		try {
-			connect(Constants.protocol + address + Constants.mnCSERoot(name) + "/" + Services.getPathFromKey(key));
-		} catch (URISyntaxException e) {
-			deleteNodeAsync(tag.serial);
-			outStream.out2("failed. Terminating interface");
-			errStream.out(e, i, Severity.MEDIUM);
-			return;
-		}
+//		outStream.out1_2("done, connecting to CSE for publishing");
+//		try {
+//			connect(Constants.protocol + address + Constants.mnCSERoot(name) + "/" + Services.getPathFromKey(key));
+//		} catch (URISyntaxException e) {
+//			deleteNodeAsync(tag.serial);
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out(e, i, Severity.MEDIUM);
+//			return;
+//		}
 		outStream.out2("done");
 		i++;
 		start = System.currentTimeMillis();
 		long timer;
 		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out1("Posting Content Instance", i);
-			try {
-				response = services.postContentInstance(Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type),i);
-			} catch (URISyntaxException e) {
-				deleteNodeAsync(tag.serial);
-				outStream.out2("failed. Terminating interface");
-				errStream.out(e, i, Severity.MEDIUM);
-				return;
-			}
-			if (response==null) {
-				deleteNodeAsync(tag.serial);
-				outStream.out2("failed. Terminating interface");
-				errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
-				return;
-			}
-			String json = null;
-			try {
-				json = Services.parseJSON(response.getResponseText(), "m2m:cin",
-						new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class});
-			} catch (JSONException e) {
-				outStream.out2("failed");
-				errStream.out(e, i, Severity.MEDIUM);
-				throw e;
-			}
-			debugStream.out("Received JSON: " + json, i);
+//			try {
+//				response = services.postContentInstance(Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type),i);
+//			} catch (URISyntaxException e) {
+//				deleteNodeAsync(tag.serial);
+//				outStream.out2("failed. Terminating interface");
+//				errStream.out(e, i, Severity.MEDIUM);
+//				return;
+//			}
+//			if (response==null) {
+//				deleteNodeAsync(tag.serial);
+//				outStream.out2("failed. Terminating interface");
+//				errStream.out("Unable to post Content Instance to " + services.uri() + ", timeout expired", i, Severity.LOW);
+//				return;
+//			}
+//			String json = null;
+//			try {
+//				json = Services.parseJSON(response.getResponseText(), "m2m:cin",
+//						new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class});
+//			} catch (JSONException e) {
+//				outStream.out2("failed");
+//				errStream.out(e, i, Severity.MEDIUM);
+//				throw e;
+//			}
+//			debugStream.out("Received JSON: " + json, i);
+			publish(tag.id,Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type));
 			outStream.out2("done");
 			i++;
 			timer = System.currentTimeMillis();

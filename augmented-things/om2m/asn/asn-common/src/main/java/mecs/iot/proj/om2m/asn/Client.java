@@ -70,7 +70,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("type" + "=" + tag.type);
 		switch(node) {
 			case SENSOR:
-				request.getOptions().addUriQuery("key" + "=" + reference);
+//				request.getOptions().addUriQuery("key" + "=" + reference);
 				break;
 			case ACTUATOR:
 			case USER:
@@ -102,6 +102,21 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		//request.setTimedOut(true);
 		debugStream.out("Sent registration request to " + services.uri(), i);
 		return send(request, Code.POST);
+	}
+	
+	/*
+	 * Content instance posting (sensor)
+	 */
+	
+	public void publish(String id, String con) {
+		Request request = new Request(Code.POST);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(id));
+		request.getOptions().addUriQuery("con" + "=" + con);
+		//request.setTimedOut(true);
+		debugStream.out("Sent registration request to " + services.uri(), i);
+		sendAsync(request, Code.POST);
 	}
 	
 	/*
