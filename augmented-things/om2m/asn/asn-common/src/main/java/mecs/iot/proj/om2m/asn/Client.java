@@ -121,7 +121,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	/*
 	 * Content instance posting (sensor)
 	 */
-	
 	public void publish(String id, String con) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
@@ -187,8 +186,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		CoapResponse response = send(request, Code.POST, console);
 		if (response==null)
 			return "Error: timeout expired";
-//		if (response.getCode()==ResponseCode.CONTINUE)
-//			return "Subscribing...";
 		if (response.getCode()==ResponseCode.CREATED)
 			return "OK";
 		else
@@ -252,8 +249,6 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		CoapResponse response = send(request, Code.POST, console);
 		if (response==null)
 			return "Error: timeout expired";
-//		if (response.getCode()==ResponseCode.CONTINUE)
-//			return "Subscribing...";
 		if (response.getCode()==ResponseCode.CREATED)
 			return "OK";
 		else
@@ -294,6 +289,43 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		//request.setTimedOut(true);
 		debugStream.out("Sent deletion request to " + services.uri(), i);
 		return send(request, Code.DELETE);
+	}
+	
+	/*
+	 * MN name query
+	 */
+	public String getMN(Console console) {
+		Request request = new Request(Code.GET);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		//request.setTimedOut(true);
+		console.out("Sent MN name request to " + services.uri());
+		CoapResponse response = send(request, Code.GET, console);
+		if (response==null)
+			return "Error: timeout expired";
+		if (response.getCode()==ResponseCode.CONTENT)
+			return response.getResponseText();
+		else
+			return "Error: " + response.getCode().toString();
+	}
+	
+	/*
+	 * Node name query
+	 */
+	public String getNode(String serial, Console console) {
+		Request request = new Request(Code.GET);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("ser" + "=" + serial);
+		//request.setTimedOut(true);
+		console.out("Sent attributes request to " + services.uri());
+		CoapResponse response = send(request, Code.GET, console);
+		if (response==null)
+			return "Error: timeout expired";
+		if (response.getCode()==ResponseCode.CONTENT)
+			return response.getResponseText();
+		else
+			return "Error: " + response.getCode().toString();
 	}
 	
 	protected void deleteUserAsync(String id) {

@@ -282,15 +282,34 @@ class ADN_MN extends ADN {
 					return;
 			}
 		} else if (exchange.getRequestOptions().getUriQuery().size()==0) {
+			// mn name query ()
 			outStream.out1("Handling MN name request", i);
 			response = new Response(ResponseCode.CONTENT);
-			response.setPayload("mn: " + name);
+			response.setPayload("MN: " + name);
 		} else {
-			debugStream.out("Bad request, mode not specified", i);
-			response = new Response(ResponseCode.BAD_REQUEST);
-			exchange.respond(response);
-			i++;
-			return;
+			String serial = getUriValue(exchange,"ser",0);
+			if (serial==null || !isValidSerial(serial)) {
+				if (serial!=null)
+					debugStream.out("Bad request, ser=" + serial, i);
+				else
+					debugStream.out("Bad request, ser", i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			}
+			// node name query (ser=<SERIAL>)
+			Tag tag = tagMap.get(serial);
+			if (tag==null) {
+				debugStream.out("Serial \"" + serial + "\" is not registered on this MN", i);
+				response = new Response(ResponseCode.BAD_REQUEST);
+				exchange.respond(response);
+				i++;
+				return;
+			}
+			outStream.out1("Handling node name request", i);
+			response = new Response(ResponseCode.CONTENT);
+			response.setPayload(tag.node + ": " + tag.id);
 		}
 		exchange.respond(response);
 		outStream.out2("done");
