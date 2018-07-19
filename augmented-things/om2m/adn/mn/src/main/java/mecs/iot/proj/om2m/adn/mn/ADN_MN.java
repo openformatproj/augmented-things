@@ -285,7 +285,7 @@ class ADN_MN extends ADN {
 			// mn name query ()
 			outStream.out1("Handling MN name request", i);
 			response = new Response(ResponseCode.CONTENT);
-			response.setPayload("MN: " + name);
+			response.setPayload("MN: " + cseBaseName);
 		} else {
 			String serial = getUriValue(exchange,"ser",0);
 			if (serial==null || !isValidSerial(serial)) {
