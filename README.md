@@ -11,7 +11,7 @@ git clone https://github.com/openformatproj/augmented-things.git
 ```
 then, from the parent directory, execute
 ```
-clean compile assembly:single
+mvn clean compile assembly:single
 ```
 to produce the final .jar files. See [```om2m/README.md/Setting```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#setting) for configuration and [```om2m/README.md/Executing nodes```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md#executing-nodes) for usage information.
 
