@@ -90,6 +90,8 @@ To run an ASN, simply run its Java executable. Please notice that ```mecs.iot.pr
 
 The host ASNs execute on doesn't need to run any om2m application.
 
+**Note**: before launching the ```mecs.iot.proj.om2m.asn.user_direct.App``` with the default Shell, be sure that ```mecs.iot.proj.om2m.asn.sensor.App``` - or any node with serial ```0x0001``` - is up and running and correctly registered to a MN.
+
 ### Notes
 On Ubuntu systems, in order to correctly resolve the hostname and prevent the risk of name conflicts, before executing a node one should launch the command
 ```
