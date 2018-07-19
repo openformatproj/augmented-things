@@ -18,6 +18,8 @@ public class Format {
 		return formatMap.get(type);
 	}
 	
+	// Only tempC type currently supported
+	
 	public static String pack(double value, String type) {
 		return String.format("%.3f",value) + " " + formatMap.get(type);
 	}
