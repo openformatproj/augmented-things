@@ -36,9 +36,6 @@ class ADN_MN extends ADN {
 	private HashMap<String,User> userMap;																				// user id -> user
 	
 	private Subscriber subscriber;
-	private boolean subscriptionsEnabled;
-	private String notificationId;
-	private String notificationAddress;
 
 	ADN_MN(String id, String host, boolean debug, Console console) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(id,host,debug,console);
@@ -169,7 +166,6 @@ class ADN_MN extends ADN {
 			throw new RegistrationException();
 		}
 		outStream.out2("done");
-		subscriptionsEnabled = true;
 		i++;
 	}
 
@@ -288,7 +284,7 @@ class ADN_MN extends ADN {
 		} else if (exchange.getRequestOptions().getUriQuery().size()==0) {
 			outStream.out1("Handling MN name request", i);
 			response = new Response(ResponseCode.CONTENT);
-			response.setPayload("MN: " + name);
+			response.setPayload("mn: " + name);
 		} else {
 			debugStream.out("Bad request, mode not specified", i);
 			response = new Response(ResponseCode.BAD_REQUEST);
@@ -325,7 +321,6 @@ class ADN_MN extends ADN {
 				}
 				String type = getUriValue(exchange,"type",2);
 				if (type!=null) {
-					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&key=<RESERVED>,&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
 					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
 					if (!isValidType(type)) {
 						debugStream.out("Bad request, type=" + type, i);
@@ -359,18 +354,6 @@ class ADN_MN extends ADN {
 						}
 						tag = new Tag(Node.ACTUATOR,id,address,attributes,cseBaseName);
 					} else {
-//						String key = getUriValue(exchange,"key",3);
-//						if (key==null || !isValidKey(key)) {
-//							if (key!=null)
-//								debugStream.out("Bad request, key=" + key, i);
-//							else
-//								debugStream.out("Bad request, key", i);
-//							response = new Response(ResponseCode.BAD_REQUEST);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
-//						subscriber.bind(id,key);
 						tag = new Tag(Node.SENSOR,id,type,attributes,cseBaseName);
 					}
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
@@ -492,6 +475,7 @@ class ADN_MN extends ADN {
 							return;
 						}
 						debugStream.out("Received JSON: " + json, i);
+						// TODO: check if the following section is safe to remove
 						if (tag.node==Node.SENSOR) {
 							String ri = null;
 							try {
@@ -513,65 +497,41 @@ class ADN_MN extends ADN {
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					// node lookout (id=<ID>&ser=<SERIAL>)
-//					if (subscriptionsEnabled) {
-						Tag tag = tagMap.get(serial);
-						if (tag==null || tag.node!=Node.SENSOR) {
-							debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
-							response = new Response(ResponseCode.BAD_REQUEST);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-						User user = userMap.get(id);
-						if (user==null) {
-							debugStream.out("User \"" + id + "\" is not registered on this MN", i);
-							response = new Response(ResponseCode.BAD_REQUEST);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-						notificationId = id;
-						notificationAddress = user.address;
-						outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
-						try {
-							subscriber.insert(tag.id,tag.type,id,user.address,i);
-						} catch (URISyntaxException | StateCreationException e) {
-							outStream.out2("failed");
-							errStream.out(e,i,Severity.LOW);
-							response = new Response(ResponseCode.BAD_REQUEST);
-							exchange.respond(response);
-							i++;
-							return;
-						}
-//						String[] uri = new String[] {cseBaseName, tag.id, "data"};
-//						cseClient.stepCount();
-//						try {
-//							cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
-//						} catch (URISyntaxException e) {
-//							outStream.out2("failed");
-//							errStream.out(e,i,Severity.MEDIUM);
-//							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
-//						subscriptionsEnabled = false;																	// Disable subscription service while waiting for confirmation
-//						response = new Response(ResponseCode.CONTINUE);
-						response = new Response(ResponseCode.CREATED);
-//					} else {
-//						outStream.out1("Subscription service temporarily disabled", i);
-//						response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//					}
+					Tag tag = tagMap.get(serial);
+					if (tag==null || tag.node!=Node.SENSOR) {
+						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					User user = userMap.get(id);
+					if (user==null) {
+						debugStream.out("User \"" + id + "\" is not registered on this MN", i);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
+					try {
+						subscriber.insert(tag.id,tag.type,id,user.address,i);
+					} catch (URISyntaxException | StateCreationException e) {
+						outStream.out2("failed");
+						errStream.out(e,i,Severity.LOW);
+						response = new Response(ResponseCode.BAD_REQUEST);
+						exchange.respond(response);
+						i++;
+						return;
+					}
+					response = new Response(ResponseCode.CREATED);
 				}
 			} else {
 				String address = getUriValue(exchange,"addr",1);
 				if (address!=null) {
 					// user MN registration (id=<ID>&addr=<URI>)
-					if (/* address==null || */!isValidAddress(address)) {
-//						if (address!=null)
-							debugStream.out("Bad request, addr=" + address, i);
-//						else
-//							debugStream.out("Bad request, addr", i);
+					if (!isValidAddress(address)) {
+						debugStream.out("Bad request, addr=" + address, i);
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
 						i++;
@@ -730,7 +690,6 @@ class ADN_MN extends ADN {
 								case ACTUATOR:
 									double value;
 									try {
-										// value = Format.unpack(splits[1],subs.get(j).sender.type);
 										value = Format.unpack(content,subs.get(j).sender.type);
 									} catch (ParseException e) {
 										outStream.out2("failed");
@@ -792,237 +751,80 @@ class ADN_MN extends ADN {
 			String serial1 = getUriValue(exchange,"ser",1);
 			String label0 = getUriValue(exchange,"lab",2);
 			String label1 = getUriValue(exchange,"lab",3);
-			notificationId = getUriValue(exchange,"id",4);
+			String notificationId = getUriValue(exchange,"id",4);
 			if (serial0!=null && serial1!=null && label0!=null && label1!=null && notificationId!=null) {
-//				if (subscriptionsEnabled) {
-					// nodes link (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
-					if (!isValidSerial(serial0) && isValidSerial(serial1)) {
-						debugStream.out("Bad request, ser0=" + serial0, i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (isValidSerial(serial0) && !isValidSerial(serial1)) {
-						debugStream.out("Bad request, ser1=" + serial1, i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (!isValidSerial(serial0) && !isValidSerial(serial1)) {
-						debugStream.out("Bad request, ser0=" + serial0 + ", ser1=" + serial1, i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					Tag tag0 = tagMap.get(serial0);
-					Tag tag1 = tagMap.get(serial1);
-					if (tag0==null || tag0.node!=Node.SENSOR) {
-						debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (tag1==null || tag1.node!=Node.ACTUATOR) {
-						debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (!isValidLabel(label0,tag0)) {
-						debugStream.out("Bad request, lab=" + label0, i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					if (!isValidLabel(label1,tag1)) {
-						debugStream.out("Bad request, lab=" + label1, i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					User user = userMap.get(notificationId);
-					if (user==null) {
-						debugStream.out("User \"" + notificationId + "\" is not registered on this MN", i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					notificationAddress = user.address;
-					outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
-					try {
-						subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
-					} catch (URISyntaxException | StateCreationException | InvalidRuleException e) {
-						outStream.out2("failed");
-						errStream.out(e,i,Severity.LOW);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-//					String[] uri = new String[] {cseBaseName, tag0.id, "data"};
-//					cseClient.stepCount();
-//					try {
-//						cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.mnADNRoot,"subscription",uri,cseClient.getCount());
-//					} catch (URISyntaxException e) {
-//						outStream.out2("failed");
-//						errStream.out(e,i,Severity.MEDIUM);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					subscriptionsEnabled = false;																		// Disable subscription service while waiting for confirmation
-//					response = new Response(ResponseCode.CONTINUE);
-					response = new Response(ResponseCode.CREATED);
-//				} else {
-//					outStream.out1("Subscription service temporarily disabled", i);
-//					response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//				}
-//			} else {
-//				// notifications from subscriptions
-//				String notification = exchange.getRequestText();
-//				if (notification.contains("m2m:vrq")) {
-//					outStream.out1("Handling subscription confirmation", i);
-//					if (!subscriptionsEnabled) {
-//						CoapResponse response_ = null;
-//						try {
-//							response_ = forwardNotification(notificationId,notificationAddress,"OK");					// Warn the requester about completed subscription
-//						} catch (URISyntaxException e) {
-//							outStream.out2("failed");
-//							errStream.out(e,i,Severity.MEDIUM);
-//							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
-//						if (response_==null) {
-//							outStream.out2("failed");
-//							errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
-//							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						} else if (response_.getCode()!=ResponseCode.CHANGED) {
-//							outStream.out2("failed");
-//							errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
-//									i, Severity.LOW);
-//							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//							exchange.respond(response);
-//							i++;
-//							return;
-//						}
-//						subscriptionsEnabled = true;
-//					} else {
-//						outStream.out2("failed");
-//						errStream.out("Unexpected confirmation",i,Severity.MEDIUM);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//				} else if (notification.contains("m2m:con")) {
-//					String pi = null;
-//					String con = null;
-//					// String sur = null;
-//					try {
-//						pi = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "pi=/augmented-things-MN-cse/cnt-67185819"
-//								new String[] {"pi"}, new Class<?>[] {String.class});
-//						con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, 	// Example: "con=36,404 °C"
-//								new String[] {"con"}, new Class<?>[] {String.class});
-//						// sur = Services.parseJSON(notification, "m2m:sgn", 											// Example: "sur=/augmented-things-MN-cse/sub-730903481"
-//						//		new String[] {"sur"}, new Class<?>[] {String.class});
-//					} catch (JSONException e) {
-//						debugStream.out("Received invalid notification", i);
-//						errStream.out(e, i, Severity.MEDIUM);
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						i++;
-//						return;
-//					}
-//					outStream.out1("Handling notification with JSON: " + pi + ", " + con, i);
-//					String key = Services.getKeyFromAttribute(pi);
-//					ArrayList<Subscription> subs = subscriber.get(key);
-//					if (subs!=null && subs.size()>0) {
-//						CoapResponse response_ = null;
-//						for (int j=0; j<subs.size(); j++) {
-//							switch (subs.get(j).receiver.node) {
-//								case SENSOR:
-//									break;
-//								case ACTUATOR:
-//									// String[] splits = con.split("con=");
-//									double value;
-//									try {
-//										// value = Format.unpack(splits[1],subs.get(j).sender.type);
-//										value = Format.unpack(con.substring(4),subs.get(j).sender.type);
-//									} catch (ParseException e) {
-//										outStream.out2("failed");
-//										errStream.out(e,i,Severity.MEDIUM);
-//										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//										exchange.respond(response);
-//										i++;
-//										return;
-//									}
-//									subs.get(j).controller.insert(value);
-//									if (subs.get(j).controller.check()) {
-//										try {
-//											response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
-//										} catch (URISyntaxException e) {
-//											outStream.out2("failed");
-//											errStream.out(e,i,Severity.MEDIUM);
-//											response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//											exchange.respond(response);
-//											i++;
-//											return;
-//										}
-//									}
-//									break;
-//								case USER:
-//									try {
-//										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subscriber.getResourceId(key)+": "+con);
-//									} catch (URISyntaxException e) {
-//										outStream.out2("failed");
-//										errStream.out(e,i,Severity.MEDIUM);
-//										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//										exchange.respond(response);
-//										i++;
-//										return;
-//									}
-//									break;
-//							}
-//							if (response_==null) {
-//								outStream.out2("failed");
-//								errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
-//								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//								exchange.respond(response);
-//								i++;
-//								return;
-//							} else if (response_.getCode()!=ResponseCode.CHANGED) {
-//								outStream.out2("failed");
-//								errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
-//										i, Severity.LOW);
-//								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//								exchange.respond(response);
-//								i++;
-//								return;
-//							}
-//						}
-//					}
-//				} else {
-//					outStream.out("Received unexpected notification", i);
-//					response = new Response(ResponseCode.BAD_REQUEST);
-//					exchange.respond(response);
-//					i++;
-//					return;
-//				}
-//				response = new Response(ResponseCode.CREATED);
+				// nodes link (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
+				if (!isValidSerial(serial0) && isValidSerial(serial1)) {
+					debugStream.out("Bad request, ser0=" + serial0, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				if (isValidSerial(serial0) && !isValidSerial(serial1)) {
+					debugStream.out("Bad request, ser1=" + serial1, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				if (!isValidSerial(serial0) && !isValidSerial(serial1)) {
+					debugStream.out("Bad request, ser0=" + serial0 + ", ser1=" + serial1, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				Tag tag0 = tagMap.get(serial0);
+				Tag tag1 = tagMap.get(serial1);
+				if (tag0==null || tag0.node!=Node.SENSOR) {
+					debugStream.out("Serial \"" + serial0 + "\" is not registered on this MN as a sensor", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				if (tag1==null || tag1.node!=Node.ACTUATOR) {
+					debugStream.out("Serial \"" + serial1 + "\" is not registered on this MN as an actuator", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				if (!isValidLabel(label0,tag0)) {
+					debugStream.out("Bad request, lab=" + label0, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				if (!isValidLabel(label1,tag1)) {
+					debugStream.out("Bad request, lab=" + label1, i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				User user = userMap.get(notificationId);
+				if (user==null) {
+					debugStream.out("User \"" + notificationId + "\" is not registered on this MN", i);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
+				try {
+					subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
+				} catch (URISyntaxException | StateCreationException | InvalidRuleException e) {
+					outStream.out2("failed");
+					errStream.out(e,i,Severity.LOW);
+					response = new Response(ResponseCode.BAD_REQUEST);
+					exchange.respond(response);
+					i++;
+					return;
+				}
+				response = new Response(ResponseCode.CREATED);
 			}
 		}
 		exchange.respond(response);
@@ -1170,14 +972,12 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				//userMap.remove(id);
 				user = userMap.get(id);
 				user.active = false;
 				String[] uri_ = new String[] {cseBaseName, "state", "userMap", id};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
 				try {
-					// response_ = cseClient.services.oM2Mremove(uri_,cseClient.getCount());
 					response_ = cseClient.services.oM2Mput(id,user,uri_,false,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					outStream.out2("failed");
@@ -1286,7 +1086,6 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out1("Handling removal of node with serial \"" + serial0 + "\"", i);
-					String[] uri = null;
 					CoapResponse response_ = null;
 					switch (tag0.node) {
 						case SENSOR:
@@ -1300,35 +1099,6 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-//							outStream.out1_2("done, deleting subscription on \"" + tag0.id + "\"");
-//							uri = new String[] {cseBaseName, tag0.id, "data", "subscription"};
-//							cseClient.stepCount();
-//							try {
-//								response_ = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-//							} catch (URISyntaxException e) {
-//								outStream.out2("failed");
-//								errStream.out(e,i,Severity.MEDIUM);
-//								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//								exchange.respond(response);
-//								i++;
-//								return;
-//							}
-//							if (response_==null) {
-//								outStream.out2("failed");
-//								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", timeout expired", i, Severity.LOW);
-//								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//								exchange.respond(response);
-//								i++;
-//								return;
-//							} else if (response_.getCode()!=ResponseCode.DELETED) {
-//								outStream.out2("failed");
-//								errStream.out("Unable to delete subscription on \"" + tag0.id + "\", response: " + response_.getCode(),
-//										i, Severity.LOW);
-//								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
-//								exchange.respond(response);
-//								i++;
-//								return;
-//							}
 							break;
 						case ACTUATOR:
 							try {

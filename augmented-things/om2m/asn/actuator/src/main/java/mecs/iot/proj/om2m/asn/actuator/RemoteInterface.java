@@ -5,7 +5,6 @@ import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
@@ -13,7 +12,6 @@ import java.net.URISyntaxException;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-import org.json.JSONException;
 
 public class RemoteInterface extends Client {
 	
@@ -135,7 +133,7 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering");
-		response = register(tag,this.address,Node.ACTUATOR);
+		response = register(tag,this.address);
 		if (response==null) {
 			outStream.out2("failed. Terminating interface");
 			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);

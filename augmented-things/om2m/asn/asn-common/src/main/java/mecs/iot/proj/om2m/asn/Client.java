@@ -2,7 +2,6 @@ package mecs.iot.proj.om2m.asn;
 
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
-import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Tag;
 
 import java.net.URISyntaxException;
@@ -59,24 +58,39 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	}
 	
 	/*
-	 * MN registration (sensor and actuator)
+	 * MN registration (sensor)
 	 */
-	protected CoapResponse register(Tag tag, String reference, Node node) {
+	protected CoapResponse register(Tag tag) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(tag.id));
 		request.getOptions().addUriQuery("ser" + "=" + tag.serial);
 		request.getOptions().addUriQuery("type" + "=" + tag.type);
-		switch(node) {
-			case SENSOR:
-//				request.getOptions().addUriQuery("key" + "=" + reference);
-				break;
-			case ACTUATOR:
-			case USER:
-				request.getOptions().addUriQuery("addr" + "=" + reference);
-				break;
+		String payload = "";
+		for (int i=0; i<tag.attributes.length; i++) {
+			if (i!=tag.attributes.length-1)
+				payload += tag.attributes[i] + ", ";
+			else
+				payload += tag.attributes[i];
 		}
+		request.setPayload(payload);
+		//request.setTimedOut(true);
+		debugStream.out("Sent registration request to " + services.uri() + " with payload \"" + payload + "\"", i);
+		return send(request, Code.POST);
+	}
+	
+	/*
+	 * MN registration (actuator)
+	 */
+	protected CoapResponse register(Tag tag, String address) {
+		Request request = new Request(Code.POST);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(tag.id));
+		request.getOptions().addUriQuery("ser" + "=" + tag.serial);
+		request.getOptions().addUriQuery("type" + "=" + tag.type);
+		request.getOptions().addUriQuery("addr" + "=" + address);
 		String payload = "";
 		for (int i=0; i<tag.attributes.length; i++) {
 			if (i!=tag.attributes.length-1)
