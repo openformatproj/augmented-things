@@ -1,64 +1,69 @@
 Found local configuration file
-user/main@alessandro	[DEBUG]	0) Found local configuration file (ASN)
+user/main@ALESSANDRO-K7NR	[DEBUG]	0) Found local configuration file (ASN)
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-user/remote@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5685/augmented-things
-user/remote@alessandro	[INFO]	0) Starting interface
-user/remote@alessandro	[INFO]	0) Locating serial "0x0001"...
-user/remote@alessandro	[DEBUG]	0) Sent location request to coap://192.168.0.102:5685/augmented-things
-user/remote@alessandro	[DEBUG]	0) Sent GET request to coap://192.168.0.102:5685/augmented-things?mode=0&ser=0x0001 with payload <>
-user/remote@alessandro	[INFO]	0) ...done, received "augmented-things-MN" and "192.168.0.102" as MN id and address, connecting
-                      	      	   to CSE...
-user/remote@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5684/~/augmented-things-MN-cse
-user/remote@alessandro	[INFO]	0) ...done, posting AE...
-user/remote@alessandro	[DEBUG]	0) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"user.alessandro"}}
-                      	       	   to coap://192.168.0.102:5684/~/augmented-things-MN-cse
-user/remote@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5684/~/augmented-things-MN-cse? with payload <>
-                      	       	   {"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"user.alessandro"}}
-user/remote@alessandro	[DEBUG]	0) Received JSON: rn=user.alessandro, ty=2
-user/remote@alessandro	[INFO]	0) ...done, connecting to ADN...
-user/remote@alessandro	[DEBUG]	0) Connected to coap://192.168.0.102:5686/augmented-things
-user/remote@alessandro	[INFO]	0) ...done, registering...
-user/remote@alessandro	[DEBUG]	0) Sent registration request to coap://192.168.0.102:5686/augmented-things
-user/remote@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.102:5686/augmented-things?id=user.alessandro&addr=coap:/
-                      	       	   /192.168.0.107:5691/augmented-things with payload <>
-user/remote@alessandro	[INFO]	0) ...done
-user/remote@alessandro	[INFO]	1) Waiting for notifications...
-user/console@alessandro	[INFO]	0) Starting console
-user/console@alessandro	[DEBUG]	1) Sent attributes request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	1) Sent GET request to coap://192.168.0.102:5686/augmented-things?mode=1&ser=0x0001 with
-                       	       	   payload
-user/console@alessandro	[DEBUG]	2) Sent attributes request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	2) Sent GET request to coap://192.168.0.102:5686/augmented-things?mode=1&ser=0x0002 with
-                       	       	   payload
-user/console@alessandro	[DEBUG]	3) Sent reading request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	3) Sent GET request to coap://192.168.0.102:5686/augmented-things?mode=2&ser=0x0001 with
-                       	       	   payload
-user/console@alessandro	[DEBUG]	4) Sent lookout request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	4) Sent POST request to coap://192.168.0.102:5686/augmented-things?id=user.alessandro&ser=0x0001
-                       	       	   with payload <>
-user/ATserver@alessandro	[INFO]	1) Handling successful subscription... done
-user/ATserver@alessandro	[INFO]	2) Handling notification "sensor.alessandro: con=37,609 °C"... done
-user/ATserver@alessandro	[INFO]	3) Handling notification "sensor.alessandro: con=34,337 °C"... done
-user/ATserver@alessandro	[INFO]	4) Handling notification "sensor.alessandro: con=36,914 °C"... done
-user/ATserver@alessandro	[INFO]	5) Handling notification "sensor.alessandro: con=37,698 °C"... done
-user/console@alessandro	[DEBUG]	5) Sent lookout removal request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	5) Sent DELETE request to coap://192.168.0.102:5686/augmented-things?id=user.alessandro&ser=0x0001
-                       	       	   with payload <>
-user/console@alessandro	[DEBUG]	7) Sent write request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	7) Sent PUT request to coap://192.168.0.102:5686/augmented-things?ser=0x0002&lab=action1
-                       	       	   with payload <>
-user/console@alessandro	[DEBUG]	8) Sent link request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	8) Sent POST request to coap://192.168.0.102:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action2&id=user.alessandro
-                       	       	   with payload <>
-user/ATserver@alessandro	[INFO]	6) Handling successful subscription... done
-user/console@alessandro	[DEBUG]	9) Sent link removal request to coap://192.168.0.102:5686/augmented-things
-user/console@alessandro	[DEBUG]	9) Sent DELETE request to coap://192.168.0.102:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action2&id=user.alessandro
-                       	       	   with payload <>
-user/remote@alessandro	[INFO]	1) ...received: "terminated" (by "user/console@alessandro")
-user/remote@alessandro	[DEBUG]	2) Sent deletion request to coap://192.168.0.102:5686/augmented-things
-user/remote@alessandro	[DEBUG]	2) Sent asynchronous DELETE request to coap://192.168.0.102:5686/augmented-things?id=user.alessandro
-                      	       	   with payload <>
-user/remote@alessandro	[INFO]	2) Terminating interface
-user/console@alessandro	[INFO]	10) Terminating console
+user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.105:5685/augmented-things
+user/remote@ALESSANDRO-K7NR	[INFO]	0) Starting interface
+user/remote@ALESSANDRO-K7NR	[INFO]	0) Locating serial "0x0001"...
+user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Sent location request to coap://192.168.0.105:5685/augmented-things
+user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Sent GET request to coap://192.168.0.105:5685/augmented-things?mode=0&ser=0x0001 with
+                           	       	   payload <>
+user/remote@ALESSANDRO-K7NR	[INFO]	0) ...done, received "augmented-things-MN" and "192.168.0.105" as MN id and address, connecting
+                           	      	   to ADN...
+user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Connected to coap://192.168.0.105:5686/augmented-things
+user/remote@ALESSANDRO-K7NR	[INFO]	0) ...done, registering...
+user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Sent registration request to coap://192.168.0.105:5686/augmented-things
+user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Sent POST request to coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR&addr=coap:/
+                           	       	   /192.168.0.110:5691/augmented-things with payload <>
+user/remote@ALESSANDRO-K7NR	[INFO]	0) ...done
+user/remote@ALESSANDRO-K7NR	[INFO]	1) Waiting for notifications...
+user/console@ALESSANDRO-K7NR	[INFO]	0) Starting console
+user/console@ALESSANDRO-K7NR	[DEBUG]	1) Sent attributes request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	1) Sent GET request to coap://192.168.0.105:5686/augmented-things?mode=1&ser=0x0001
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	2) Sent attributes request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	2) Sent GET request to coap://192.168.0.105:5686/augmented-things?mode=1&ser=0x0002
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	3) Sent reading request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	3) Sent GET request to coap://192.168.0.105:5686/augmented-things?mode=2&ser=0x0001
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	4) Sent lookout request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	4) Sent POST request to coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR&ser=0x0001
+                            	       	   with payload <>
+user/ATserver@ALESSANDRO-K7NR	[INFO]	1) Handling notification "sensor.alessandro: con=31,615 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	2) Handling notification "sensor.alessandro: con=36,428 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	3) Handling notification "sensor.alessandro: con=37,091 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	4) Handling notification "sensor.alessandro: con=31,546 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	5) Handling notification "sensor.alessandro: con=35,488 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	6) Handling notification "sensor.alessandro: con=33,897 °C"... done
+user/console@ALESSANDRO-K7NR	[DEBUG]	5) Sent lookout removal request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	5) Sent DELETE request to coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR&ser=0x0001
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	7) Sent write request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	7) Sent PUT request to coap://192.168.0.105:5686/augmented-things?ser=0x0002&lab=action1
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	8) Sent link request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	8) Sent POST request to coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action1&id=user.ALESSANDRO-K7NR
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	9) Sent link removal request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	9) Sent DELETE request to coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action1&id=user.ALESSANDRO-K7NR
+                            	       	   with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	10) Sent link request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	10) Sent POST request to coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action2&id=user.ALESSANDRO-K7NR
+                            	       	    with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	11) Sent link removal request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	11) Sent DELETE request to coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action2&id=user.ALESSANDRO-K7NR
+                            	       	    with payload <>
+user/console@ALESSANDRO-K7NR	[DEBUG]	12) Sent lookout request to coap://192.168.0.105:5686/augmented-things
+user/console@ALESSANDRO-K7NR	[DEBUG]	12) Sent POST request to coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR&ser=0x0001
+                            	       	    with payload <>
+user/ATserver@ALESSANDRO-K7NR	[INFO]	7) Handling notification "sensor.alessandro: con=36,832 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	8) Handling notification "sensor.alessandro: con=38,794 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	9) Handling notification "sensor.alessandro: con=35,473 °C"... done
+user/remote@ALESSANDRO-K7NR	[INFO]	1) ...received: "terminated" (by "user/console@ALESSANDRO-K7NR")
+user/remote@ALESSANDRO-K7NR	[DEBUG]	2) Sent deletion request to coap://192.168.0.105:5686/augmented-things
+user/remote@ALESSANDRO-K7NR	[DEBUG]	2) Sent asynchronous DELETE request to coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR
+                           	       	   with payload <>
+user/remote@ALESSANDRO-K7NR	[INFO]	2) Terminating interface
+user/console@ALESSANDRO-K7NR	[INFO]	13) Terminating console
