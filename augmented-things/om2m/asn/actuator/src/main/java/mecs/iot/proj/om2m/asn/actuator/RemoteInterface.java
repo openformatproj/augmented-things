@@ -86,46 +86,47 @@ public class RemoteInterface extends Client {
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
-		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
-		try {
-			connect(Constants.protocol + address + Constants.mnCSERoot(name));
-		} catch (URISyntaxException e) {
-			outStream.out2("failed. Terminating interface");
-			errStream.out(e, i, Severity.MEDIUM);
-			return;
-		}
-		outStream.out1_2("done, posting AE");
-		response = services.postAE(Services.normalizeName(tag.id),i);
-		if (response==null) {
-			outStream.out2("failed. Terminating interface");
-			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
-			return;
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
-			outStream.out2("failed. Terminating interface");
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
-						i, Severity.LOW);
-			else
-				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(),
-					i, Severity.LOW);
-			return;
-		}
-		if (response.getCode()==ResponseCode.FORBIDDEN) {
-			debugStream.out(response.getResponseText(), i);
-		} else {
-			String json = null;
-			try {
-				json = Services.parseJSON(response.getResponseText(), "m2m:ae",
-						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-			} catch (JSONException e) {
-				outStream.out2("failed");
-				errStream.out(e, i, Severity.MEDIUM);
-				throw e;
-			}
-			debugStream.out("Received JSON: " + json, i);
-		}
-		outStream.out1_2("done, connecting to ADN");
+		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to ADN");
+//		outStream.out1_2("done, received \"" + name + "\" and \"" + address + "\" as MN id and address, connecting to CSE");
+//		try {
+//			connect(Constants.protocol + address + Constants.mnCSERoot(name));
+//		} catch (URISyntaxException e) {
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out(e, i, Severity.MEDIUM);
+//			return;
+//		}
+//		outStream.out1_2("done, posting AE");
+//		response = services.postAE(Services.normalizeName(tag.id),i);
+//		if (response==null) {
+//			outStream.out2("failed. Terminating interface");
+//			errStream.out("Unable to post AE to " + services.uri() + ", timeout expired", i, Severity.LOW);
+//			return;
+//		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+//			outStream.out2("failed. Terminating interface");
+//			if (!response.getResponseText().isEmpty())
+//				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode() +
+//						", reason: " + response.getResponseText(),
+//						i, Severity.LOW);
+//			else
+//				errStream.out("Unable to post AE to " + services.uri() + ", response: " + response.getCode(),
+//					i, Severity.LOW);
+//			return;
+//		}
+//		if (response.getCode()==ResponseCode.FORBIDDEN) {
+//			debugStream.out(response.getResponseText(), i);
+//		} else {
+//			String json = null;
+//			try {
+//				json = Services.parseJSON(response.getResponseText(), "m2m:ae",
+//						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+//			} catch (JSONException e) {
+//				outStream.out2("failed");
+//				errStream.out(e, i, Severity.MEDIUM);
+//				throw e;
+//			}
+//			debugStream.out("Received JSON: " + json, i);
+//		}
+//		outStream.out1_2("done, connecting to ADN");
 		try {
 			connect(Constants.protocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
@@ -154,7 +155,6 @@ public class RemoteInterface extends Client {
 		i++;
 		if (duration>0) {
 			Thread wd = new Watchdog(this);
-			//wd.setDaemon(true);
 			start = System.currentTimeMillis();
 			wd.start();
 		} else {

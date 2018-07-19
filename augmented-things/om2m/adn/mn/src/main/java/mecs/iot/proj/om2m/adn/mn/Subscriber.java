@@ -133,6 +133,10 @@ public class Subscriber {
 		return subscriptionMap.get(resourceMap.get(pi));
 	}
 	
+	public ArrayList<Subscription> getFromId(String id) {
+		return subscriptionMap.get(id);
+	}
+	
 	public String getResourceId(String key) {
 		return resourceMap.get(key);
 	}
@@ -189,21 +193,21 @@ public class Subscriber {
 	}
 	
 	private void deleteSubscription(String resource, int i) throws URISyntaxException, StateCreationException {
-		String[] uri = new String[] {cseBaseName, resource, "data", "subscription"};
-		CoapResponse response = null;
+//		String[] uri = new String[] {cseBaseName, resource, "data", "subscription"};
+//		CoapResponse response = null;
 		debugStream.out("Deleting subscription on \"" + resource + "\"...", i);
-		cseClient.stepCount();
-		response = cseClient.services.deleteSubscription(uri,cseClient.getCount());
-		if (response==null) {
-			debugStream.out("failed",i);
-			errStream.out("Unable to delete subscription on \"" + resource + "\", timeout expired" , i, Severity.LOW);
-			throw new StateCreationException();
-		} else if (response.getCode()!=ResponseCode.DELETED) {
-			debugStream.out("failed",i);
-			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response.getCode(),
-					i, Severity.LOW);
-			throw new StateCreationException();
-		}
+//		cseClient.stepCount();
+//		response = cseClient.services.deleteSubscription(uri,cseClient.getCount());
+//		if (response==null) {
+//			debugStream.out("failed",i);
+//			errStream.out("Unable to delete subscription on \"" + resource + "\", timeout expired" , i, Severity.LOW);
+//			throw new StateCreationException();
+//		} else if (response.getCode()!=ResponseCode.DELETED) {
+//			debugStream.out("failed",i);
+//			errStream.out("Unable to delete subscription on \"" + resource + "\", response: " + response.getCode(),
+//					i, Severity.LOW);
+//			throw new StateCreationException();
+//		}
 		subscriptionMap.remove(resource);
 		debugStream.out("...done",i);
 	}
