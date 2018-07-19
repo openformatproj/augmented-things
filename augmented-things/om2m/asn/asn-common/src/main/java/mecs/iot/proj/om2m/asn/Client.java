@@ -173,8 +173,10 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		CoapResponse response = send(request, Code.POST, console);
 		if (response==null)
 			return "Error: timeout expired";
-		if (response.getCode()==ResponseCode.CONTINUE)
-			return "Subscribing...";
+//		if (response.getCode()==ResponseCode.CONTINUE)
+//			return "Subscribing...";
+		if (response.getCode()==ResponseCode.CREATED)
+			return "OK";
 		else
 			return "Error: " + response.getCode().toString();
 	}
@@ -236,8 +238,10 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		CoapResponse response = send(request, Code.POST, console);
 		if (response==null)
 			return "Error: timeout expired";
-		if (response.getCode()==ResponseCode.CONTINUE)
-			return "Subscribing...";
+//		if (response.getCode()==ResponseCode.CONTINUE)
+//			return "Subscribing...";
+		if (response.getCode()==ResponseCode.CREATED)
+			return "OK";
 		else
 			return "Error: " + response.getCode().toString();
 	}
