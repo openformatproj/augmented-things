@@ -7,7 +7,7 @@ import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
-//import mecs.iot.proj.web.DirectShell;
+import mecs.iot.proj.web.DirectShell;
 
 import java.net.URISyntaxException;
 
