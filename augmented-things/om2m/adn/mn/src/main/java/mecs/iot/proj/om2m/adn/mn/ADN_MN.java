@@ -515,35 +515,187 @@ class ADN_MN extends ADN {
 					tagMap.put(serial,tag);
 					response = new Response(ResponseCode.CREATED);
 				} else {
-					// node lookout (id=<ID>&ser=<SERIAL>)
-					Tag tag = tagMap.get(serial);
-					if (tag==null || tag.node!=Node.SENSOR) {
-						debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
+					String address = getUriValue(exchange,"addr",2);
+					if (address!=null) {
+						// actuator MN registration (id=<ID>&ser=<SERIAL>&addr=<EUI-64>), shortcut for highly constrained devices on an IPv6 network
+						if (!isValidEUI64Address(address)) {
+							debugStream.out("Bad request, addr=" + address, i);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						Tag tag = new Tag(Node.ACTUATOR,id,resolveEUI64Address(address),new String[] {"on","off"},cseBaseName);
+						outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
+						boolean createState;
+						String[] uri_;
+						if (tagMap.containsKey(serial)) {
+							createState = false;
+							uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
+						}
+						else {
+							createState = true;
+							uri_ = new String[] {cseBaseName, "state", "tagMap"};
+						}
+						CoapResponse response_ = null;
+						cseClient.stepCount();
+						try {
+							response_ = cseClient.services.oM2Mput(serial,tag,uri_,createState,cseClient.getCount());
+						} catch (URISyntaxException e) {
+							outStream.out2("failed");
+							errStream.out(e,i,Severity.MEDIUM);
+							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						if (response_==null) {
+							outStream.out2("failed");
+							errStream.out("Unable to register node \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						} else if (response_.getCode()!=ResponseCode.CREATED) {
+							outStream.out2("failed");
+							errStream.out("Unable to register node \"" + id + "\" on CSE, response: " + response_.getCode(),
+									i, Severity.LOW);
+							response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						if (createState) {
+							cseClient.stepCount();
+							try {
+								cseClient.connect(Constants.protocol + "localhost" + Constants.mnCSERoot(cseBaseName));
+							} catch (URISyntaxException e) {
+								outStream.out2("failed");
+								errStream.out(e,i,Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							response_ = cseClient.services.postAE(id,cseClient.getCount());
+							if (response_==null) {
+								outStream.out2("failed");
+								errStream.out("Unable to register node \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							} else if (response_.getCode()!=ResponseCode.CREATED) {
+								outStream.out2("failed");
+								errStream.out("Unable to register node \"" + id + "\" on CSE, response: " + response_.getCode(),
+										i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							String json = null;
+							try {
+								json = Services.parseJSON(response_.getResponseText(), "m2m:ae",
+									new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+							} catch (JSONException e) {
+								outStream.out2("failed");
+								errStream.out(e, i, Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							debugStream.out("Received JSON: " + json, i);
+							try {
+								response_ = cseClient.services.postContainer(cseBaseName,id,cseClient.getCount());
+							} catch (URISyntaxException e) {
+								outStream.out2("failed");
+								errStream.out(e,i,Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							if (response_==null) {
+								outStream.out2("failed");
+								errStream.out("Unable to register node \"" + id + "\" on CSE, timeout expired", i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							} else if (response_.getCode()!=ResponseCode.CREATED) {
+								outStream.out2("failed");
+								errStream.out("Unable to register node \"" + id + "\" on CSE, response: " + response_.getCode(),
+										i, Severity.LOW);
+								response = new Response(ResponseCode.SERVICE_UNAVAILABLE);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							try {
+								json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+									new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+							} catch (JSONException e) {
+								outStream.out2("failed");
+								errStream.out(e, i, Severity.MEDIUM);
+								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+								exchange.respond(response);
+								i++;
+								return;
+							}
+							debugStream.out("Received JSON: " + json, i);
+							// TODO: check if the following section is safe to remove
+							if (tag.node==Node.SENSOR) {
+								String ri = null;
+								try {
+									ri = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+											new String[] {"ri"}, new Class<?>[] {String.class});							// Example: "/augmented-things-MN-cse/cnt-67185819"
+								} catch (JSONException e) {
+									outStream.out2("failed");
+									errStream.out(e, i, Severity.MEDIUM);
+									response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+									exchange.respond(response);
+									i++;
+									return;
+								}
+								String key = Services.getKeyFromAttribute(ri);												// Example: "67185819"
+								subscriber.bind(id,key);
+							}
+						}
+						tagMap.put(serial,tag);
+						response = new Response(ResponseCode.CREATED);
+					} else {
+						// node lookout (id=<ID>&ser=<SERIAL>)
+						Tag tag = tagMap.get(serial);
+						if (tag==null || tag.node!=Node.SENSOR) {
+							debugStream.out("Serial \"" + serial + "\" is not registered on this MN as a sensor", i);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						User user = userMap.get(id);
+						if (user==null) {
+							debugStream.out("User \"" + id + "\" is not registered on this MN", i);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
+						try {
+							subscriber.insert(tag.id,tag.type,id,user.address,i);
+						} catch (URISyntaxException | StateCreationException e) {
+							outStream.out2("failed");
+							errStream.out(e,i,Severity.LOW);
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							i++;
+							return;
+						}
+						response = new Response(ResponseCode.CREATED);
 					}
-					User user = userMap.get(id);
-					if (user==null) {
-						debugStream.out("User \"" + id + "\" is not registered on this MN", i);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
-					try {
-						subscriber.insert(tag.id,tag.type,id,user.address,i);
-					} catch (URISyntaxException | StateCreationException e) {
-						outStream.out2("failed");
-						errStream.out(e,i,Severity.LOW);
-						response = new Response(ResponseCode.BAD_REQUEST);
-						exchange.respond(response);
-						i++;
-						return;
-					}
-					response = new Response(ResponseCode.CREATED);
 				}
 			} else {
 				String address = getUriValue(exchange,"addr",1);
@@ -1187,6 +1339,15 @@ class ADN_MN extends ADN {
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.setPayload(content);
 		return notificationClient.send(request, Code.PUT);
+	}
+	
+	private boolean isValidEUI64Address(String address) {
+		// TODO
+		return !address.isEmpty();
+	}
+	
+	private String resolveEUI64Address(String address) {
+		return Constants.protocol + "[" + Constants.networkAddress + "::" + address + "]:" + Constants.stdActuatorServerPort + "/" + Constants.context;
 	}
 
 }

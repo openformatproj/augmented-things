@@ -27,6 +27,8 @@ public class Constants {
 	
 	final public static int streamCharacters;
 	final public static double hysteresis;
+	final public static String networkAddress;
+	final public static String stdActuatorServerPort;
 	
 	final public static String remotePath = "http://thingstalk.altervista.org/augmented-things/configuration";
 	
@@ -131,6 +133,20 @@ public class Constants {
 			str = 0.2;
 		} finally {
 			hysteresis = (double) str;
+		}
+		try {
+			str = conf.getAttribute("mecs.iot.proj.om2m.networkAddress");
+		} catch (Exception e) {
+			str = "aaaa";
+		} finally {
+			networkAddress = (String) str;
+		}
+		try {
+			str = conf.getAttribute("mecs.iot.proj.om2m.stdActuatorServerPort");
+		} catch (Exception e) {
+			str = "5690";
+		} finally {
+			stdActuatorServerPort = (String) str;
 		}
 		inADNRoot = ":" + Integer.toString(inADNPort) + "/" + context;
 		mnADNRoot = ":" + Integer.toString(mnADNPort) + "/" + context;
