@@ -11,6 +11,7 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		commands = new Command[numCommands];
 		numOptions = new int[]{1,1,1,1,2,4,4,0,1};
 		text = new String[numCommands][3];
+		isJSON = new boolean[]{false,false,false,false,false,false,false,false,false};
 		commands[0] = (options) -> client.getAttributes(options[0],console);
 		commands[1] = (options) -> client.getResource(options[0],console);
 		commands[2] = (options) -> client.postSubscription(id,options[0],console);

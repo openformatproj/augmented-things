@@ -6,6 +6,7 @@ public class CommandList {
 	public int numCommands;
 	public int numOptions[];
 	public String[][] text;
+	public boolean[] isJSON;
 	
 	public Command getCommand(int i) {
 		if (i<commands.length)

@@ -10,6 +10,7 @@ class CommandList extends mecs.iot.proj.om2m.dashboard.CommandList {
 		commands = new Command[numCommands];
 		numOptions = new int[]{0,1,1,2};
 		text = new String[numCommands][3];
+		isJSON = new boolean[]{true,true,true,true};
 		commands[0] = (options) -> adn.cloud.getJSONMNs();
 		commands[1] = (options) -> adn.cloud.getJSONNodes(options[0]);
 		commands[2] = (options) -> adn.cloud.getJSONUsers(options[0]);

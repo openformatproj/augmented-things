@@ -46,8 +46,8 @@ public class Console extends Thread {
 		i = 0;
 	}
 	
-	public void add (String name, Command command, int numOptions, String help, String syntax) {
-		CommandContainer container = new CommandContainer(command, numOptions, help + ". Syntax: " + syntax);
+	public void add (String name, Command command, int numOptions, String help, String syntax, boolean isJSON) {
+		CommandContainer container = new CommandContainer(command, numOptions, help + ". Syntax: " + syntax, isJSON);
 		commandMap.put(name,container);
 	}
 	
@@ -89,7 +89,8 @@ public class Console extends Thread {
 							if (options[0].equals("help")) {
 								interf.out(cnt.help,false);
 							} else {
-								interf.out(cnt.command.execute(options),false);
+								str = cnt.command.execute(options);
+								interf.out(str, cnt.isJSON && str.matches("\\{.+\\}"));
 							}
 						} else if (commandsFound>0) {
 							String firstOption = sections[1];
@@ -97,7 +98,8 @@ public class Console extends Thread {
 								interf.out(cnt.help,false);
 							}
 						} else {
-							interf.out(cnt.command.execute(null),false);
+							str = cnt.command.execute(null);
+							interf.out(str, cnt.isJSON && str.matches("\\{.+\\}"));
 						}
 					}
 				} else if (name.equals("ls /commands")) {
@@ -127,11 +129,13 @@ class CommandContainer {
 	Command command;
 	int numOptions;
 	String help;
+	boolean isJSON;
 	
-	CommandContainer(Command command, int numOptions, String help) {
+	CommandContainer(Command command, int numOptions, String help, boolean isJSON) {
 		this.command = command;
 		this.numOptions = numOptions;
 		this.help = help;
+		this.isJSON = isJSON;
 	}
 	
 }

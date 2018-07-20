@@ -68,7 +68,7 @@ class ADN_IN extends ADN {
 		cloud = new Cloud(debugStream);
 		CommandList list = new CommandList(this,console);
 		for (int i=0; i<list.numCommands; i++) {
-			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2]);
+			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2],list.isJSON[i]);
 		}
 		i++;
 	}

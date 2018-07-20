@@ -28,7 +28,7 @@ class RemoteInterface extends Client {
 		this.address = Constants.protocol + ip + ":" + Integer.toString(port) + "/" + context;
 		CommandList list = new CommandList(this,console,this.id);
 		for (int i=0; i<list.numCommands; i++) {
-			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2]);
+			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2],list.isJSON[i]);
 		}
 		this.console = console;
 		executing = true;

@@ -67,7 +67,7 @@ public class App
         	server.start();
         	outStream.out2("done");
         	Command exit = (s) -> {console.terminate(); server.destroy(); adn.notificationClient.destroy(); adn.cseClient.destroy(); return "Exiting";};
-    		console.add("exit",exit,0,"Terminate this adn","exit");
+    		console.add("exit",exit,0,"Terminate this adn","exit",false);
         	console.start();
     	} catch (URISyntaxException | StateCreationException | RegistrationException e) {
     		errStream.out(e,0,Severity.MEDIUM);
