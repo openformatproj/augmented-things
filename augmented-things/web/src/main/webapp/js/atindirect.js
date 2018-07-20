@@ -1,5 +1,5 @@
 // target servlets
-const SERVLET = "om2m";
+const SERVLET = "webpage";
 const TESTER = "test";
 
 

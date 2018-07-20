@@ -9,23 +9,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-/* I had to add all to the build path. Let's say if there is another way */
-import mecs.iot.proj.web.globals.Globals;
-
 
 /**
  * The servlet manages in mutual exclusion the shell, with which it can send notifications
  * to the in App. 
  * @author ilaria
  */
-@WebServlet(name = "Om2mServlet", 
-			urlPatterns = { "/om2m" },
+@WebServlet(name = "WebpageServlet", 
+			urlPatterns = { "/webpage" },
 			loadOnStartup = 1)
-public class Om2mServlet extends HttpServlet {
+public class WebpageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/** @see HttpServlet#HttpServlet() */
-    public Om2mServlet() {
+    public WebpageServlet() {
     	super();
     }
 

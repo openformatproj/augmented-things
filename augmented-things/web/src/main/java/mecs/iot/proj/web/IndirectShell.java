@@ -1,9 +1,6 @@
 package mecs.iot.proj.web;
 
 
-//import mecs.iot.proj.om2m.Services;
-//import mecs.iot.proj.om2m.dashboard.Interface;
-//import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.Interface;
 
 public class IndirectShell implements Interface {
@@ -22,7 +19,7 @@ public class IndirectShell implements Interface {
 	@Override
 	// still don't understand why such that 
 	public String getSerial() {
-		return "0x0002";
+		return null;
 	}
 	
 	@Override
@@ -76,7 +73,7 @@ public class IndirectShell implements Interface {
 	// by the servlet in order to notify the Console
 	public synchronized void callMNS() {
 		command = "mns";
-		wake();
+		wake(); // meglio solo notify? e' gia' synchronized!!!
 	}
 	
 	public synchronized void callNODES(String mn_name) {

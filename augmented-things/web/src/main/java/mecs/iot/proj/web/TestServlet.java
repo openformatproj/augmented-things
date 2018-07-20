@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import org.apache.tomcat.util.http.parser.MediaType;
-import org.json.JSONObject;
-
 
 @WebServlet(name = "TestServlet", 
 			urlPatterns = { "/test" }, 
