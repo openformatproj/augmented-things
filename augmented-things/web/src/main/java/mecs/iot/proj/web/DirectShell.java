@@ -5,17 +5,17 @@ import mecs.iot.proj.Interface;
 public class DirectShell implements Interface {
 
 	private String serial;
-	private String fullcommand;
-	private String out, outAsync;
-	private boolean outready;
+	private String fullcommand = "";
+	private String out = "", outAsync = "";
+	private boolean commandReady = false;	// different lock conditions
+	private boolean outReady = false, outAsyncReady = false;
 	
 	@Override
 	public synchronized String getSerial() {
 		// deve essere bloccante (sync) perche' e' qui aspetto il primo seriale dal quale
 		// capiamo a quale middle node attaccarsi
-		try {
-			wait();
-		} catch (InterruptedException e) {
+		try { wait(); } 
+		catch (InterruptedException e) { 
 			e.printStackTrace();
 		}
 		return serial;
@@ -27,16 +27,18 @@ public class DirectShell implements Interface {
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	// this is used by the app to retrieve the command
 	public synchronized String in() {
-		try { wait(); }
-		catch (InterruptedException e) { e.printStackTrace(); }
+		while(!commandReady) {
+			try { wait(); }
+			catch (InterruptedException e) { e.printStackTrace(); }
+		}
 		
+		commandReady = false;
 		return fullcommand;
 	}
 	
@@ -47,12 +49,14 @@ public class DirectShell implements Interface {
 			for (int i = 0; i < options.length; i++)
 				fullcommand.concat(" -"+options[i]);
 		}
+		System.out.println("    [DS]fullcommand:"+fullcommand);
+		commandReady = true;
 		notify();
 	}
 
 	@Override
 	// the string 'str' is what om2m sets!
-	public synchronized void out(String str, boolean isJSON) {
+	public void out(String str, boolean isJSON) {
 		if (isJSON) {
 			// capire come Ale traduce la risposta
 		}
@@ -65,13 +69,13 @@ public class DirectShell implements Interface {
 //		}
 		// per adesso, facciamo un esempio
 		out = "{\"mn\": \"greenhouse-MN\"}";
-		outready = true;
+		outReady = true;
 		notify();
 	}
 
 	@Override
 	// these are the responses from om2m!! do not use them to write
-	public synchronized void outAsync(String str, boolean isJSON) {
+	public void outAsync(String str, boolean isJSON) {
 		if (isJSON) {
 			
 		}
@@ -99,16 +103,26 @@ public class DirectShell implements Interface {
 				"],\n" + 
 				"\"id\":\"sensor.alessandro\"\n" + 
 				"}";
-		outready = true;
+		outReady = true;
 		notify();
 	}
 	
+	// these are called ONLY by the servlet
 	public synchronized String getOut() {
-//		if (!outready) {
-//			try {wait();}
-//			catch (InterruptedException e) {e.printStackTrace();}
-//		}
-		outready = false;
+		if (!outReady) {
+			try {wait();}
+			catch (InterruptedException e) {e.printStackTrace();}
+		}
+		outReady = false;
+		return out;
+	}
+	
+	public synchronized String getOutAsync() {
+		if (!outAsyncReady) {
+			try {wait();}
+			catch (InterruptedException e) {e.printStackTrace();}
+		}
+		outAsyncReady = false;
 		return out;
 	}
 

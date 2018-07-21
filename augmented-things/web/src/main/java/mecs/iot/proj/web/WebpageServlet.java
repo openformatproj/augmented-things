@@ -20,7 +20,7 @@ import org.json.JSONObject;
 			loadOnStartup = 1)
 public class WebpageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+	private static final String SERV_LOG = "[WEBPAGE] ";
 	/** @see HttpServlet#HttpServlet() */
     public WebpageServlet() {
     	super();
@@ -29,9 +29,9 @@ public class WebpageServlet extends HttpServlet {
 	/** @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response) */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// We have received a json. Let's check: data of ajax is into QUERY
-		System.out.println("[OM2M] I received a request.");
-		System.out.println("[OM2M] Content type: "+request.getContentType());
-		System.out.println("[OM2M] Query: "+request.getQueryString());
+		System.out.println(SERV_LOG	+"I received a request.");
+		System.out.println(SERV_LOG	+"Content type: "+request.getContentType());
+		System.out.println(SERV_LOG	+"Query: "+request.getQueryString());
 		
 		String command = request.getQueryString();
 		Boolean success = false;
