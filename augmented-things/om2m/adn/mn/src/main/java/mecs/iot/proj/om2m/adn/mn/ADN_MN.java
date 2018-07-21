@@ -807,6 +807,8 @@ class ADN_MN extends ADN {
 						return;
 					}
 					outStream.out1("Posting Content Instance \"" + content + "\" on node \"" + id + "\"", i);
+					if (content=="\\*")
+						content = Format.getRandomValue(tagMap.get(id).type);
 					String[] uri = new String[] {cseBaseName, id, "data"};
 					CoapResponse response_ = null;
 					cseClient.stepCount();

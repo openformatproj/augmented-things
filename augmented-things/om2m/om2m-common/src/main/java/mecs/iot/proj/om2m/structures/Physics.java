@@ -1,4 +1,4 @@
-package mecs.iot.proj.om2m.asn;
+package mecs.iot.proj.om2m.structures;
 
 import java.util.Random;
 

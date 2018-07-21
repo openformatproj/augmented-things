@@ -18,7 +18,7 @@ public class Format {
 		return formatMap.get(type);
 	}
 	
-	// Only tempC type currently supported
+	// Only double types currently supported
 	
 	public static String pack(double value, String type) {
 		return String.format("%.3f",value) + " " + formatMap.get(type);
@@ -28,6 +28,14 @@ public class Format {
 		String[] splits = content.split(" ");
 		NumberFormat format = NumberFormat.getInstance();
 		return format.parse(splits[0]).doubleValue();
+	}
+	
+	public static String getRandomValue(String type) {
+		if (type.equals("tempC"))
+			return pack(36.0*Physics.randomGaussianFluctuation(0.05),type);
+		else
+			return "";
+		// TODO: throw a not existing type exception
 	}
 	
 	public static boolean contains(String type) {

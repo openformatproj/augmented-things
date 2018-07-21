@@ -1,7 +1,7 @@
 package mecs.iot.proj.om2m.asn.sensor;
 
 import mecs.iot.proj.om2m.asn.Client;
-import mecs.iot.proj.om2m.asn.Physics;
+import mecs.iot.proj.om2m.structures.Physics;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Severity;
