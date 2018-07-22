@@ -7,6 +7,8 @@ import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
+import mecs.iot.proj.web.Globals;
+
 import java.net.URISyntaxException;
 
 public class App 
@@ -26,7 +28,6 @@ public class App
     public static void main( String[] args )
     {
     	/* Replace true with your interface implementation. When working with default Shell, be sure that a sensor with serial "0x0001" exists */
-    	/* DirectShell directShell = new DirectShell(); */
     	final Console console = new Console(id,host,true,debug);
 		try {
 			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
