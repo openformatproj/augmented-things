@@ -1,6 +1,6 @@
 # Factory
 
-## Setting
+## Setting and execution
 This module starts a simulation allowing the user to execute more nodes on the same host. To launch the factory, execute
 ```
 mecs.iot.proj.om2m.asn.factory.App
