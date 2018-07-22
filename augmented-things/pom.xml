@@ -19,9 +19,9 @@
     </dependency>
   </dependencies>
   <modules>
-  	<module>om2m</module>
-  	<module>common</module>
-  	<module>web</module>
+    <module>om2m</module>
+    <module>common</module>
+    <module>web</module>
   </modules>
   <build>
     <pluginManagement>
@@ -73,17 +73,17 @@
             </execution>
           </executions>
         </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>${project.groupId}.${mainClass}</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>${project.groupId}.${mainClass}</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
