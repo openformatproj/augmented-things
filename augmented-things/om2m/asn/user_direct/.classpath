@@ -23,6 +23,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/ilaria/git/augmented-things/augmented-things/web/src/main/webapp/WEB-INF/lib/json-20160810.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
