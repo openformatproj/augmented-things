@@ -27,8 +27,12 @@ public class App
 	
     public static void main( String[] args )
     {
-    	/* Replace true with your interface implementation. When working with default Shell, be sure that a sensor with serial "0x0001" exists */
-    	final Console console = new Console(id,host,Globals.ds,debug);
+    	/* When working with AT Shell, be sure that a sensor with serial "0x0001" exists */
+    	final Console console;
+    	if (Constants.startWebShell)
+    		console = new Console(id,host,Globals.ds,debug);
+    	else
+    		console = new Console(id,host,true,debug);
 		try {
 			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
 			Command exit = (s) -> {console.terminate(); remote.terminate(); return "Exiting";};

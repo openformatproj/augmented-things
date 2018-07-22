@@ -25,8 +25,11 @@ public class App
 	
     public static void main( String[] args )
     {
-    	/* Replace true with your interface implementation */
-    	final Console console = new Console(id,host,Globals.is,debug);
+    	final Console console;
+    	if (Constants.startWebShell)
+    		console = new Console(id,host,Globals.is,debug);
+    	else
+    		console = new Console(id,host,true,debug);
 		try {
 			final ADN_IN adn = new ADN_IN(id,host,debug,console);
 			CoapServer server = new CoapServer(Constants.inADNPort);

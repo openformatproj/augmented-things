@@ -29,6 +29,7 @@ public class Constants {
 	final public static double hysteresis;
 	final public static String networkAddress;
 	final public static String stdActuatorServerPort;
+	final public static boolean startWebShell;
 	
 	final public static String remotePath = "http://thingstalk.altervista.org/augmented-things/configuration";
 	
@@ -147,6 +148,13 @@ public class Constants {
 			str = "5690";
 		} finally {
 			stdActuatorServerPort = (String) str;
+		}
+		try {
+			str = Boolean.parseBoolean(conf.getAttribute("mecs.iot.proj.om2m.startWebShell"));
+		} catch (Exception e) {
+			str = false;
+		} finally {
+			startWebShell = (boolean) str;
 		}
 		inADNRoot = ":" + Integer.toString(inADNPort) + "/" + context;
 		mnADNRoot = ":" + Integer.toString(mnADNPort) + "/" + context;
