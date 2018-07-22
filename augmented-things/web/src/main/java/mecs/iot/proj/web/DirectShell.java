@@ -64,11 +64,10 @@ public class DirectShell implements Interface {
 			
 		}
 		
-//		if (str.contains("mn_name")) {
-//			
-//		}
 		// per adesso, facciamo un esempio
 		out = "{\"mn\": \"greenhouse-MN\"}";
+		
+		out = str;
 		outReady = true;
 		notify();
 	}
@@ -82,27 +81,29 @@ public class DirectShell implements Interface {
 		else {
 			
 		}
+		out = str;
+		
 		// per adesso, facciamo un esempio
-		out = "{\n" + 
-				"\"mn\":\"augmented-things-MN\",\n" + 
-				"\"subs\":[\n" + 
-				"{\n" + 
-				"\"receiver\":{\n" + 
-				"\"node\":\"ACTUATOR\",\n" + 
-				"\"address\":\"coap://127.0.0.1:5690/augmented-things\",\n" + 
-				"\"id\":\"actuator.alessandro\"\n" + 
-				"},\n" + 
-				"\"sender\":{\n" + 
-				"\"node\":\"SENSOR\",\n" + 
-				"\"id\":\"sensor.alessandro\",\n" + 
-				"\"type\":\"tempC\"\n" + 
-				"},\n" + 
-				"\"action\":\"action1\",\n" + 
-				"\"event\":\"event\"\n" + 
-				"}\n" + 
-				"],\n" + 
-				"\"id\":\"sensor.alessandro\"\n" + 
-				"}";
+//		out = "{\n" + 
+//				"\"mn\":\"augmented-things-MN\",\n" + 
+//				"\"subs\":[\n" + 
+//				"{\n" + 
+//				"\"receiver\":{\n" + 
+//				"\"node\":\"ACTUATOR\",\n" + 
+//				"\"address\":\"coap://127.0.0.1:5690/augmented-things\",\n" + 
+//				"\"id\":\"actuator.alessandro\"\n" + 
+//				"},\n" + 
+//				"\"sender\":{\n" + 
+//				"\"node\":\"SENSOR\",\n" + 
+//				"\"id\":\"sensor.alessandro\",\n" + 
+//				"\"type\":\"tempC\"\n" + 
+//				"},\n" + 
+//				"\"action\":\"action1\",\n" + 
+//				"\"event\":\"event\"\n" + 
+//				"}\n" + 
+//				"],\n" + 
+//				"\"id\":\"sensor.alessandro\"\n" + 
+//				"}";
 		outReady = true;
 		notify();
 	}
