@@ -28,7 +28,7 @@ public class App
     public static void main( String[] args )
     {
     	/* Replace true with your interface implementation. When working with default Shell, be sure that a sensor with serial "0x0001" exists */
-    	final Console console = new Console(id,host,true,debug);
+    	final Console console = new Console(id,host,Globals.ds,debug);
 		try {
 			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
 			Command exit = (s) -> {console.terminate(); remote.terminate(); return "Exiting";};

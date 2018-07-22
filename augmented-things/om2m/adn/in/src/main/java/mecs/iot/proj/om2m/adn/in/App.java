@@ -26,7 +26,7 @@ public class App
     public static void main( String[] args )
     {
     	/* Replace true with your interface implementation */
-    	final Console console = new Console(id,host,true,debug);
+    	final Console console = new Console(id,host,Globals.is,debug);
 		try {
 			final ADN_IN adn = new ADN_IN(id,host,debug,console);
 			CoapServer server = new CoapServer(Constants.inADNPort);
