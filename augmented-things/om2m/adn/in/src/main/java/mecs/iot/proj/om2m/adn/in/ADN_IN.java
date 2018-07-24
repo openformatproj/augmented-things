@@ -32,7 +32,7 @@ class ADN_IN extends ADN {
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
 		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.inCSERoot(id), debug);
-		// TODO: create AE, pull/push internal state...
+		// TODO: create AE, pull from OM2M (serialMap)
 		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
 		locationMap = new HashMap<Integer,MN>();
@@ -195,6 +195,7 @@ class ADN_IN extends ADN {
 				}
 				outStream.out1("Associating node \"" + id + "\" with serial \"" + serial + "\" to MN \"" + mn.id + "\"", i);
 				serialMap.put(serial,mn);
+				// TODO: push to OM2M
 				response = new Response(ResponseCode.CREATED);
 				response.setPayload(mn.id + ", " + mn.address);
 			} else {
