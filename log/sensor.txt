@@ -1,11 +1,11 @@
 Found local configuration file
 sensor/main@alessandro	[DEBUG]	0) Found local configuration file (ASN)
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 sensor@alessandro	[DEBUG]	0) Connected to coap://127.0.0.1:5685/augmented-things
 sensor@alessandro	[INFO]	0) Starting interface
 sensor@alessandro	[INFO]	0) Locating node...
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 sensor@alessandro	[DEBUG]	0) Sent location request to coap://127.0.0.1:5685/augmented-things
 sensor@alessandro	[DEBUG]	0) Sent POST request to coap://127.0.0.1:5685/augmented-things?id=sensor.alessandro&ser=0x0001&loc=0 
                  	       	   with payload <>
@@ -19,207 +19,177 @@ sensor@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.105:5686/augm
 sensor@alessandro	[INFO]	0) ...done
 sensor@alessandro	[INFO]	1) Posting Content Instance...
 sensor@alessandro	[DEBUG]	1) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	1) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=34,
-                 	       	   030 °C with payload <>
+sensor@alessandro	[DEBUG]	1) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=32,
+                 	       	   610 °C with payload <>
 sensor@alessandro	[INFO]	1) ...done
 sensor@alessandro	[INFO]	2) Posting Content Instance...
 sensor@alessandro	[DEBUG]	2) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	2) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=33,
-                 	       	   613 °C with payload <>
+sensor@alessandro	[DEBUG]	2) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	   703 °C with payload <>
 sensor@alessandro	[INFO]	2) ...done
 sensor@alessandro	[INFO]	3) Posting Content Instance...
 sensor@alessandro	[DEBUG]	3) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	3) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	   983 °C with payload <>
+sensor@alessandro	[DEBUG]	3) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	   935 °C with payload <>
 sensor@alessandro	[INFO]	3) ...done
 sensor@alessandro	[INFO]	4) Posting Content Instance...
 sensor@alessandro	[DEBUG]	4) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	4) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=38,
-                 	       	   105 °C with payload <>
+sensor@alessandro	[DEBUG]	4) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	   656 °C with payload <>
 sensor@alessandro	[INFO]	4) ...done
 sensor@alessandro	[INFO]	5) Posting Content Instance...
 sensor@alessandro	[DEBUG]	5) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	5) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	   958 °C with payload <>
+sensor@alessandro	[DEBUG]	5) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=35,
+                 	       	   066 °C with payload <>
 sensor@alessandro	[INFO]	5) ...done
 sensor@alessandro	[INFO]	6) Posting Content Instance...
 sensor@alessandro	[DEBUG]	6) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	6) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	   140 °C with payload <>
+sensor@alessandro	[DEBUG]	6) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=33,
+                 	       	   045 °C with payload <>
 sensor@alessandro	[INFO]	6) ...done
 sensor@alessandro	[INFO]	7) Posting Content Instance...
 sensor@alessandro	[DEBUG]	7) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	7) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	   552 °C with payload <>
+sensor@alessandro	[DEBUG]	7) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	   393 °C with payload <>
 sensor@alessandro	[INFO]	7) ...done
 sensor@alessandro	[INFO]	8) Posting Content Instance...
 sensor@alessandro	[DEBUG]	8) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	8) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	   307 °C with payload <>
+sensor@alessandro	[DEBUG]	8) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=31,
+                 	       	   776 °C with payload <>
 sensor@alessandro	[INFO]	8) ...done
 sensor@alessandro	[INFO]	9) Posting Content Instance...
 sensor@alessandro	[DEBUG]	9) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	9) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	   248 °C with payload <>
+sensor@alessandro	[DEBUG]	9) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	   456 °C with payload <>
 sensor@alessandro	[INFO]	9) ...done
 sensor@alessandro	[INFO]	10) Posting Content Instance...
 sensor@alessandro	[DEBUG]	10) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	10) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=33,
-                 	       	    011 °C with payload <>
+sensor@alessandro	[DEBUG]	10) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=38,
+                 	       	    199 °C with payload <>
 sensor@alessandro	[INFO]	10) ...done
 sensor@alessandro	[INFO]	11) Posting Content Instance...
 sensor@alessandro	[DEBUG]	11) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	11) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=31,
-                 	       	    615 °C with payload <>
+sensor@alessandro	[DEBUG]	11) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=35,
+                 	       	    550 °C with payload <>
 sensor@alessandro	[INFO]	11) ...done
 sensor@alessandro	[INFO]	12) Posting Content Instance...
 sensor@alessandro	[DEBUG]	12) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	12) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	    091 °C with payload <>
+sensor@alessandro	[DEBUG]	12) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=37,
+                 	       	    467 °C with payload <>
 sensor@alessandro	[INFO]	12) ...done
 sensor@alessandro	[INFO]	13) Posting Content Instance...
 sensor@alessandro	[DEBUG]	13) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	13) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	    428 °C with payload <>
+sensor@alessandro	[DEBUG]	13) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	    909 °C with payload <>
 sensor@alessandro	[INFO]	13) ...done
 sensor@alessandro	[INFO]	14) Posting Content Instance...
 sensor@alessandro	[DEBUG]	14) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	14) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=31,
-                 	       	    546 °C with payload <>
+sensor@alessandro	[DEBUG]	14) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	    919 °C with payload <>
 sensor@alessandro	[INFO]	14) ...done
 sensor@alessandro	[INFO]	15) Posting Content Instance...
 sensor@alessandro	[DEBUG]	15) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	15) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    488 °C with payload <>
+sensor@alessandro	[DEBUG]	15) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=38,
+                 	       	    224 °C with payload <>
 sensor@alessandro	[INFO]	15) ...done
 sensor@alessandro	[INFO]	16) Posting Content Instance...
 sensor@alessandro	[DEBUG]	16) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	16) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=33,
-                 	       	    897 °C with payload <>
+sensor@alessandro	[DEBUG]	16) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=37,
+                 	       	    623 °C with payload <>
 sensor@alessandro	[INFO]	16) ...done
 sensor@alessandro	[INFO]	17) Posting Content Instance...
 sensor@alessandro	[DEBUG]	17) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	17) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=34,
-                 	       	    855 °C with payload <>
+sensor@alessandro	[DEBUG]	17) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	    904 °C with payload <>
 sensor@alessandro	[INFO]	17) ...done
 sensor@alessandro	[INFO]	18) Posting Content Instance...
 sensor@alessandro	[DEBUG]	18) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	18) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    914 °C with payload <>
+sensor@alessandro	[DEBUG]	18) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=31,
+                 	       	    588 °C with payload <>
 sensor@alessandro	[INFO]	18) ...done
 sensor@alessandro	[INFO]	19) Posting Content Instance...
 sensor@alessandro	[DEBUG]	19) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	19) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=34,
-                 	       	    639 °C with payload <>
+sensor@alessandro	[DEBUG]	19) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	    373 °C with payload <>
 sensor@alessandro	[INFO]	19) ...done
 sensor@alessandro	[INFO]	20) Posting Content Instance...
 sensor@alessandro	[DEBUG]	20) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	20) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=38,
-                 	       	    990 °C with payload <>
+sensor@alessandro	[DEBUG]	20) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=35,
+                 	       	    268 °C with payload <>
 sensor@alessandro	[INFO]	20) ...done
 sensor@alessandro	[INFO]	21) Posting Content Instance...
 sensor@alessandro	[DEBUG]	21) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	21) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	    015 °C with payload <>
+sensor@alessandro	[DEBUG]	21) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	    747 °C with payload <>
 sensor@alessandro	[INFO]	21) ...done
 sensor@alessandro	[INFO]	22) Posting Content Instance...
 sensor@alessandro	[DEBUG]	22) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	22) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	    998 °C with payload <>
+sensor@alessandro	[DEBUG]	22) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=38,
+                 	       	    084 °C with payload <>
 sensor@alessandro	[INFO]	22) ...done
 sensor@alessandro	[INFO]	23) Posting Content Instance...
 sensor@alessandro	[DEBUG]	23) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	23) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	    631 °C with payload <>
+sensor@alessandro	[DEBUG]	23) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=33,
+                 	       	    233 °C with payload <>
 sensor@alessandro	[INFO]	23) ...done
 sensor@alessandro	[INFO]	24) Posting Content Instance...
 sensor@alessandro	[DEBUG]	24) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	24) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	    898 °C with payload <>
+sensor@alessandro	[DEBUG]	24) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=33,
+                 	       	    409 °C with payload <>
 sensor@alessandro	[INFO]	24) ...done
 sensor@alessandro	[INFO]	25) Posting Content Instance...
 sensor@alessandro	[DEBUG]	25) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	25) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    889 °C with payload <>
+sensor@alessandro	[DEBUG]	25) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=32,
+                 	       	    149 °C with payload <>
 sensor@alessandro	[INFO]	25) ...done
 sensor@alessandro	[INFO]	26) Posting Content Instance...
 sensor@alessandro	[DEBUG]	26) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	26) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	    573 °C with payload <>
+sensor@alessandro	[DEBUG]	26) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=35,
+                 	       	    277 °C with payload <>
 sensor@alessandro	[INFO]	26) ...done
 sensor@alessandro	[INFO]	27) Posting Content Instance...
 sensor@alessandro	[DEBUG]	27) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	27) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=33,
-                 	       	    910 °C with payload <>
+sensor@alessandro	[DEBUG]	27) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=37,
+                 	       	    601 °C with payload <>
 sensor@alessandro	[INFO]	27) ...done
 sensor@alessandro	[INFO]	28) Posting Content Instance...
 sensor@alessandro	[DEBUG]	28) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	28) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    181 °C with payload <>
+sensor@alessandro	[DEBUG]	28) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	    497 °C with payload <>
 sensor@alessandro	[INFO]	28) ...done
 sensor@alessandro	[INFO]	29) Posting Content Instance...
 sensor@alessandro	[DEBUG]	29) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	29) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	    612 °C with payload <>
+sensor@alessandro	[DEBUG]	29) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	    768 °C with payload <>
 sensor@alessandro	[INFO]	29) ...done
 sensor@alessandro	[INFO]	30) Posting Content Instance...
 sensor@alessandro	[DEBUG]	30) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	30) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	    169 °C with payload <>
+sensor@alessandro	[DEBUG]	30) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=36,
+                 	       	    575 °C with payload <>
 sensor@alessandro	[INFO]	30) ...done
 sensor@alessandro	[INFO]	31) Posting Content Instance...
 sensor@alessandro	[DEBUG]	31) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	31) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=38,
-                 	       	    287 °C with payload <>
+sensor@alessandro	[DEBUG]	31) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=34,
+                 	       	    406 °C with payload <>
 sensor@alessandro	[INFO]	31) ...done
 sensor@alessandro	[INFO]	32) Posting Content Instance...
 sensor@alessandro	[DEBUG]	32) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	32) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    077 °C with payload <>
+sensor@alessandro	[DEBUG]	32) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=35,
+                 	       	    195 °C with payload <>
 sensor@alessandro	[INFO]	32) ...done
 sensor@alessandro	[INFO]	33) Posting Content Instance...
 sensor@alessandro	[DEBUG]	33) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	33) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=38,
-                 	       	    959 °C with payload <>
+sensor@alessandro	[DEBUG]	33) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=38,
+                 	       	    210 °C with payload <>
 sensor@alessandro	[INFO]	33) ...done
 sensor@alessandro	[INFO]	34) Posting Content Instance...
 sensor@alessandro	[DEBUG]	34) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	34) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=37,
-                 	       	    689 °C with payload <>
+sensor@alessandro	[DEBUG]	34) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=38,
+                 	       	    633 °C with payload <>
 sensor@alessandro	[INFO]	34) ...done
 sensor@alessandro	[INFO]	35) Posting Content Instance...
 sensor@alessandro	[DEBUG]	35) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	35) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    867 °C with payload <>
+sensor@alessandro	[DEBUG]	35) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=35,
+                 	       	    218 °C with payload <>
 sensor@alessandro	[INFO]	35) ...done
-sensor@alessandro	[INFO]	36) Posting Content Instance...
-sensor@alessandro	[DEBUG]	36) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	36) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=36,
-                 	       	    832 °C with payload <>
-sensor@alessandro	[INFO]	36) ...done
-sensor@alessandro	[INFO]	37) Posting Content Instance...
-sensor@alessandro	[DEBUG]	37) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	37) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=38,
-                 	       	    794 °C with payload <>
-sensor@alessandro	[INFO]	37) ...done
-sensor@alessandro	[INFO]	38) Posting Content Instance...
-sensor@alessandro	[DEBUG]	38) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	38) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    473 °C with payload <>
-sensor@alessandro	[INFO]	38) ...done
-sensor@alessandro	[INFO]	39) Posting Content Instance...
-sensor@alessandro	[DEBUG]	39) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	39) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=35,
-                 	       	    753 °C with payload <>
-sensor@alessandro	[INFO]	39) ...done
-sensor@alessandro	[INFO]	40) Posting Content Instance...
-sensor@alessandro	[DEBUG]	40) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	40) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=34,
-                 	       	    322 °C with payload <>
-sensor@alessandro	[INFO]	40) ...done
-sensor@alessandro	[INFO]	41) Posting Content Instance...
-sensor@alessandro	[DEBUG]	41) Sent registration request to coap://192.168.0.105:5686/augmented-things
-sensor@alessandro	[DEBUG]	41) Sent asynchronous POST request to coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&con=34,
-                 	       	    727 °C with payload <>
-sensor@alessandro	[INFO]	41) ...done
 
