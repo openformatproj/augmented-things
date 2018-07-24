@@ -20,11 +20,10 @@ actuator@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.105:5686/au
 actuator@alessandro	[INFO]	0) ...done
 actuator@alessandro	[INFO]	1) Waiting for notifications...
 actuator/ATserver@alessandro	[INFO]	1) Handling notification "action1"... done
-actuator/ATserver@alessandro	[INFO]	2) Handling notification "action1"... done
-actuator/ATserver@alessandro	[INFO]	3) Handling notification "action1"... done
-actuator/ATserver@alessandro	[INFO]	4) Handling notification "action1"... done
-actuator/ATserver@alessandro	[INFO]	5) Handling notification "action1"... done
-actuator/ATserver@alessandro	[INFO]	6) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	2) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	3) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	4) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	5) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	6) Handling notification "action2"... done
 actuator/ATserver@alessandro	[INFO]	7) Handling notification "action2"... done
-actuator/ATserver@alessandro	[INFO]	8) Handling notification "action2"... done
 

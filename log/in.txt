@@ -7,6 +7,7 @@ augmented-things-IN/server@alessandro	[DEBUG]	0) Found local configuration file 
 augmented-things-IN/main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5685/augmented-things... done. Starting server...
                                    	      	    done
 augmented-things-IN/console@alessandro	[INFO]	0) Starting console
+augmented-things-IN/server@alessandro	[INFO]	1) Received POST request... detected MN registration: "id=<ID>
 augmented-things-IN/server@alessandro	[INFO]	1) Registering MN "augmented-things-MN"...
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	1) Connected to coap://192.168.0.105:5684/~/augmented-things-MN-cse
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	1) Connected to coap://192.168.0.105:5684/~/augmented-things-MN-cse/augmented-things-MN/
@@ -34,21 +35,27 @@ augmented-things-IN/CSEclient@alessandro	[DEBUG]	1) Sent asynchronous POST reque
                                         	       	   augmented-things-MN/state/subscriptionMap? with payload <{"m2m:sub":{"nu":"coap:/
                                         	       	   /localhost:5685/augmented-things","rn":"subscription","nct":2}}>
 augmented-things-IN/server@alessandro	[INFO]	1) ...done
+augmented-things-IN/server@alessandro	[INFO]	2) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	2) Handling subscription confirmation... done
+augmented-things-IN/server@alessandro	[INFO]	3) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	3) Handling subscription confirmation... done
+augmented-things-IN/server@alessandro	[INFO]	4) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	4) Handling subscription confirmation... done
+augmented-things-IN/server@alessandro	[INFO]	5) Received POST request... detected node IN registration and localization: 
+                                     	      	   "id=<ID>&ser=<SERIAL>&loc=<LOC>"
 augmented-things-IN/server@alessandro	[INFO]	5) Associating node "sensor.alessandro" with serial "0x0001" to MN "augmented-things-MN"...
                                      	      	    done
-augmented-things-IN/server@alessandro	[INFO]	6) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-643529544,
+augmented-things-IN/server@alessandro	[INFO]	6) Received POST request... detected notification from subscriptions
+augmented-things-IN/server@alessandro	[INFO]	6) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-64349698,
                                      	      	    rn=0x0001, la=/augmented-things-MN-cse/augmented-things-MN/state/tagMap/
                                      	      	   0x0001/la...
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	2) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-643529544
+augmented-things-IN/CSEclient@alessandro	[DEBUG]	2) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-64349698
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	2) Sent Subscription creation with JSON: {"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}} to coap://localhost:5684/
-                                        	       	   ~/augmented-things-MN-cse/cnt-643529544
+                                        	       	   ~/augmented-things-MN-cse/cnt-64349698
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	2) Sent asynchronous POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   cnt-643529544? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
-                                        	       	   augmented-things","rn":"subscription","nct":2}}>
+                                        	       	   cnt-64349698? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/augmented-things",
+                                        	       	   "rn":"subscription","nct":2}}>
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	3) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
                                         	       	   state/tagMap/0x0001/la
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	3) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
@@ -59,25 +66,25 @@ augmented-things-IN/server@alessandro	[INFO]	6) ...done, getting initial state w
                                      	      	   "active":true,"attributes":["event"],"id":"sensor.alessandro","type":"tempC")...
 augmented-things-IN/server@alessandro	[DEBUG]	6) Changing endpoint node "sensor.alessandro" state on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	6) ...done
+augmented-things-IN/server@alessandro	[INFO]	7) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	7) Handling subscription confirmation... done
+augmented-things-IN/server@alessandro	[INFO]	8) Received POST request... detected node IN registration and localization: 
+                                     	      	   "id=<ID>&ser=<SERIAL>&loc=<LOC>"
 augmented-things-IN/server@alessandro	[INFO]	8) Associating node "actuator.alessandro" with serial "0x0002" to MN "augmented-things-MN"...
                                      	      	    done
-augmented-things-IN/server@alessandro	[INFO]	9) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-896492401,
+augmented-things-IN/server@alessandro	[INFO]	9) Received POST request... detected notification from subscriptions
+augmented-things-IN/server@alessandro	[INFO]	9) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-203860565,
                                      	      	    rn=0x0002, la=/augmented-things-MN-cse/augmented-things-MN/state/tagMap/
                                      	      	   0x0002/la...
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	4) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-896492401
+augmented-things-IN/CSEclient@alessandro	[DEBUG]	4) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-203860565
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	4) Sent Subscription creation with JSON: {"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}} to coap://localhost:5684/
-                                        	       	   ~/augmented-things-MN-cse/cnt-896492401
+                                        	       	   ~/augmented-things-MN-cse/cnt-203860565
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	4) Sent asynchronous POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   cnt-896492401? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
+                                        	       	   cnt-203860565? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}}>
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	5) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
                                         	       	   state/tagMap/0x0002/la
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	5) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state/tagMap/0x0002/la
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	5) Sent GET request to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   state/tagMap/0x0002/la? with payload <>
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	5) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
                                         	       	   augmented-things-MN/state/tagMap/0x0002/la
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	5) Sent GET request to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
@@ -87,24 +94,23 @@ augmented-things-IN/server@alessandro	[INFO]	9) ...done, getting initial state w
                                      	      	   "type":"act")...
 augmented-things-IN/server@alessandro	[DEBUG]	9) Changing endpoint node "actuator.alessandro" state on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	9) ...done
+augmented-things-IN/server@alessandro	[INFO]	10) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	10) Handling subscription confirmation... done
+augmented-things-IN/server@alessandro	[INFO]	11) Received GET request... detected user localization: "mode=0&ser=<SERIAL>"
 augmented-things-IN/server@alessandro	[INFO]	11) Handling user localization for serial "0x0001"... done
-augmented-things-IN/server@alessandro	[INFO]	12) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-634126276,
+augmented-things-IN/server@alessandro	[INFO]	12) Received POST request... detected notification from subscriptions
+augmented-things-IN/server@alessandro	[INFO]	12) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-522770233,
                                      	      	     rn=user.ALESSANDRO-K7NR, la=/augmented-things-MN-cse/augmented-things-MN/
                                      	      	    state/userMap/user.ALESSANDRO-K7NR/la...
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	6) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-634126276
+augmented-things-IN/CSEclient@alessandro	[DEBUG]	6) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-522770233
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	6) Sent Subscription creation with JSON: {"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}} to coap://localhost:5684/
-                                        	       	   ~/augmented-things-MN-cse/cnt-634126276
+                                        	       	   ~/augmented-things-MN-cse/cnt-522770233
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	6) Sent asynchronous POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   cnt-634126276? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
+                                        	       	   cnt-522770233? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}}>
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	7) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
                                         	       	   state/userMap/user.ALESSANDRO-K7NR/la
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	7) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR/la
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	7) Sent GET request to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   state/userMap/user.ALESSANDRO-K7NR/la? with payload <>
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	7) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
                                         	       	   augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR/la
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	7) Sent GET request to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
@@ -113,16 +119,18 @@ augmented-things-IN/server@alessandro	[INFO]	12) ...done, getting initial state 
                                      	      	    "address":"coap://192.168.0.110:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")...
 augmented-things-IN/server@alessandro	[DEBUG]	12) Changing user "user.ALESSANDRO-K7NR" state on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	12) ...done
+augmented-things-IN/server@alessandro	[INFO]	13) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	13) Handling subscription confirmation... done
-augmented-things-IN/server@alessandro	[INFO]	14) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-107592338,
+augmented-things-IN/server@alessandro	[INFO]	14) Received POST request... detected notification from subscriptions
+augmented-things-IN/server@alessandro	[INFO]	14) Handling Container notification with JSON: ri=/augmented-things-MN-cse/cnt-777947240,
                                      	      	     rn=sensor.alessandro, la=/augmented-things-MN-cse/augmented-things-MN/state/
                                      	      	    subscriptionMap/sensor.alessandro/la...
-augmented-things-IN/CSEclient@alessandro	[DEBUG]	8) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-107592338
+augmented-things-IN/CSEclient@alessandro	[DEBUG]	8) Connected to coap://localhost:5684/~/augmented-things-MN-cse/cnt-777947240
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	8) Sent Subscription creation with JSON: {"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}} to coap://localhost:5684/
-                                        	       	   ~/augmented-things-MN-cse/cnt-107592338
+                                        	       	   ~/augmented-things-MN-cse/cnt-777947240
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	8) Sent asynchronous POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   cnt-107592338? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
+                                        	       	   cnt-777947240? with payload <{"m2m:sub":{"nu":"coap://localhost:5685/
                                         	       	   augmented-things","rn":"subscription","nct":2}}>
 augmented-things-IN/CSEclient@alessandro	[DEBUG]	9) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
                                         	       	   state/subscriptionMap/sensor.alessandro/la
@@ -140,45 +148,41 @@ augmented-things-IN/server@alessandro	[INFO]	14) ...done, getting initial state 
                                      	      	    "id":"sensor.alessandro","type":"tempC"))],"id":"sensor.alessandro")...
 augmented-things-IN/server@alessandro	[DEBUG]	14) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	14) ...done
+augmented-things-IN/server@alessandro	[INFO]	15) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	15) Handling subscription confirmation... done
+augmented-things-IN/server@alessandro	[INFO]	16) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	16) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
                                      	      	    "id":"sensor.alessandro")...
 augmented-things-IN/server@alessandro	[DEBUG]	16) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	16) ...done
+augmented-things-IN/server@alessandro	[INFO]	17) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	17) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
-                                     	      	    "subs":[("receiver":("node":"ACTUATOR","address":"coap://127.0.0.1:5690/
-                                     	      	    augmented-things","id":"actuator.alessandro"),"sender":("node":"SENSOR",
-                                     	      	    "id":"sensor.alessandro","type":"tempC"),"action":"action1","event":"event")],
-                                     	      	    "id":"sensor.alessandro")...
-augmented-things-IN/server@alessandro	[DEBUG]	17) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
-augmented-things-IN/server@alessandro	[INFO]	17) ...done
-augmented-things-IN/server@alessandro	[INFO]	18) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
-                                     	      	    "id":"sensor.alessandro")...
-augmented-things-IN/server@alessandro	[DEBUG]	18) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
-augmented-things-IN/server@alessandro	[INFO]	18) ...done
-augmented-things-IN/server@alessandro	[INFO]	19) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
                                      	      	    "subs":[("receiver":("node":"ACTUATOR","address":"coap://127.0.0.1:5690/
                                      	      	    augmented-things","id":"actuator.alessandro"),"sender":("node":"SENSOR",
                                      	      	    "id":"sensor.alessandro","type":"tempC"),"action":"action2","event":"event")],
                                      	      	    "id":"sensor.alessandro")...
+augmented-things-IN/server@alessandro	[DEBUG]	17) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
+augmented-things-IN/server@alessandro	[INFO]	17) ...done
+augmented-things-IN/server@alessandro	[INFO]	18) Received POST request... detected notification from subscriptions
+augmented-things-IN/server@alessandro	[INFO]	18) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
+                                     	      	    "id":"sensor.alessandro")...
+augmented-things-IN/server@alessandro	[DEBUG]	18) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
+augmented-things-IN/server@alessandro	[INFO]	18) ...done
+augmented-things-IN/server@alessandro	[INFO]	19) Received POST request... detected notification from subscriptions
+augmented-things-IN/server@alessandro	[INFO]	19) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
+                                     	      	    "subs":[("receiver":("node":"USER","address":"coap://192.168.0.110:5691/
+                                     	      	    augmented-things","id":"user.ALESSANDRO-K7NR"),"sender":("node":"SENSOR",
+                                     	      	    "id":"sensor.alessandro","type":"tempC"))],"id":"sensor.alessandro")...
 augmented-things-IN/server@alessandro	[DEBUG]	19) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	19) ...done
+augmented-things-IN/server@alessandro	[INFO]	20) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	20) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
                                      	      	    "id":"sensor.alessandro")...
 augmented-things-IN/server@alessandro	[DEBUG]	20) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
 augmented-things-IN/server@alessandro	[INFO]	20) ...done
+augmented-things-IN/server@alessandro	[INFO]	21) Received POST request... detected notification from subscriptions
 augmented-things-IN/server@alessandro	[INFO]	21) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
-                                     	      	    "subs":[("receiver":("node":"USER","address":"coap://192.168.0.110:5691/
-                                     	      	    augmented-things","id":"user.ALESSANDRO-K7NR"),"sender":("node":"SENSOR",
-                                     	      	    "id":"sensor.alessandro","type":"tempC"))],"id":"sensor.alessandro")...
-augmented-things-IN/server@alessandro	[DEBUG]	21) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
-augmented-things-IN/server@alessandro	[INFO]	21) ...done
-augmented-things-IN/server@alessandro	[INFO]	22) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
-                                     	      	    "id":"sensor.alessandro")...
-augmented-things-IN/server@alessandro	[DEBUG]	22) Changing subscription state of "sensor.alessandro" on MN "augmented-things-MN"
-augmented-things-IN/server@alessandro	[INFO]	22) ...done
-augmented-things-IN/server@alessandro	[INFO]	23) Handling Content Instance notification with JSON: con=("mn":"augmented-things-MN",
                                      	      	    "address":"coap://192.168.0.110:5691/augmented-things","active":false,"id":"user.ALESSANDRO-K7NR")...
-augmented-things-IN/server@alessandro	[DEBUG]	23) Adding user "user.ALESSANDRO-K7NR" to MN "augmented-things-MN"
-augmented-things-IN/server@alessandro	[INFO]	23) ...done
+augmented-things-IN/server@alessandro	[DEBUG]	21) Adding user "user.ALESSANDRO-K7NR" to MN "augmented-things-MN"
+augmented-things-IN/server@alessandro	[INFO]	21) ...done
 
