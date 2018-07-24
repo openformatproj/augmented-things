@@ -43,16 +43,16 @@ class RemoteInterface extends Client {
 		outStream.out1("Locating serial \"" + serial + "\"", i);
 		CoapResponse response = locate(serial);
 		if (response==null) {
-			errStream.out("Unable to locate the user on " + services.uri() + ", timeout expired", i, Severity.LOW);
+			errStream.out("Unable to locate the user on \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
 			outStream.out2("failed. Terminating interface");
 			return;
 		} else if (response.getCode()!=ResponseCode.CONTENT) {
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to locate the user on " + services.uri() + ", response: " + response.getCode() +
+				errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to locate the user on " + services.uri() + ", response: " + response.getCode(),
+				errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode(),
 						i, Severity.LOW);
 			outStream.out2("failed. Terminating interface");
 			return;
@@ -71,16 +71,16 @@ class RemoteInterface extends Client {
 		outStream.out1_2("done, registering");
 		response = register(id,this.address);
 		if (response==null) {
-			errStream.out("Unable to register to " + services.uri() + ", timeout expired", i, Severity.LOW);
+			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
 			outStream.out2("failed. Terminating interface");
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode() +
+				errStream.out("Unable to register to \"" + services.uri() + "\", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to register to " + services.uri() + ", response: " + response.getCode(),
+				errStream.out("Unable to register to \"" + services.uri() + "\", response: " + response.getCode(),
 					i, Severity.LOW);
 			outStream.out2("failed. Terminating interface");
 			return;

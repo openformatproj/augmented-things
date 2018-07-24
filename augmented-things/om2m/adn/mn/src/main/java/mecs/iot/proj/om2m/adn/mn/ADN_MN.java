@@ -52,16 +52,16 @@ class ADN_MN extends ADN {
 			cseClient.stepCount();
 			CoapResponse response_ = cseClient.services.postAE("state",cseClient.getCount());
 			if (response_==null) {
-				errStream.out("Unable to post AE to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+				errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
 			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN*/) {
 				if (!response_.getResponseText().isEmpty())
-					errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response_.getCode() +
+					errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
 							i, Severity.LOW);
 				else
-					errStream.out("Unable to post AE to " + cseClient.services.uri() + ", response: " + response_.getCode(),
+					errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
 						i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
@@ -84,16 +84,16 @@ class ADN_MN extends ADN {
 			cseClient.stepCount();
 			response_ = cseClient.services.postContainer(cseBaseName,"state","tagMap",cseClient.getCount());
 			if (response_==null) {
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
 			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN*/) {
 				if (!response_.getResponseText().isEmpty())
-					errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode() +
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
 							i, Severity.LOW);
 				else
-					errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode(),
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
 						i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
@@ -116,16 +116,16 @@ class ADN_MN extends ADN {
 			cseClient.stepCount();
 			response_ = cseClient.services.postContainer(cseBaseName,"state","userMap",cseClient.getCount());
 			if (response_==null) {
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
 			} else if (response_.getCode()!=ResponseCode.CREATED && response_.getCode()!=ResponseCode.FORBIDDEN) {
 				if (!response_.getResponseText().isEmpty())
-					errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode() +
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
 							i, Severity.LOW);
 				else
-					errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response_.getCode(),
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
 						i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
@@ -148,27 +148,6 @@ class ADN_MN extends ADN {
 			subscriber = new Subscriber(outStream,debugStream,errStream,cseClient,cseBaseName,i);
 		}
 		outStream.out1("Registering to IN",i);
-//		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.protocol + Constants.inAddressADN(debugStream,i) + Constants.inADNRoot, debug);
-//		Request request = new Request(Code.POST);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(cseBaseName));
-//		CoapResponse response_ = tempClient.send(request, Code.POST);
-//		if (response_==null) {
-//			errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", timeout expired", i, Severity.LOW);
-//			outStream.out2("failed");
-//			throw new RegistrationException();
-//		} else if (response_.getCode()!=ResponseCode.CREATED) {
-//			if (!response_.getResponseText().isEmpty())
-//				errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", response: " + response_.getCode() +
-//						", reason: " + response_.getResponseText(),
-//						i, Severity.LOW);
-//			else
-//				errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", response: " + response_.getCode(),
-//					i, Severity.LOW);
-//			outStream.out2("failed");
-//			throw new RegistrationException();
-//		}
 		register(id,host,debug);
 		outStream.out2("done");
 		i++;
@@ -206,7 +185,7 @@ class ADN_MN extends ADN {
 			switch (sw) {
 				case 1:
 					// attributes query (mode=1&ser=<SERIAL>)
-					outStream.out2("detected attributes query: \"mode=1&ser=<SERIAL>\"");
+					outStream.out2("detected attributes query");
 					if (tag==null) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -228,7 +207,7 @@ class ADN_MN extends ADN {
 					break;
 				case 2:
 					// node read (mode=2&ser=<SERIAL>)
-					outStream.out2("detected node read: \"mode=2&ser=<SERIAL>\"");
+					outStream.out2("detected node read");
 					if (tag==null || tag.node!=Node.SENSOR) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -252,14 +231,14 @@ class ADN_MN extends ADN {
 						return;
 					}
 					if (response_==null) {
-						errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+						errStream.out("Unable to read from \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						outStream.out2("failed");
 						i++;
 						return;
 					} else if (response_.getCode()!=ResponseCode.CONTENT) {
-						errStream.out("Unable to read from " + cseClient.services.uri() + ", response: " + response_.getCode(),
+						errStream.out("Unable to read from \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
 								i, Severity.LOW);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
@@ -311,7 +290,7 @@ class ADN_MN extends ADN {
 			}
 			Tag tag = tagMap.get(serial);
 			// node name query (ser=<SERIAL>)
-			outStream.out2("detected node name query: \"ser=<SERIAL>\"");
+			outStream.out2("detected node name query");
 			if (tag==null) {
 				response = new Response(ResponseCode.BAD_REQUEST);
 				exchange.respond(response);
@@ -366,7 +345,7 @@ class ADN_MN extends ADN {
 					if (!areValidAttributes(attributes,k)) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
-						outStream.out2("bad request, attribute=" + attributes[k]);
+						outStream.out2("bad request, attribute=\"" + attributes[k] + "\"");
 						i++;
 						return;
 					}
@@ -388,7 +367,7 @@ class ADN_MN extends ADN {
 						tag = new Tag(Node.SENSOR,id,type,attributes,cseBaseName);
 					}
 					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
-					outStream.out2("detected node MN registration: \"id=<ID>&ser=<SERIAL>&type=<TYPE>\"");
+					outStream.out2("detected node MN registration");
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					boolean createState;
 					String[] uri_;
@@ -507,22 +486,6 @@ class ADN_MN extends ADN {
 							return;
 						}
 						debugStream.out("Received JSON: " + json, i);
-//						if (tag.node==Node.SENSOR) {
-//							String ri = null;
-//							try {
-//								ri = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
-//										new String[] {"ri"}, new Class<?>[] {String.class});							// Example: "/augmented-things-MN-cse/cnt-67185819"
-//							} catch (JSONException e) {
-//								outStream.out2("failed");
-//								errStream.out(e, i, Severity.MEDIUM);
-//								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//								exchange.respond(response);
-//								i++;
-//								return;
-//							}
-//							String key = Services.getKeyFromAttribute(ri);												// Example: "67185819"
-//							subscriber.bind(id,key);
-//						}
 					}
 					tagMap.put(serial,tag);
 					response = new Response(ResponseCode.CREATED);
@@ -537,7 +500,7 @@ class ADN_MN extends ADN {
 							return;
 						}
 						// actuator MN registration (id=<ID>&ser=<SERIAL>&addr=<EUI-64>), shortcut for highly constrained devices on an IPv6 network
-						outStream.out2("actuator MN registration: \"id=<ID>&ser=<SERIAL>&addr=<EUI-64>\"");
+						outStream.out2("actuator MN registration");
 						Tag tag = new Tag(Node.ACTUATOR,id,resolveEUI64Address(address),new String[] {"on","off"},cseBaseName);
 						outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 						boolean createState;
@@ -658,22 +621,6 @@ class ADN_MN extends ADN {
 								return;
 							}
 							debugStream.out("Received JSON: " + json, i);
-//							if (tag.node==Node.SENSOR) {
-//								String ri = null;
-//								try {
-//									ri = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
-//											new String[] {"ri"}, new Class<?>[] {String.class});							// Example: "/augmented-things-MN-cse/cnt-67185819"
-//								} catch (JSONException e) {
-//									outStream.out2("failed");
-//									errStream.out(e, i, Severity.MEDIUM);
-//									response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//									exchange.respond(response);
-//									i++;
-//									return;
-//								}
-//								String key = Services.getKeyFromAttribute(ri);												// Example: "67185819"
-//								subscriber.bind(id,key);
-//							}
 						}
 						tagMap.put(serial,tag);
 						response = new Response(ResponseCode.CREATED);
@@ -689,7 +636,7 @@ class ADN_MN extends ADN {
 							}
 							Tag tag = tagMap.get(serial);
 							// content instance posting (id=<ID>&ser=<SERIAL>&con=<CON>)
-							outStream.out2("detected content instance posting: \"id=<ID>&ser=<SERIAL>&con=<CON>\"");
+							outStream.out2("detected content instance posting");
 							if (tag==null || tag.node!=Node.SENSOR) {
 								response = new Response(ResponseCode.BAD_REQUEST);
 								exchange.respond(response);
@@ -818,7 +765,7 @@ class ADN_MN extends ADN {
 						} else {
 							Tag tag = tagMap.get(serial);
 							// node lookout (id=<ID>&ser=<SERIAL>)
-							outStream.out2("detected node lookout: \"id=<ID>&ser=<SERIAL>\"");
+							outStream.out2("detected node lookout");
 							if (tag==null || tag.node!=Node.SENSOR) {
 								response = new Response(ResponseCode.BAD_REQUEST);
 								exchange.respond(response);
@@ -860,7 +807,7 @@ class ADN_MN extends ADN {
 						return;
 					}
 					// user MN registration (id=<ID>&addr=<URI>)
-					outStream.out2("user MN registration: \"id=<ID>&addr=<URI>\"");
+					outStream.out2("user MN registration");
 					outStream.out1("Registering user \"" + id + "\" with address \"" + address + "\"", i);
 					boolean createState;
 					String[] uri_;
@@ -946,132 +893,7 @@ class ADN_MN extends ADN {
 					}
 					userMap.put(id,user);
 					response = new Response(ResponseCode.CREATED);
-				} /*else {*/
-//					String content = getUriValue(exchange,"con",1);
-//					if (content==null || !isValidContent(content,content)) {
-//						response = new Response(ResponseCode.BAD_REQUEST);
-//						exchange.respond(response);
-//						if (content!=null)
-//							outStream.out2("bad request, \"con=" + content + "\"");
-//						else
-//							outStream.out2("bad request, \"con\" is empty");
-//						i++;
-//						return;
-//					}
-//					// content instance posting (id=<ID>&ser=<SERIAL>&con=<CON>)
-//					outStream.out2("detected content instance posting: \"id=<ID>&con=<CON>\"");
-//					if (content=="\\*")
-//						content = Format.getRandomValue(tagMap.get(id).type);
-//					outStream.out1("Posting Content Instance \"" + content + "\" on node \"" + id + "\"", i);
-//					String[] uri = new String[] {cseBaseName, id, "data"};
-//					CoapResponse response_ = null;
-//					cseClient.stepCount();
-//					try {
-//						response_ = cseClient.services.postContentInstance(content,uri,cseClient.getCount());
-//					} catch (URISyntaxException e) {
-//						errStream.out(e,i,Severity.MEDIUM);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						outStream.out2("failed");
-//						i++;
-//						return;
-//					}
-//					if (response_==null) {
-//						errStream.out("Unable to post Content Instance on node \"" + id + "\", timeout expired", i, Severity.LOW);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						outStream.out2("failed");
-//						i++;
-//						return;
-//					} else if (response_.getCode()!=ResponseCode.CREATED) {
-//						errStream.out("Unable to post Content Instance on node \"" + id + "\", response: " + response_.getCode(),
-//								i, Severity.LOW);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						outStream.out2("failed");
-//						i++;
-//						return;
-//					}
-//					String json = null;
-//					try {
-//						json = Services.parseJSON(response_.getResponseText(), "m2m:cin",
-//								new String[] {"ty","cnf","con"}, new Class<?>[] {Integer.class,String.class,String.class});
-//					} catch (JSONException e) {
-//						errStream.out(e,i,Severity.MEDIUM);
-//						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//						exchange.respond(response);
-//						outStream.out2("failed");
-//						i++;
-//						return;
-//					}
-//					debugStream.out("Received JSON: " + json, i);
-//					response = new Response(ResponseCode.CREATED);
-//					// Forward notifications towards observers
-//					ArrayList<Subscription> subs = subscriber.get(id);
-//					if (subs!=null && subs.size()>0) {
-//						response_ = null;
-//						for (int j=0; j<subs.size(); j++) {
-//							switch (subs.get(j).receiver.node) {
-//								case SENSOR:
-//									break;
-//								case ACTUATOR:
-//									double value;
-//									try {
-//										value = Format.unpack(content,subs.get(j).sender.type);
-//									} catch (ParseException e) {
-//										errStream.out(e,i,Severity.MEDIUM);
-//										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//										exchange.respond(response);
-//										outStream.out2("failed");
-//										i++;
-//										return;
-//									}
-//									subs.get(j).controller.insert(value);
-//									if (subs.get(j).controller.check()) {
-//										try {
-//											response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
-//										} catch (URISyntaxException e) {
-//											errStream.out(e,i,Severity.MEDIUM);
-//											response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//											exchange.respond(response);
-//											outStream.out2("failed");
-//											i++;
-//											return;
-//										}
-//									}
-//									break;
-//								case USER:
-//									try {
-//										response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,id+": con="+content);
-//									} catch (URISyntaxException e) {
-//										errStream.out(e,i,Severity.MEDIUM);
-//										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//										exchange.respond(response);
-//										outStream.out2("failed");
-//										i++;
-//										return;
-//									}
-//									break;
-//							}
-//							if (response_==null) {
-//								errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
-//								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//								exchange.respond(response);
-//								outStream.out2("failed");
-//								i++;
-//								return;
-//							} else if (response_.getCode()!=ResponseCode.CHANGED) {
-//								errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
-//										i, Severity.LOW);
-//								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-//								exchange.respond(response);
-//								outStream.out2("failed");
-//								i++;
-//								return;
-//							}
-//						}
-//					}
-//				}
+				}
 			}
 		} else {
 			String serial0 = getUriValue(exchange,"ser",0);
@@ -1118,7 +940,7 @@ class ADN_MN extends ADN {
 				Tag tag0 = tagMap.get(serial0);
 				Tag tag1 = tagMap.get(serial1);
 				// nodes link (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
-				outStream.out2("detected nodes link: \"ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>\"");
+				outStream.out2("detected nodes link");
 				if (tag0==null || tag0.node!=Node.SENSOR) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
@@ -1203,7 +1025,7 @@ class ADN_MN extends ADN {
 		}
 		Tag tag = tagMap.get(serial);
 		// node write (ser=<SERIAL>&lab=<ACTION_LABEL>)
-		outStream.out2("detected node write: \"ser=<SERIAL>&lab=<ACTION_LABEL>\"");
+		outStream.out2("detected node write");
 		if (tag==null || tag.node!=Node.ACTUATOR) {
 			response = new Response(ResponseCode.BAD_REQUEST);
 			exchange.respond(response);
@@ -1230,11 +1052,6 @@ class ADN_MN extends ADN {
 			i++;
 			return;
 		}
-//		Request request = new Request(Code.PUT);
-//		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
-//		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-//		request.setPayload(label);
-//		CoapResponse response_ = notificationClient.send(request, Code.PUT);
 		CoapResponse response_ = write(label);
 		if (response_==null) {
 			errStream.out("Unable to write on actuator \"" + tag.id + "\", timeout expired", i, Severity.LOW);
@@ -1285,7 +1102,7 @@ class ADN_MN extends ADN {
 				Tag tag = tagMap.get(serial);
 				User user = userMap.get(id);
 				// lookout removal (id=<ID>&ser=<SERIAL>)
-				outStream.out2("detected lookout removal: \"id=<ID>&ser=<SERIAL>\"");
+				outStream.out2("detected lookout removal");
 				if (tag==null || tag.node!=Node.SENSOR) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
@@ -1316,7 +1133,7 @@ class ADN_MN extends ADN {
 			} else {
 				User user = userMap.get(id);
 				// user removal (id=<ID>)
-				outStream.out2("detected user removal: \"id=<ID>\"");
+				outStream.out2("detected user removal");
 				if (user==null) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
@@ -1411,7 +1228,7 @@ class ADN_MN extends ADN {
 					Tag tag0 = tagMap.get(serial0);
 					Tag tag1 = tagMap.get(serial1);
 					// link removal (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
-					outStream.out2("detected link removal: \"ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>\"");
+					outStream.out2("detected link removal");
 					if (tag0==null || tag0.node!=Node.SENSOR) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -1456,7 +1273,7 @@ class ADN_MN extends ADN {
 				} else {
 					Tag tag0 = tagMap.get(serial0);
 					// node removal (ser=<SERIAL>)
-					outStream.out2("detected node removal: \"ser=<SERIAL>\"");
+					outStream.out2("detected node removal");
 					if (tag0==null) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -1567,16 +1384,16 @@ class ADN_MN extends ADN {
 		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(cseBaseName));
 		CoapResponse response = tempClient.send(request, Code.POST);
 		if (response==null) {
-			errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", timeout expired", i, Severity.LOW);
+			errStream.out("Unable to register to IN at address \"" + tempClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 			outStream.out2("failed");
 			throw new RegistrationException();
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", response: " + response.getCode() +
+				errStream.out("Unable to register to IN at address \"" + tempClient.services.uri() + "\", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
 						i, Severity.LOW);
 			else
-				errStream.out("Unable to register to IN at address " + tempClient.services.uri() + ", response: " + response.getCode(),
+				errStream.out("Unable to register to IN at address \"" + tempClient.services.uri() + "\", response: " + response.getCode(),
 					i, Severity.LOW);
 			outStream.out2("failed");
 			throw new RegistrationException();

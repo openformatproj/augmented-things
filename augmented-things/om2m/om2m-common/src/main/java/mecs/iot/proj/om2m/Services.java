@@ -238,7 +238,7 @@ public class Services {
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		client.debugStream.out("Sent access request to " + pathManager.uri(), i);
+		client.debugStream.out("Sent reading request to CSE", i);
 		return client.send(request, Code.GET);
 	}
 	
@@ -255,7 +255,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:ae",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent AE creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent AE creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	
@@ -277,7 +277,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Container creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	
@@ -299,7 +299,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cnt",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Container creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	
@@ -317,7 +317,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Content Instance creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	
@@ -334,7 +334,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Content Instance creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	
@@ -353,7 +353,7 @@ public class Services {
 		JSONObject root = new JSONObject();
 		root.put("m2m:sub",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Subscription creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Subscription creation to CSE", i);
 		client.sendAsync(request, Code.POST);
 	}
 	
@@ -364,7 +364,7 @@ public class Services {
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
 		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
-		client.debugStream.out("Sent Subscription deletion to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Subscription deletion to CSE", i);
 		return client.send(request, Code.DELETE);
 	}
 	
@@ -384,7 +384,7 @@ public class Services {
 			root = new JSONObject();
 			root.put("m2m:cnt",obj);
 			request.setPayload(root.toString());
-			client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+			client.debugStream.out("Sent Container creation to CSE", i);
 			CoapResponse response = client.send(request, Code.POST);
 			if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
 				return response;
@@ -402,7 +402,7 @@ public class Services {
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Content Instance creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	
@@ -422,7 +422,7 @@ public class Services {
 			root = new JSONObject();
 			root.put("m2m:cnt",obj);
 			request.setPayload(root.toString());
-			client.debugStream.out("Sent Container creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+			client.debugStream.out("Sent Container creation to CSE", i);
 			CoapResponse response = client.send(request, Code.POST);
 			if (response==null || (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN)) {
 				return response;
@@ -440,7 +440,7 @@ public class Services {
 		root = new JSONObject();
 		root.put("m2m:cin",obj);
 		request.setPayload(root.toString());
-		client.debugStream.out("Sent Content Instance creation with JSON: " + root.toString() + " to " + pathManager.uri(), i);
+		client.debugStream.out("Sent Content Instance creation to CSE", i);
 		return client.send(request, Code.POST);
 	}
 	

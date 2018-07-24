@@ -104,7 +104,7 @@ class ADN_IN extends ADN {
 			switch (sw) {
 				case 0:
 					// user localization (mode=0&ser=<SERIAL>)
-					outStream.out2("detected user localization: \"mode=0&ser=<SERIAL>\"");
+					outStream.out2("detected user localization");
 					if (mn==null) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
@@ -185,7 +185,7 @@ class ADN_IN extends ADN {
 				}
 				MN mn = locationMap.get(loc);
 				// node IN registration and localization (id=<ID>&ser=<SERIAL>&loc=<LOC>)
-				outStream.out2("detected node IN registration and localization: \"id=<ID>&ser=<SERIAL>&loc=<LOC>\"");
+				outStream.out2("detected node IN registration and localization");
 				if (mn==null || !mn.active) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
@@ -199,7 +199,7 @@ class ADN_IN extends ADN {
 				response.setPayload(mn.id + ", " + mn.address);
 			} else {
 				// MN registration (id=<ID>)
-				outStream.out2("detected MN registration: \"id=<ID>");
+				outStream.out2("detected MN registration");
 				MN[] mns = locationMap.values().toArray(new MN[] {});
 				int index = 0;
 				boolean found = false;
@@ -387,7 +387,7 @@ class ADN_IN extends ADN {
 				try {
 					cloud.add(json,i);
 				} catch (JSONException | NotFoundMNException e) {
-					errStream.out(e, i, Severity.MEDIUM);
+					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");

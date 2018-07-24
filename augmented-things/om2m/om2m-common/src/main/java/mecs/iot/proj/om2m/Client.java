@@ -60,7 +60,7 @@ public class Client extends Thread
 			connection = new CoapClient(uri_);
 		}
 		services = new Services(this,uri);
-		debugStream.out("Connected to " + uri, i);
+		debugStream.out("Connected to \"" + uri + "\"", i);
 	}
 	
 	public void connect(String uri, boolean createService) throws URISyntaxException {
@@ -71,11 +71,11 @@ public class Client extends Thread
 		}
 		if (createService)
 			services = new Services(this,uri);
-		debugStream.out("Connected to " + uri, i);
+		debugStream.out("Connected to \"" + uri + "\"", i);
 	}
 	
 	public boolean ping() {
-		debugStream.out("Sent ping to Coap server " + uri.getHost() + ":" + uri.getPort() + uri.getPath(), i);
+		debugStream.out("Sent ping to Coap server  + \"" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "\"", i);
 		return connection.ping();
 	}
 	
@@ -86,20 +86,20 @@ public class Client extends Thread
 	}
 	
 	public CoapResponse send(Request request, Code method) {
-		debugStream.out("Sent " + method + " request to " + uri.getScheme() + "://" + uri.getHost()
-		+ ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request) + " with payload <" + request.getPayloadString() + ">", i);
+		debugStream.out("Sent " + method + " request to \"" + uri.getScheme() + "://" + uri.getHost()
+		+ ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request) + "\" with payload <" + request.getPayloadString() + ">", i);
 		return connection.advanced(request);
 	}
 	
 	public CoapResponse send(Request request, Code method, Console console) {
-		console.out("Sent " + method + " request to " + uri.getScheme() + "://" + uri.getHost()
-		+ ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request) + " with payload <" + request.getPayloadString() + ">");
+		console.out("Sent " + method + " request to \"" + uri.getScheme() + "://" + uri.getHost()
+		+ ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request) + "\" with payload <" + request.getPayloadString() + ">");
 		return connection.advanced(request);
 	}
 	
 	public void sendAsync(Request request, Code method) {
-		debugStream.out("Sent asynchronous " + method + " request to " + uri.getScheme() + "://" + uri.getHost()
-		+ ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request) + " with payload <" + request.getPayloadString() + ">", i);
+		debugStream.out("Sent asynchronous " + method + " request to \"" + uri.getScheme() + "://" + uri.getHost()
+		+ ":" + uri.getPort() + uri.getPath() + "?" + Services.parseCoapRequest(request) + "\" with payload <" + request.getPayloadString() + ">", i);
 		connection.advanced(null,request);
 	}
 	
