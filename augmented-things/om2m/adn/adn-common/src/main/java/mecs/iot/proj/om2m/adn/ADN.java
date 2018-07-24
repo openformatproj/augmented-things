@@ -100,12 +100,17 @@ public class ADN extends CoapResource {
 		return !content.isEmpty();
 	}
 	
-	protected boolean isValidKey(String key) {
+	protected boolean isRecognizedContent(String content, Tag tag) {
 		// TODO
-		return !key.isEmpty();
+		return true;
 	}
 	
-	protected boolean isValidLabel(String label, Tag tag) {
+	protected boolean isValidLabel(String label) {
+		// TODO: syntax check
+		return !label.isEmpty();
+	}
+	
+	protected boolean isRecognizedLabel(String label, Tag tag) {
 		return tag.ruleMap.containsKey(label);
 	}
 

@@ -50,7 +50,7 @@ class NotificationServer extends CoapResource {
 				return;
 			} else if (response.getCode()!=ResponseCode.CHANGED) {
 				outStream.out2("failed");
-				errStream.out("Unable to write on the unit \"" + unit.getName() + "\", response: " + response.getCode(), //
+				errStream.out("Unable to write on the unit \"" + unit.getName() + "\", response: " + response.getCode(),
 						i, Severity.LOW);
 				response = new Response(response.getCode());
 				exchange.respond(response);
