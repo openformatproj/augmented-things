@@ -7,6 +7,6 @@
 
   <servlet>
     <servlet-name>WebpageServlet</servlet-name>
-    <servlet-class>mecs.iot.proj.web.WebpageServlet</servlet-class>
+    <servlet-class>mecs.iot.proj.web.indirect.WebpageServlet</servlet-class>
   </servlet>
 </web-app>

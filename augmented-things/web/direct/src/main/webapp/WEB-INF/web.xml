@@ -7,6 +7,6 @@
   
   <servlet>
     <servlet-name>AndroidServlet</servlet-name>
-    <servlet-class>mecs.iot.proj.web.AndroidServlet</servlet-class>
+    <servlet-class>mecs.iot.proj.web.direct.AndroidServlet</servlet-class>
   </servlet>
 </web-app>
