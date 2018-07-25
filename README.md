@@ -25,10 +25,13 @@ To import this project in your Eclipse workspace
 * put in the SCM URL field the following address ```git@github.com:openformatproj/augmented-things.git``` (be sure to have the EGit SCM connector installed)
 * click Finish
 
-Note: be sure to have set your Eclipse options as follows
+**Note**: on some Eclipse versions, such as Eclipse Oxygen, it may be necessary to set Maven options as follows
 
 ![Eclipse options](images/Maven.PNG "Eclipse options")
 
+it seems that Photon doesn't require this.
+
+### Github synchronization
 To synchronize your local copy with the current version of this repository
 * right click on Package Explorer/augmented-things -> Team -> Pull
 
