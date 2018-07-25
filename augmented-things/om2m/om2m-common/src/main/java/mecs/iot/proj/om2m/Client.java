@@ -13,13 +13,9 @@ import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.Code;
 import org.eclipse.californium.core.coap.Request;
 
-public class Client extends Thread
-{
+public class Client extends Thread {
 	
 	public Services services;
-	
-	private CoapClient connection;
-	private URI uri;
 	
 	protected OutStream outStream;
 	protected DebugStream debugStream;
@@ -27,17 +23,20 @@ public class Client extends Thread
 	
 	protected int i;
 	
+	private CoapClient connection;
+	private URI uri;
+	
 	public Client(String name, boolean debug) {
 		super(name);
 		debugStream = new DebugStream(name,debug);
 		i = 0;
 	}
 	
-	public Client(String name, String uri, boolean debug) throws URISyntaxException {
-		super(name);
-		outStream = new OutStream(name);
-		debugStream = new DebugStream(name,debug);
-		errStream = new ErrStream(name);
+	public Client(String id, String uri, boolean debug) throws URISyntaxException {
+		super(id);
+		outStream = new OutStream(id);
+		debugStream = new DebugStream(id,debug);
+		errStream = new ErrStream(id);
 		i = 0;
 		connect(uri);
 	}
@@ -74,10 +73,10 @@ public class Client extends Thread
 		debugStream.out("Connected to \"" + uri + "\"", i);
 	}
 	
-	public boolean ping() {
-		debugStream.out("Sent ping to Coap server  + \"" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "\"", i);
-		return connection.ping();
-	}
+//	public boolean ping() {
+//		debugStream.out("Sent ping to Coap server  + \"" + uri.getHost() + ":" + uri.getPort() + uri.getPath() + "\"", i);
+//		return connection.ping();
+//	}
 	
 	@Override
 	

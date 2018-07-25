@@ -17,27 +17,24 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 
 public class ADN extends CoapResource {
 	
-	protected String name;
-	protected String cseBaseName;
+	public Client cseClient;
 	
 	protected OutStream outStream;
 	protected DebugStream debugStream;
 	protected ErrStream errStream;
 	
+	protected String cseBaseName;
 	protected Console console;
-	
 	protected int i;
-	
-	public Client cseClient;
 
 	protected ADN(String cseBaseName, String host, boolean debug, Console console) {
 		super(Constants.context);
 		setObservable(true);
-		this.name = Services.joinIdHost(cseBaseName+"/server",host);
 		this.cseBaseName = cseBaseName;
-		outStream = new OutStream(name);
-		debugStream = new DebugStream(name,debug);
-		errStream = new ErrStream(name);
+		String adnServerName = Services.joinIdHost(cseBaseName+"/server",host);
+		outStream = new OutStream(adnServerName);
+		debugStream = new DebugStream(adnServerName,debug);
+		errStream = new ErrStream(adnServerName);
 		i = 0;
 		this.console = console;
 	}
