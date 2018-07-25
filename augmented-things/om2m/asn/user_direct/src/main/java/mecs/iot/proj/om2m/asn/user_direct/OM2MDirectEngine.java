@@ -13,6 +13,8 @@ import mecs.iot.proj.om2m.structures.Severity;
 
 public class OM2MDirectEngine {
 	
+	private RemoteInterface remote;
+	
 	public OM2MDirectEngine(Interface interf) {
 	
 		final String id = "user";
@@ -28,14 +30,17 @@ public class OM2MDirectEngine {
 		
 		final Console console = new Console(id,host,interf,debug);
 		try {
-			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
+			remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
 			Command exit = (s) -> {remote.terminate(); return "Exiting";};
 			console.add("exit",exit,0,"Terminate this asn","exit",false);
-			remote.start();
 		} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);
 		}
 	
+	}
+	
+	public void start() {
+		remote.start();
 	}
 
 }

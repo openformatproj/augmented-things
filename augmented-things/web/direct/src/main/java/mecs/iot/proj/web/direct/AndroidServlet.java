@@ -23,12 +23,14 @@ public class AndroidServlet extends HttpServlet {
     private static final String SERV_LOG = "[ANDROID] "; 
     private static final String FAILED_LOG = "Failed to issue command due to: ";
     private static final DirectShell ds = new DirectShell();
+    private static final OM2MDirectEngine engine;
     static {
-    	new OM2MDirectEngine(ds);
+    	engine = new OM2MDirectEngine(ds);
     }
 	
     public AndroidServlet() {
         super();
+        engine.start();
     }
 
     // NOTA BENE: ogni tanto va controllato l'outasync. Si puo' scegliere di fare un refresh manuale da app
