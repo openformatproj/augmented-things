@@ -1,4 +1,4 @@
-# om2m
+# web
 
 ## Setting
 This module contains all what concerns the Web Shell. In order to launch it, be sure that [```./om2m/om2m-common/src/main/resources/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/om2m-common/src/main/resources/configuration/config.ini) file is set in this way
