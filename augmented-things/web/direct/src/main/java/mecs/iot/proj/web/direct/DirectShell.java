@@ -1,4 +1,4 @@
-package mecs.iot.proj.web;
+package mecs.iot.proj.web.direct;
 
 import mecs.iot.proj.Interface;
 

@@ -7,7 +7,6 @@ import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
-import mecs.iot.proj.web.Globals;
 
 import java.net.URISyntaxException;
 
@@ -25,11 +24,10 @@ public class App
 	
     public static void main( String[] args )
     {
-    	final Console console;
-    	if (Constants.startWebShell)
-    		console = new Console(id,host,Globals.is,debug);
-    	else
-    		console = new Console(id,host,true,debug);
+    	/* 
+    	 * To use a custom shell, implement the mecs.iot.proj.Interface interface and replace 'true' with an instance of such implementation.
+    	 */
+    	final Console console = new Console(id,host,true,debug);
 		try {
 			final ADN_IN adn = new ADN_IN(id,host,debug,console);
 			CoapServer server = new CoapServer(Constants.inADNPort);

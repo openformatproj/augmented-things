@@ -1,4 +1,4 @@
-package mecs.iot.proj.web;
+package mecs.iot.proj.web.indirect;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import mecs.iot.proj.om2m.adn.in.OM2MIndirectEngine;
 
 
 /**
@@ -21,6 +23,11 @@ import org.json.JSONObject;
 public class WebpageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String SERV_LOG = "[WEBPAGE] ";
+	private static final IndirectShell is = new IndirectShell();
+    static {
+    	new OM2MIndirectEngine(is);
+    }
+	
 	/** @see HttpServlet#HttpServlet() */
     public WebpageServlet() {
     	super();
@@ -36,18 +43,18 @@ public class WebpageServlet extends HttpServlet {
 		String command = request.getQueryString();
 		Boolean success = false;
 		if (command.equals("mns")) {
-			Globals.is.callMNS();
+			is.callMNS();
 			success = true;
 		}
 		else {
 			String[] commands = command.split(",");
 			if (commands.length == 2) { 
 				if (commands[0].equals("nodes")) { 
-					Globals.is.callNODES(commands[1]);
+					is.callNODES(commands[1]);
 					success = true;
 				}
 				if (commands[0].equals("users")) {
-					Globals.is.callUSERS(commands[1]);
+					is.callUSERS(commands[1]);
 					success = true;
 				}
 			}	
@@ -78,7 +85,7 @@ public class WebpageServlet extends HttpServlet {
 				+ "]}";
 
 		response.setContentType("application/json");
-//		response.getWriter().println(Globals.is.getOutString());
+//		response.getWriter().println(is.getOutString());
 		response.getWriter().println(json);
 	}
 

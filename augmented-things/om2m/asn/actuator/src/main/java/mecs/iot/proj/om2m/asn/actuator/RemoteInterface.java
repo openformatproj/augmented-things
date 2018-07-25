@@ -63,12 +63,12 @@ public class RemoteInterface extends Client {
 	@Override
 	
 	public void run() {
-		outStream.out("Starting interface", i);
+		outStream.out("Starting remote interface", i);
 		outStream.out1("Locating node", i);
 		CoapResponse response = locate(tag.id,tag.serial,location);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			if (!response.getResponseText().isEmpty())
@@ -78,7 +78,7 @@ public class RemoteInterface extends Client {
 			else
 				errStream.out("Unable to register to \"" + services.uri() + "\", response: " + response.getCode(),
 						i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
@@ -89,14 +89,14 @@ public class RemoteInterface extends Client {
 			connect(Constants.protocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			errStream.out(e,i,Severity.MEDIUM);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
 		outStream.out1_2("done, registering");
 		response = register(tag,this.address);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			if (!response.getResponseText().isEmpty())
@@ -106,7 +106,7 @@ public class RemoteInterface extends Client {
 			else
 				errStream.out("Unable to register to \"" + services.uri() + "\", response: " + response.getCode(),
 					i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
 		outStream.out2("done");
@@ -125,7 +125,7 @@ public class RemoteInterface extends Client {
 			i++;
 		}
 		deleteNode(tag.serial);
-		outStream.out("Terminating interface", i);
+		outStream.out("Terminating remote interface", i);
 	}
 
 }
