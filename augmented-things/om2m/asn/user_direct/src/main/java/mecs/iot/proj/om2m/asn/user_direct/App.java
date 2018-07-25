@@ -7,7 +7,6 @@ import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Severity;
-import mecs.iot.proj.web.Globals;
 
 import java.net.URISyntaxException;
 
@@ -27,15 +26,14 @@ public class App
 	
     public static void main( String[] args )
     {
-    	/* When working with AT Shell, be sure that a sensor with serial "0x0001" exists */
-    	final Console console;
-    	if (Constants.startWebShell)
-    		console = new Console(id,host,Globals.ds,debug);
-    	else
-    		console = new Console(id,host,true,debug);
+    	/* 
+    	 * To use a custom shell, implement the mecs.iot.proj.Interface interface and replace 'true' with an instance of such implementation.
+    	 * When working with default AT Shell, be sure that a sensor with serial "0x0001" exists.
+    	 */
+    	final Console console = new Console(id,host,true,debug);
 		try {
 			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
-			Command exit = (s) -> {console.terminate(); remote.terminate(); return "Exiting";};
+			Command exit = (s) -> {remote.terminate(); return "Exiting";};
 			console.add("exit",exit,0,"Terminate this asn","exit",false);
 			remote.start();
 		} catch (URISyntaxException e) {

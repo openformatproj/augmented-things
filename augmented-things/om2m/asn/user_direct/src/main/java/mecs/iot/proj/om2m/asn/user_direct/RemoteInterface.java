@@ -23,14 +23,13 @@ class RemoteInterface extends Client {
 
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
 		super(Services.joinIdHost(id+"/remote",host), uri, debug);
-		this.serial = console.getSerial();
 		this.id = Services.joinIdHost(id,host);
 		this.address = Constants.protocol + ip + ":" + Integer.toString(port) + "/" + context;
+		this.console = console;
 		CommandList list = new CommandList(this,console,this.id);
 		for (int i=0; i<list.numCommands; i++) {
 			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2],list.isJSON[i]);
 		}
-		this.console = console;
 		executing = true;
 		ConsoleWrapper unit = new ConsoleWrapper(Services.joinIdHost(id+"/unit",host),console);
 		createNotificationServer(Services.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
@@ -39,23 +38,28 @@ class RemoteInterface extends Client {
 	@Override
 	
 	public void run() {
-		outStream.out("Starting interface", i);
-		outStream.out1("Locating serial \"" + serial + "\"", i);
-		CoapResponse response = locate(serial);
-		if (response==null) {
-			errStream.out("Unable to locate the user on \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
-			return;
-		} else if (response.getCode()!=ResponseCode.CONTENT) {
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
-						i, Severity.LOW);
-			else
-				errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode(),
-						i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
-			return;
+		outStream.out("Starting remote interface", i);
+		boolean foundSerial = false;
+		CoapResponse response = null;
+		while (!foundSerial) {
+			serial = console.getSerial();
+			outStream.out1("Locating serial \"" + serial + "\"", i);
+			response = locate(serial);
+			if (response==null) {
+				errStream.out("Unable to locate the user on \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
+				outStream.out2("failed. Retrying");
+			} else if (response.getCode()!=ResponseCode.CONTENT) {
+				if (!response.getResponseText().isEmpty())
+					errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode() +
+							", reason: " + response.getResponseText(),
+							i, Severity.LOW);
+				else
+					errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode(),
+							i, Severity.LOW);
+				outStream.out2("failed. Retrying");
+			} else {
+				foundSerial = true;
+			}
 		}
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
@@ -65,14 +69,14 @@ class RemoteInterface extends Client {
 			connect(Constants.protocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			errStream.out(e,i,Severity.MEDIUM);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
 		outStream.out1_2("done, registering");
 		response = register(id,this.address);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			if (!response.getResponseText().isEmpty())
@@ -82,7 +86,7 @@ class RemoteInterface extends Client {
 			else
 				errStream.out("Unable to register to \"" + services.uri() + "\", response: " + response.getCode(),
 					i, Severity.LOW);
-			outStream.out2("failed. Terminating interface");
+			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
 		outStream.out2("done");
@@ -95,8 +99,9 @@ class RemoteInterface extends Client {
 			i++;
 		}
 		deleteUser(Services.normalizeName(id));
+		console.terminate();
 		destroy();
-		outStream.out("Terminating interface", i);
+		outStream.out("Terminating remote interface", i);
 	}
 	
 	public synchronized void terminate() {
