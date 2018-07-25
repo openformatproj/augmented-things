@@ -1,4 +1,4 @@
-package mecs.iot.proj.web;
+package mecs.iot.proj.web.direct;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-
+import mecs.iot.proj.om2m.asn.user_direct.OM2MDirectEngine;
 
 @WebServlet(
 		asyncSupported = true, 
@@ -22,6 +22,10 @@ public class AndroidServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private static final String SERV_LOG = "[ANDROID] "; 
     private static final String FAILED_LOG = "Failed to issue command due to: ";
+    private static final DirectShell ds = new DirectShell();
+    static {
+    	new OM2MDirectEngine(ds);
+    }
 	
     public AndroidServlet() {
         super();
@@ -58,8 +62,8 @@ public class AndroidServlet extends HttpServlet {
 					String [] options = new String [] {
 						jsonRequest.getString("serial")	
 					};
-					Globals.ds.setCommand("query", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("query", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for query: "+ans);
 					response.getWriter().println("\"attributes\":\""+ans+"\"");
 				}
@@ -67,8 +71,8 @@ public class AndroidServlet extends HttpServlet {
 					String [] options = new String [] {
 							jsonRequest.getString("serial")
 					};
-					Globals.ds.setCommand("read", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("read", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for read: "+ans);
 					response.getWriter().println("\"value\":\""+ans+"\"");
 				}
@@ -76,8 +80,8 @@ public class AndroidServlet extends HttpServlet {
 					String [] options = new String [] {
 							jsonRequest.getString("serial")
 					};
-					Globals.ds.setCommand("lookout", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("lookout", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for lookout: "+ans);
 					response.getWriter().println("\"lookout\":\""+ans+"\"");
 				}
@@ -88,8 +92,8 @@ public class AndroidServlet extends HttpServlet {
 							jsonRequest.getString("event"),
 							jsonRequest.getString("action")
 					};
-					Globals.ds.setCommand("link", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("link", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for link creation: "+ans);
 					response.getWriter().println("\"linked\":\""+ans+"\"");
 				}
@@ -98,8 +102,8 @@ public class AndroidServlet extends HttpServlet {
 							jsonRequest.getString("actuator"),
 							jsonRequest.getString("action")
 					};
-					Globals.ds.setCommand("write", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("write", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for write action: "+ans);
 					response.getWriter().println("\"written\":\""+ans+"\"");
 				}
@@ -110,8 +114,8 @@ public class AndroidServlet extends HttpServlet {
 							jsonRequest.getString("event"),
 							jsonRequest.getString("action")
 					};
-					Globals.ds.setCommand("rm link", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("rm link", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for link removal: "+ans);
 					response.getWriter().println("\"unlinked\":\""+ans+"\"");
 				}
@@ -119,8 +123,8 @@ public class AndroidServlet extends HttpServlet {
 					String [] options = new String [] {
 							jsonRequest.getString("serial")
 					};
-					Globals.ds.setCommand("rm lookout", options);
-					String ans = Globals.ds.getOut();
+					ds.setCommand("rm lookout", options);
+					String ans = ds.getOut();
 					System.out.println(SERV_LOG+"Answer for lookout removal: "+ans);
 					response.getWriter().println("\"unlooked\":\""+ans+"\"");
 				}
@@ -165,7 +169,7 @@ public class AndroidServlet extends HttpServlet {
 		else {
 			serial = (new JSONObject(serial).getString("serial"));
 			// good query: 0. verify the serial is present in database
-			if (!findSerialInDB(serial))
+			if (/*!findSerialInDB(serial)*/false)
 			{
 				System.out.println(SERV_LOG+"unknown serial.");
 				// invalidate response
@@ -173,17 +177,17 @@ public class AndroidServlet extends HttpServlet {
 			}
 			else {
 				// 1. register: theoretically, once the mn is set, user_direct never blocks again on setSerial
-				Globals.ds.setSerial(serial);
+				ds.setSerial(serial);
 				// 2. ask name 
-				Globals.ds.setCommand("mn", null);
-				node_mn = Globals.ds.getOut();
+				ds.setCommand("mn", null);
+				node_mn = ds.getOut();
 
 				// FROM HERE ON, IT COULD BE WORK OF DO_GET
 				// 3. ask infos about the node: its name/type and its attributes
-				Globals.ds.setCommand("name", new String[] {serial});
-				node_name = Globals.ds.getOut();
-				Globals.ds.setCommand("query", new String[] {serial});
-				node_attrs = Globals.ds.getOut();
+				ds.setCommand("name", new String[] {serial});
+				node_name = ds.getOut();
+				ds.setCommand("query", new String[] {serial});
+				node_attrs = ds.getOut();
 				
 				// 4. prepare json response
 				response.setContentType("application/json");
@@ -247,13 +251,13 @@ public class AndroidServlet extends HttpServlet {
 			doGet(request, response);
 	}
 
-	private boolean findSerialInDB (String serial) {
-		if (serial.split("x").length != 2 || serial.split("x")[1].length() != 4)
-			return false;
-		for (int i = 0; i< Globals.knownCodes.length; i++)
-			if (Globals.knownCodes[i].equals(serial))
-				return true;
-		return false;
-	}
+//	private boolean findSerialInDB (String serial) {
+//		if (serial.split("x").length != 2 || serial.split("x")[1].length() != 4)
+//			return false;
+//		for (int i = 0; i< Globals.knownCodes.length; i++)
+//			if (Globals.knownCodes[i].equals(serial))
+//				return true;
+//		return false;
+//	}
 	
 }
