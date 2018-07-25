@@ -11,6 +11,10 @@
   <packaging>war</packaging>
   <name>Indirect Interaction</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <mainClass>web.indirect.WebpageServlet</mainClass>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>mecs.iot.proj</groupId>
