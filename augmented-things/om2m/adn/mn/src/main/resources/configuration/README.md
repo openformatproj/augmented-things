@@ -1,0 +1,1 @@
+Put here a valid name.ini file
