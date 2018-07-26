@@ -1,12 +1,12 @@
 package mecs.iot.proj.om2m.structures;
 
-public class Rule {
+public class NumericRule {
 	
 	public double[] coefficients;
 	public Token token;
 	public double threshold;
 	
-	Rule(double[] coefficients, Token token, double threshold) {
+	NumericRule(double[] coefficients, Token token, double threshold) {
 		this.coefficients = coefficients;
 		this.token = token;
 		this.threshold = threshold;
