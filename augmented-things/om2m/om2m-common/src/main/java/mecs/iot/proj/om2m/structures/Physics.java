@@ -6,14 +6,14 @@ public class Physics {
 	
 	static Random rnd;
 	
-	public static double randomUniformFluctuation (double deviation) {
-		return 1+deviation*(Math.random()-0.5);
+	public static double randomUniformFluctuation (double relativeDeviation) {
+		return 1+relativeDeviation*(Math.random()-0.5);
 	}
 	
-	public static double randomGaussianFluctuation (double deviation) {
+	public static double randomGaussianFluctuation (double relativeDeviation) {
 		if (rnd==null)
 			rnd = new Random();
-		return 1+deviation*rnd.nextGaussian();
+		return 1+relativeDeviation*rnd.nextGaussian();
 	}
 
 }

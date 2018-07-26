@@ -33,7 +33,7 @@ public class App
     	final Console console = new Console(id,host,true,debug);
 		try {
 			final RemoteInterface remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
-			Command exit = (s) -> {remote.terminate(); return "Exiting";};
+			Command exit = (s) -> {console.terminate(); remote.terminate(); return "Exiting";};
 			console.add("exit",exit,0,"Terminate this asn","exit",false);
 			remote.start();
 		} catch (URISyntaxException e) {

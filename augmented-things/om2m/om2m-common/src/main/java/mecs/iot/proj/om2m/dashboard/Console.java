@@ -87,7 +87,7 @@ public class Console extends Thread {
 								options[i] = sections[i+1];
 							}
 							if (options[0].equals("help")) {
-								interf.out(cnt.help,false);
+								interf.out(cnt.help, false);
 							} else {
 								str = cnt.command.execute(options);
 								interf.out(str, cnt.isJSON && str.matches("\\{.+\\}"));
@@ -95,7 +95,7 @@ public class Console extends Thread {
 						} else if (commandsFound>0) {
 							String firstOption = sections[1];
 							if (firstOption.equals("help")) {
-								interf.out(cnt.help,false);
+								interf.out(cnt.help, false);
 							}
 						} else {
 							str = cnt.command.execute(null);
@@ -112,7 +112,7 @@ public class Console extends Thread {
 						interf.out(o,false);
 					}
 				} else {
-					interf.out(name + " is not a valid command",false);
+					interf.out(name + " is not a valid command", false);
 				}
 			}
 			interf.terminate();

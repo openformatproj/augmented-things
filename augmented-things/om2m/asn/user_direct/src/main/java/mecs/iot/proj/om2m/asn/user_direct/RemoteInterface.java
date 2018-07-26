@@ -99,7 +99,6 @@ class RemoteInterface extends Client {
 			i++;
 		}
 		deleteUser(Services.normalizeName(id));
-		console.terminate();
 		destroy();
 		outStream.out("Terminating remote interface", i);
 	}

@@ -31,7 +31,7 @@ public class OM2MDirectEngine {
 		final Console console = new Console(id,host,interf,debug);
 		try {
 			remote = new RemoteInterface(id,host,address,context,debug,console,ip,5691);
-			Command exit = (s) -> {remote.terminate(); return "Exiting";};
+			Command exit = (s) -> {console.terminate(); remote.terminate(); return "Exiting";};
 			console.add("exit",exit,0,"Terminate this asn","exit",false);
 		} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);
