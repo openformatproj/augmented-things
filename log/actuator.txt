@@ -3,27 +3,29 @@ actuator/main@alessandro	[DEBUG]	0) Found local configuration file (ASN)
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-actuator@alessandro	[DEBUG]	0) Connected to coap://127.0.0.1:5685/augmented-things
-actuator@alessandro	[INFO]	0) Starting interface
+actuator@alessandro	[DEBUG]	0) Connected to "coap://127.0.0.1:5685/augmented-things"
+actuator@alessandro	[INFO]	0) Starting remote interface
 actuator@alessandro	[INFO]	0) Locating node...
-actuator@alessandro	[DEBUG]	0) Sent location request to coap://127.0.0.1:5685/augmented-things
-actuator@alessandro	[DEBUG]	0) Sent POST request to coap://127.0.0.1:5685/augmented-things?id=actuator.alessandro&ser=0x0002&loc=0 
+actuator@alessandro	[DEBUG]	0) Sent location request to "coap://127.0.0.1:5685/augmented-things"
+actuator@alessandro	[DEBUG]	0) Sent POST request to "coap://127.0.0.1:5685/augmented-things?id=actuator.alessandro&ser=0x0002&loc=0" 
                    	       	   with payload <>
 actuator@alessandro	[INFO]	0) ...done, received "augmented-things-MN" and "192.168.0.105" as MN id and address, connecting 
                    	      	   to ADN...
-actuator@alessandro	[DEBUG]	0) Connected to coap://192.168.0.105:5686/augmented-things
+actuator@alessandro	[DEBUG]	0) Connected to "coap://192.168.0.105:5686/augmented-things"
 actuator@alessandro	[INFO]	0) ...done, registering...
-actuator@alessandro	[DEBUG]	0) Sent registration request to coap://192.168.0.105:5686/augmented-things with payload "action1,
-                   	       	    action2"
-actuator@alessandro	[DEBUG]	0) Sent POST request to coap://192.168.0.105:5686/augmented-things?id=actuator.alessandro&ser=0x0002&type=act&addr=coap:/
-                   	       	   /127.0.0.1:5690/augmented-things with payload <action1, action2>
+actuator@alessandro	[DEBUG]	0) Sent registration request to coap://192.168.0.105:5686/augmented-things"
+actuator@alessandro	[DEBUG]	0) Sent POST request to "coap://192.168.0.105:5686/augmented-things?id=actuator.alessandro&ser=0x0002&type=act&addr=coap:/
+                   	       	   /127.0.0.1:5690/augmented-things" with payload <action1, action2>
 actuator@alessandro	[INFO]	0) ...done
 actuator@alessandro	[INFO]	1) Waiting for notifications...
 actuator/ATserver@alessandro	[INFO]	1) Handling notification "action1"... done
-actuator/ATserver@alessandro	[INFO]	2) Handling notification "action2"... done
-actuator/ATserver@alessandro	[INFO]	3) Handling notification "action2"... done
-actuator/ATserver@alessandro	[INFO]	4) Handling notification "action2"... done
-actuator/ATserver@alessandro	[INFO]	5) Handling notification "action2"... done
-actuator/ATserver@alessandro	[INFO]	6) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	2) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	3) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	4) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	5) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	6) Handling notification "action1"... done
 actuator/ATserver@alessandro	[INFO]	7) Handling notification "action2"... done
+actuator/ATserver@alessandro	[INFO]	8) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	9) Handling notification "action1"... done
+actuator/ATserver@alessandro	[INFO]	10) Handling notification "action1"... done
 

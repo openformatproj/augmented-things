@@ -3,772 +3,727 @@ Found local configuration file
 SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	0) Connected to coap://localhost:5684/~/augmented-things-MN-cse
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	0) Connected to "coap://localhost:5684/~/augmented-things-MN-cse"
 augmented-things-MN/server@alessandro	[INFO]	0) Creating OM2M state... posting root AE...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	1) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID",
-                                        	       	   "rn":"state"}} to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	1) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse? 
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	1) Sent AE creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	1) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse?" 
                                         	       	   with payload <{"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"state"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=state, ty=2
 augmented-things-MN/server@alessandro	[INFO]	0) ...done, posting tagMap...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   state
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Sent Container creation with JSON: {"m2m:cnt":{"rn":"tagMap"}} to coap:/
-                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"tagMap"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	2) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state?" with payload <{"m2m:cnt":{"rn":"tagMap"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=tagMap, ty=3
 augmented-things-MN/server@alessandro	[INFO]	0) ...done, posting userMap...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	3) Sent Container creation with JSON: {"m2m:cnt":{"rn":"userMap"}} to coap:/
-                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	3) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"userMap"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	3) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	3) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state?" with payload <{"m2m:cnt":{"rn":"userMap"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=userMap, ty=3
 augmented-things-MN/server@alessandro	[INFO]	0) ...done, posting subscription state...
 augmented-things-MN/server@alessandro	[DEBUG]	0) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	4) Sent Container creation with JSON: {"m2m:cnt":{"rn":"subscriptionMap"}} 
-                                        	       	   to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   state
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	4) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"subscriptionMap"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	4) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	4) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state?" with payload <{"m2m:cnt":{"rn":"subscriptionMap"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=subscriptionMap, ty=3
 augmented-things-MN/server@alessandro	[DEBUG]	0) Posting resourceMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	5) Sent Container creation with JSON: {"m2m:cnt":{"rn":"resourceMap"}} to 
-                                        	       	   coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	5) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state? with payload <{"m2m:cnt":{"rn":"resourceMap"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	5) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	5) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state?" with payload <{"m2m:cnt":{"rn":"resourceMap"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	0) Received JSON: rn=resourceMap, ty=3
 augmented-things-MN/server@alessandro	[INFO]	0) Registering to IN...
 augmented-things-MN/server@alessandro	[DEBUG]	0) Found remote configuration file (ADN)
-augmented-things-MN/TEMPclient@alessandro	[DEBUG]	0) Connected to coap://127.0.0.1:5685/augmented-things
-augmented-things-MN/TEMPclient@alessandro	[DEBUG]	0) Sent POST request to coap://127.0.0.1:5685/augmented-things?id=augmented-things-MN 
+augmented-things-MN/TEMPclient@alessandro	[DEBUG]	0) Connected to "coap://127.0.0.1:5685/augmented-things"
+augmented-things-MN/TEMPclient@alessandro	[DEBUG]	0) Sent POST request to "coap://127.0.0.1:5685/augmented-things?id=augmented-things-MN" 
                                          	       	   with payload <>
 augmented-things-MN/server@alessandro	[INFO]	0) ...done
-augmented-things-MN/main@alessandro	[INFO]	0) Adding ADN on coap://localhost:5686/augmented-things... done. Starting server...
+augmented-things-MN/main@alessandro	[INFO]	0) Adding ADN on "coap://localhost:5686/augmented-things"... done. Starting server...
                                    	      	    done
 augmented-things-MN/console@alessandro	[INFO]	0) Starting console
 augmented-things-MN/console@alessandro	[INFO]	0) Terminating console (no interface provided)
-augmented-things-MN/server@alessandro	[INFO]	1) Received POST request... detected node MN registration: "id=<ID>&ser=<SERIAL>&type=<TYPE>"
+augmented-things-MN/server@alessandro	[INFO]	1) Received POST request... detected node MN registration
 augmented-things-MN/server@alessandro	[INFO]	1) Registering node "sensor.alessandro" with serial "0x0001"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   state/tagMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent Container creation with JSON: {"m2m:cnt":{"rn":"0x0001"}} to coap:/
-                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state/tagMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state/tagMap? with payload <{"m2m:cnt":{"rn":"0x0001"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   state/tagMap/0x0001
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	   \"active\":true,\"attributes\":[\"event\"],\"id\":\"sensor.alessandro\",
-                                        	       	   \"type\":\"tempC\")","cnf":"text/plain:0"}} to coap://localhost:5684/
-                                        	       	   ~/augmented-things-MN-cse/augmented-things-MN/state/tagMap/0x0001
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/state/tagMap/0x0001? with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/tagMap"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/tagMap?" with payload <{"m2m:cnt":{"rn":"0x0001"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   state/tagMap/0x0001"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	6) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/state/tagMap/0x0001?" with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
                                         	       	   \"active\":true,\"attributes\":[\"event\"],\"id\":\"sensor.alessandro\",
                                         	       	   \"type\":\"tempC\")","cnf":"text/plain:0"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Connected to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID",
-                                        	       	   "rn":"sensor.alessandro"}} to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse? 
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Connected to "coap://localhost:5684/~/augmented-things-MN-cse"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent AE creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse?" 
                                         	       	   with payload <{"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"sensor.alessandro"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	1) Received JSON: rn=sensor.alessandro, ty=2
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent Container creation with JSON: {"m2m:cnt":{"rn":"data"}} to coap:/
-                                        	       	   /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/sensor.alessandro? with payload <{"m2m:cnt":{"rn":"data"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   sensor.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	7) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/sensor.alessandro?" with payload <{"m2m:cnt":{"rn":"data"}}>
 augmented-things-MN/server@alessandro	[DEBUG]	1) Received JSON: rn=data, ty=3
 augmented-things-MN/server@alessandro	[INFO]	1) ...done
-augmented-things-MN/server@alessandro	[INFO]	2) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	2) Posting Content Instance "32,610 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"32,610 °C",
-                                        	       	   "cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"32,
-                                        	       	   610 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	2) Received JSON: ty=4, cnf=text/plain:0, con=32,610 °C
+augmented-things-MN/server@alessandro	[INFO]	2) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	2) Posting Content Instance "35,376 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	8) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	   376 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	2) Received JSON: ty=4, cnf=text/plain:0, con=35,376 °C
 augmented-things-MN/server@alessandro	[INFO]	2) ...done
-augmented-things-MN/server@alessandro	[INFO]	3) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	3) Posting Content Instance "36,703 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	   sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,703 °C",
-                                        	       	   "cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	   augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	   703 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	3) Received JSON: ty=4, cnf=text/plain:0, con=36,703 °C
+augmented-things-MN/server@alessandro	[INFO]	3) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	3) Posting Content Instance "34,188 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	   sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	9) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	   augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"34,
+                                        	       	   188 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	3) Received JSON: ty=4, cnf=text/plain:0, con=34,188 °C
 augmented-things-MN/server@alessandro	[INFO]	3) ...done
-augmented-things-MN/server@alessandro	[INFO]	4) Received POST request... detected node MN registration: "id=<ID>&ser=<SERIAL>&type=<TYPE>"
-augmented-things-MN/server@alessandro	[INFO]	4) Registering node "actuator.alessandro" with serial "0x0002"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/tagMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent Container creation with JSON: {"m2m:cnt":{"rn":"0x0002"}} to coap:/
-                                        	       	    /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/state/
-                                        	       	    tagMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/tagMap? with payload <{"m2m:cnt":{"rn":"0x0002"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/tagMap/0x0002
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"active\":true,\"attributes\":[\"action1\",\"action2\"],\"id\":\"actuator.alessandro\",
-                                        	       	    \"type\":\"act\")","cnf":"text/plain:0"}} to coap://localhost:5684/~/
-                                        	       	    augmented-things-MN-cse/augmented-things-MN/state/tagMap/0x0002
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/tagMap/0x0002? with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
+augmented-things-MN/server@alessandro	[INFO]	4) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	4) Posting Content Instance "36,245 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	10) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    245 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	4) Received JSON: ty=4, cnf=text/plain:0, con=36,245 °C
+augmented-things-MN/server@alessandro	[INFO]	4) ...done
+augmented-things-MN/server@alessandro	[INFO]	5) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	5) Posting Content Instance "39,064 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"39,
+                                        	       	    064 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	5) Received JSON: ty=4, cnf=text/plain:0, con=39,064 °C
+augmented-things-MN/server@alessandro	[INFO]	5) ...done
+augmented-things-MN/server@alessandro	[INFO]	6) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	6) Posting Content Instance "33,647 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"33,
+                                        	       	    647 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	6) Received JSON: ty=4, cnf=text/plain:0, con=33,647 °C
+augmented-things-MN/server@alessandro	[INFO]	6) ...done
+augmented-things-MN/server@alessandro	[INFO]	7) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	7) Posting Content Instance "36,824 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    824 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	7) Received JSON: ty=4, cnf=text/plain:0, con=36,824 °C
+augmented-things-MN/server@alessandro	[INFO]	7) ...done
+augmented-things-MN/server@alessandro	[INFO]	8) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	8) Posting Content Instance "36,005 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    005 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	8) Received JSON: ty=4, cnf=text/plain:0, con=36,005 °C
+augmented-things-MN/server@alessandro	[INFO]	8) ...done
+augmented-things-MN/server@alessandro	[INFO]	9) Received POST request... detected node MN registration
+augmented-things-MN/server@alessandro	[INFO]	9) Registering node "actuator.alessandro" with serial "0x0002"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/tagMap"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/tagMap?" with payload <{"m2m:cnt":{"rn":"0x0002"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/tagMap/0x0002"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/tagMap/0x0002?" with payload <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
                                         	       	    \"active\":true,\"attributes\":[\"action1\",\"action2\"],\"id\":\"actuator.alessandro\",
                                         	       	    \"type\":\"act\")","cnf":"text/plain:0"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Connected to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID",
-                                        	       	    "rn":"actuator.alessandro"}} to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse? 
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Connected to "coap://localhost:5684/~/augmented-things-MN-cse"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent AE creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse?" 
                                         	       	    with payload <{"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"actuator.alessandro"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	4) Received JSON: rn=actuator.alessandro, ty=2
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    actuator.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent Container creation with JSON: {"m2m:cnt":{"rn":"data"}} to coap:/
-                                        	       	    /localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/actuator.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	11) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/actuator.alessandro? with payload <{"m2m:cnt":{"rn":"data"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	4) Received JSON: rn=data, ty=3
-augmented-things-MN/server@alessandro	[INFO]	4) ...done
-augmented-things-MN/server@alessandro	[INFO]	5) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	5) Posting Content Instance "34,935 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,935 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	12) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    935 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	5) Received JSON: ty=4, cnf=text/plain:0, con=34,935 °C
-augmented-things-MN/server@alessandro	[INFO]	5) ...done
-augmented-things-MN/server@alessandro	[INFO]	6) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	6) Posting Content Instance "34,656 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,656 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	13) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    656 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	6) Received JSON: ty=4, cnf=text/plain:0, con=34,656 °C
-augmented-things-MN/server@alessandro	[INFO]	6) ...done
-augmented-things-MN/server@alessandro	[INFO]	7) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	7) Posting Content Instance "35,066 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,066 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	14) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"35,
-                                        	       	    066 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	7) Received JSON: ty=4, cnf=text/plain:0, con=35,066 °C
-augmented-things-MN/server@alessandro	[INFO]	7) ...done
-augmented-things-MN/server@alessandro	[INFO]	8) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	8) Posting Content Instance "33,045 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"33,045 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	15) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"33,
-                                        	       	    045 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	8) Received JSON: ty=4, cnf=text/plain:0, con=33,045 °C
-augmented-things-MN/server@alessandro	[INFO]	8) ...done
-augmented-things-MN/server@alessandro	[INFO]	9) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	9) Posting Content Instance "36,393 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,393 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	    393 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	9) Received JSON: ty=4, cnf=text/plain:0, con=36,393 °C
+augmented-things-MN/server@alessandro	[DEBUG]	9) Received JSON: rn=actuator.alessandro, ty=2
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    actuator.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	16) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/actuator.alessandro?" with payload <{"m2m:cnt":{"rn":"data"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	9) Received JSON: rn=data, ty=3
 augmented-things-MN/server@alessandro	[INFO]	9) ...done
-augmented-things-MN/server@alessandro	[INFO]	10) Received POST request... user MN registration: "id=<ID>&addr=<URI>"
-augmented-things-MN/server@alessandro	[INFO]	10) Registering user "user.ALESSANDRO-K7NR" with address "coap://192.168.0.110:5691/
+augmented-things-MN/server@alessandro	[INFO]	10) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	10) Posting Content Instance "35,802 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    802 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	10) Received JSON: ty=4, cnf=text/plain:0, con=35,802 °C
+augmented-things-MN/server@alessandro	[INFO]	10) ...done
+augmented-things-MN/server@alessandro	[INFO]	11) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	11) Posting Content Instance "35,406 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    406 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	11) Received JSON: ty=4, cnf=text/plain:0, con=35,406 °C
+augmented-things-MN/server@alessandro	[INFO]	11) ...done
+augmented-things-MN/server@alessandro	[INFO]	12) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	12) Posting Content Instance "36,305 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	19) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	19) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	19) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    305 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	12) Received JSON: ty=4, cnf=text/plain:0, con=36,305 °C
+augmented-things-MN/server@alessandro	[INFO]	12) ...done
+augmented-things-MN/server@alessandro	[INFO]	13) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	13) Posting Content Instance "38,296 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	20) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	20) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	20) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"38,
+                                        	       	    296 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	13) Received JSON: ty=4, cnf=text/plain:0, con=38,296 °C
+augmented-things-MN/server@alessandro	[INFO]	13) ...done
+augmented-things-MN/server@alessandro	[INFO]	14) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	14) Posting Content Instance "34,951 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	21) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	21) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	21) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"34,
+                                        	       	    951 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	14) Received JSON: ty=4, cnf=text/plain:0, con=34,951 °C
+augmented-things-MN/server@alessandro	[INFO]	14) ...done
+augmented-things-MN/server@alessandro	[INFO]	15) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	15) Posting Content Instance "35,049 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	22) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	22) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	22) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    049 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	15) Received JSON: ty=4, cnf=text/plain:0, con=35,049 °C
+augmented-things-MN/server@alessandro	[INFO]	15) ...done
+augmented-things-MN/server@alessandro	[INFO]	16) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	16) Posting Content Instance "37,132 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	23) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	23) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	23) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"37,
+                                        	       	    132 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	16) Received JSON: ty=4, cnf=text/plain:0, con=37,132 °C
+augmented-things-MN/server@alessandro	[INFO]	16) ...done
+augmented-things-MN/server@alessandro	[INFO]	17) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	17) Posting Content Instance "35,419 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	24) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	24) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	24) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    419 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	17) Received JSON: ty=4, cnf=text/plain:0, con=35,419 °C
+augmented-things-MN/server@alessandro	[INFO]	17) ...done
+augmented-things-MN/server@alessandro	[INFO]	18) Received POST request... user MN registration
+augmented-things-MN/server@alessandro	[INFO]	18) Registering user "user.ALESSANDRO-K7NR" with address "coap://192.168.0.110:5691/
                                      	      	    augmented-things"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/userMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent Container creation with JSON: {"m2m:cnt":{"rn":"user.ALESSANDRO-K7NR"}} 
-                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/userMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/userMap? with payload <{"m2m:cnt":{"rn":"user.ALESSANDRO-K7NR"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/userMap/user.ALESSANDRO-K7NR
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"address\":\"coap://192.168.0.110:5691/augmented-things\",\"active\":true,
-                                        	       	    \"id\":\"user.ALESSANDRO-K7NR\")","cnf":"text/plain:0"}} to coap://localhost:5684/
-                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	17) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR? with payload 
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/userMap"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/userMap?" with payload <{"m2m:cnt":{"rn":"user.ALESSANDRO-K7NR"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/userMap/user.ALESSANDRO-K7NR"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR?" with payload 
                                         	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"address\":\"coap:/
                                         	       	    /192.168.0.110:5691/augmented-things\",\"active\":true,\"id\":\"user.ALESSANDRO-K7NR\")",
                                         	       	    "cnf":"text/plain:0"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Connected to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Sent AE creation with JSON: {"m2m:ae":{"rr":"true","api":"TempApp-ID",
-                                        	       	    "rn":"user.ALESSANDRO-K7NR"}} to coap://localhost:5684/~/augmented-things-MN-cse
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	18) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse? 
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	26) Connected to "coap://localhost:5684/~/augmented-things-MN-cse"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	26) Sent AE creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	26) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse?" 
                                         	       	    with payload <{"m2m:ae":{"rr":"true","api":"TempApp-ID","rn":"user.ALESSANDRO-K7NR"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	10) Received JSON: rn=user.ALESSANDRO-K7NR, ty=2
-augmented-things-MN/server@alessandro	[INFO]	10) ...done
-augmented-things-MN/server@alessandro	[INFO]	11) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	11) Posting Content Instance "31,776 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	19) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	19) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"31,776 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	19) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"31,
-                                        	       	    776 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	11) Received JSON: ty=4, cnf=text/plain:0, con=31,776 °C
-augmented-things-MN/server@alessandro	[INFO]	11) ...done
-augmented-things-MN/server@alessandro	[INFO]	12) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	12) Posting Content Instance "36,456 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	20) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	20) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,456 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	20) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	    456 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	12) Received JSON: ty=4, cnf=text/plain:0, con=36,456 °C
-augmented-things-MN/server@alessandro	[INFO]	12) ...done
-augmented-things-MN/server@alessandro	[INFO]	13) Received GET request... detected attributes query: "mode=1&ser=<SERIAL>"
-augmented-things-MN/server@alessandro	[INFO]	13) Handling attributes querying for serial "0x0001"... done
-augmented-things-MN/server@alessandro	[INFO]	14) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	14) Posting Content Instance "38,199 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	21) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	21) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"38,199 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	21) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"38,
-                                        	       	    199 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	14) Received JSON: ty=4, cnf=text/plain:0, con=38,199 °C
-augmented-things-MN/server@alessandro	[INFO]	14) ...done
-augmented-things-MN/server@alessandro	[INFO]	15) Received GET request... detected attributes query: "mode=1&ser=<SERIAL>"
-augmented-things-MN/server@alessandro	[INFO]	15) Handling attributes querying for serial "0x0002"... done
-augmented-things-MN/server@alessandro	[INFO]	16) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	16) Posting Content Instance "35,550 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	22) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	22) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,550 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	22) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"35,
-                                        	       	    550 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	16) Received JSON: ty=4, cnf=text/plain:0, con=35,550 °C
-augmented-things-MN/server@alessandro	[INFO]	16) ...done
-augmented-things-MN/server@alessandro	[INFO]	17) Received GET request... detected node read: "mode=2&ser=<SERIAL>"
-augmented-things-MN/server@alessandro	[INFO]	17) Handling reading on sensor with serial "0x0001"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	23) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data/la
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	23) Sent access request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data/la
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	23) Sent GET request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data/la? with payload <>
-augmented-things-MN/server@alessandro	[INFO]	17) ...done
-augmented-things-MN/server@alessandro	[INFO]	18) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	18) Posting Content Instance "37,467 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	24) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	24) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,467 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	24) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"37,
-                                        	       	    467 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	18) Received JSON: ty=4, cnf=text/plain:0, con=37,467 °C
+augmented-things-MN/server@alessandro	[DEBUG]	18) Received JSON: rn=user.ALESSANDRO-K7NR, ty=2
 augmented-things-MN/server@alessandro	[INFO]	18) ...done
-augmented-things-MN/server@alessandro	[INFO]	19) Received POST request... detected node lookout: "id=<ID>&ser=<SERIAL>"
-augmented-things-MN/server@alessandro	[INFO]	19) Subscribing user "user.ALESSANDRO-K7NR" to resource with serial "0x0001"...
-augmented-things-MN/server@alessandro	[DEBUG]	19) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent Container creation with JSON: {"m2m:cnt":{"rn":"sensor.alessandro"}} 
-                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap? with payload <{"m2m:cnt":{"rn":"sensor.alessandro"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"subs\":[(\"receiver\":(\"node\":\"USER\",\"address\":\"coap://192.168.0.110:5691/
-                                        	       	    augmented-things\",\"id\":\"user.ALESSANDRO-K7NR\"),\"sender\":(\"node\":\"SENSOR\",
-                                        	       	    \"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],\"id\":\"sensor.alessandro\")",
-                                        	       	    "cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	25) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload 
-                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"USER\",
-                                        	       	    \"address\":\"coap://192.168.0.110:5691/augmented-things\",\"id\":\"user.ALESSANDRO-K7NR\"),
-                                        	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],
-                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	19) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	19) Posting Content Instance "33,354 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	27) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	27) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	27) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"33,
+                                        	       	    354 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	19) Received JSON: ty=4, cnf=text/plain:0, con=33,354 °C
 augmented-things-MN/server@alessandro	[INFO]	19) ...done
-augmented-things-MN/server@alessandro	[INFO]	20) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	20) Posting Content Instance "34,909 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	26) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	26) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,909 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	26) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    909 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	20) Received JSON: ty=4, cnf=text/plain:0, con=34,909 °C
-augmented-things-MN/server@alessandro	[INFO]	20) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	1) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	1) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with payload 
-                                       	       	   <sensor.alessandro: con=34,909 °C>
+augmented-things-MN/server@alessandro	[INFO]	20) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	20) Posting Content Instance "35,914 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	28) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	28) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	28) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    914 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	20) Received JSON: ty=4, cnf=text/plain:0, con=35,914 °C
 augmented-things-MN/server@alessandro	[INFO]	20) ...done
-augmented-things-MN/server@alessandro	[INFO]	21) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	21) Posting Content Instance "34,919 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	27) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	27) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,919 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	27) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    919 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	21) Received JSON: ty=4, cnf=text/plain:0, con=34,919 °C
-augmented-things-MN/server@alessandro	[INFO]	21) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	2) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	2) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with payload 
-                                       	       	   <sensor.alessandro: con=34,919 °C>
+augmented-things-MN/server@alessandro	[INFO]	21) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	21) Posting Content Instance "38,578 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	29) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	29) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	29) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"38,
+                                        	       	    578 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	21) Received JSON: ty=4, cnf=text/plain:0, con=38,578 °C
 augmented-things-MN/server@alessandro	[INFO]	21) ...done
-augmented-things-MN/server@alessandro	[INFO]	22) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	22) Posting Content Instance "38,224 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	28) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	28) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"38,224 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	28) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"38,
-                                        	       	    224 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	22) Received JSON: ty=4, cnf=text/plain:0, con=38,224 °C
-augmented-things-MN/server@alessandro	[INFO]	22) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	3) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	3) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with payload 
-                                       	       	   <sensor.alessandro: con=38,224 °C>
-augmented-things-MN/server@alessandro	[INFO]	22) ...done
-augmented-things-MN/server@alessandro	[INFO]	23) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	23) Posting Content Instance "37,623 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	29) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	29) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,623 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	29) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"37,
-                                        	       	    623 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	23) Received JSON: ty=4, cnf=text/plain:0, con=37,623 °C
-augmented-things-MN/server@alessandro	[INFO]	23) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	4) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	4) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with payload 
-                                       	       	   <sensor.alessandro: con=37,623 °C>
+augmented-things-MN/server@alessandro	[INFO]	22) Received GET request... detected attributes query
+augmented-things-MN/server@alessandro	[INFO]	22) Handling attributes querying for serial "0x0001"... done
+augmented-things-MN/server@alessandro	[INFO]	23) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	23) Posting Content Instance "37,639 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	30) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	30) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	30) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"37,
+                                        	       	    639 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	23) Received JSON: ty=4, cnf=text/plain:0, con=37,639 °C
 augmented-things-MN/server@alessandro	[INFO]	23) ...done
-augmented-things-MN/server@alessandro	[INFO]	24) Received PUT request... detected node write: "ser=<SERIAL>&lab=<ACTION_LABEL>"
-augmented-things-MN/server@alessandro	[INFO]	24) Handling writing on actuator with serial "0x0002"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	5) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	5) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	   <action1>
-augmented-things-MN/server@alessandro	[INFO]	24) ...done
-augmented-things-MN/server@alessandro	[INFO]	25) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	25) Posting Content Instance "36,904 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	30) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	30) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,904 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	30) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	    904 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	25) Received JSON: ty=4, cnf=text/plain:0, con=36,904 °C
-augmented-things-MN/server@alessandro	[INFO]	25) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	6) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	6) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with payload 
-                                       	       	   <sensor.alessandro: con=36,904 °C>
+augmented-things-MN/server@alessandro	[INFO]	24) Received GET request... detected attributes query
+augmented-things-MN/server@alessandro	[INFO]	24) Handling attributes querying for serial "0x0002"... done
+augmented-things-MN/server@alessandro	[INFO]	25) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	25) Posting Content Instance "36,667 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	31) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	31) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	31) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    667 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	25) Received JSON: ty=4, cnf=text/plain:0, con=36,667 °C
 augmented-things-MN/server@alessandro	[INFO]	25) ...done
-augmented-things-MN/server@alessandro	[INFO]	26) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	26) Posting Content Instance "31,588 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	31) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	31) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"31,588 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	31) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"31,
-                                        	       	    588 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	26) Received JSON: ty=4, cnf=text/plain:0, con=31,588 °C
-augmented-things-MN/server@alessandro	[INFO]	26) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	7) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	7) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with payload 
-                                       	       	   <sensor.alessandro: con=31,588 °C>
+augmented-things-MN/server@alessandro	[INFO]	26) Received GET request... detected node read
+augmented-things-MN/server@alessandro	[INFO]	26) Handling reading on sensor with serial "0x0001"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	32) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data/la"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	32) Sent reading request to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	32) Sent GET request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data/la?" with payload <>
 augmented-things-MN/server@alessandro	[INFO]	26) ...done
-augmented-things-MN/server@alessandro	[INFO]	27) Received DELETE request... detected lookout removal: "id=<ID>&ser=<SERIAL>"
-augmented-things-MN/server@alessandro	[INFO]	27) Handling removal of lookout between user "user.ALESSANDRO-K7NR" and serial 
-                                     	      	    "0x0001"...
-augmented-things-MN/server@alessandro	[DEBUG]	27) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	32) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	32) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
-                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/subscriptionMap/
-                                        	       	    sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	32) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload 
-                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"id\":\"sensor.alessandro\")",
-                                        	       	    "cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	27) Deleting subscription on "sensor.alessandro"
+augmented-things-MN/server@alessandro	[INFO]	27) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	27) Posting Content Instance "36,501 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	33) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	33) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	33) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    501 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	27) Received JSON: ty=4, cnf=text/plain:0, con=36,501 °C
 augmented-things-MN/server@alessandro	[INFO]	27) ...done
-augmented-things-MN/server@alessandro	[INFO]	28) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	28) Posting Content Instance "34,373 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	33) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	33) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,373 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	33) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    373 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	28) Received JSON: ty=4, cnf=text/plain:0, con=34,373 °C
-augmented-things-MN/server@alessandro	[INFO]	28) ...done
-augmented-things-MN/server@alessandro	[INFO]	29) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	29) Posting Content Instance "35,268 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,268 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"35,
-                                        	       	    268 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	29) Received JSON: ty=4, cnf=text/plain:0, con=35,268 °C
-augmented-things-MN/server@alessandro	[INFO]	29) ...done
-augmented-things-MN/server@alessandro	[INFO]	30) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	30) Posting Content Instance "36,747 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	35) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	35) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,747 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	35) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	    747 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	30) Received JSON: ty=4, cnf=text/plain:0, con=36,747 °C
-augmented-things-MN/server@alessandro	[INFO]	30) ...done
-augmented-things-MN/server@alessandro	[INFO]	31) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	31) Posting Content Instance "38,084 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	36) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	36) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"38,084 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	36) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"38,
-                                        	       	    084 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	31) Received JSON: ty=4, cnf=text/plain:0, con=38,084 °C
-augmented-things-MN/server@alessandro	[INFO]	31) ...done
-augmented-things-MN/server@alessandro	[INFO]	32) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	32) Posting Content Instance "33,233 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	37) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	37) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"33,233 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	37) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"33,
-                                        	       	    233 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	32) Received JSON: ty=4, cnf=text/plain:0, con=33,233 °C
-augmented-things-MN/server@alessandro	[INFO]	32) ...done
-augmented-things-MN/server@alessandro	[INFO]	33) Received POST request... detected nodes link: "ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>"
-augmented-things-MN/server@alessandro	[INFO]	33) Linking sensor with serial "0x0001" to actuator with serial "0x0002"...
-augmented-things-MN/server@alessandro	[DEBUG]	33) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Sent Container creation with JSON: {"m2m:cnt":{"rn":"sensor.alessandro"}} 
-                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap? with payload <{"m2m:cnt":{"rn":"sensor.alessandro"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"subs\":[(\"receiver\":(\"node\":\"ACTUATOR\",\"address\":\"coap://
-                                        	       	    127.0.0.1:5690/augmented-things\",\"id\":\"actuator.alessandro\"),\"sender\":(\"node\":\"SENSOR\",
-                                        	       	    \"id\":\"sensor.alessandro\",\"type\":\"tempC\"),\"action\":\"action2\",
-                                        	       	    \"event\":\"event\")],\"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}} 
-                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload 
-                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"ACTUATOR\",
-                                        	       	    \"address\":\"coap://127.0.0.1:5690/augmented-things\",\"id\":\"actuator.alessandro\"),
-                                        	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\"),
-                                        	       	    \"action\":\"action2\",\"event\":\"event\")],\"id\":\"sensor.alessandro\")",
-                                        	       	    "cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[INFO]	33) ...done
-augmented-things-MN/server@alessandro	[INFO]	34) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	34) Posting Content Instance "33,409 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	39) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	39) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"33,409 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	39) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"33,
-                                        	       	    409 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	34) Received JSON: ty=4, cnf=text/plain:0, con=33,409 °C
-augmented-things-MN/server@alessandro	[INFO]	34) ...forwarding notification to "actuator.alessandro"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	8) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	8) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	   <action2>
-augmented-things-MN/server@alessandro	[INFO]	34) ...done
-augmented-things-MN/server@alessandro	[INFO]	35) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	35) Posting Content Instance "32,149 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	40) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	40) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"32,149 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	40) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"32,
-                                        	       	    149 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	35) Received JSON: ty=4, cnf=text/plain:0, con=32,149 °C
-augmented-things-MN/server@alessandro	[INFO]	35) ...forwarding notification to "actuator.alessandro"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	9) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	9) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	   <action2>
-augmented-things-MN/server@alessandro	[INFO]	35) ...done
-augmented-things-MN/server@alessandro	[INFO]	36) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	36) Posting Content Instance "35,277 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	41) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	41) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,277 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	41) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"35,
-                                        	       	    277 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	36) Received JSON: ty=4, cnf=text/plain:0, con=35,277 °C
-augmented-things-MN/server@alessandro	[INFO]	36) ...forwarding notification to "actuator.alessandro"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	10) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	10) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	    <action2>
-augmented-things-MN/server@alessandro	[INFO]	36) ...done
-augmented-things-MN/server@alessandro	[INFO]	37) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	37) Posting Content Instance "37,601 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	42) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	42) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"37,601 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	42) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"37,
-                                        	       	    601 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	37) Received JSON: ty=4, cnf=text/plain:0, con=37,601 °C
-augmented-things-MN/server@alessandro	[INFO]	37) ...forwarding notification to "actuator.alessandro"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	11) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	11) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	    <action2>
-augmented-things-MN/server@alessandro	[INFO]	37) ...done
-augmented-things-MN/server@alessandro	[INFO]	38) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	38) Posting Content Instance "36,497 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	43) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	43) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,497 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	43) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	    497 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	38) Received JSON: ty=4, cnf=text/plain:0, con=36,497 °C
-augmented-things-MN/server@alessandro	[INFO]	38) ...forwarding notification to "actuator.alessandro"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	12) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	12) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	    <action2>
-augmented-things-MN/server@alessandro	[INFO]	38) ...done
-augmented-things-MN/server@alessandro	[INFO]	39) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	39) Posting Content Instance "34,768 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	44) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	44) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,768 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	44) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    768 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	39) Received JSON: ty=4, cnf=text/plain:0, con=34,768 °C
-augmented-things-MN/server@alessandro	[INFO]	39) ...forwarding notification to "actuator.alessandro"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	13) Connected to coap://127.0.0.1:5690/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	13) Sent PUT request to coap://127.0.0.1:5690/augmented-things? with payload 
-                                       	       	    <action2>
-augmented-things-MN/server@alessandro	[INFO]	39) ...done
-augmented-things-MN/server@alessandro	[INFO]	40) Received DELETE request... detected link removal: "ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>"
-augmented-things-MN/server@alessandro	[INFO]	40) Handling removal of link between sensor with serial "0x0001" and actuator 
-                                     	      	    serial "0x0002"...
-augmented-things-MN/server@alessandro	[DEBUG]	40) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	45) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	45) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
-                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/subscriptionMap/
-                                        	       	    sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	45) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload 
-                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"id\":\"sensor.alessandro\")",
-                                        	       	    "cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	40) Deleting subscription on "sensor.alessandro"
-augmented-things-MN/server@alessandro	[INFO]	40) ...done
-augmented-things-MN/server@alessandro	[INFO]	41) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	41) Posting Content Instance "36,575 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	46) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	46) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"36,575 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	46) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"36,
-                                        	       	    575 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	41) Received JSON: ty=4, cnf=text/plain:0, con=36,575 °C
-augmented-things-MN/server@alessandro	[INFO]	41) ...done
-augmented-things-MN/server@alessandro	[INFO]	42) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	42) Posting Content Instance "34,406 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	47) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	47) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"34,406 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	47) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"34,
-                                        	       	    406 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	42) Received JSON: ty=4, cnf=text/plain:0, con=34,406 °C
-augmented-things-MN/server@alessandro	[INFO]	42) ...done
-augmented-things-MN/server@alessandro	[INFO]	43) Received POST request... detected node lookout: "id=<ID>&ser=<SERIAL>"
-augmented-things-MN/server@alessandro	[INFO]	43) Subscribing user "user.ALESSANDRO-K7NR" to resource with serial "0x0001"...
-augmented-things-MN/server@alessandro	[DEBUG]	43) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Sent Container creation with JSON: {"m2m:cnt":{"rn":"sensor.alessandro"}} 
-                                        	       	    to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap? with payload <{"m2m:cnt":{"rn":"sensor.alessandro"}}>
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"subs\":[(\"receiver\":(\"node\":\"USER\",\"address\":\"coap://192.168.0.110:5691/
-                                        	       	    augmented-things\",\"id\":\"user.ALESSANDRO-K7NR\"),\"sender\":(\"node\":\"SENSOR\",
-                                        	       	    \"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],\"id\":\"sensor.alessandro\")",
-                                        	       	    "cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload 
+augmented-things-MN/server@alessandro	[INFO]	28) Received POST request... detected node lookout
+augmented-things-MN/server@alessandro	[INFO]	28) Subscribing user "user.ALESSANDRO-K7NR" to resource with serial "0x0001"...
+augmented-things-MN/server@alessandro	[DEBUG]	28) Posting subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Sent Container creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap?" with payload <{"m2m:cnt":{"rn":"sensor.alessandro"}}>
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	34) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro?" with payload 
                                         	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"USER\",
                                         	       	    \"address\":\"coap://192.168.0.110:5691/augmented-things\",\"id\":\"user.ALESSANDRO-K7NR\"),
                                         	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],
                                         	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	28) ...done
+augmented-things-MN/server@alessandro	[INFO]	29) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	29) Posting Content Instance "36,321 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	35) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	35) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	35) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    321 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	29) Received JSON: ty=4, cnf=text/plain:0, con=36,321 °C
+augmented-things-MN/server@alessandro	[INFO]	29) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	1) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	1) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=36,321 °C>
+augmented-things-MN/server@alessandro	[INFO]	29) ...done
+augmented-things-MN/server@alessandro	[INFO]	30) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	30) Posting Content Instance "36,403 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	36) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	36) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	36) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    403 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	30) Received JSON: ty=4, cnf=text/plain:0, con=36,403 °C
+augmented-things-MN/server@alessandro	[INFO]	30) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	2) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	2) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=36,403 °C>
+augmented-things-MN/server@alessandro	[INFO]	30) ...done
+augmented-things-MN/server@alessandro	[INFO]	31) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	31) Posting Content Instance "37,361 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	37) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	37) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	37) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"37,
+                                        	       	    361 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	31) Received JSON: ty=4, cnf=text/plain:0, con=37,361 °C
+augmented-things-MN/server@alessandro	[INFO]	31) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	3) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	3) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=37,361 °C>
+augmented-things-MN/server@alessandro	[INFO]	31) ...done
+augmented-things-MN/server@alessandro	[INFO]	32) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	32) Posting Content Instance "36,479 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	38) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    479 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	32) Received JSON: ty=4, cnf=text/plain:0, con=36,479 °C
+augmented-things-MN/server@alessandro	[INFO]	32) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	4) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	4) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=36,479 °C>
+augmented-things-MN/server@alessandro	[INFO]	32) ...done
+augmented-things-MN/server@alessandro	[INFO]	33) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	33) Posting Content Instance "39,053 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	39) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	39) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	39) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"39,
+                                        	       	    053 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	33) Received JSON: ty=4, cnf=text/plain:0, con=39,053 °C
+augmented-things-MN/server@alessandro	[INFO]	33) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	5) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	5) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=39,053 °C>
+augmented-things-MN/server@alessandro	[INFO]	33) ...done
+augmented-things-MN/server@alessandro	[INFO]	34) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	34) Posting Content Instance "36,926 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	40) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	40) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	40) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    926 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	34) Received JSON: ty=4, cnf=text/plain:0, con=36,926 °C
+augmented-things-MN/server@alessandro	[INFO]	34) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	6) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	6) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=36,926 °C>
+augmented-things-MN/server@alessandro	[INFO]	34) ...done
+augmented-things-MN/server@alessandro	[INFO]	35) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	35) Posting Content Instance "35,720 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	41) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	41) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	41) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    720 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	35) Received JSON: ty=4, cnf=text/plain:0, con=35,720 °C
+augmented-things-MN/server@alessandro	[INFO]	35) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	7) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	7) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=35,720 °C>
+augmented-things-MN/server@alessandro	[INFO]	35) ...done
+augmented-things-MN/server@alessandro	[INFO]	36) Received POST request... detected nodes link
+augmented-things-MN/server@alessandro	[INFO]	36) Linking sensor with serial "0x0001" to actuator with serial "0x0002"...
+augmented-things-MN/server@alessandro	[DEBUG]	36) Posting subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	42) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	42) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	42) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro?" with payload 
+                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"USER\",
+                                        	       	    \"address\":\"coap://192.168.0.110:5691/augmented-things\",\"id\":\"user.ALESSANDRO-K7NR\"),
+                                        	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\")),
+                                        	       	    (\"receiver\":(\"node\":\"ACTUATOR\",\"address\":\"coap://127.0.0.1:5690/
+                                        	       	    augmented-things\",\"id\":\"actuator.alessandro\"),\"sender\":(\"node\":\"SENSOR\",
+                                        	       	    \"id\":\"sensor.alessandro\",\"type\":\"tempC\"),\"action\":\"action1\",
+                                        	       	    \"event\":\"event\")],\"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	36) ...done
+augmented-things-MN/server@alessandro	[INFO]	37) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	37) Posting Content Instance "36,500 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	43) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	43) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	43) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    500 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	37) Received JSON: ty=4, cnf=text/plain:0, con=36,500 °C
+augmented-things-MN/server@alessandro	[INFO]	37) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	8) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	8) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	   payload <sensor.alessandro: con=36,500 °C>
+augmented-things-MN/server@alessandro	[INFO]	37) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	9) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	9) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	   <action1>
+augmented-things-MN/server@alessandro	[INFO]	37) ...done
+augmented-things-MN/server@alessandro	[INFO]	38) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	38) Posting Content Instance "37,574 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	44) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	44) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	44) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"37,
+                                        	       	    574 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	38) Received JSON: ty=4, cnf=text/plain:0, con=37,574 °C
+augmented-things-MN/server@alessandro	[INFO]	38) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	10) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	10) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=37,574 °C>
+augmented-things-MN/server@alessandro	[INFO]	38) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	11) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	11) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
+augmented-things-MN/server@alessandro	[INFO]	38) ...done
+augmented-things-MN/server@alessandro	[INFO]	39) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	39) Posting Content Instance "34,743 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	45) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	45) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	45) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"34,
+                                        	       	    743 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	39) Received JSON: ty=4, cnf=text/plain:0, con=34,743 °C
+augmented-things-MN/server@alessandro	[INFO]	39) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	12) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	12) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=34,743 °C>
+augmented-things-MN/server@alessandro	[INFO]	39) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	13) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	13) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
+augmented-things-MN/server@alessandro	[INFO]	39) ...done
+augmented-things-MN/server@alessandro	[INFO]	40) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	40) Posting Content Instance "35,294 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	46) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	46) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	46) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    294 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	40) Received JSON: ty=4, cnf=text/plain:0, con=35,294 °C
+augmented-things-MN/server@alessandro	[INFO]	40) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	14) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	14) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=35,294 °C>
+augmented-things-MN/server@alessandro	[INFO]	40) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	15) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	15) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
+augmented-things-MN/server@alessandro	[INFO]	40) ...done
+augmented-things-MN/server@alessandro	[INFO]	41) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	41) Posting Content Instance "38,853 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	47) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	47) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	47) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"38,
+                                        	       	    853 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	41) Received JSON: ty=4, cnf=text/plain:0, con=38,853 °C
+augmented-things-MN/server@alessandro	[INFO]	41) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	16) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	16) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=38,853 °C>
+augmented-things-MN/server@alessandro	[INFO]	41) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	17) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	17) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
+augmented-things-MN/server@alessandro	[INFO]	41) ...done
+augmented-things-MN/server@alessandro	[INFO]	42) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	42) Posting Content Instance "37,862 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	48) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"37,
+                                        	       	    862 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	42) Received JSON: ty=4, cnf=text/plain:0, con=37,862 °C
+augmented-things-MN/server@alessandro	[INFO]	42) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	18) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	18) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=37,862 °C>
+augmented-things-MN/server@alessandro	[INFO]	42) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	19) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	19) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
+augmented-things-MN/server@alessandro	[INFO]	42) ...done
+augmented-things-MN/server@alessandro	[INFO]	43) Received PUT request... detected node write
+augmented-things-MN/server@alessandro	[INFO]	43) Handling writing on actuator with serial "0x0002"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	20) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	20) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action2>
 augmented-things-MN/server@alessandro	[INFO]	43) ...done
-augmented-things-MN/server@alessandro	[INFO]	44) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	44) Posting Content Instance "35,195 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	49) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	49) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,195 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	49) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"35,
-                                        	       	    195 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	44) Received JSON: ty=4, cnf=text/plain:0, con=35,195 °C
+augmented-things-MN/server@alessandro	[INFO]	44) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	44) Posting Content Instance "33,304 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	49) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	49) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	49) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"33,
+                                        	       	    304 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	44) Received JSON: ty=4, cnf=text/plain:0, con=33,304 °C
 augmented-things-MN/server@alessandro	[INFO]	44) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	14) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	14) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with 
-                                       	       	    payload <sensor.alessandro: con=35,195 °C>
+augmented-things-MN/ATclient@alessandro	[DEBUG]	21) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	21) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=33,304 °C>
+augmented-things-MN/server@alessandro	[INFO]	44) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	22) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	22) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
 augmented-things-MN/server@alessandro	[INFO]	44) ...done
-augmented-things-MN/server@alessandro	[INFO]	45) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	45) Posting Content Instance "38,210 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	50) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	50) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"38,210 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	50) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"38,
-                                        	       	    210 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	45) Received JSON: ty=4, cnf=text/plain:0, con=38,210 °C
+augmented-things-MN/server@alessandro	[INFO]	45) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	45) Posting Content Instance "36,749 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	50) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	50) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	50) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    749 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	45) Received JSON: ty=4, cnf=text/plain:0, con=36,749 °C
 augmented-things-MN/server@alessandro	[INFO]	45) ...forwarding notification to "user.ALESSANDRO-K7NR"...
-augmented-things-MN/ATclient@alessandro	[DEBUG]	15) Connected to coap://192.168.0.110:5691/augmented-things
-augmented-things-MN/ATclient@alessandro	[DEBUG]	15) Sent PUT request to coap://192.168.0.110:5691/augmented-things? with 
-                                       	       	    payload <sensor.alessandro: con=38,210 °C>
+augmented-things-MN/ATclient@alessandro	[DEBUG]	23) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	23) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=36,749 °C>
+augmented-things-MN/server@alessandro	[INFO]	45) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	24) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	24) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
 augmented-things-MN/server@alessandro	[INFO]	45) ...done
-augmented-things-MN/server@alessandro	[INFO]	46) Received DELETE request... detected user removal: "id=<ID>"
-augmented-things-MN/server@alessandro	[INFO]	46) Handling removal of user "user.ALESSANDRO-K7NR"...
-augmented-things-MN/server@alessandro	[DEBUG]	46) Posting subscriptionMap
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	51) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/subscriptionMap/sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	51) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}} to coap://localhost:5684/
-                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/subscriptionMap/
-                                        	       	    sensor.alessandro
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	51) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro? with payload 
+augmented-things-MN/server@alessandro	[INFO]	46) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	46) Posting Content Instance "35,891 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	51) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	51) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	51) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    891 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	46) Received JSON: ty=4, cnf=text/plain:0, con=35,891 °C
+augmented-things-MN/server@alessandro	[INFO]	46) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	25) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	25) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=35,891 °C>
+augmented-things-MN/server@alessandro	[INFO]	46) ...forwarding notification to "actuator.alessandro"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	26) Connected to "coap://127.0.0.1:5690/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	26) Sent PUT request to "coap://127.0.0.1:5690/augmented-things?" with payload 
+                                       	       	    <action1>
+augmented-things-MN/server@alessandro	[INFO]	46) ...done
+augmented-things-MN/server@alessandro	[INFO]	47) Received DELETE request... detected link removal
+augmented-things-MN/server@alessandro	[INFO]	47) Handling removal of link between sensor with serial "0x0001" and actuator 
+                                     	      	    serial "0x0002"...
+augmented-things-MN/server@alessandro	[DEBUG]	47) Posting subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	52) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	52) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	52) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro?" with payload 
+                                        	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"subs\":[(\"receiver\":(\"node\":\"USER\",
+                                        	       	    \"address\":\"coap://192.168.0.110:5691/augmented-things\",\"id\":\"user.ALESSANDRO-K7NR\"),
+                                        	       	    \"sender\":(\"node\":\"SENSOR\",\"id\":\"sensor.alessandro\",\"type\":\"tempC\"))],
+                                        	       	    \"id\":\"sensor.alessandro\")","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[INFO]	47) ...done
+augmented-things-MN/server@alessandro	[INFO]	48) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	48) Posting Content Instance "36,238 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	53) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	53) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	53) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"36,
+                                        	       	    238 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	48) Received JSON: ty=4, cnf=text/plain:0, con=36,238 °C
+augmented-things-MN/server@alessandro	[INFO]	48) ...forwarding notification to "user.ALESSANDRO-K7NR"...
+augmented-things-MN/ATclient@alessandro	[DEBUG]	27) Connected to "coap://192.168.0.110:5691/augmented-things"
+augmented-things-MN/ATclient@alessandro	[DEBUG]	27) Sent PUT request to "coap://192.168.0.110:5691/augmented-things?" with 
+                                       	       	    payload <sensor.alessandro: con=36,238 °C>
+augmented-things-MN/server@alessandro	[INFO]	48) ...done
+augmented-things-MN/server@alessandro	[INFO]	49) Received DELETE request... detected user removal
+augmented-things-MN/server@alessandro	[INFO]	49) Handling removal of user "user.ALESSANDRO-K7NR"...
+augmented-things-MN/server@alessandro	[DEBUG]	49) Posting subscriptionMap
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	54) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/subscriptionMap/sensor.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	54) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	54) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/subscriptionMap/sensor.alessandro?" with payload 
                                         	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"id\":\"sensor.alessandro\")",
                                         	       	    "cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	46) Deleting subscription on "sensor.alessandro"
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	52) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    state/userMap/user.ALESSANDRO-K7NR
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	52) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",
-                                        	       	    \"address\":\"coap://192.168.0.110:5691/augmented-things\",\"active\":false,
-                                        	       	    \"id\":\"user.ALESSANDRO-K7NR\")","cnf":"text/plain:0"}} to coap://localhost:5684/
-                                        	       	    ~/augmented-things-MN-cse/augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	52) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR? with payload 
+augmented-things-MN/server@alessandro	[DEBUG]	49) Deleting subscription on "sensor.alessandro"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	55) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    state/userMap/user.ALESSANDRO-K7NR"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	55) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	55) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/state/userMap/user.ALESSANDRO-K7NR?" with payload 
                                         	       	    <{"m2m:cin":{"con":"(\"mn\":\"augmented-things-MN\",\"address\":\"coap:/
                                         	       	    /192.168.0.110:5691/augmented-things\",\"active\":false,\"id\":\"user.ALESSANDRO-K7NR\")",
                                         	       	    "cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[INFO]	46) ...done
-augmented-things-MN/server@alessandro	[INFO]	47) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	47) Posting Content Instance "38,633 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	53) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	53) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"38,633 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	53) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"38,
-                                        	       	    633 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	47) Received JSON: ty=4, cnf=text/plain:0, con=38,633 °C
-augmented-things-MN/server@alessandro	[INFO]	47) ...done
-augmented-things-MN/server@alessandro	[INFO]	48) Received POST request... detected content instance posting: "id=<ID>&ser=<SERIAL>&con=<CON>"
-augmented-things-MN/server@alessandro	[INFO]	48) Posting Content Instance "35,218 °C" on node "sensor.alessandro"...
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	54) Connected to coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
-                                        	       	    sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	54) Sent Content Instance creation with JSON: {"m2m:cin":{"con":"35,218 
-                                        	       	    °C","cnf":"text/plain:0"}} to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data
-augmented-things-MN/CSEclient@alessandro	[DEBUG]	54) Sent POST request to coap://localhost:5684/~/augmented-things-MN-cse/
-                                        	       	    augmented-things-MN/sensor.alessandro/data? with payload <{"m2m:cin":{"con":"35,
-                                        	       	    218 °C","cnf":"text/plain:0"}}>
-augmented-things-MN/server@alessandro	[DEBUG]	48) Received JSON: ty=4, cnf=text/plain:0, con=35,218 °C
-augmented-things-MN/server@alessandro	[INFO]	48) ...done
+augmented-things-MN/server@alessandro	[INFO]	49) ...done
+augmented-things-MN/server@alessandro	[INFO]	50) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	50) Posting Content Instance "33,258 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	56) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	56) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	56) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"33,
+                                        	       	    258 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	50) Received JSON: ty=4, cnf=text/plain:0, con=33,258 °C
+augmented-things-MN/server@alessandro	[INFO]	50) ...done
+augmented-things-MN/server@alessandro	[INFO]	51) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	51) Posting Content Instance "35,338 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	57) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	57) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	57) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"35,
+                                        	       	    338 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	51) Received JSON: ty=4, cnf=text/plain:0, con=35,338 °C
+augmented-things-MN/server@alessandro	[INFO]	51) ...done
+augmented-things-MN/server@alessandro	[INFO]	52) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	52) Posting Content Instance "39,287 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	58) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	58) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	58) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"39,
+                                        	       	    287 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	52) Received JSON: ty=4, cnf=text/plain:0, con=39,287 °C
+augmented-things-MN/server@alessandro	[INFO]	52) ...done
+augmented-things-MN/server@alessandro	[INFO]	53) Received POST request... detected content instance posting
+augmented-things-MN/server@alessandro	[INFO]	53) Posting Content Instance "33,936 °C" on node "sensor.alessandro"...
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	59) Connected to "coap://localhost:5684/~/augmented-things-MN-cse/augmented-things-MN/
+                                        	       	    sensor.alessandro/data"
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	59) Sent Content Instance creation to CSE
+augmented-things-MN/CSEclient@alessandro	[DEBUG]	59) Sent POST request to "coap://localhost:5684/~/augmented-things-MN-cse/
+                                        	       	    augmented-things-MN/sensor.alessandro/data?" with payload <{"m2m:cin":{"con":"33,
+                                        	       	    936 °C","cnf":"text/plain:0"}}>
+augmented-things-MN/server@alessandro	[DEBUG]	53) Received JSON: ty=4, cnf=text/plain:0, con=33,936 °C
+augmented-things-MN/server@alessandro	[INFO]	53) ...done
 
