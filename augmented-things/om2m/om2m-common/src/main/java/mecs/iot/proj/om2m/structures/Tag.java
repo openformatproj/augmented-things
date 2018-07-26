@@ -82,7 +82,7 @@ public class Tag implements JSONSerializable {
 	}
 	
 	// TODO: generalize for rules missing middle terms (see docs)
-	public static Rule parseRule(String rule) throws NoRuleException, InvalidRuleException {
+	public static Rule parseNumericRule(String rule) throws NoRuleException, InvalidRuleException {
 		if (rule.equals("")) {
 			throw new NoRuleException();
 		} else {
@@ -233,7 +233,7 @@ public class Tag implements JSONSerializable {
 	public static void main(String[] args) {
 		String rule = "(-0.3*[1]+0.2*[3]-[2]-0.05*[0])>4.5";
 		try {
-			Rule r = parseRule(rule);
+			Rule r = parseNumericRule(rule);
 			System.out.println(r);
 		} catch (NoRuleException | InvalidRuleException e) {
 			System.out.println("Error");

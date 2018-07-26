@@ -701,10 +701,16 @@ class ADN_MN extends ADN {
 										case SENSOR:
 											break;
 										case ACTUATOR:
-											String type_ = subs.get(j).sender.type;
-											String cl = null;
+											Object value;
 											try {
-												cl = Format.getClass(type_);
+												value = Format.unpack(content,subs.get(j).sender.type);
+											} catch (ParseException e) {
+												errStream.out(e,i,Severity.MEDIUM);
+												response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+												exchange.respond(response);
+												outStream.out2("failed");
+												i++;
+												return;
 											} catch (NoTypeException e) {
 												errStream.out(e,i,Severity.LOW);
 												response = new Response(ResponseCode.BAD_REQUEST);
@@ -713,52 +719,19 @@ class ADN_MN extends ADN {
 												i++;
 												return;
 											}
-											switch(cl) {
-												case "Double":
-													double value;
-													try {
-														value = (double)Format.unpack(content,type_);
-													} catch (ParseException e) {
-														errStream.out(e,i,Severity.MEDIUM);
-														response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-														exchange.respond(response);
-														outStream.out2("failed");
-														i++;
-														return;
-													} catch (NoTypeException e) {
-														errStream.out(e,i,Severity.LOW);
-														response = new Response(ResponseCode.BAD_REQUEST);
-														exchange.respond(response);
-														outStream.out2("failed");
-														i++;
-														return;
-													}
-													subs.get(j).controller.insert(value);
-													if (subs.get(j).controller.check()) {
-														try {
-															response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
-														} catch (URISyntaxException e) {
-															errStream.out(e,i,Severity.MEDIUM);
-															response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-															exchange.respond(response);
-															outStream.out2("failed");
-															i++;
-															return;
-														}
-													}
-													break;
-												default:
-													try {
-														response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
-													} catch (URISyntaxException e) {
-														errStream.out(e,i,Severity.MEDIUM);
-														response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-														exchange.respond(response);
-														outStream.out2("failed");
-														i++;
-														return;
-													}
-													break;
+											Checker checker = subs.get(j).checker;
+											checker.insert(value);
+											if (checker==null || checker.check()) {
+												try {
+													response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
+												} catch (URISyntaxException e) {
+													errStream.out(e,i,Severity.MEDIUM);
+													response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+													exchange.respond(response);
+													outStream.out2("failed");
+													i++;
+													return;
+												}
 											}
 											break;
 										case USER:
@@ -1010,7 +983,14 @@ class ADN_MN extends ADN {
 				outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
 				try {
 					subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
-				} catch (URISyntaxException | StateCreationException | InvalidRuleException e) {
+				} catch (URISyntaxException | StateCreationException e) {
+					errStream.out(e,i,Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
+					outStream.out2("failed");
+					i++;
+					return;
+				} catch (InvalidRuleException | NoTypeException e) {
 					errStream.out(e,i,Severity.LOW);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);

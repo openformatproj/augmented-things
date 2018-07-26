@@ -15,7 +15,16 @@ public class Format {
 		formatMap.put("tempC",new Metadata("°C",Double.class));
 	}
 	
-	public static String getClass(String type) throws NoTypeException {
+	public static Class<?> getClass(String type) throws NoTypeException {
+		Metadata md = formatMap.get(type);
+		if (md!=null) {
+			return md.cl;
+		} else {
+			throw new NoTypeException();
+		}
+	}
+	
+	public static String getClassName(String type) throws NoTypeException {
 		Metadata md = formatMap.get(type);
 		if (md!=null) {
 			return md.cl.getSimpleName();

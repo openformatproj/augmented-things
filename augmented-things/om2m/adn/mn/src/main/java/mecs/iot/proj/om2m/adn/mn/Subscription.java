@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
+import mecs.iot.proj.om2m.exceptions.NoTypeException;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 
@@ -11,22 +13,35 @@ class Subscription implements JSONSerializable {
 	
 	Terminal sender;
 	String event;
-	Controller controller;
+	Checker checker;
 	Terminal receiver;
 	String action;
 	
 	Subscription(String sender, String type, String receiver, String address) {
 		this.sender = new Terminal(sender,type,null,Node.SENSOR);
 		this.event = null;
-		this.controller = null;
+		this.checker = null;
 		this.receiver = new Terminal(receiver,null,address,Node.USER);
 		this.action = null;
 	}
 	
-	Subscription(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException {
+	Subscription(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException, NoTypeException {
 		this.sender = new Terminal(sender,type,null,Node.SENSOR);
 		this.event = event;
-		this.controller = new Controller(rule);
+		String cl = null;
+		try {
+			cl = Format.getClassName(type);
+		} catch (NoTypeException e) {
+			throw e;
+		}
+		switch(cl) {
+			case "Double":
+				this.checker = new Controller(rule);
+				break;
+			default:
+				this.checker = null;
+				break;
+		}
 		this.receiver = new Terminal(receiver,null,address,Node.ACTUATOR);
 		this.action = action;
 	}
@@ -46,7 +61,7 @@ class Subscription implements JSONSerializable {
 		Subscription[] subs = new Subscription[2];
 		try {
 			subs[0] = new Subscription("sensor.alessandro", "tempC", "event", "", "actuator.alessandro", "coap://127.0.0.1:5690/augmented-things", "action1");
-		} catch (InvalidRuleException e) {
+		} catch (InvalidRuleException | NoTypeException e) {
 			e.printStackTrace();
 		}
 		subs[1] = new Subscription("sensor.alessandro", "tempC", "user.ALESSANDRO-K7NR", "coap://192.168.0.107:5691/augmented-things");
