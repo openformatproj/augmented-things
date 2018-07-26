@@ -13,17 +13,16 @@ import mecs.iot.proj.om2m.adn.mn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
+import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Severity;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-public class Subscriber {
+class Subscriber {
 	
 	private HashMap<String,ArrayList<Subscription>> subscriptionMap;										// resource id -> list of subscriptions
-//	private HashMap<String,String> resourceMap;																// cnt key -> resource id
 	
 	private String cseBaseName;
 	
@@ -31,13 +30,12 @@ public class Subscriber {
 	private ErrStream errStream;
 	private Client cseClient;
 	
-	public Subscriber(OutStream outStream, DebugStream debugStream, ErrStream errStream, Client cseClient, String cseBaseName, int k) throws URISyntaxException, StateCreationException {
+	Subscriber(OutStream outStream, DebugStream debugStream, ErrStream errStream, Client cseClient, String cseBaseName, int k) throws URISyntaxException, StateCreationException {
 		this.debugStream = debugStream;
 		this.errStream = errStream;
 		this.cseClient = cseClient;
 		this.cseBaseName = cseBaseName;
 		subscriptionMap = new HashMap<String,ArrayList<Subscription>>();
-//		resourceMap = new HashMap<String,String>();
 		String json = null;
 		debugStream.out("Posting subscriptionMap",k);
 		cseClient.stepCount();
@@ -95,7 +93,7 @@ public class Subscriber {
 		debugStream.out("Received JSON: " + json, 0);
 	}
 	
-	public void insert(String sender, String type, String receiver, String address, int k) throws URISyntaxException, StateCreationException {
+	void insert(String sender, String type, String receiver, String address, int k) throws URISyntaxException, StateCreationException {
 		Subscription ref = new Subscription(sender,type,receiver,address);
 		if (subscriptionMap.containsKey(sender)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(sender);
@@ -109,7 +107,7 @@ public class Subscriber {
 		}
 	}
 	
-	public void insert(String sender, String type, String event, String rule, String receiver, String address, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException {
+	void insert(String sender, String type, String event, String rule, String receiver, String address, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException {
 		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(sender);
@@ -123,23 +121,11 @@ public class Subscriber {
 		}
 	}
 	
-//	public void bind(String sender, String key) {
-//		resourceMap.put(key,sender);
-//	}
-	
-//	public ArrayList<Subscription> get(String pi) {
-//		return subscriptionMap.get(resourceMap.get(pi));
-//	}
-	
-	public ArrayList<Subscription> get(String id) {
+	ArrayList<Subscription> get(String id) {
 		return subscriptionMap.get(id);
 	}
 	
-//	public String getResourceId(String key) {
-//		return resourceMap.get(key);
-//	}
-	
-	public void remove(String id, Node node, int k) throws URISyntaxException, StateCreationException {
+	void remove(String id, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
 				oM2Mput(id,new ArrayList<Subscription>(),false,k);
@@ -164,7 +150,7 @@ public class Subscriber {
 		}
 	}
 	
-	public void remove(String sender, String receiver, int k) throws URISyntaxException, StateCreationException {
+	void remove(String sender, String receiver, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
 		for (int j=0; j<subs.size(); j++) {
 			if (subs.get(j).receiver.id.equals(receiver))
@@ -176,7 +162,7 @@ public class Subscriber {
 		}
 	}
 	
-	public void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException, StateCreationException {
+	void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
 		Subscription ref;
 		for (int j=0; j<subs.size(); j++) {

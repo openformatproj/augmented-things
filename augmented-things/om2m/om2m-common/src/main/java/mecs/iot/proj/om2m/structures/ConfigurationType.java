@@ -1,5 +1,5 @@
 package mecs.iot.proj.om2m.structures;
 
-public enum Type {
+public enum ConfigurationType {
 	INI, XML
 }

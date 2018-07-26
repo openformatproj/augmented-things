@@ -1,7 +1,5 @@
 package mecs.iot.proj.om2m.dashboard;
 
-import mecs.iot.proj.om2m.structures.Severity;
-
 public class ErrStream {
 	
 	private Agent me;

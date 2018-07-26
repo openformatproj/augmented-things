@@ -121,21 +121,21 @@ public class Console extends Thread {
 			outStream.out("Terminating console (no interface provided)", i);
 		}
 	}
-
-}
-
-class CommandContainer {
 	
-	Command command;
-	int numOptions;
-	String help;
-	boolean isJSON;
-	
-	CommandContainer(Command command, int numOptions, String help, boolean isJSON) {
-		this.command = command;
-		this.numOptions = numOptions;
-		this.help = help;
-		this.isJSON = isJSON;
+	private class CommandContainer {
+		
+		Command command;
+		int numOptions;
+		String help;
+		boolean isJSON;
+		
+		CommandContainer(Command command, int numOptions, String help, boolean isJSON) {
+			this.command = command;
+			this.numOptions = numOptions;
+			this.help = help;
+			this.isJSON = isJSON;
+		}
+		
 	}
-	
+
 }

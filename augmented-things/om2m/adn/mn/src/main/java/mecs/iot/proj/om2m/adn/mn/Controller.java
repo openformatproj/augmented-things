@@ -7,7 +7,7 @@ import mecs.iot.proj.om2m.structures.Rule;
 import mecs.iot.proj.om2m.structures.Tag;
 import mecs.iot.proj.om2m.structures.Token;
 
-public class Controller {
+class Controller {
 	
 	private double[] coefficients;												// a[0], a[1]... a[k-1]
 	private FSR<Double> values;													// x[0],x[-1]... x[k-1]
@@ -15,7 +15,7 @@ public class Controller {
 	
 	private boolean noRule;
 	
-	public Controller(String rule) throws InvalidRuleException {
+	Controller(String rule) throws InvalidRuleException {
 		Rule rule_ = null;
 		try {
 			rule_ = Tag.parseRule(rule);
@@ -32,14 +32,14 @@ public class Controller {
 		}
 	}
 	
-	public boolean check() {
+	boolean check() {
 		if (!noRule)
 			return trigger.state;
 		else
 			return true;
 	}
 	
-	public void insert(double value) {
+	void insert(double value) {
 		if (!noRule) {
 			values.add(value);
 			double acc = 0.0;
@@ -49,79 +49,80 @@ public class Controller {
 			trigger.insert(acc);
 		}
 	}
-
-}
-
-class Trigger {
 	
-	private Token token;
-	private double threshold;
-	private double hystheresis;
-	boolean state;
-	private boolean started;
-	
-	Trigger(Token token, double threshold) {
-		this.token = token;
-		this.threshold = threshold;
-		this.hystheresis = Constants.hysteresis;
-		state = false;
-		started = false;
-	}
-	
-	void insert(double value) {
-		if (!started) {
+	private class Trigger {
+		
+		private Token token;
+		private double threshold;
+		private double hystheresis;
+		private boolean started;
+		
+		boolean state;
+		
+		Trigger(Token token, double threshold) {
+			this.token = token;
+			this.threshold = threshold;
+			this.hystheresis = Constants.hysteresis;
+			state = false;
+			started = false;
+		}
+		
+		void insert(double value) {
+			if (!started) {
+				switch(token) {
+					case LESS:
+						if (value<threshold-(hystheresis/2.0)) {
+							state = true;
+							started = true;
+						} else if (value>threshold+(hystheresis/2.0)) {
+							state = false;
+							started = true;
+						} else {
+							return;
+						}
+						break;
+					case GREATER:
+						if (value>threshold+(hystheresis/2.0)) {
+							state = true;
+							started = true;
+						} else if (value<threshold-(hystheresis/2.0)) {
+							state = false;
+							started = true;
+						} else {
+							return;
+						}
+						break;
+					case EQUAL:
+						if (value>threshold-(hystheresis/2.0) && value<threshold+(hystheresis/2.0))
+							state = true;
+						else
+							state = false;
+						started = true;
+						break;
+				}
+			}
 			switch(token) {
 				case LESS:
-					if (value<threshold-(hystheresis/2.0)) {
+					if (value<threshold-(hystheresis/2.0))
 						state = true;
-						started = true;
-					} else if (value>threshold+(hystheresis/2.0)) {
+					else if (value>threshold+(hystheresis/2.0))
 						state = false;
-						started = true;
-					} else {
-						return;
-					}
 					break;
 				case GREATER:
-					if (value>threshold+(hystheresis/2.0)) {
+					if (value>threshold+(hystheresis/2.0))
 						state = true;
-						started = true;
-					} else if (value<threshold-(hystheresis/2.0)) {
+					else if (value<threshold-(hystheresis/2.0))
 						state = false;
-						started = true;
-					} else {
-						return;
-					}
 					break;
 				case EQUAL:
 					if (value>threshold-(hystheresis/2.0) && value<threshold+(hystheresis/2.0))
 						state = true;
 					else
 						state = false;
-					started = true;
 					break;
 			}
 		}
-		switch(token) {
-			case LESS:
-				if (value<threshold-(hystheresis/2.0))
-					state = true;
-				else if (value>threshold+(hystheresis/2.0))
-					state = false;
-				break;
-			case GREATER:
-				if (value>threshold+(hystheresis/2.0))
-					state = true;
-				else if (value<threshold-(hystheresis/2.0))
-					state = false;
-				break;
-			case EQUAL:
-				if (value>threshold-(hystheresis/2.0) && value<threshold+(hystheresis/2.0))
-					state = true;
-				else
-					state = false;
-				break;
-		}
+		
 	}
-	
+
 }

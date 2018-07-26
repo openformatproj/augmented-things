@@ -3,8 +3,8 @@ package mecs.iot.proj.om2m.asn.user_direct;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Severity;
 
 import java.net.URISyntaxException;
 

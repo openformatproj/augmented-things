@@ -21,7 +21,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	
 	protected boolean waiting;
 
-	public Client(String id, String uri, boolean debug) throws URISyntaxException {
+	protected Client(String id, String uri, boolean debug) throws URISyntaxException {
 		super(id,uri,debug);
 		server = null;
 		notification = null;

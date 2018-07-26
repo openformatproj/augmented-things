@@ -3,8 +3,8 @@ package mecs.iot.proj.om2m.asn.sensor;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
+import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
 import java.net.URISyntaxException;

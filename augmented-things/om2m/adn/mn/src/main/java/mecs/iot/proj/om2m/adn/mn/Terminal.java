@@ -5,12 +5,12 @@ import org.json.JSONObject;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 
-public class Terminal implements JSONSerializable {
+class Terminal implements JSONSerializable {
 	
-	public String id;
-	public String type;
-	public String address;
-	public Node node;
+	String id;
+	String type;
+	String address;
+	Node node;
 	
 	Terminal(String id, String type, String address, Node node) {
 		this.id = id;
@@ -18,6 +18,8 @@ public class Terminal implements JSONSerializable {
 		this.address = address;
 		this.node = node;
 	}
+	
+	@Override
 	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();

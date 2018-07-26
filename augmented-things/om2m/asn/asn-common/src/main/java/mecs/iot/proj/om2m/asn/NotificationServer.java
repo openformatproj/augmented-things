@@ -8,7 +8,7 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
-import mecs.iot.proj.om2m.structures.Severity;
+import mecs.iot.proj.om2m.dashboard.Severity;
 
 class NotificationServer extends CoapResource {
 	

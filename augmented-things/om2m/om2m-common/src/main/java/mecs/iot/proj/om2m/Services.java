@@ -493,6 +493,7 @@ public class Services {
 		int level = 0;
 		char[] chars;
 		String str = json.replace(" ","");
+//		str = str.replaceAll("([\\}\\]])(?!,)","$1;");
 		int characters = 1;
 		char character;
 		for (int i=0; i<characters; i++) {
@@ -505,7 +506,7 @@ public class Services {
 				for (int j=0; j<level; j++) {
 					str = insertStringAfter(str,Constants.tab,i+Constants.newLine.length());
 				}
-			} else if (character==',') {
+			} else if (character==','/* || character==';'*/) {
 				for (int j=0; j<level; j++) {
 					str = insertStringAfter(str,Constants.tab,i);
 				}
@@ -520,6 +521,7 @@ public class Services {
 				}
 			}
 		}
+//		str.replace(";","");
 		return str;
 	}
 	

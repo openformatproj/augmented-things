@@ -3,10 +3,10 @@ package mecs.iot.proj.om2m.adn.in;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
+import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Severity;
 
 import java.net.URISyntaxException;
 

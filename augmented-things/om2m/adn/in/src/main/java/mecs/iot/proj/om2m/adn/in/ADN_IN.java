@@ -14,12 +14,11 @@ import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.adn.in.exceptions.NotFoundMNException;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.MN;
-import mecs.iot.proj.om2m.structures.Pack;
-import mecs.iot.proj.om2m.structures.Severity;
-import mecs.iot.proj.om2m.structures.Type;
+import mecs.iot.proj.om2m.structures.ConfigurationDirectory;
+import mecs.iot.proj.om2m.structures.ConfigurationType;
 
 class ADN_IN extends ADN {
 	
@@ -39,15 +38,15 @@ class ADN_IN extends ADN {
 		Configuration db = null;
 		String[][] mn = null;
 		try {
-			db = new Configuration ("/configuration/db.ini",Pack.JAR,Type.INI);
+			db = new Configuration ("/configuration/db.ini",ConfigurationDirectory.JAR,ConfigurationType.INI);
 			debugStream.out("Found local configuration file (IN)",i);
 		} catch (Exception e0) {
 			try {
-				db = new Configuration ("src/main/resources/configuration/db.ini",Pack.MAVEN,Type.INI);
+				db = new Configuration ("src/main/resources/configuration/db.ini",ConfigurationDirectory.MAVEN,ConfigurationType.INI);
 				debugStream.out("Found local configuration file (IN)",i);
 			} catch (Exception e1) {
 				try {
-					db = new Configuration (Constants.remotePath+"/db.ini",Pack.REMOTE,Type.INI);
+					db = new Configuration (Constants.remotePath+"/db.ini",ConfigurationDirectory.REMOTE,ConfigurationType.INI);
 					debugStream.out("Found remote configuration file (IN)",i);
 				} catch (Exception e2) {
 					debugStream.out("No configuration files (IN) found, using default values",i);
@@ -424,6 +423,33 @@ class ADN_IN extends ADN {
 		}
 		else
 			return true;
+	}
+	
+	private class MN {
+		
+		String id;
+		String address;
+		boolean active;
+		
+		MN(String id, String address) {
+			this.id = id;
+			this.address = address;
+			this.active = false;
+		}
+		
+		@Override
+		
+		public String toString() {
+			return "id=" + id + ", address=" + address + ", active=" + active;
+		}
+		
+		@Override
+		
+		public boolean equals(Object obj) {
+			MN mn = (MN)obj;
+			return id.equals(mn.id);
+		}
+		
 	}
 
 }

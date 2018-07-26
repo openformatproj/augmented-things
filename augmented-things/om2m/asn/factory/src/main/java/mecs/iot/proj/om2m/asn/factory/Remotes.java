@@ -10,15 +10,16 @@ import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.factory.dashboard.Interface;
+import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Pack;
+import mecs.iot.proj.om2m.structures.ConfigurationDirectory;
 import mecs.iot.proj.om2m.structures.Tag;
-import mecs.iot.proj.om2m.structures.Type;
+import mecs.iot.proj.om2m.structures.ConfigurationType;
 
 class Remotes {
 	
-	static ArrayList<Client> load (String host, String address, String context, boolean debug, String ip, Interface viewer) throws URISyntaxException {
+	static ArrayList<Client> load(String host, String address, String context, boolean debug, String ip, Interface viewer) throws URISyntaxException {
 		
 		Configuration conf = null;
 		NodeList list = null;
@@ -40,20 +41,22 @@ class Remotes {
 		
 		int sensors = 0;
 		
+		DebugStream debugStream = new DebugStream(Services.joinIdHost("configurator/main",host),debug);
+		
 		try {
-			conf = new Configuration ("/configuration/factory.xml",Pack.JAR,Type.XML);
-			System.out.println("Found local factory");
+			conf = new Configuration ("/configuration/factory.xml",ConfigurationDirectory.JAR,ConfigurationType.XML);
+			debugStream.out("Found local factory",0);
 		} catch (Exception e0) {
 			try {
-				conf = new Configuration ("src/main/resources/configuration/factory.xml",Pack.MAVEN,Type.XML);
-				System.out.println("Found local factory");
+				conf = new Configuration ("src/main/resources/configuration/factory.xml",ConfigurationDirectory.MAVEN,ConfigurationType.XML);
+				debugStream.out("Found local factory",0);
 			} catch (Exception e1) {
 				try {
-					conf = new Configuration (Constants.remotePath+"/factory.xml",Pack.REMOTE,Type.XML);
-					System.out.println("Found remote factory");
+					conf = new Configuration (Constants.remotePath+"/factory.xml",ConfigurationDirectory.REMOTE,ConfigurationType.XML);
+					debugStream.out("Found remote factory",0);
 				} catch (Exception e2) {
 					//e1.printStackTrace();
-					System.out.println("No factories found");
+					debugStream.out("No factories found",0);
 					return null;
 				}
 			}
@@ -62,7 +65,7 @@ class Remotes {
 		try {
 			list = conf.getElements("sensor");
 		} catch (Exception e) {
-			System.out.println("No sensors found");
+			debugStream.out("No sensors found",0);
 		}
 		
 		for (int i=0; i<list.getLength(); i++) {
@@ -98,7 +101,7 @@ class Remotes {
 		try {
 			list = conf.getElements("actuator");
 		} catch (Exception e) {
-			System.out.println("No actuators found");
+			debugStream.out("No actuators found",0);
 		}
 		
 		for (int i=0; i<list.getLength(); i++) {

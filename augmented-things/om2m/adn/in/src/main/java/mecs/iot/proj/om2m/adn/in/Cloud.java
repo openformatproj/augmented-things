@@ -112,73 +112,73 @@ class Cloud {
 			return "MN \"" + mn + "\" is not registered";
 		}
 	}
+	
+	private class MN implements JSONSerializable {
+		
+		private String id;
+		boolean active;
+		
+		HashMap<String,JSON> tagMap;																	// serial -> tag
+		HashMap<String,JSON> userMap;																	// user id -> user
+		HashMap<String,JSON> subscriptionMap;															// resource id -> list of subscriptions
+		
+		private DebugStream debugStream;
+		
+		MN(String id, DebugStream debugStream) {
+			this.id = id;
+			this.active = true;
+			tagMap = new HashMap<String,JSON>();
+			userMap = new HashMap<String,JSON>();
+			subscriptionMap = new HashMap<String,JSON>();
+			this.debugStream = debugStream;
+		}
+		
+		void addTag(String id, String json, int k) {
+			if (tagMap.containsKey(id))
+				debugStream.out("Adding endpoint node \"" + id + "\" to MN \"" + this.id + "\"", k);
+			else
+				debugStream.out("Changing endpoint node \"" + id + "\" state on MN \"" + this.id + "\"", k);
+			tagMap.put(id,new JSON(json));
+		}
+		
+		void addUser(String id, String json, int k) {
+			if (userMap.containsKey(id))
+				debugStream.out("Adding user \"" + id + "\" to MN \"" + this.id + "\"", k);
+			else
+				debugStream.out("Changing user \"" + id + "\" state on MN \"" + this.id + "\"", k);
+			userMap.put(id,new JSON(json));
+		}
+		
+		void addSubscription(String id, String json, int k) {
+			debugStream.out("Changing subscription state of \"" + id + "\" on MN \"" + this.id + "\"", k);
+			subscriptionMap.put(id,new JSON(json));
+		}
 
-}
-
-class MN implements JSONSerializable {
-	
-	private String id;
-	boolean active;
-	
-	HashMap<String,JSON> tagMap;																	// serial -> tag
-	HashMap<String,JSON> userMap;																	// user id -> user
-	HashMap<String,JSON> subscriptionMap;															// resource id -> list of subscriptions
-	
-	private DebugStream debugStream;
-	
-	MN(String id, DebugStream debugStream) {
-		this.id = id;
-		this.active = true;
-		tagMap = new HashMap<String,JSON>();
-		userMap = new HashMap<String,JSON>();
-		subscriptionMap = new HashMap<String,JSON>();
-		this.debugStream = debugStream;
-	}
-	
-	void addTag(String id, String json, int k) {
-		if (tagMap.containsKey(id))
-			debugStream.out("Adding endpoint node \"" + id + "\" to MN \"" + this.id + "\"", k);
-		else
-			debugStream.out("Changing endpoint node \"" + id + "\" state on MN \"" + this.id + "\"", k);
-		tagMap.put(id,new JSON(json));
-	}
-	
-	void addUser(String id, String json, int k) {
-		if (userMap.containsKey(id))
-			debugStream.out("Adding user \"" + id + "\" to MN \"" + this.id + "\"", k);
-		else
-			debugStream.out("Changing user \"" + id + "\" state on MN \"" + this.id + "\"", k);
-		userMap.put(id,new JSON(json));
-	}
-	
-	void addSubscription(String id, String json, int k) {
-		debugStream.out("Changing subscription state of \"" + id + "\" on MN \"" + this.id + "\"", k);
-		subscriptionMap.put(id,new JSON(json));
+		@Override
+		
+		public JSONObject toJSON() {
+			JSONObject obj = new JSONObject();
+			obj.put("mn",id);
+			obj.put("active",active);
+			return obj;
+		}
+		
 	}
 
-	@Override
-	
-	public JSONObject toJSON() {
-		JSONObject obj = new JSONObject();
-		obj.put("mn",id);
-		obj.put("active",active);
-		return obj;
+	private class JSON implements JSONSerializable {
+		
+		String content;
+		
+		JSON(String content) {
+			this.content = content;
+		}
+		
+		@Override
+		
+		public JSONObject toJSON() {
+			return new JSONObject(content);
+		}
+		
 	}
-	
-}
 
-class JSON implements JSONSerializable {
-	
-	String content;
-	
-	JSON(String content) {
-		this.content = content;
-	}
-	
-	@Override
-	
-	public JSONObject toJSON() {
-		return new JSONObject(content);
-	}
-	
 }

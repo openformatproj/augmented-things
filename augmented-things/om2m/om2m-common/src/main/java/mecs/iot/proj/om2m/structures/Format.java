@@ -4,42 +4,93 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
 
+import mecs.iot.proj.om2m.exceptions.NoTypeException;
+
 public class Format {
 	
-	private static HashMap<String,String> formatMap;
+	private static HashMap<String,Metadata> formatMap;
 	
 	static {
-		formatMap = new HashMap<String,String>();
-		formatMap.put("tempC","°C");
-		// TODO: load from ini file
+		formatMap = new HashMap<String,Metadata>();
+		formatMap.put("tempC",new Metadata("°C",Double.class));
 	}
 	
-	static String get(String type) {
-		return formatMap.get(type);
+	public static String getClass(String type) throws NoTypeException {
+		Metadata md = formatMap.get(type);
+		if (md!=null) {
+			return md.cl.getSimpleName();
+		} else {
+			throw new NoTypeException();
+		}
 	}
 	
-	// Only double types currently supported
-	
-	public static String pack(double value, String type) {
-		return String.format("%.3f",value) + " " + formatMap.get(type);
+	public static String pack(double value, String type) throws NoTypeException {
+		Metadata md = formatMap.get(type);
+		String ans = null;
+		if (md!=null) {
+			switch (md.cl.getSimpleName()) {
+				case "Double":
+					ans = String.format("%.3f",value) + " " + md.content;
+					break;
+				default:
+					break;
+			}
+			return ans;
+		} else {
+			throw new NoTypeException();
+		}
 	}
 	
-	public static double unpack(String content, String type) throws ParseException {
-		String[] splits = content.split(" ");
-		NumberFormat format = NumberFormat.getInstance();
-		return format.parse(splits[0]).doubleValue();
+	public static Object unpack(String content, String type) throws ParseException, NoTypeException {
+		Metadata md = formatMap.get(type);
+		Object ans = null;
+		if (md!=null) {
+			switch (md.cl.getSimpleName()) {
+				case "Double":
+					String[] splits = content.split(" ");
+					NumberFormat format = NumberFormat.getInstance();
+					ans = format.parse(splits[0]).doubleValue();
+					break;
+				default:
+					break;
+			}
+			return ans;
+		} else {
+			throw new NoTypeException();
+		}
 	}
 	
-	public static String getRandomValue(String type) {
-		if (type.equals("tempC"))
-			return pack(36.0*Physics.randomGaussianFluctuation(0.05),type);
-		else
-			return "";
-		// TODO: throw a not existing type exception
+	public static String getRandomValue(String type) throws NoTypeException {
+		boolean hasType = formatMap.containsKey(type);
+		String ans = null;
+		if (hasType) {
+			switch (type) {
+				case "tempC":
+					ans = pack(36.0*Physics.randomGaussianFluctuation(0.05),"tempC");
+					break;
+				default:
+					break;
+			}
+			return ans;
+		} else {
+			throw new NoTypeException();
+		}
 	}
 	
 	public static boolean contains(String type) {
 		return formatMap.containsKey(type);
+	}
+	
+}
+
+class Metadata {
+	
+	String content;
+	Class<?> cl;
+	
+	Metadata(String content, Class<?> cl) {
+		this.content = content;
+		this.cl = cl;
 	}
 	
 }

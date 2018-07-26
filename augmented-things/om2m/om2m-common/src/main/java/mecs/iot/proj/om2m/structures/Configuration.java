@@ -27,11 +27,11 @@ public class Configuration {
 
 	private Properties prop;
 	private Document doc;
-	private Type type;
+	private ConfigurationType type;
 	
-	public Configuration (String filename, Pack pack, Type type) throws NullPointerException, MalformedURLException, FileNotFoundException, IOException {
+	public Configuration (String filename, ConfigurationDirectory dir, ConfigurationType type) throws NullPointerException, MalformedURLException, FileNotFoundException, IOException {
 		this.type = type;
-		switch (pack) {
+		switch (dir) {
 			case MAVEN:
 				File file = new File(filename);
 				load(new FileInputStream(file),type);
@@ -48,7 +48,7 @@ public class Configuration {
 		}
 	}
 	
-	private void load (InputStream stream, Type type) throws FileNotFoundException, IOException {
+	private void load (InputStream stream, ConfigurationType type) throws FileNotFoundException, IOException {
 		switch (type) {
 			case INI:
 				prop = new Properties();
@@ -69,17 +69,6 @@ public class Configuration {
 				break;
 		}
 	}
-	
-//	public Configuration (String filename, String address) throws MalformedURLException, IOException {
-//		prop = new Properties();
-//		URL url = null;
-//		try {
-//			url = new URL(address + "/" + filename);
-//		} catch (MalformedURLException e) {
-//			throw e;
-//		}
-//		prop.load(url.openStream());
-//	}
 
 	public String getAttribute (String attribute) throws AttributeMissException, AttributeSyntaxException {
 		switch (type) {

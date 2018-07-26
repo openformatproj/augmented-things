@@ -1,10 +1,11 @@
 package mecs.iot.proj.om2m.asn.sensor;
 
 import mecs.iot.proj.om2m.asn.Client;
+import mecs.iot.proj.om2m.dashboard.Severity;
+import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Physics;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
 import java.net.URISyntaxException;
@@ -88,7 +89,13 @@ public class RemoteInterface extends Client {
 		long timer;
 		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out1("Posting Content Instance", i);
-			publish(tag.id,tag.serial,Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type));
+			try {
+				publish(tag.id,tag.serial,Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type));
+			} catch (NoTypeException e) {
+				errStream.out(e,i,Severity.MEDIUM);
+				deleteNode(tag.serial);
+				outStream.out2("failed. Terminating remote interface");
+			}
 			outStream.out2("done");
 			i++;
 			timer = System.currentTimeMillis();

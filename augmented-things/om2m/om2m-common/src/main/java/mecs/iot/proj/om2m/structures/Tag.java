@@ -62,7 +62,7 @@ public class Tag implements JSONSerializable {
 						ruleMap.put(splits[1],splits[0]);
 					else
 						ruleMap.put(splits[0],"");
-					// TODO: syntax check on label
+					// TODO: syntax check on labels and rules
 				}
 				break;
 			case ACTUATOR:
@@ -70,9 +70,9 @@ public class Tag implements JSONSerializable {
 				this.type = "act";
 				this.attributes = attributes;
 				ruleMap = new HashMap<String,String>();
-				for (int i=0; i<attributes.length; i++) {
+				for (int i=0; i<attributes.length; i++)
 					ruleMap.put(attributes[i],"");
-				}
+				// TODO: syntax check on labels
 				break;
 			case USER:
 				break;
@@ -81,6 +81,7 @@ public class Tag implements JSONSerializable {
 		this.active = true;
 	}
 	
+	// TODO: generalize for rules missing middle terms (see docs)
 	public static Rule parseRule(String rule) throws NoRuleException, InvalidRuleException {
 		if (rule.equals("")) {
 			throw new NoRuleException();
@@ -225,6 +226,10 @@ public class Tag implements JSONSerializable {
 		return obj;
 	}
 	
+	private enum Sign {
+		PLUS, MINUS
+	}
+	
 	public static void main(String[] args) {
 		String rule = "(-0.3*[1]+0.2*[3]-[2]-0.05*[0])>4.5";
 		try {
@@ -235,8 +240,4 @@ public class Tag implements JSONSerializable {
 		}
 	}
 	
-}
-
-enum Sign {
-	PLUS, MINUS
 }

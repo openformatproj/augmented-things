@@ -67,20 +67,20 @@ public class Viewer implements Interface {
 	    	viewer.show(i);
 	}
 
-}
-
-class EP {
-	
-	String id;
-	String serial;
-	String type;
-	int actions;
-	
-	EP (String id, String serial, String type, int actions) {
-		this.id = id;
-		this.serial = serial;
-		this.type = type;
-		this.actions = actions;
+	private class EP {
+		
+		String id;
+		String serial;
+		String type;
+		int actions;
+		
+		EP (String id, String serial, String type, int actions) {
+			this.id = id;
+			this.serial = serial;
+			this.type = type;
+			this.actions = actions;
+		}
+		
 	}
 	
 }

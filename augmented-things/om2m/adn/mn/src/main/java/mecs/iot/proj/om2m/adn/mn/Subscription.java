@@ -7,13 +7,13 @@ import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 
-public class Subscription implements JSONSerializable {
+class Subscription implements JSONSerializable {
 	
-	public Terminal sender;
-	public String event;
-	public Controller controller;
-	public Terminal receiver;
-	public String action;
+	Terminal sender;
+	String event;
+	Controller controller;
+	Terminal receiver;
+	String action;
 	
 	Subscription(String sender, String type, String receiver, String address) {
 		this.sender = new Terminal(sender,type,null,Node.SENSOR);
@@ -30,6 +30,8 @@ public class Subscription implements JSONSerializable {
 		this.receiver = new Terminal(receiver,null,address,Node.ACTUATOR);
 		this.action = action;
 	}
+	
+	@Override
 	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();

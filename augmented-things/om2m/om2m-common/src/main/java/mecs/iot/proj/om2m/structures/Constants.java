@@ -42,15 +42,15 @@ public class Constants {
 		Configuration conf = null;
 		Object str = null;
 		try {
-			conf = new Configuration ("/configuration/config.ini",Pack.JAR,Type.INI);
+			conf = new Configuration ("/configuration/config.ini",ConfigurationDirectory.JAR,ConfigurationType.INI);
 			System.out.println("Found local configuration file");
 		} catch (Exception e0) {
 			try {
-				conf = new Configuration ("../../om2m-common/src/main/resources/configuration/config.ini",Pack.MAVEN,Type.INI);
+				conf = new Configuration ("../../om2m-common/src/main/resources/configuration/config.ini",ConfigurationDirectory.MAVEN,ConfigurationType.INI);
 				System.out.println("Found local configuration file");
 			} catch (Exception e1) {
 				try {
-					conf = new Configuration (remotePath+"/config.ini",Pack.REMOTE,Type.INI);
+					conf = new Configuration (remotePath+"/config.ini",ConfigurationDirectory.REMOTE,ConfigurationType.INI);
 					System.out.println("Found remote configuration file");
 				} catch (Exception e2) {
 					System.out.println("No configuration files found, using default values");
@@ -192,15 +192,15 @@ public class Constants {
 	private static void loadASN(DebugStream debugStream, int i) {
 		if (asn==null) {
 			try {
-				asn = new Configuration ("/configuration/asn.ini",Pack.JAR,Type.INI);
+				asn = new Configuration ("/configuration/asn.ini",ConfigurationDirectory.JAR,ConfigurationType.INI);
 				debugStream.out("Found local configuration file (ASN)",i);
 			} catch (Exception e0) {
 				try {
-					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini",Pack.MAVEN,Type.INI);
+					asn = new Configuration ("../asn-common/src/main/resources/configuration/asn.ini",ConfigurationDirectory.MAVEN,ConfigurationType.INI);
 					debugStream.out("Found local configuration file (ASN)",i);
 				} catch (Exception e1) {
 					try {
-						asn = new Configuration (remotePath+"/asn.ini",Pack.REMOTE,Type.INI);
+						asn = new Configuration (remotePath+"/asn.ini",ConfigurationDirectory.REMOTE,ConfigurationType.INI);
 						debugStream.out("Found remote configuration file (ASN)",i);
 					} catch (Exception e2) {
 						debugStream.out("No configuration files (ASN) found, using default values",i);
@@ -213,15 +213,15 @@ public class Constants {
 	private static void loadADN(DebugStream debugStream, int i) {
 		if (adn==null) {
 			try {
-				adn = new Configuration ("/configuration/adn.ini",Pack.JAR,Type.INI);
+				adn = new Configuration ("/configuration/adn.ini",ConfigurationDirectory.JAR,ConfigurationType.INI);
 				debugStream.out("Found local configuration file (ADN)",i);
 			} catch (Exception e0) {
 				try {
-					adn = new Configuration ("../adn-common/src/main/resources/configuration/adn.ini",Pack.MAVEN,Type.INI);
+					adn = new Configuration ("../adn-common/src/main/resources/configuration/adn.ini",ConfigurationDirectory.MAVEN,ConfigurationType.INI);
 					debugStream.out("Found local configuration file (ADN)",i);
 				} catch (Exception e1) {
 					try {
-						adn = new Configuration (remotePath+"/adn.ini",Pack.REMOTE,Type.INI);
+						adn = new Configuration (remotePath+"/adn.ini",ConfigurationDirectory.REMOTE,ConfigurationType.INI);
 						debugStream.out("Found remote configuration file (ADN)",i);
 					} catch (Exception e2) {
 						debugStream.out("No configuration files (ADN) found, using default values",i);

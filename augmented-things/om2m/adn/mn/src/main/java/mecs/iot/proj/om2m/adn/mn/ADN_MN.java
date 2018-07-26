@@ -20,17 +20,18 @@ import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.adn.mn.exceptions.*;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
+import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Severity;
 import mecs.iot.proj.om2m.structures.Tag;
 
 class ADN_MN extends ADN {
 
-	public Client notificationClient;
+	Client notificationClient;
 
 	private HashMap<String,Tag> tagMap;																					// serial -> tag
 	private HashMap<String,User> userMap;																				// user id -> user
@@ -41,11 +42,11 @@ class ADN_MN extends ADN {
 		super(id,host,debug,console);
 		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.mnCSERoot(id), debug);
 		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
+		tagMap = new HashMap<String,Tag>();
+		userMap = new HashMap<String,User>();
 		if (false) {
 			// TODO: pull from OM2M
 		} else {
-			tagMap = new HashMap<String,Tag>();
-			userMap = new HashMap<String,User>();
 			String json = null;
 			outStream.out1("Creating OM2M state",i);
 			outStream.out1_2("posting root AE");
@@ -66,10 +67,6 @@ class ADN_MN extends ADN {
 				outStream.out2("failed");
 				throw new StateCreationException();
 			}
-//			if (response_.getCode()==ResponseCode.FORBIDDEN) {
-//				debugStream.out(response_.getResponseText(), i);
-//			} else {
-//				String json = null;
 			try {
 				json = Services.parseJSON(response_.getResponseText(), "m2m:ae",
 						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
@@ -79,7 +76,6 @@ class ADN_MN extends ADN {
 				throw e;
 			}
 			debugStream.out("Received JSON: " + json, i);
-//			}
 			outStream.out1_2("done, posting tagMap");
 			cseClient.stepCount();
 			response_ = cseClient.services.postContainer(cseBaseName,"state","tagMap",cseClient.getCount());
@@ -98,10 +94,6 @@ class ADN_MN extends ADN {
 				outStream.out2("failed");
 				throw new StateCreationException();
 			}
-//			if (response_.getCode()==ResponseCode.FORBIDDEN) {
-//				debugStream.out(response_.getResponseText(), i);
-//			} else {
-//				String json = null;
 			try {
 				json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
 						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
@@ -111,7 +103,6 @@ class ADN_MN extends ADN {
 				throw e;
 			}
 			debugStream.out("Received JSON: " + json, i);
-//			}
 			outStream.out1_2("done, posting userMap");
 			cseClient.stepCount();
 			response_ = cseClient.services.postContainer(cseBaseName,"state","userMap",cseClient.getCount());
@@ -130,10 +121,6 @@ class ADN_MN extends ADN {
 				outStream.out2("failed");
 				throw new StateCreationException();
 			}
-//			if (response_.getCode()==ResponseCode.FORBIDDEN) {
-//				debugStream.out(response_.getResponseText(), i);
-//			} else {
-//				String json = null;
 			try {
 				json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
 						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
@@ -143,7 +130,6 @@ class ADN_MN extends ADN {
 				throw e;
 			}
 			debugStream.out("Received JSON: " + json, i);
-//			}
 			outStream.out1_2("done, posting subscription state");
 			subscriber = new Subscriber(outStream,debugStream,errStream,cseClient,cseBaseName,i);
 		}
@@ -651,8 +637,17 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-							if (content=="\\*")
-								content = Format.getRandomValue(tag.type);
+							if (content=="\\*") {
+								try {
+									content = Format.getRandomValue(tag.type);
+								} catch (NoTypeException e) {
+									response = new Response(ResponseCode.BAD_REQUEST);
+									exchange.respond(response);
+									outStream.out("Sensor \"" + tag.id + "\" hasn't a valid type", i);
+									i++;
+									return;
+								}
+							}
 							outStream.out1("Posting Content Instance \"" + content + "\" on node \"" + id + "\"", i);
 							String[] uri = new String[] {cseBaseName, id, "data"};
 							CoapResponse response_ = null;
@@ -706,29 +701,64 @@ class ADN_MN extends ADN {
 										case SENSOR:
 											break;
 										case ACTUATOR:
-											double value;
+											String type_ = subs.get(j).sender.type;
+											String cl = null;
 											try {
-												value = Format.unpack(content,subs.get(j).sender.type);
-											} catch (ParseException e) {
-												errStream.out(e,i,Severity.MEDIUM);
-												response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+												cl = Format.getClass(type_);
+											} catch (NoTypeException e) {
+												errStream.out(e,i,Severity.LOW);
+												response = new Response(ResponseCode.BAD_REQUEST);
 												exchange.respond(response);
 												outStream.out2("failed");
 												i++;
 												return;
 											}
-											subs.get(j).controller.insert(value);
-											if (subs.get(j).controller.check()) {
-												try {
-													response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
-												} catch (URISyntaxException e) {
-													errStream.out(e,i,Severity.MEDIUM);
-													response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-													exchange.respond(response);
-													outStream.out2("failed");
-													i++;
-													return;
-												}
+											switch(cl) {
+												case "Double":
+													double value;
+													try {
+														value = (double)Format.unpack(content,type_);
+													} catch (ParseException e) {
+														errStream.out(e,i,Severity.MEDIUM);
+														response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+														exchange.respond(response);
+														outStream.out2("failed");
+														i++;
+														return;
+													} catch (NoTypeException e) {
+														errStream.out(e,i,Severity.LOW);
+														response = new Response(ResponseCode.BAD_REQUEST);
+														exchange.respond(response);
+														outStream.out2("failed");
+														i++;
+														return;
+													}
+													subs.get(j).controller.insert(value);
+													if (subs.get(j).controller.check()) {
+														try {
+															response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
+														} catch (URISyntaxException e) {
+															errStream.out(e,i,Severity.MEDIUM);
+															response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+															exchange.respond(response);
+															outStream.out2("failed");
+															i++;
+															return;
+														}
+													}
+													break;
+												default:
+													try {
+														response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
+													} catch (URISyntaxException e) {
+														errStream.out(e,i,Severity.MEDIUM);
+														response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+														exchange.respond(response);
+														outStream.out2("failed");
+														i++;
+														return;
+													}
+													break;
 											}
 											break;
 										case USER:
@@ -1408,32 +1438,32 @@ class ADN_MN extends ADN {
 	private String resolveEUI64Address(String address) {
 		return Constants.protocol + "[" + Constants.networkAddress + "::" + address + "]:" + Constants.stdActuatorServerPort + "/" + Constants.context;
 	}
+	
+	private class User implements JSONSerializable {
 
-}
+		String address;
 
-class User implements JSONSerializable {
+		private String id;
+		private String cseBaseName;
 
-	String address;
+		boolean active;
 
-	private String id;
-	private String cseBaseName;
+		User(String id, String address, String cseBaseName) {
+			this.id = id;
+			this.address = address;
+			this.active = true;
+			this.cseBaseName = cseBaseName;
+		}
 
-	boolean active;
+		public JSONObject toJSON() {
+			JSONObject obj = new JSONObject();
+			obj.put("id",id);
+			obj.put("address",address);
+			obj.put("mn",cseBaseName);
+			obj.put("active",active);
+			return obj;
+		}
 
-	User(String id, String address, String cseBaseName) {
-		this.id = id;
-		this.address = address;
-		this.active = true;
-		this.cseBaseName = cseBaseName;
-	}
-
-	public JSONObject toJSON() {
-		JSONObject obj = new JSONObject();
-		obj.put("id",id);
-		obj.put("address",address);
-		obj.put("mn",cseBaseName);
-		obj.put("active",active);
-		return obj;
 	}
 
 }
