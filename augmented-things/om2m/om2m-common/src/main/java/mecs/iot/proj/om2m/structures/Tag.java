@@ -14,49 +14,44 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	public Node node;
 	public String id;
-	public String type;
 	public String serial;
+	public String type;
 	public String address;
 	public String[] attributes;
 	
-	private String cseBaseName;
-	
 	public boolean active;
-	
 	public HashMap<String,String> ruleMap;																		// label -> rule
 	
-	// Used inside endpoint nodes only
+	private String cseBaseName;
+	
+	// Used inside endpoint nodes
 	
 	public Tag (String id, String serial, String type, String[] attributes) {
 		this.node = Node.SENSOR;
 		this.id = id;
 		this.serial = serial;
-		this.address = null;
 		this.type = type;
 		this.attributes = attributes;
-		this.ruleMap = null;
 	}
 	
 	public Tag (String id, String serial, String[] attributes) {
 		this.node = Node.ACTUATOR;
 		this.id = id;
 		this.serial = serial;
-		this.address = null;
 		this.type = "act";
 		this.attributes = attributes;
-		this.ruleMap = null;
 	}
 	
-	// Used inside ADN only
+	// Used inside ADNs
 	
-	public Tag (Node node, String id, String description, String[] attributes, String cseBaseName) {
+	public Tag (Node node, String id, String serial, String str, String[] attributes, String cseBaseName) {
 		this.node = node;
-		this.serial = null;
+		this.serial = serial;
 		switch (node) {
 			case SENSOR:
 				this.id = id;
+				this.type = str;
 				this.address = null;
-				this.type = description;
 				this.attributes = attributes;
 				this.ruleMap = new HashMap<String,String>();
 				for (int i=0; i<attributes.length; i++) {
@@ -71,21 +66,13 @@ public class Tag implements JSONSerializable, Cloneable {
 				break;
 			case ACTUATOR:
 				this.id = id;
-				this.address = description;
 				this.type = "act";
+				this.address = str;
 				this.attributes = attributes;
-//				ruleMap = new HashMap<String,String>();
-//				for (int i=0; i<attributes.length; i++)
-//					ruleMap.put(attributes[i],"");
-				this.ruleMap = null;
 				// TODO: syntax check on labels
 				break;
 			case USER:
-				this.id = null;
-				this.address = description;
-				this.type = null;
-				this.attributes = null;
-				this.ruleMap = null;
+				this.address = str;
 				break;
 		}
 		this.cseBaseName = cseBaseName;
@@ -94,22 +81,17 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	public Tag (String address, String cseBaseName) {
 		this.node = Node.USER;
-		this.id = null;
-		this.serial = null;
 		this.address = address;
-		this.type = null;
-		this.attributes = null;
-		this.ruleMap = null;
 		this.cseBaseName = cseBaseName;
-		this.active = true;
 	}
 	
-	private Tag(Node node, String id, String type, String address, String[] attributes) {
-		this.node = node;
+	private Tag(String id, String type, String address, String[] attributes, boolean active, String cseBaseName) {
 		this.id = id;
 		this.type = type;
 		this.address = address;
 		this.attributes = attributes;
+		this.active = active;
+		this.cseBaseName = cseBaseName;
 	}
 
 	// TODO: generalize for rules missing middle terms (see docs)
@@ -248,6 +230,8 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
+		if (cseBaseName!=null)
+			obj.put("mn",cseBaseName);
 		if (id!=null)
 			obj.put("id",id);
 		if (type!=null)
@@ -257,8 +241,6 @@ public class Tag implements JSONSerializable, Cloneable {
 		for (int i=0; i<attributes.length; i++) {
 			obj.append("attributes",attributes[i]);
 		}
-		if (cseBaseName!=null)
-			obj.put("mn",cseBaseName);
 		obj.put("active",active);
 		return obj;
 	}
@@ -269,7 +251,7 @@ public class Tag implements JSONSerializable, Cloneable {
 		String[] attributes_ = new String[attributes.length];
 		for (int i=0; i<attributes.length; i++)
 			attributes_[i] = attributes[i];
-		return new Tag(node,id,type,address,attributes_);
+		return new Tag(id,type,address,attributes_,active,cseBaseName);
 	}
 	
 	private enum Sign {

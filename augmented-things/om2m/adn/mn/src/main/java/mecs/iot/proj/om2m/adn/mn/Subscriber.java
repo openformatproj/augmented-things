@@ -66,77 +66,10 @@ class Subscriber {
 			throw e;
 		}
 		debugStream.out("Received JSON: " + json, k);
-		debugStream.out("Posting resourceMap",k);
-		cseClient.stepCount();
-		response = cseClient.services.postContainer(cseBaseName,"state","resourceMap",cseClient.getCount());
-		if (response==null) {
-			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", k, Severity.HIGH);
-			outStream.out2("failed");
-			throw new StateCreationException();
-		} else if (response.getCode()!=ResponseCode.CREATED/* && response.getCode()!=ResponseCode.FORBIDDEN */) {
-			if (!response.getResponseText().isEmpty())
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
-						", reason: " + response.getResponseText(),
-						k, Severity.HIGH);
-			else
-				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
-					k, Severity.HIGH);
-			outStream.out2("failed");
-			throw new StateCreationException();
-		}
-		try {
-			json = Services.parseJSON(response.getResponseText(), "m2m:cnt",
-					new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
-		} catch (JSONException e) {
-			errStream.out(e,k,Severity.MEDIUM);
-			outStream.out2("failed");
-			throw e;
-		}
-		debugStream.out("Received JSON: " + json, 0);
 	}
 	
-//	void insert(String sender, String type, String receiver, String address, int k) throws URISyntaxException, StateCreationException {
-//		Subscription ref = new Subscription(sender,type,receiver,address);
-//		if (subscriptionMap.containsKey(sender)) {
-//			ArrayList<Subscription> subs = subscriptionMap.get(sender);
-//			ArrayList<Subscription> subs_ = cloneList(subs);					// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
-////			subs.add(ref);
-////			oM2Mput(sender,subs,false,k);
-//			subs_.add(ref);
-//			oM2Mput(sender,subs_,false,k);
-//			debugStream.out("Creating subscription on \"" + sender + "\"", k);
-//			subs.add(ref);
-//		} else {
-//			ArrayList<Subscription> subs = new ArrayList<Subscription>();
-//			subs.add(ref);
-//			oM2Mput(sender,subs,true,k);
-//			debugStream.out("Creating subscription on \"" + sender + "\"", k);
-//			subscriptionMap.put(sender,subs);
-//		}
-//	}
-//	
-//	void insert(String sender, String type, String event, String rule, String receiver, String address, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
-//		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
-//		if (subscriptionMap.containsKey(sender)) {
-//			ArrayList<Subscription> subs = subscriptionMap.get(sender);
-//			ArrayList<Subscription> subs_ = cloneList(subs);					// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
-////			subs.add(ref);
-////			oM2Mput(sender,subs,false,k);
-//			subs_.add(ref);
-//			oM2Mput(sender,subs_,false,k);
-//			debugStream.out("Creating subscription on \"" + sender + "\"", k);
-//			subs.add(ref);
-//		} else {
-//			ArrayList<Subscription> subs = new ArrayList<Subscription>();
-//			subs.add(ref);
-//			oM2Mput(sender,subs,true,k);
-//			debugStream.out("Creating subscription on \"" + sender + "\"", k);
-//			subscriptionMap.put(sender,subs);
-//		}
-//	}
-	
-	void insert(String senderSerial, Tag senderTag, String receiverSerial, Tag receiverTag, int k) throws URISyntaxException, StateCreationException {
-		Subscription ref = new Subscription(senderSerial,senderTag,receiverSerial,receiverTag);
+	void insert(Tag senderTag, Tag receiverTag, int k) throws URISyntaxException, StateCreationException {
+		Subscription ref = new Subscription(senderTag,receiverTag);
 		if (subscriptionMap.containsKey(senderTag.id)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
 			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
@@ -153,8 +86,8 @@ class Subscriber {
 		}
 	}
 	
-	void insert(String senderSerial, Tag senderTag, String event, String rule, String receiverSerial, Tag receiverTag, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
-		Subscription ref = new Subscription(senderSerial,senderTag,event,rule,receiverSerial,receiverTag,action);
+	void insert(Tag senderTag, String event, String rule, Tag receiverTag, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
+		Subscription ref = new Subscription(senderTag,event,rule,receiverTag,action);
 		if (subscriptionMap.containsKey(senderTag.id)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
 			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
@@ -189,7 +122,7 @@ class Subscriber {
 				for (int i=0; i<resources.length; i++) {
 					subs = subscriptionMap.get(resources[i]);
 					for (int j=0; j<subs.size(); j++) {
-						if (subs.get(j).receiver.tag.id.equals(id))
+						if (subs.get(j).receiver.id.equals(id))
 							subs.remove(j);																	// Remove all subscriptions containing the receiver
 					}
 					oM2Mput(resources[i],subs,false,k);
@@ -205,7 +138,7 @@ class Subscriber {
 	void remove(String sender, String receiver, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
 		for (int j=0; j<subs.size(); j++) {
-			if (subs.get(j).receiver.tag.id.equals(receiver))
+			if (subs.get(j).receiver.id.equals(receiver))
 				subs.remove(j);																				// Remove all subscriptions containing the receiver
 		}
 		oM2Mput(sender,subs,false,k);
@@ -220,7 +153,7 @@ class Subscriber {
 		Subscription ref;
 		for (int j=0; j<subs.size(); j++) {
 			ref = subs.get(j);
-			if (ref.receiver.tag.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
+			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
 				subs.remove(j);																				// Remove all subscriptions both containing the receiver and matching the pair event/action
 		}
 		oM2Mput(sender,subs,false,k);
