@@ -75,13 +75,14 @@ public class Tag implements JSONSerializable, Cloneable {
 				this.address = str;
 				break;
 		}
-		this.cseBaseName = cseBaseName;
 		this.active = true;
+		this.cseBaseName = cseBaseName;
 	}
 	
 	public Tag (String address, String cseBaseName) {
 		this.node = Node.USER;
 		this.address = address;
+		this.active = true;
 		this.cseBaseName = cseBaseName;
 	}
 	
