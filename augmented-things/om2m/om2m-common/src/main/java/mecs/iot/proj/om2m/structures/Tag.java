@@ -234,8 +234,7 @@ public class Tag implements JSONSerializable, Cloneable {
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("node",node);
-		if (id!=null)
-			obj.put("id",id);
+		obj.put("id",id);
 		if (type!=null)
 			obj.put("type",type);
 		if (address!=null)
@@ -247,6 +246,13 @@ public class Tag implements JSONSerializable, Cloneable {
 		}
 		obj.put("active",active);
 		obj.put("mn",cseBaseName);
+		return obj;
+	}
+	
+	public JSONObject toJSONReduced() {
+		JSONObject obj = new JSONObject();
+		obj.put("node",node);
+		obj.put("id",id);
 		return obj;
 	}
 	

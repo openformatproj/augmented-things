@@ -59,7 +59,7 @@ class Subscription implements JSONSerializable, Cloneable {
 		JSONObject obj = new JSONObject();
 //		obj.put("sender",sender.toJSON()); TODO: maybe not needed
 		obj.put("event",event);
-		obj.put("receiver",receiver.toJSON());
+		obj.put("receiver",receiver.toJSONReduced());
 		obj.put("action",action);
 		return obj;
 	}
