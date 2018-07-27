@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 
-class Terminal implements JSONSerializable {
+class Terminal implements JSONSerializable, Cloneable {
 	
 	String id;
 	String type;
@@ -28,6 +28,12 @@ class Terminal implements JSONSerializable {
 		obj.put("address",address);
 		obj.put("node",node);
 		return obj;
+	}
+	
+	@ Override
+	
+	public Object clone() {
+		return new Terminal(id,type,address,node);
 	}
 	
 }

@@ -218,13 +218,15 @@ class ADN_IN extends ADN {
 					return;
 				}
 				outStream.out1("Registering MN \"" + id + "\"", i);
-				mns[index].active = true;
 				cseClient.stepCount();
 				try {
 					cseClient.connect(Constants.protocol + mns[index].address + Constants.mnCSERoot(mns[index].id));
 				} catch (URISyntaxException e) {
 					errStream.out(e,i,Severity.MEDIUM);
+					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+					exchange.respond(response);
 					outStream.out2("failed");
+					i++;
 					return;
 				}
 				String[] uri;
@@ -241,12 +243,13 @@ class ADN_IN extends ADN {
 						return;
 					}
 				}
+				mns[index].active = true;
 				cloud.addMN(id);
 				String json = null;
 				try {
 					json = cloud.getJSONMN(id);
 				} catch (NotFoundMNException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -274,7 +277,7 @@ class ADN_IN extends ADN {
 					la = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cnt"},
 							new String[] {"la"}, new Class<?>[] {String.class});
 				} catch (JSONException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.LOW);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					outStream.out("Received invalid notification", i);
@@ -286,7 +289,7 @@ class ADN_IN extends ADN {
 				try {
 					cseClient.connect(Constants.protocol+"localhost"+Constants.mnCSERoot()+ri.substring(3));
 				} catch (URISyntaxException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -296,7 +299,7 @@ class ADN_IN extends ADN {
 				try {
 					cseClient.services.postSubscription(Constants.protocol+"localhost"+Constants.inADNRoot,"subscription",new String[]{},cseClient.getCount());
 				} catch (URISyntaxException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -307,7 +310,7 @@ class ADN_IN extends ADN {
 				try {
 					cseClient.connect(Constants.protocol+"localhost"+Constants.mnCSERoot()+la.substring(3));
 				} catch (URISyntaxException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -319,7 +322,7 @@ class ADN_IN extends ADN {
 					try {
 						response_ = cseClient.services.getResource(new String[]{},cseClient.getCount());
 					} catch (URISyntaxException e) {
-						errStream.out(e,i,Severity.MEDIUM);
+						errStream.out(e,i,Severity.HIGH);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						outStream.out2("failed");
@@ -327,7 +330,7 @@ class ADN_IN extends ADN {
 						return;
 					}
 					if (response_==null) {
-						errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.LOW);
+						errStream.out("Unable to read from " + cseClient.services.uri() + ", timeout expired", i, Severity.HIGH);
 						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 						exchange.respond(response);
 						outStream.out2("failed");
@@ -337,7 +340,7 @@ class ADN_IN extends ADN {
 				} while(!hasBeenFound(response_));
 				if (response_.getCode()!=ResponseCode.CONTENT) {
 					errStream.out("Unable to read from " + cseClient.services.uri() + ", response: " + response_.getCode(),
-							i, Severity.LOW);
+							i, Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -349,7 +352,7 @@ class ADN_IN extends ADN {
 					con = Services.parseJSON(response_.getResponseText(), "m2m:cin",									// Example: "con=("mn":"augmented-things-MN","address":"coap://192.168.0.107:5691/augmented-things","active":true,"id":"user.ALESSANDRO-K7NR")"
 							new String[] {"con"}, new Class<?>[] {String.class});
 				} catch (JSONException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -361,7 +364,7 @@ class ADN_IN extends ADN {
 				try {
 					cloud.add(json,i);
 				} catch (JSONException | NotFoundMNException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");
@@ -375,7 +378,7 @@ class ADN_IN extends ADN {
 					con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"},
 							new String[] {"con"}, new Class<?>[] {String.class});
 				} catch (JSONException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
 					outStream.out("Received invalid notification", i);
@@ -387,7 +390,7 @@ class ADN_IN extends ADN {
 				try {
 					cloud.add(json,i);
 				} catch (JSONException | NotFoundMNException e) {
-					errStream.out(e,i,Severity.MEDIUM);
+					errStream.out(e,i,Severity.HIGH);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
 					exchange.respond(response);
 					outStream.out2("failed");

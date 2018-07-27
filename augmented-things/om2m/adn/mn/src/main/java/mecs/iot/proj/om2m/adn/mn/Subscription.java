@@ -9,7 +9,7 @@ import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 
-class Subscription implements JSONSerializable {
+class Subscription implements JSONSerializable, Cloneable {
 	
 	Terminal sender;
 	String event;
@@ -46,6 +46,14 @@ class Subscription implements JSONSerializable {
 		this.action = action;
 	}
 	
+	private Subscription(Terminal sender, String event, Terminal receiver, String action) {
+		this.sender = sender;
+		this.event = event;
+		this.checker = null;
+		this.receiver = receiver;
+		this.action = action;
+	}
+	
 	@Override
 	
 	public JSONObject toJSON() {
@@ -55,6 +63,14 @@ class Subscription implements JSONSerializable {
 		obj.put("receiver",receiver.toJSON());
 		obj.put("action",action);
 		return obj;
+	}
+	
+	@Override
+	
+	public Object clone() {
+		Terminal sender = (Terminal)this.sender.clone();
+		Terminal receiver = (Terminal)this.receiver.clone();
+		return new Subscription(sender,event,receiver,action);
 	}
 	
 	public static void main(String[] args) {

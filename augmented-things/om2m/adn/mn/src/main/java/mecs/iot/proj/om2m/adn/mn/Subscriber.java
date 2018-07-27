@@ -42,17 +42,17 @@ class Subscriber {
 		cseClient.stepCount();
 		CoapResponse response = cseClient.services.postContainer(cseBaseName,"state","subscriptionMap",cseClient.getCount());
 		if (response==null) {
-			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", k, Severity.LOW);
+			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", k, Severity.HIGH);
 			outStream.out2("failed");
 			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED/* && response.getCode()!=ResponseCode.FORBIDDEN*/) {
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
-						k, Severity.LOW);
+						k, Severity.HIGH);
 			else
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
-					k, Severity.LOW);
+					k, Severity.HIGH);
 			outStream.out2("failed");
 			throw new StateCreationException();
 		}
@@ -69,17 +69,17 @@ class Subscriber {
 		cseClient.stepCount();
 		response = cseClient.services.postContainer(cseBaseName,"state","resourceMap",cseClient.getCount());
 		if (response==null) {
-			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", k, Severity.LOW);
+			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", k, Severity.HIGH);
 			outStream.out2("failed");
 			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED/* && response.getCode()!=ResponseCode.FORBIDDEN */) {
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
-						k, Severity.LOW);
+						k, Severity.HIGH);
 			else
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode(),
-					k, Severity.LOW);
+					k, Severity.HIGH);
 			outStream.out2("failed");
 			throw new StateCreationException();
 		}
@@ -98,13 +98,19 @@ class Subscriber {
 		Subscription ref = new Subscription(sender,type,receiver,address);
 		if (subscriptionMap.containsKey(sender)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(sender);
+			ArrayList<Subscription> subs_ = cloneList(subs);					// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
+//			subs.add(ref);
+//			oM2Mput(sender,subs,false,k);
+			subs_.add(ref);
+			oM2Mput(sender,subs_,false,k);
+			debugStream.out("Creating subscription on \"" + sender + "\"", k);
 			subs.add(ref);
-			oM2Mput(sender,subs,false,k);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
-			subscriptionMap.put(sender,subs);
 			oM2Mput(sender,subs,true,k);
+			debugStream.out("Creating subscription on \"" + sender + "\"", k);
+			subscriptionMap.put(sender,subs);
 		}
 	}
 	
@@ -112,13 +118,19 @@ class Subscriber {
 		Subscription ref = new Subscription(sender,type,event,rule,receiver,address,action);
 		if (subscriptionMap.containsKey(sender)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(sender);
+			ArrayList<Subscription> subs_ = cloneList(subs);					// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
+//			subs.add(ref);
+//			oM2Mput(sender,subs,false,k);
+			subs_.add(ref);
+			oM2Mput(sender,subs_,false,k);
+			debugStream.out("Creating subscription on \"" + sender + "\"", k);
 			subs.add(ref);
-			oM2Mput(sender,subs,false,k);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
-			subscriptionMap.put(sender,subs);
 			oM2Mput(sender,subs,true,k);
+			debugStream.out("Creating subscription on \"" + sender + "\"", k);
+			subscriptionMap.put(sender,subs);
 		}
 	}
 	
@@ -130,7 +142,8 @@ class Subscriber {
 		switch(node) {
 			case SENSOR:
 				oM2Mput(id,new ArrayList<Subscription>(),false,k);
-				deleteSubscription(id,k);
+				debugStream.out("Deleting subscription on \"" + id + "\"", k);
+				subscriptionMap.remove(id);
 				break;
 			case ACTUATOR:
 			case USER:
@@ -144,7 +157,8 @@ class Subscriber {
 					}
 					oM2Mput(resources[i],subs,false,k);
 					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
-						deleteSubscription(resources[i],k);
+						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
+						subscriptionMap.remove(resources[i]);
 					}
 				}
 				break;
@@ -159,7 +173,8 @@ class Subscriber {
 		}
 		oM2Mput(sender,subs,false,k);
 		if (subs.size()==0) {
-			deleteSubscription(sender,k);
+			debugStream.out("Deleting subscription on \"" + sender + "\"", k);
+			subscriptionMap.remove(sender);
 		}
 	}
 	
@@ -173,13 +188,9 @@ class Subscriber {
 		}
 		oM2Mput(sender,subs,false,k);
 		if (subs.size()==0) {
-			deleteSubscription(sender,k);
+			debugStream.out("Deleting subscription on \"" + sender + "\"", k);
+			subscriptionMap.remove(sender);
 		}
-	}
-	
-	private void deleteSubscription(String resource, int k) throws URISyntaxException, StateCreationException {
-		debugStream.out("Deleting subscription on \"" + resource + "\"", k);
-		subscriptionMap.remove(resource);
 	}
 	
 	private void oM2Mput(String sender, ArrayList<Subscription> subs, boolean createContainer, int k) throws URISyntaxException, StateCreationException {
@@ -197,13 +208,20 @@ class Subscriber {
 			response = cseClient.services.oM2Mput(sender,obj,uri,false,cseClient.getCount());
 		}	
 		if (response==null) {
-			errStream.out("Unable to register subscription on CSE, timeout expired", k, Severity.LOW);
+			errStream.out("Unable to register subscription on CSE, timeout expired", k, Severity.MEDIUM);
 			throw new StateCreationException();
 		} else if (response.getCode()!=ResponseCode.CREATED) {
 			errStream.out("Unable to register subscription on CSE, response: " + response.getCode(),
-					k, Severity.LOW);
+					k, Severity.MEDIUM);
 			throw new StateCreationException();
 		}
+	}
+	
+	private static ArrayList<Subscription> cloneList(ArrayList<Subscription> in) {
+		ArrayList<Subscription> out = new ArrayList<Subscription>(in.size());
+	    for (Subscription item : in)
+	    	out.add((Subscription)item.clone());
+	    return out;
 	}
 
 }
