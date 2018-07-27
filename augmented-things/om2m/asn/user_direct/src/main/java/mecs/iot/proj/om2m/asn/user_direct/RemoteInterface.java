@@ -69,6 +69,7 @@ class RemoteInterface extends Client {
 			connect(Constants.protocol + address + Constants.mnADNRoot);
 		} catch (URISyntaxException e) {
 			errStream.out(e,i,Severity.MEDIUM);
+			destroy();
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
@@ -76,6 +77,7 @@ class RemoteInterface extends Client {
 		response = register(id,this.address);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
+			destroy();
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		} else if (response.getCode()!=ResponseCode.CREATED) {
@@ -86,6 +88,7 @@ class RemoteInterface extends Client {
 			else
 				errStream.out("Unable to register to \"" + services.uri() + "\", response: " + response.getCode(),
 					i, Severity.LOW);
+			destroy();
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
