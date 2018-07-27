@@ -233,7 +233,7 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
-		obj.put("node",id);
+		obj.put("node",node);
 		if (id!=null)
 			obj.put("id",id);
 		if (type!=null)
