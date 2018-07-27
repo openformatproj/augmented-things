@@ -83,7 +83,7 @@ class ADN_MN extends ADN {
 				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
-			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN*/) {
+			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN */) {
 				if (!response_.getResponseText().isEmpty())
 					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
@@ -110,7 +110,7 @@ class ADN_MN extends ADN {
 				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.LOW);
 				outStream.out2("failed");
 				throw new StateCreationException();
-			} else if (response_.getCode()!=ResponseCode.CREATED && response_.getCode()!=ResponseCode.FORBIDDEN) {
+			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN */) {
 				if (!response_.getResponseText().isEmpty())
 					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),

@@ -72,7 +72,7 @@ class Subscriber {
 			errStream.out("Unable to post Container to " + cseClient.services.uri() + ", timeout expired", k, Severity.LOW);
 			outStream.out2("failed");
 			throw new StateCreationException();
-		} else if (response.getCode()!=ResponseCode.CREATED && response.getCode()!=ResponseCode.FORBIDDEN) {
+		} else if (response.getCode()!=ResponseCode.CREATED/* && response.getCode()!=ResponseCode.FORBIDDEN */) {
 			if (!response.getResponseText().isEmpty())
 				errStream.out("Unable to post Container to " + cseClient.services.uri() + ", response: " + response.getCode() +
 						", reason: " + response.getResponseText(),
