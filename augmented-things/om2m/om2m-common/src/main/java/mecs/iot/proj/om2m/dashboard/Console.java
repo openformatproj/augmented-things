@@ -76,40 +76,38 @@ public class Console extends Thread {
 				String name = sections[0];
 				if (commandMap.containsKey(name)) {
 					CommandContainer cnt = commandMap.get(name);
-					int commandsFound = sections.length-1;
-					int commands = cnt.numOptions;
-					if (commandsFound<commands) {
-						interf.out(name + " has " + cnt.numOptions + " mandatory number of options to specify",false);
+					int optsFound = sections.length-1;
+					if (optsFound>0 && sections[1].equals("help")) {
+						interf.out(cnt.help, false);
 					} else {
-						if (commands>0) {
-							String[] options = new String[commands];
-							for (int i=0; i<commands; i++) {
-								options[i] = sections[i+1];
-							}
-							if (options[0].equals("help")) {
-								interf.out(cnt.help, false);
-							} else {
-								str = cnt.command.execute(options);
-								interf.out(str, cnt.isJSON && str.matches("\\{.+\\}"));
-							}
-						} else if (commandsFound>0) {
-							String firstOption = sections[1];
-							if (firstOption.equals("help")) {
-								interf.out(cnt.help, false);
-							}
+						int opts = cnt.numOptions;
+						if (optsFound<opts) {
+							interf.out(name + " has a mandatory number of " + opts + " options to specify", false);
 						} else {
-							str = cnt.command.execute(null);
-							interf.out(str, cnt.isJSON && str.matches("\\{.+\\}"));
+							String ans = "";
+							if (optsFound>opts)
+								ans += "Warning: only the first " + opts + " options are considered\r\n";
+							if (opts>0) {
+								String[] options = new String[opts];
+								for (int i=0; i<opts; i++) {
+									options[i] = sections[i+1];
+								}
+								ans += cnt.command.execute(options);
+								interf.out(ans, cnt.isJSON && str.matches("\\{.+\\}"));
+							} else {
+								ans += cnt.command.execute(null);
+								interf.out(ans, cnt.isJSON && str.matches("\\{.+\\}"));
+							}
 						}
 					}
 				} else if (name.equals("ls /commands")) {
 					for (int i=0; i<commandMap.size(); i++) {
 						ArrayList<String> list = new ArrayList<String>(commandMap.keySet());
-						String o = "";
+						String ans = "";
 						for (String c: list) {
-							o += c + ": " + commandMap.get(c).help + "\r\n";
+							ans += c + ": " + commandMap.get(c).help + "\r\n";
 						}
-						interf.out(o,false);
+						interf.out(ans,false);
 					}
 				} else {
 					interf.out(name + " is not a valid command", false);
