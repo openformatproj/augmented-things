@@ -418,7 +418,7 @@ class ADN_IN extends ADN {
 	private boolean hasBeenFound(CoapResponse response) {
 		if (response.getCode().equals(ResponseCode.NOT_FOUND)) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
