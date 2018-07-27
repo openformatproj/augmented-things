@@ -79,14 +79,16 @@ public class Tag implements JSONSerializable, Cloneable {
 		this.cseBaseName = cseBaseName;
 	}
 	
-	public Tag (String address, String cseBaseName) {
+	public Tag (String id, String address, String cseBaseName) {
 		this.node = Node.USER;
+		this.id = id;
 		this.address = address;
 		this.active = true;
 		this.cseBaseName = cseBaseName;
 	}
 	
-	private Tag(String id, String type, String address, String[] attributes, boolean active, String cseBaseName) {
+	private Tag(Node node, String id, String type, String address, String[] attributes, boolean active, String cseBaseName) {
+		this.node = node;
 		this.id = id;
 		this.type = type;
 		this.address = address;
@@ -231,8 +233,7 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
-		if (cseBaseName!=null)
-			obj.put("mn",cseBaseName);
+		obj.put("node",id);
 		if (id!=null)
 			obj.put("id",id);
 		if (type!=null)
@@ -245,6 +246,7 @@ public class Tag implements JSONSerializable, Cloneable {
 			}
 		}
 		obj.put("active",active);
+		obj.put("mn",cseBaseName);
 		return obj;
 	}
 	
@@ -254,7 +256,7 @@ public class Tag implements JSONSerializable, Cloneable {
 		String[] attributes_ = new String[attributes.length];
 		for (int i=0; i<attributes.length; i++)
 			attributes_[i] = attributes[i];
-		return new Tag(id,type,address,attributes_,active,cseBaseName);
+		return new Tag(node,id,type,address,attributes_,active,cseBaseName);
 	}
 	
 	private enum Sign {

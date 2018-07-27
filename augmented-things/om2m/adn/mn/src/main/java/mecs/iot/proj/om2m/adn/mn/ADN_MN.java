@@ -835,7 +835,7 @@ class ADN_MN extends ADN {
 						createState = true;
 						uri_ = new String[] {cseBaseName, "state", "userMap"};
 					}
-					Tag user = new Tag(address,cseBaseName);
+					Tag user = new Tag(id,address,cseBaseName);
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
