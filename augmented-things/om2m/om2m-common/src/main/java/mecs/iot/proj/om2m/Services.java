@@ -444,6 +444,46 @@ public class Services {
 		return client.send(request, Code.POST);
 	}
 	
+	public CoapResponse oM2Mput(JSONSerializable content, String[] uri, int i) throws URISyntaxException {
+		pathManager.change(uri);
+		Request request = null;
+		JSONObject obj = null;
+		JSONObject root = null;
+		request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,4));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		obj = new JSONObject();
+		obj.put("cnf","text/plain:0");
+		obj.put("con",packJSON(content.toJSON().toString()));
+		root = new JSONObject();
+		root.put("m2m:cin",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Content Instance creation to CSE", i);
+		return client.send(request, Code.POST);
+	}
+	
+	public CoapResponse oM2Mput(JSONObject content, String[] uri, int i) throws URISyntaxException {
+		pathManager.change(uri);
+		Request request = null;
+		JSONObject obj = null;
+		JSONObject root = null;
+		request = new Request(Code.POST);
+		request.getOptions().addOption(new Option(267,4));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		obj = new JSONObject();
+		obj.put("cnf","text/plain:0");
+		obj.put("con",packJSON(content.toString()));
+		root = new JSONObject();
+		root.put("m2m:cin",obj);
+		request.setPayload(root.toString());
+		client.debugStream.out("Sent Content Instance creation to CSE", i);
+		return client.send(request, Code.POST);
+	}
+	
 	public static String getKeyFromAttribute(String attr) {
 		return attr.split("cnt-")[1];
 	}

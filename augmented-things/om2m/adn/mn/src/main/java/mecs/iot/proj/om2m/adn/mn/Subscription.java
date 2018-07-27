@@ -2,12 +2,11 @@ package mecs.iot.proj.om2m.adn.mn;
 
 import org.json.JSONObject;
 
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
-import mecs.iot.proj.om2m.structures.Node;
+import mecs.iot.proj.om2m.structures.Tag;
 
 class Subscription implements JSONSerializable, Cloneable {
 	
@@ -17,20 +16,49 @@ class Subscription implements JSONSerializable, Cloneable {
 	Terminal receiver;
 	String action;
 	
-	Subscription(String sender, String type, String receiver, String address) {
-		this.sender = new Terminal(sender,type,null,Node.SENSOR);
+//	Subscription(String sender, String type, String receiver, String address) {
+//		this.sender = new Terminal(sender,type,null,Node.SENSOR);
+//		this.event = null;
+//		this.checker = null;
+//		this.receiver = new Terminal(receiver,null,address,Node.USER);
+//		this.action = null;
+//	}
+	
+	Subscription(String senderSerial, Tag senderTag, String receiverSerial, Tag receiverTag) {
+		this.sender = new Terminal(senderSerial,senderTag);
 		this.event = null;
 		this.checker = null;
-		this.receiver = new Terminal(receiver,null,address,Node.USER);
+		this.receiver = new Terminal(receiverSerial,receiverTag);
 		this.action = null;
 	}
 	
-	Subscription(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException, NoTypeException {
-		this.sender = new Terminal(sender,type,null,Node.SENSOR);
+//	Subscription(String sender, String type, String event, String rule, String receiver, String address, String action) throws InvalidRuleException, NoTypeException {
+//		this.sender = new Terminal(sender,type,null,Node.SENSOR);
+//		this.event = event;
+//		String cl = null;
+//		try {
+//			cl = Format.getClassName(type);
+//		} catch (NoTypeException e) {
+//			throw e;
+//		}
+//		switch(cl) {
+//			case "Double":
+//				this.checker = new Controller(rule);
+//				break;
+//			default:
+//				this.checker = null;
+//				break;
+//		}
+//		this.receiver = new Terminal(receiver,null,address,Node.ACTUATOR);
+//		this.action = action;
+//	}
+	
+	Subscription(String senderSerial, Tag senderTag, String event, String rule, String receiverSerial, Tag receiverTag, String action) throws InvalidRuleException, NoTypeException {
+		this.sender = new Terminal(senderSerial,senderTag);
 		this.event = event;
 		String cl = null;
 		try {
-			cl = Format.getClassName(type);
+			cl = Format.getClassName(senderTag.type);
 		} catch (NoTypeException e) {
 			throw e;
 		}
@@ -42,7 +70,7 @@ class Subscription implements JSONSerializable, Cloneable {
 				this.checker = null;
 				break;
 		}
-		this.receiver = new Terminal(receiver,null,address,Node.ACTUATOR);
+		this.receiver = new Terminal(receiverSerial,receiverTag);
 		this.action = action;
 	}
 	
@@ -74,16 +102,16 @@ class Subscription implements JSONSerializable, Cloneable {
 	}
 	
 	public static void main(String[] args) {
-		Subscription[] subs = new Subscription[2];
-		try {
-			subs[0] = new Subscription("sensor.alessandro", "tempC", "event", "", "actuator.alessandro", "coap://127.0.0.1:5690/augmented-things", "action1");
-		} catch (InvalidRuleException | NoTypeException e) {
-			e.printStackTrace();
-		}
-		subs[1] = new Subscription("sensor.alessandro", "tempC", "user.ALESSANDRO-K7NR", "coap://192.168.0.107:5691/augmented-things");
-		System.out.println(Services.toJSONArray(subs,"subs").toString());
-		System.out.println(Services.packJSON(Services.toJSONArray(subs,"subs").toString()));
-		System.out.println(Services.unpackJSON(Services.packJSON(Services.toJSONArray(subs,"subs").toString())));
+//		Subscription[] subs = new Subscription[2];
+//		try {
+//			subs[0] = new Subscription("sensor.alessandro", "tempC", "event", "", "actuator.alessandro", "coap://127.0.0.1:5690/augmented-things", "action1");
+//		} catch (InvalidRuleException | NoTypeException e) {
+//			e.printStackTrace();
+//		}
+//		subs[1] = new Subscription("sensor.alessandro", "tempC", "user.ALESSANDRO-K7NR", "coap://192.168.0.107:5691/augmented-things");
+//		System.out.println(Services.toJSONArray(subs,"subs").toString());
+//		System.out.println(Services.packJSON(Services.toJSONArray(subs,"subs").toString()));
+//		System.out.println(Services.unpackJSON(Services.packJSON(Services.toJSONArray(subs,"subs").toString())));
 	}
 	
 }

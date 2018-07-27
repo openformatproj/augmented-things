@@ -13,7 +13,6 @@ import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
@@ -25,7 +24,6 @@ import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Tag;
 
@@ -33,8 +31,9 @@ class ADN_MN extends ADN {
 
 	Client notificationClient;
 
-	private HashMap<String,Tag> tagMap;																					// serial -> tag
-	private HashMap<String,User> userMap;																				// user id -> user
+	private HashMap<String,Tag> tagMap;																					// serial -> node tag
+//	private HashMap<String,User> userMap;																				// user id -> user
+	private HashMap<String,Tag> userMap;																				// user id -> user tag
 
 	private Subscriber subscriber;
 	
@@ -45,7 +44,8 @@ class ADN_MN extends ADN {
 		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.mnCSERoot(id), debug);
 		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
 		tagMap = new HashMap<String,Tag>();
-		userMap = new HashMap<String,User>();
+//		userMap = new HashMap<String,User>();
+		userMap = new HashMap<String,Tag>();
 		if (false) {
 			// TODO: pull from OM2M
 		} else {
@@ -639,7 +639,7 @@ class ADN_MN extends ADN {
 							if (!isRecognizedContent(content,tag)) {
 								response = new Response(ResponseCode.BAD_REQUEST);
 								exchange.respond(response);
-								outStream.out("Content \"" + content + "\" is not a valid content for \"" + tag.id + "\"", i);
+								outStream.out("Content \"" + content + "\" is not a valid content for \"" + serial + "\"", i);
 								i++;
 								return;
 							}
@@ -700,76 +700,83 @@ class ADN_MN extends ADN {
 							debugStream.out("Received JSON: " + json, i);
 							response = new Response(ResponseCode.CREATED);
 							// Forward notifications towards observers
+							outStream.out1_2("forwarding notification to observers");
 							ArrayList<Subscription> subs = subscriber.get(id);
 							if (subs!=null && subs.size()>0) {
 								response_ = null;
+								boolean hasBeenForwarded;
+								boolean exceptionOccurred;
+								Terminal receiver;
+								String key = null;
 								for (int j=0; j<subs.size(); j++) {
-									switch (subs.get(j).receiver.node) {
+									hasBeenForwarded = false;
+									exceptionOccurred = false;
+									receiver = subs.get(j).receiver;
+									switch (receiver.tag.node) {
 										case SENSOR:
+											// TODO: general error here
 											break;
 										case ACTUATOR:
 											Object value;
 											try {
-												value = Format.unpack(content,subs.get(j).sender.type);
+												value = Format.unpack(content,subs.get(j).sender.tag.type);
 											} catch (ParseException e) {
-												errStream.out(e,i,Severity.MEDIUM);
-												response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-												exchange.respond(response);
-												outStream.out2("failed");
-												i++;
-												return;
+												errStream.out("Unable to send data to \"" + receiver.tag.id + "\", reason: " + e.getMessage(), i, Severity.MEDIUM);
+												exceptionOccurred = true;
+												break;
 											} catch (NoTypeException e) {
-												errStream.out(e,i,Severity.LOW);
-												response = new Response(ResponseCode.BAD_REQUEST);
-												exchange.respond(response);
-												outStream.out2("failed");
-												i++;
-												return;
+												errStream.out("Unable to send data to \"" + receiver.tag.id + "\", reason: " + e.getMessage(), i, Severity.LOW);
+												exceptionOccurred = true;
+												break;
 											}
 											Checker checker = subs.get(j).checker;
 											checker.insert(value);
 											if (checker==null || checker.check()) {
 												try {
-													response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,subs.get(j).action);
+													response_ = forwardNotification(receiver.tag.id,receiver.tag.address,subs.get(j).action,i);
 												} catch (URISyntaxException e) {
 													errStream.out(e,i,Severity.MEDIUM);
-													response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-													exchange.respond(response);
-													outStream.out2("failed");
-													i++;
-													return;
+													break;
 												}
+												hasBeenForwarded = true;
+												key = receiver.serial;
+												debugStream.out("Forwarded notification to \"" + receiver.tag.id + "\"", i);
 											}
 											break;
 										case USER:
 											try {
-												response_ = forwardNotification(subs.get(j).receiver.id,subs.get(j).receiver.address,id+": con="+content);
+												response_ = forwardNotification(receiver.tag.id,receiver.tag.address,id+": con="+content,i);
 											} catch (URISyntaxException e) {
 												errStream.out(e,i,Severity.MEDIUM);
-												response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-												exchange.respond(response);
-												outStream.out2("failed");
-												i++;
-												return;
+												break;
 											}
+											hasBeenForwarded = true;
+											key = receiver.tag.id;
+											debugStream.out("Forwarded notification to \"" + receiver.tag.id + "\"", i);
 											break;
 									}
-									if (response_==null) {
-										errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
-										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-										// TODO: remove listener
-										exchange.respond(response);
-										outStream.out2("failed");
-										i++;
-										return;
-									} else if (response_.getCode()!=ResponseCode.CHANGED) {
-										errStream.out("Unable to send data to \"" + id + "\", response: " + response_.getCode(),
-												i, Severity.LOW);
-										response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-										exchange.respond(response);
-										outStream.out2("failed");
-										i++;
-										return;
+									if (exceptionOccurred) {
+										;
+									} else if (hasBeenForwarded && response_==null) {
+										errStream.out("Unable to send data to \"" + receiver.tag.id + "\", timeout expired", i, Severity.LOW);
+										// remove listener if it doesn't answer
+										receiver.tag.active = false;
+										try {
+											subscriber.remove(receiver.tag.id,receiver.tag.node,i);
+											String[] uri_ = new String[] {cseBaseName, "state", "tagMap", key};
+											cseClient.stepCount();
+												response_ = cseClient.services.oM2Mput(receiver.tag,uri_,cseClient.getCount());
+											if (response_==null) {
+												errStream.out("Unable to remove node from CSE, timeout expired", i, Severity.HIGH);
+											} else if (response_.getCode()!=ResponseCode.CREATED) {
+												errStream.out("Unable to remove node from CSE, response: " + response_.getCode(),
+														i, Severity.HIGH);
+											}
+										} catch (URISyntaxException | StateCreationException e) {
+											errStream.out("Unable to remove node from CSE, reason: " + e.getMessage(), i, Severity.HIGH);
+										}
+									} else if (response_!=null && response_.getCode()!=ResponseCode.CHANGED) {
+										errStream.out("Unable to send data to \"" + receiver.tag.id + "\", response: " + response_.getCode(), i, Severity.MEDIUM);
 									}
 								}
 							}
@@ -784,7 +791,8 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-							User user = userMap.get(id);
+//							User user = userMap.get(id);
+							Tag user  = userMap.get(id);
 							if (user==null) {
 								response = new Response(ResponseCode.BAD_REQUEST);
 								exchange.respond(response);
@@ -794,7 +802,8 @@ class ADN_MN extends ADN {
 							}
 							outStream.out1("Subscribing user \"" + id + "\" to resource with serial \"" + serial + "\"", i);
 							try {
-								subscriber.insert(tag.id,tag.type,id,user.address,i);
+								// subscriber.insert(tag.id,tag.type,id,user.address,i);
+								subscriber.insert(serial,tag,id,user,i);
 							} catch (URISyntaxException | StateCreationException e) {
 								errStream.out(e,i,Severity.MEDIUM);
 								response = new Response(ResponseCode.BAD_REQUEST);
@@ -830,7 +839,8 @@ class ADN_MN extends ADN {
 						createState = true;
 						uri_ = new String[] {cseBaseName, "state", "userMap"};
 					}
-					User user = new User(id,address,cseBaseName);
+//					User user = new User(id,address,cseBaseName);
+					Tag user = new Tag(address,cseBaseName);
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
@@ -969,18 +979,19 @@ class ADN_MN extends ADN {
 				if (!isRecognizedLabel(label0,tag0)) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
-					outStream.out("Label \"" + label0 + "\" is not a valid label for \"" + tag0.id + "\"", i);
+					outStream.out("Label \"" + label0 + "\" is not a valid label for \"" + serial0 + "\"", i);
 					i++;
 					return;
 				}
 				if (!isRecognizedLabel(label1,tag1)) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
-					outStream.out("Label \"" + label1 + "\" is not a valid label for \"" + tag1.id + "\"", i);
+					outStream.out("Label \"" + label1 + "\" is not a valid label for \"" + serial1 + "\"", i);
 					i++;
 					return;
 				}
-				User user = userMap.get(notificationId);
+//				User user = userMap.get(notificationId);
+				Tag user = userMap.get(notificationId);
 				if (user==null) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
@@ -990,7 +1001,8 @@ class ADN_MN extends ADN {
 				}
 				outStream.out1("Linking sensor with serial \"" + serial0 + "\" to actuator with serial \"" + serial1 + "\"", i);
 				try {
-					subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
+//					subscriber.insert(tag0.id,tag0.type,label0,tag0.ruleMap.get(label0),tag1.id,tag1.address,label1,i);
+					subscriber.insert(serial0,tag0,label0,tag0.ruleMap.get(label0),serial1,tag1,label1,i);
 				} catch (URISyntaxException | StateCreationException e) {
 					errStream.out(e,i,Severity.MEDIUM);
 					response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
@@ -1054,7 +1066,7 @@ class ADN_MN extends ADN {
 		if (!isRecognizedLabel(label,tag)) {
 			response = new Response(ResponseCode.BAD_REQUEST);
 			exchange.respond(response);
-			outStream.out("Label \"" + label + "\" is not a valid label for \"" + tag.id + "\"", i);
+			outStream.out("Label \"" + label + "\" is not a valid label for \"" + serial + "\"", i);
 			i++;
 			return;
 		}
@@ -1073,8 +1085,23 @@ class ADN_MN extends ADN {
 		CoapResponse response_ = write(label);
 		if (response_==null) {
 			errStream.out("Unable to write on actuator \"" + tag.id + "\", timeout expired", i, Severity.LOW);
+			// remove listener if it doesn't answer
+			tag.active = false;
+			try {
+				subscriber.remove(tag.id,Node.ACTUATOR,i);
+				String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
+				cseClient.stepCount();
+					response_ = cseClient.services.oM2Mput(tag,uri_,cseClient.getCount());
+				if (response_==null) {
+					errStream.out("Unable to remove node from CSE, timeout expired", i, Severity.HIGH);
+				} else if (response_.getCode()!=ResponseCode.CREATED) {
+					errStream.out("Unable to remove node from CSE, response: " + response_.getCode(),
+							i, Severity.HIGH);
+				}
+			} catch (URISyntaxException | StateCreationException e) {
+				errStream.out("Unable to remove node from CSE, reason: " + e.getMessage(), i, Severity.HIGH);
+			}
 			response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-			// TODO: remove actuator
 			exchange.respond(response);
 			outStream.out2("failed");
 			i++;
@@ -1119,7 +1146,8 @@ class ADN_MN extends ADN {
 					return;
 				}
 				Tag tag = tagMap.get(serial);
-				User user = userMap.get(id);
+//				User user = userMap.get(id);
+				Tag user = userMap.get(id);
 				// lookout removal (id=<ID>&ser=<SERIAL>)
 				outStream.out2("detected lookout removal");
 				if (tag==null || tag.node!=Node.SENSOR) {
@@ -1150,7 +1178,8 @@ class ADN_MN extends ADN {
 				response = new Response(ResponseCode.DELETED);
 				response.setPayload("OK");
 			} else {
-				User user = userMap.get(id);
+//				User user = userMap.get(id);
+				Tag user = userMap.get(id);
 				// user removal (id=<ID>)
 				outStream.out2("detected user removal");
 				if (user==null) {
@@ -1161,6 +1190,7 @@ class ADN_MN extends ADN {
 					return;
 				}
 				outStream.out1("Handling removal of user \"" + id + "\"", i);
+				user.active = false;
 				try {
 					subscriber.remove(id,Node.USER,i);
 				} catch (URISyntaxException | StateCreationException e) {
@@ -1171,7 +1201,6 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				user.active = false;
 				String[] uri_ = new String[] {cseBaseName, "state", "userMap", id};
 				CoapResponse response_ = null;
 				cseClient.stepCount();
@@ -1265,14 +1294,14 @@ class ADN_MN extends ADN {
 					if (!isRecognizedLabel(label0,tag0)) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
-						outStream.out("Label \"" + label0 + "\" is not a valid label for \"" + tag0.id + "\"", i);
+						outStream.out("Label \"" + label0 + "\" is not a valid label for \"" + serial0 + "\"", i);
 						i++;
 						return;
 					}
 					if (!isRecognizedLabel(label1,tag1)) {
 						response = new Response(ResponseCode.BAD_REQUEST);
 						exchange.respond(response);
-						outStream.out("Label \"" + label1 + "\" is not a valid label for \"" + tag1.id + "\"", i);
+						outStream.out("Label \"" + label1 + "\" is not a valid label for \"" + serial1 + "\"", i);
 						i++;
 						return;
 					}
@@ -1302,40 +1331,50 @@ class ADN_MN extends ADN {
 					}
 					outStream.out1("Handling removal of node with serial \"" + serial0 + "\"", i);
 					CoapResponse response_ = null;
-					switch (tag0.node) {
-						case SENSOR:
-							try {
-								subscriber.remove(tag0.id,Node.SENSOR,i);
-							} catch (URISyntaxException | StateCreationException e) {
-								errStream.out(e,i,Severity.HIGH);
-								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-								exchange.respond(response);
-								outStream.out2("failed");
-								i++;
-								return;
-							}
-							break;
-						case ACTUATOR:
-							try {
-								subscriber.remove(tag0.id,Node.ACTUATOR,i);
-							} catch (URISyntaxException | StateCreationException e) {
-								errStream.out(e,i,Severity.HIGH);
-								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-								exchange.respond(response);
-								outStream.out2("failed");
-								i++;
-								return;
-							}
-							break;
-						case USER:
-							errStream.out("Unexpected error",i,Severity.MEDIUM);
-							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
-							exchange.respond(response);
-							outStream.out2("failed");
-							i++;
-							return;
-					}
 					tag0.active = false;
+//					switch (tag0.node) {
+//						case SENSOR:
+//							try {
+//								subscriber.remove(tag0.id,Node.SENSOR,i);
+//							} catch (URISyntaxException | StateCreationException e) {
+//								errStream.out(e,i,Severity.HIGH);
+//								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//								exchange.respond(response);
+//								outStream.out2("failed");
+//								i++;
+//								return;
+//							}
+//							break;
+//						case ACTUATOR:
+//							try {
+//								subscriber.remove(tag0.id,Node.ACTUATOR,i);
+//							} catch (URISyntaxException | StateCreationException e) {
+//								errStream.out(e,i,Severity.HIGH);
+//								response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//								exchange.respond(response);
+//								outStream.out2("failed");
+//								i++;
+//								return;
+//							}
+//							break;
+//						case USER:
+//							errStream.out("Unexpected error",i,Severity.MEDIUM);
+//							response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+//							exchange.respond(response);
+//							outStream.out2("failed");
+//							i++;
+//							return;
+//					}
+					try {
+						subscriber.remove(tag0.id,tag0.node,i);
+					} catch (URISyntaxException | StateCreationException e) {
+						errStream.out(e,i,Severity.HIGH);
+						response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+						exchange.respond(response);
+						outStream.out2("failed");
+						i++;
+						return;
+					}
 					if (tag0.node==Node.SENSOR)
 						tracker.remove(tag0.id);
 					String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial0};
@@ -1381,8 +1420,7 @@ class ADN_MN extends ADN {
 		i++;
 	}
 
-	private CoapResponse forwardNotification(String id, String address, String content) throws URISyntaxException {
-		outStream.out1_2("forwarding notification to \"" + id + "\"");
+	private CoapResponse forwardNotification(String id, String address, String content, int i) throws URISyntaxException {
 		notificationClient.stepCount();
 		notificationClient.connect(address,false);
 		Request request = new Request(Code.PUT);
@@ -1433,31 +1471,31 @@ class ADN_MN extends ADN {
 		return Constants.protocol + "[" + Constants.networkAddress + "::" + address + "]:" + Constants.stdActuatorServerPort + "/" + Constants.context;
 	}
 	
-	private class User implements JSONSerializable {
-
-		String address;
-
-		private String id;
-		private String cseBaseName;
-
-		boolean active;
-
-		User(String id, String address, String cseBaseName) {
-			this.id = id;
-			this.address = address;
-			this.active = true;
-			this.cseBaseName = cseBaseName;
-		}
-
-		public JSONObject toJSON() {
-			JSONObject obj = new JSONObject();
-			obj.put("id",id);
-			obj.put("address",address);
-			obj.put("mn",cseBaseName);
-			obj.put("active",active);
-			return obj;
-		}
-
-	}
+//	private class User implements JSONSerializable {
+//
+//		String address;
+//
+//		private String id;
+//		private String cseBaseName;
+//
+//		boolean active;
+//
+//		User(String id, String address, String cseBaseName) {
+//			this.id = id;
+//			this.address = address;
+//			this.active = true;
+//			this.cseBaseName = cseBaseName;
+//		}
+//
+//		public JSONObject toJSON() {
+//			JSONObject obj = new JSONObject();
+//			obj.put("id",id);
+//			obj.put("address",address);
+//			obj.put("mn",cseBaseName);
+//			obj.put("active",active);
+//			return obj;
+//		}
+//
+//	}
 
 }

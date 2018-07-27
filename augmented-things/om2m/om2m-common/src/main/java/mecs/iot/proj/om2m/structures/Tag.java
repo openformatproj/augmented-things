@@ -10,13 +10,13 @@ import org.json.JSONObject;
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoRuleException;
 
-public class Tag implements JSONSerializable {
+public class Tag implements JSONSerializable, Cloneable {
 	
 	public Node node;
 	public String id;
+	public String type;
 	public String serial;
 	public String address;
-	public String type;
 	public String[] attributes;
 	
 	private String cseBaseName;
@@ -25,6 +25,8 @@ public class Tag implements JSONSerializable {
 	
 	public HashMap<String,String> ruleMap;																		// label -> rule
 	
+	// Used inside endpoint nodes only
+	
 	public Tag (String id, String serial, String type, String[] attributes) {
 		this.node = Node.SENSOR;
 		this.id = id;
@@ -32,7 +34,7 @@ public class Tag implements JSONSerializable {
 		this.address = null;
 		this.type = type;
 		this.attributes = attributes;
-		ruleMap = null;
+		this.ruleMap = null;
 	}
 	
 	public Tag (String id, String serial, String[] attributes) {
@@ -42,45 +44,74 @@ public class Tag implements JSONSerializable {
 		this.address = null;
 		this.type = "act";
 		this.attributes = attributes;
-		ruleMap = null;
+		this.ruleMap = null;
 	}
+	
+	// Used inside ADN only
 	
 	public Tag (Node node, String id, String description, String[] attributes, String cseBaseName) {
 		this.node = node;
-		this.id = id;
 		this.serial = null;
 		switch (node) {
 			case SENSOR:
+				this.id = id;
 				this.address = null;
 				this.type = description;
 				this.attributes = attributes;
-				ruleMap = new HashMap<String,String>();
+				this.ruleMap = new HashMap<String,String>();
 				for (int i=0; i<attributes.length; i++) {
 					String[] splits;
 					splits = attributes[i].split(": ");
 					if (splits.length>1)
-						ruleMap.put(splits[1],splits[0]);
+						this.ruleMap.put(splits[1],splits[0]);
 					else
-						ruleMap.put(splits[0],"");
+						this.ruleMap.put(splits[0],"");
 					// TODO: syntax check on labels and rules
 				}
 				break;
 			case ACTUATOR:
+				this.id = id;
 				this.address = description;
 				this.type = "act";
 				this.attributes = attributes;
-				ruleMap = new HashMap<String,String>();
-				for (int i=0; i<attributes.length; i++)
-					ruleMap.put(attributes[i],"");
+//				ruleMap = new HashMap<String,String>();
+//				for (int i=0; i<attributes.length; i++)
+//					ruleMap.put(attributes[i],"");
+				this.ruleMap = null;
 				// TODO: syntax check on labels
 				break;
 			case USER:
+				this.id = null;
+				this.address = description;
+				this.type = null;
+				this.attributes = null;
+				this.ruleMap = null;
 				break;
 		}
 		this.cseBaseName = cseBaseName;
 		this.active = true;
 	}
 	
+	public Tag (String address, String cseBaseName) {
+		this.node = Node.USER;
+		this.id = null;
+		this.serial = null;
+		this.address = address;
+		this.type = null;
+		this.attributes = null;
+		this.ruleMap = null;
+		this.cseBaseName = cseBaseName;
+		this.active = true;
+	}
+	
+	private Tag(Node node, String id, String type, String address, String[] attributes) {
+		this.node = node;
+		this.id = id;
+		this.type = type;
+		this.address = address;
+		this.attributes = attributes;
+	}
+
 	// TODO: generalize for rules missing middle terms (see docs)
 	public static NumericRule parseNumericRule(String rule) throws NoRuleException, InvalidRuleException {
 		if (rule.equals("")) {
@@ -213,10 +244,16 @@ public class Tag implements JSONSerializable {
 		return str;
 	}
 	
+	@Override
+	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
-		obj.put("id",id);
-		obj.put("type",type);
+		if (id!=null)
+			obj.put("id",id);
+		if (type!=null)
+			obj.put("type",type);
+		if (address!=null)
+			obj.put("address",address);
 		for (int i=0; i<attributes.length; i++) {
 			obj.append("attributes",attributes[i]);
 		}
@@ -224,6 +261,15 @@ public class Tag implements JSONSerializable {
 			obj.put("mn",cseBaseName);
 		obj.put("active",active);
 		return obj;
+	}
+	
+	@Override
+	
+	public Object clone() {
+		String[] attributes_ = new String[attributes.length];
+		for (int i=0; i<attributes.length; i++)
+			attributes_[i] = attributes[i];
+		return new Tag(node,id,type,address,attributes_);
 	}
 	
 	private enum Sign {
