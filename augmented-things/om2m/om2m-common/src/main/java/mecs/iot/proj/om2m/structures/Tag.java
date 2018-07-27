@@ -239,8 +239,10 @@ public class Tag implements JSONSerializable, Cloneable {
 			obj.put("type",type);
 		if (address!=null)
 			obj.put("address",address);
-		for (int i=0; i<attributes.length; i++) {
-			obj.append("attributes",attributes[i]);
+		if (attributes!=null) {
+			for (int i=0; i<attributes.length; i++) {
+				obj.append("attributes",attributes[i]);
+			}
 		}
 		obj.put("active",active);
 		return obj;
