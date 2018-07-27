@@ -712,8 +712,12 @@ class ADN_MN extends ADN {
 									receiver = subs.get(j).receiver;
 									switch (receiver.node) {
 										case SENSOR:
-											// TODO: general error here
-											break;
+											errStream.out("Unexpected error", i, Severity.MEDIUM);
+											response = new Response(ResponseCode.INTERNAL_SERVER_ERROR);
+											exchange.respond(response);
+											outStream.out2("failed");
+											i++;
+											return;
 										case ACTUATOR:
 											Object value;
 											try {
