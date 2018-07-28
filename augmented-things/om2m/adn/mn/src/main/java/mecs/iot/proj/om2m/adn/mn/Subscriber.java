@@ -72,7 +72,7 @@ class Subscriber {
 		Subscription ref = new Subscription(senderTag,receiverTag);
 		if (subscriptionMap.containsKey(senderTag.id)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
-			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
+			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE in case of failure
 			subs_.add(ref);
 			oM2Mput(senderTag.id,subs_,false,k);
 			debugStream.out("Creating subscription on \"" + senderTag.id + "\"", k);
@@ -90,7 +90,7 @@ class Subscriber {
 		Subscription ref = new Subscription(senderTag,event,rule,receiverTag,action);
 		if (subscriptionMap.containsKey(senderTag.id)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
-			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE
+			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE in case of failure
 			subs_.add(ref);
 			oM2Mput(senderTag.id,subs_,false,k);
 			debugStream.out("Creating subscription on \"" + senderTag.id + "\"", k);
