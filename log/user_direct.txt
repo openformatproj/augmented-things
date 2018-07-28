@@ -19,44 +19,51 @@ user/remote@ALESSANDRO-K7NR	[DEBUG]	0) Sent POST request to "coap://192.168.0.10
 user/remote@ALESSANDRO-K7NR	[INFO]	0) ...done
 user/remote@ALESSANDRO-K7NR	[INFO]	1) Waiting for notifications...
 user/console@ALESSANDRO-K7NR	[INFO]	0) Starting console
-user/console@ALESSANDRO-K7NR	[DEBUG]	1) Sent attributes request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	1) Sent GET request to "coap://192.168.0.105:5686/augmented-things?mode=1&ser=0x0001"
+user/console@ALESSANDRO-K7NR	[DEBUG]	1) Sent reading request to "coap://192.168.0.105:5686/augmented-things"
+user/console@ALESSANDRO-K7NR	[DEBUG]	1) Sent GET request to "coap://192.168.0.105:5686/augmented-things?mode=2&ser=0x0001"
                             	       	   with payload <>
-user/console@ALESSANDRO-K7NR	[DEBUG]	2) Sent attributes request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	2) Sent GET request to "coap://192.168.0.105:5686/augmented-things?mode=1&ser=0x0002"
+user/console@ALESSANDRO-K7NR	[DEBUG]	2) Sent lookout request to "coap://192.168.0.105:5686/augmented-things"
+user/console@ALESSANDRO-K7NR	[DEBUG]	2) Sent POST request to "coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR&ser=0x0001"
                             	       	   with payload <>
-user/console@ALESSANDRO-K7NR	[DEBUG]	3) Sent reading request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	3) Sent GET request to "coap://192.168.0.105:5686/augmented-things?mode=2&ser=0x0001"
+user/ATserver@ALESSANDRO-K7NR	[INFO]	1) Handling notification "sensor.alessandro: con=37,066 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	2) Handling notification "sensor.alessandro: con=32,889 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	3) Handling notification "sensor.alessandro: con=34,930 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	4) Handling notification "sensor.alessandro: con=39,156 °C"... done
+user/console@ALESSANDRO-K7NR	[DEBUG]	3) Sent attributes request to "coap://192.168.0.105:5686/augmented-things"
+user/console@ALESSANDRO-K7NR	[DEBUG]	3) Sent GET request to "coap://192.168.0.105:5686/augmented-things?mode=1&ser=0x0002"
                             	       	   with payload <>
-user/console@ALESSANDRO-K7NR	[DEBUG]	4) Sent lookout request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	4) Sent POST request to "coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR&ser=0x0001"
+user/ATserver@ALESSANDRO-K7NR	[INFO]	5) Handling notification "sensor.alessandro: con=36,826 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	6) Handling notification "sensor.alessandro: con=34,646 °C"... done
+user/console@ALESSANDRO-K7NR	[DEBUG]	4) Sent write request to "coap://192.168.0.105:5686/augmented-things"
+user/console@ALESSANDRO-K7NR	[DEBUG]	4) Sent PUT request to "coap://192.168.0.105:5686/augmented-things?ser=0x0002&lab=action1"
                             	       	   with payload <>
-user/ATserver@ALESSANDRO-K7NR	[INFO]	1) Handling notification "sensor.alessandro: con=36,321 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	2) Handling notification "sensor.alessandro: con=36,403 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	3) Handling notification "sensor.alessandro: con=37,361 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	4) Handling notification "sensor.alessandro: con=36,479 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	5) Handling notification "sensor.alessandro: con=39,053 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	6) Handling notification "sensor.alessandro: con=36,926 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	7) Handling notification "sensor.alessandro: con=35,720 °C"... done
-user/console@ALESSANDRO-K7NR	[DEBUG]	5) Sent link request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	5) Sent POST request to "coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action1&id=user.ALESSANDRO-K7NR"
+user/ATserver@ALESSANDRO-K7NR	[INFO]	7) Handling notification "sensor.alessandro: con=32,442 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	8) Handling notification "sensor.alessandro: con=35,190 °C"... done
+user/console@ALESSANDRO-K7NR	[DEBUG]	5) Sent attributes request to "coap://192.168.0.105:5686/augmented-things"
+user/console@ALESSANDRO-K7NR	[DEBUG]	5) Sent GET request to "coap://192.168.0.105:5686/augmented-things?mode=1&ser=0x0001"
                             	       	   with payload <>
-user/ATserver@ALESSANDRO-K7NR	[INFO]	8) Handling notification "sensor.alessandro: con=36,500 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	9) Handling notification "sensor.alessandro: con=37,574 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	10) Handling notification "sensor.alessandro: con=34,743 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	11) Handling notification "sensor.alessandro: con=35,294 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	12) Handling notification "sensor.alessandro: con=38,853 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	13) Handling notification "sensor.alessandro: con=37,862 °C"... done
-user/console@ALESSANDRO-K7NR	[DEBUG]	6) Sent write request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	6) Sent PUT request to "coap://192.168.0.105:5686/augmented-things?ser=0x0002&lab=action2"
+user/ATserver@ALESSANDRO-K7NR	[INFO]	9) Handling notification "sensor.alessandro: con=36,615 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	10) Handling notification "sensor.alessandro: con=34,417 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	11) Handling notification "sensor.alessandro: con=34,479 °C"... done
+user/console@ALESSANDRO-K7NR	[DEBUG]	6) Sent link request to "coap://192.168.0.105:5686/augmented-things"
+user/console@ALESSANDRO-K7NR	[DEBUG]	6) Sent POST request to "coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action2&id=user.ALESSANDRO-K7NR"
                             	       	   with payload <>
-user/ATserver@ALESSANDRO-K7NR	[INFO]	14) Handling notification "sensor.alessandro: con=33,304 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	15) Handling notification "sensor.alessandro: con=36,749 °C"... done
-user/ATserver@ALESSANDRO-K7NR	[INFO]	16) Handling notification "sensor.alessandro: con=35,891 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	12) Handling notification "sensor.alessandro: con=38,021 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	13) Handling notification "sensor.alessandro: con=35,589 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	14) Handling notification "sensor.alessandro: con=34,273 °C"... done
 user/console@ALESSANDRO-K7NR	[DEBUG]	7) Sent link removal request to "coap://192.168.0.105:5686/augmented-things"
-user/console@ALESSANDRO-K7NR	[DEBUG]	7) Sent DELETE request to "coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action1&id=user.ALESSANDRO-K7NR"
+user/console@ALESSANDRO-K7NR	[DEBUG]	7) Sent DELETE request to "coap://192.168.0.105:5686/augmented-things?ser=0x0001&ser=0x0002&lab=event&lab=action2&id=user.ALESSANDRO-K7NR"
                             	       	   with payload <>
-user/ATserver@ALESSANDRO-K7NR	[INFO]	17) Handling notification "sensor.alessandro: con=36,238 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	15) Handling notification "sensor.alessandro: con=32,861 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	16) Handling notification "sensor.alessandro: con=36,506 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	17) Handling notification "sensor.alessandro: con=36,412 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	18) Handling notification "sensor.alessandro: con=35,631 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	19) Handling notification "sensor.alessandro: con=35,160 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	20) Handling notification "sensor.alessandro: con=33,245 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	21) Handling notification "sensor.alessandro: con=38,048 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	22) Handling notification "sensor.alessandro: con=33,553 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	23) Handling notification "sensor.alessandro: con=37,174 °C"... done
+user/ATserver@ALESSANDRO-K7NR	[INFO]	24) Handling notification "sensor.alessandro: con=34,887 °C"... done
 user/remote@ALESSANDRO-K7NR	[INFO]	1) ...received: "terminated" (by "user/console@ALESSANDRO-K7NR")
 user/remote@ALESSANDRO-K7NR	[DEBUG]	2) Sent deletion request to "coap://192.168.0.105:5686/augmented-things"
 user/remote@ALESSANDRO-K7NR	[DEBUG]	2) Sent asynchronous DELETE request to "coap://192.168.0.105:5686/augmented-things?id=user.ALESSANDRO-K7NR"
