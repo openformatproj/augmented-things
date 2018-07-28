@@ -108,7 +108,19 @@ public class ADN extends CoapResource {
 	}
 	
 	protected boolean isRecognizedLabel(String label, Tag tag) {
-		return tag.ruleMap.containsKey(label);
+		switch(tag.node) {
+			case SENSOR:
+				return tag.ruleMap.containsKey(label);
+			case ACTUATOR:
+				String[] attributes = tag.attributes;
+				for (int i=0; i<attributes.length; i++) {
+					if (attributes[i].equals(label))
+						return true;
+				}
+				return false;
+			default:
+				return false;
+		}
 	}
 
 }
