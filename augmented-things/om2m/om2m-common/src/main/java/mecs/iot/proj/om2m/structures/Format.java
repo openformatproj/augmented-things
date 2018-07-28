@@ -1,10 +1,10 @@
 package mecs.iot.proj.om2m.structures;
 
+import mecs.iot.proj.om2m.exceptions.NoTypeException;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
-
-import mecs.iot.proj.om2m.exceptions.NoTypeException;
 
 public class Format {
 	
@@ -88,6 +88,22 @@ public class Format {
 	
 	public static boolean contains(String type) {
 		return formatMap.containsKey(type);
+	}
+	
+	public static String normalizeName(String name) {
+		return name.replace('@','.');
+	}
+	
+	public static String joinIdHost(String id, String host) {
+		return id + "@" + host;
+	}
+	
+	public static String getKeyFromAttribute(String attr) {
+		return attr.split("cnt-")[1];
+	}
+	
+	public static String getPathFromKey(String key) {
+		return "cnt-" + key;
 	}
 	
 }

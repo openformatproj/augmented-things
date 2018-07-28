@@ -1,11 +1,5 @@
 package mecs.iot.proj.om2m.adn.mn;
 
-import java.net.URISyntaxException;
-import java.util.HashMap;
-
-import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.mn.exceptions.StateCreationException;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
@@ -13,6 +7,12 @@ import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Tag;
+
+import java.net.URISyntaxException;
+import java.util.HashMap;
+
+import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 class PeriodicityTracker extends Thread {
 	
@@ -56,7 +56,6 @@ class PeriodicityTracker extends Thread {
 	}
 	
 	@Override
-	
 	public void run() {
 		// TODO
 	}

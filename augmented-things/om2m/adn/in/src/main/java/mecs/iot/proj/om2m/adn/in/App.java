@@ -1,12 +1,12 @@
 package mecs.iot.proj.om2m.adn.in;
 
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 
 import java.net.URISyntaxException;
 
@@ -19,8 +19,8 @@ public class App
 	final private static String host = Constants.computerName();
 	final private static boolean debug = true;
 	
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
-	final private static OutStream outStream = new OutStream(Services.joinIdHost(id+"/main",host));
+	final private static ErrStream errStream = new ErrStream(Format.joinIdHost(id+"/main",host));
+	final private static OutStream outStream = new OutStream(Format.joinIdHost(id+"/main",host));
 	
     public static void main( String[] args )
     {

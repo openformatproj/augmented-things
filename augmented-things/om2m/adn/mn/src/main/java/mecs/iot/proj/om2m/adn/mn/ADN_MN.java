@@ -1,5 +1,18 @@
 package mecs.iot.proj.om2m.adn.mn;
 
+import mecs.iot.proj.om2m.Client;
+import mecs.iot.proj.om2m.adn.ADN;
+import mecs.iot.proj.om2m.adn.mn.exceptions.*;
+import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.om2m.dashboard.Console;
+import mecs.iot.proj.om2m.dashboard.Severity;
+import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
+import mecs.iot.proj.om2m.exceptions.NoTypeException;
+import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
+import mecs.iot.proj.om2m.structures.Node;
+import mecs.iot.proj.om2m.structures.Tag;
+
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -14,19 +27,6 @@ import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONException;
 
-import mecs.iot.proj.om2m.Client;
-import mecs.iot.proj.om2m.adn.ADN;
-import mecs.iot.proj.om2m.adn.mn.exceptions.*;
-import mecs.iot.proj.om2m.Services;
-import mecs.iot.proj.om2m.dashboard.Console;
-import mecs.iot.proj.om2m.dashboard.Severity;
-import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
-import mecs.iot.proj.om2m.exceptions.NoTypeException;
-import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Tag;
-
 class ADN_MN extends ADN {
 
 	Client notificationClient;
@@ -40,8 +40,8 @@ class ADN_MN extends ADN {
 
 	ADN_MN(String id, String host, boolean debug, Console console) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(id,host,debug,console);
-		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.mnCSERoot(id), debug);
-		notificationClient = new Client(Services.joinIdHost(id+"/ATclient",host),debug);
+		cseClient = new Client(Format.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.mnCSERoot(id), debug);
+		notificationClient = new Client(Format.joinIdHost(id+"/ATclient",host),debug);
 		tagMap = new HashMap<String,Tag>();
 		userMap = new HashMap<String,Tag>();
 		if (false) {
@@ -136,13 +136,12 @@ class ADN_MN extends ADN {
 		outStream.out1("Registering to IN",i);
 		register(id,host,debug);
 		outStream.out2("done");
-		tracker = new PeriodicityTracker(Services.joinIdHost(cseBaseName+"/tracker",host),cseClient,subscriber,cseBaseName);
+		tracker = new PeriodicityTracker(Format.joinIdHost(cseBaseName+"/tracker",host),cseClient,subscriber,cseBaseName);
 		tracker.start();
 		i++;
 	}
 
 	@Override
-
 	synchronized public void handleGET(CoapExchange exchange) {
 		outStream.out1("Received GET request", i);
 		Response response = null;
@@ -296,7 +295,6 @@ class ADN_MN extends ADN {
 	}
 
 	@Override
-
 	synchronized public void handlePOST(CoapExchange exchange) {
 		outStream.out1("Received POST request", i);
 		Response response = null;
@@ -1024,7 +1022,6 @@ class ADN_MN extends ADN {
 	}
 
 	@Override
-
 	synchronized public void handlePUT(CoapExchange exchange) {
 		outStream.out1("Received PUT request", i);
 		Response response = null;
@@ -1120,7 +1117,6 @@ class ADN_MN extends ADN {
 	}
 
 	@Override
-
 	synchronized public void handleDELETE(CoapExchange exchange) {
 		outStream.out1("Received DELETE request", i);
 		Response response = null;
@@ -1401,11 +1397,11 @@ class ADN_MN extends ADN {
 	}
 	
 	private void register(String id, String host, boolean debug) throws URISyntaxException, RegistrationException {
-		Client tempClient = new Client(Services.joinIdHost(id+"/TEMPclient",host), Constants.protocol + Constants.inAddressADN(debugStream,i) + Constants.inADNRoot, debug);
+		Client tempClient = new Client(Format.joinIdHost(id+"/TEMPclient",host), Constants.protocol + Constants.inAddressADN(debugStream,i) + Constants.inADNRoot, debug);
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
-		request.getOptions().addUriQuery("id" + "=" + Services.normalizeName(cseBaseName));
+		request.getOptions().addUriQuery("id" + "=" + Format.normalizeName(cseBaseName));
 		CoapResponse response = tempClient.send(request, Code.POST);
 		if (response==null) {
 			errStream.out("Unable to register to IN at address \"" + tempClient.services.uri() + "\", timeout expired", i, Severity.HIGH);

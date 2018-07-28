@@ -1,13 +1,13 @@
 package mecs.iot.proj.om2m.asn.actuator;
 
+import mecs.iot.proj.om2m.asn.Action;
+import mecs.iot.proj.om2m.asn.Unit;
+import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
+
 import java.util.HashMap;
 
 import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-
-import mecs.iot.proj.om2m.asn.Action;
-import mecs.iot.proj.om2m.asn.Unit;
-import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
 
 class ActuationUnit implements Unit {
 	
@@ -26,13 +26,11 @@ class ActuationUnit implements Unit {
 	}
 	
 	@Override
-	
 	public void sendAck(String str) {
 		;
 	}
 	
 	@Override
-	
 	public Response sendContent(String str) {
 		if (actionMap.containsKey(str)) {
 			actionMap.get(str).action();
@@ -43,7 +41,6 @@ class ActuationUnit implements Unit {
 	}
 	
 	@Override
-	
 	public String getName() {
 		return name;
 	}

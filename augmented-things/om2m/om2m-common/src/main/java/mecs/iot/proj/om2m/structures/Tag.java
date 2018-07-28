@@ -1,14 +1,14 @@
 package mecs.iot.proj.om2m.structures;
 
+import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
+import mecs.iot.proj.om2m.exceptions.NoRuleException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.json.JSONObject;
-
-import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
-import mecs.iot.proj.om2m.exceptions.NoRuleException;
 
 public class Tag implements JSONSerializable, Cloneable {
 	
@@ -220,7 +220,6 @@ public class Tag implements JSONSerializable, Cloneable {
 	}
 	
 	@Override
-	
 	public String toString() {
 		String str = "id=" + id + ", type=" + type;
 		for (int i=0; i<attributes.length; i++) {
@@ -230,7 +229,6 @@ public class Tag implements JSONSerializable, Cloneable {
 	}
 	
 	@Override
-	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("node",node);
@@ -257,7 +255,6 @@ public class Tag implements JSONSerializable, Cloneable {
 	}
 	
 	@Override
-	
 	public Object clone() {
 		String[] attributes_ = null;
 		if (attributes!=null) {

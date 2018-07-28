@@ -1,14 +1,15 @@
 package mecs.iot.proj.om2m.adn.in;
 
+import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.om2m.adn.in.exceptions.NotFoundMNException;
+import mecs.iot.proj.om2m.dashboard.DebugStream;
+import mecs.iot.proj.om2m.structures.Format;
+import mecs.iot.proj.om2m.structures.JSONSerializable;
+
 import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import mecs.iot.proj.om2m.Services;
-import mecs.iot.proj.om2m.adn.in.exceptions.NotFoundMNException;
-import mecs.iot.proj.om2m.dashboard.DebugStream;
-import mecs.iot.proj.om2m.structures.JSONSerializable;
 
 class Cloud {
 	
@@ -100,7 +101,7 @@ class Cloud {
 	}
 	
 	String getJSONSubscriptions(String mn, String id) {
-		String id_ = Services.normalizeName(id);
+		String id_ = Format.normalizeName(id);
 		if (mnMap.containsKey(mn)) {
 			if (mnMap.get(mn).subscriptionMap.containsKey(id_)) {
 				JSON sub = mnMap.get(mn).subscriptionMap.get(id_);
@@ -155,7 +156,6 @@ class Cloud {
 		}
 
 		@Override
-		
 		public JSONObject toJSON() {
 			JSONObject obj = new JSONObject();
 			obj.put("mn",id);
@@ -174,7 +174,6 @@ class Cloud {
 		}
 		
 		@Override
-		
 		public JSONObject toJSON() {
 			return new JSONObject(content);
 		}

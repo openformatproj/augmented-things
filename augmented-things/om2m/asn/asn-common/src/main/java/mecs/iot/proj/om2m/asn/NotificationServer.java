@@ -1,14 +1,14 @@
 package mecs.iot.proj.om2m.asn;
 
-import org.eclipse.californium.core.CoapResource;
-import org.eclipse.californium.core.coap.Response;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-import org.eclipse.californium.core.server.resources.CoapExchange;
-
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
+
+import org.eclipse.californium.core.CoapResource;
+import org.eclipse.californium.core.coap.Response;
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.eclipse.californium.core.server.resources.CoapExchange;
 
 class NotificationServer extends CoapResource {
 	
@@ -30,7 +30,6 @@ class NotificationServer extends CoapResource {
 	}
 	
 	@Override
-	
 	synchronized public void handlePUT(CoapExchange exchange) {
 		Response response = null;
 		String str = exchange.getRequestText();

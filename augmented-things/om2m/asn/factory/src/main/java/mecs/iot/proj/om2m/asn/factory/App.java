@@ -1,15 +1,15 @@
 package mecs.iot.proj.om2m.asn.factory;
 
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.asn.factory.dashboard.Viewer;
+
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class App
 {
@@ -18,8 +18,8 @@ public class App
 	final private static String host = Constants.computerName();
 	final private static boolean debug = true;
 	
-	final private static DebugStream debugStream = new DebugStream(Services.joinIdHost(id+"/main",host),debug);
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
+	final private static DebugStream debugStream = new DebugStream(Format.joinIdHost(id+"/main",host),debug);
+	final private static ErrStream errStream = new ErrStream(Format.joinIdHost(id+"/main",host));
 	
 	final private static String context = Constants.context;
 	final private static String address = Constants.protocol + Constants.inAddressASN(debugStream,0) + Constants.inADNRoot;

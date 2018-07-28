@@ -1,10 +1,10 @@
 package mecs.iot.proj.om2m.dashboard;
 
+import mecs.iot.proj.om2m.structures.Format;
+import mecs.iot.proj.Interface;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import mecs.iot.proj.om2m.Services;
-import mecs.iot.proj.Interface;
 
 public class Console extends Thread {
 
@@ -17,7 +17,7 @@ public class Console extends Thread {
 	private int i;
 	
 	public Console(String id, String host, boolean enabled, boolean debug) {
-		super(Services.joinIdHost(id+"/console",host));
+		super(Format.joinIdHost(id+"/console",host));
 		this.enabled = enabled;
 		if (enabled) {
 			interf = new Shell(this);
@@ -25,13 +25,13 @@ public class Console extends Thread {
 		// scan = new Scanner(System.in);
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
-		outStream = new OutStream(Services.joinIdHost(id+"/console",host));
-		debugStream = new DebugStream(Services.joinIdHost(id+"/console",host),debug);
+		outStream = new OutStream(Format.joinIdHost(id+"/console",host));
+		debugStream = new DebugStream(Format.joinIdHost(id+"/console",host),debug);
 		i = 0;
 	}
 	
 	public Console(String id, String host, Interface interf, boolean debug) {
-		super(Services.joinIdHost(id+"/console",host));
+		super(Format.joinIdHost(id+"/console",host));
 		// scan = new Scanner(System.in);
 		if (interf!=null) {
 			this.enabled = true;
@@ -41,8 +41,8 @@ public class Console extends Thread {
 		}
 		executing = true;
 		commandMap = new HashMap<String,CommandContainer>();
-		outStream = new OutStream(Services.joinIdHost(id+"/console",host));
-		debugStream = new DebugStream(Services.joinIdHost(id+"/console",host),debug);
+		outStream = new OutStream(Format.joinIdHost(id+"/console",host));
+		debugStream = new DebugStream(Format.joinIdHost(id+"/console",host),debug);
 		i = 0;
 	}
 	
@@ -64,7 +64,6 @@ public class Console extends Thread {
 	}
 	
 	@Override
-	
 	public void run() {
 		outStream.out("Starting console", i);
 		if (enabled) {

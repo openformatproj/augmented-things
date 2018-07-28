@@ -1,12 +1,5 @@
 package mecs.iot.proj.om2m.adn.mn;
 
-import java.util.HashMap;
-
-import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.adn.mn.exceptions.StateCreationException;
@@ -19,8 +12,15 @@ import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.Tag;
 
-import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.ArrayList;
+
+import java.net.URISyntaxException;
+
+import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 class Subscriber {
 	

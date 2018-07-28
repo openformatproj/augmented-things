@@ -13,7 +13,6 @@ public class NumericRule {
 	}
 	
 	@Override
-	
 	public String toString() {
 		String str = "Coefficients: ";
 		for (int i=0; i<coefficients.length; i++) {

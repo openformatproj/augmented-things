@@ -35,7 +35,6 @@ public class RemoteInterface extends Client {
 	}
 	
 	@Override
-	
 	public void run() {
 		outStream.out("Starting remote interface", i);
 		outStream.out1("Locating node", i);

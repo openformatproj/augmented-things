@@ -1,12 +1,12 @@
 package mecs.iot.proj.om2m.adn.mn;
 
-import org.json.JSONObject;
-
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
 import mecs.iot.proj.om2m.structures.Tag;
+
+import org.json.JSONObject;
 
 class Subscription implements JSONSerializable, Cloneable {
 	
@@ -54,7 +54,6 @@ class Subscription implements JSONSerializable, Cloneable {
 	}
 	
 	@Override
-	
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
 		obj.put("event",event);
@@ -64,7 +63,6 @@ class Subscription implements JSONSerializable, Cloneable {
 	}
 	
 	@Override
-	
 	public Object clone() {
 		Tag sender = (Tag)this.sender.clone();
 		Tag receiver = (Tag)this.receiver.clone();

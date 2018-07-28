@@ -1,10 +1,10 @@
 package mecs.iot.proj.om2m.asn.user_direct;
 
 import mecs.iot.proj.om2m.asn.Client;
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 
 import java.net.URISyntaxException;
 
@@ -22,8 +22,8 @@ class RemoteInterface extends Client {
 	private boolean executing;
 
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
-		super(Services.joinIdHost(id+"/remote",host), uri, debug);
-		this.id = Services.joinIdHost(id,host);
+		super(Format.joinIdHost(id+"/remote",host), uri, debug);
+		this.id = Format.joinIdHost(id,host);
 		this.address = Constants.protocol + ip + ":" + Integer.toString(port) + "/" + context;
 		this.console = console;
 		CommandList list = new CommandList(this,console,this.id);
@@ -31,12 +31,11 @@ class RemoteInterface extends Client {
 			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2],list.isJSON[i]);
 		}
 		executing = true;
-		ConsoleWrapper unit = new ConsoleWrapper(Services.joinIdHost(id+"/unit",host),console);
-		createNotificationServer(Services.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
+		ConsoleWrapper unit = new ConsoleWrapper(Format.joinIdHost(id+"/unit",host),console);
+		createNotificationServer(Format.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
 	}
 	
 	@Override
-	
 	public void run() {
 		outStream.out("Starting remote interface", i);
 		boolean foundSerial = false;
@@ -101,7 +100,7 @@ class RemoteInterface extends Client {
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;
 		}
-		deleteUser(Services.normalizeName(id));
+		deleteUser(Format.normalizeName(id));
 		destroy();
 		outStream.out("Terminating remote interface", i);
 	}

@@ -1,17 +1,17 @@
 package mecs.iot.proj.om2m.adn.in;
 
-import java.net.URISyntaxException;
-
-import org.eclipse.californium.core.CoapServer;
-
 import mecs.iot.proj.Interface;
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
+
+import java.net.URISyntaxException;
+
+import org.eclipse.californium.core.CoapServer;
 
 public class OM2MIndirectEngine {
 	
@@ -27,8 +27,8 @@ public class OM2MIndirectEngine {
 		final String host = Constants.computerName();
 		final boolean debug = true;
 		
-		errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
-		outStream = new OutStream(Services.joinIdHost(id+"/main",host));
+		errStream = new ErrStream(Format.joinIdHost(id+"/main",host));
+		outStream = new OutStream(Format.joinIdHost(id+"/main",host));
 		
     	final Console console = new Console(id,host,interf,debug);
 		try {

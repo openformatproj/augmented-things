@@ -1,10 +1,10 @@
 package mecs.iot.proj.om2m.asn.user_direct;
 
-import org.eclipse.californium.core.coap.Response;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-
 import mecs.iot.proj.om2m.asn.Unit;
 import mecs.iot.proj.om2m.dashboard.Console;
+
+import org.eclipse.californium.core.coap.Response;
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 class ConsoleWrapper implements Unit {
 	
@@ -17,13 +17,11 @@ class ConsoleWrapper implements Unit {
 	}
 	
 	@Override
-	
 	public void sendAck(String str) {
 		console.interf.out(str,false);
 	}
 	
 	@Override
-	
 	public Response sendContent(String str) {
 		if (str.contains("con=")) {
 			console.interf.outAsync(str,false);
@@ -34,7 +32,6 @@ class ConsoleWrapper implements Unit {
 	}
 	
 	@Override
-	
 	public String getName() {
 		return name;
 	}

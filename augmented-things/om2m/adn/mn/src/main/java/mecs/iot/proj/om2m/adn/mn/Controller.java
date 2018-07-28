@@ -33,7 +33,6 @@ class Controller implements Checker {
 	}
 	
 	@Override
-	
 	public void insert(Object value) {
 		insert((double)value);
 	}
@@ -50,7 +49,6 @@ class Controller implements Checker {
 	}
 	
 	@Override
-	
 	public boolean check() {
 		if (!noRule)
 			return trigger.state;

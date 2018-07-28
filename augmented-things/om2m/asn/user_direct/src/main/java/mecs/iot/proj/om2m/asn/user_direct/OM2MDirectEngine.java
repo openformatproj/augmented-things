@@ -1,15 +1,15 @@
 package mecs.iot.proj.om2m.asn.user_direct;
 
-import java.net.URISyntaxException;
-
 import mecs.iot.proj.Interface;
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
+
+import java.net.URISyntaxException;
 
 public class OM2MDirectEngine {
 	
@@ -21,8 +21,8 @@ public class OM2MDirectEngine {
 		final String host = Constants.computerName();
 		final boolean debug = true;
 		
-		final DebugStream debugStream = new DebugStream(Services.joinIdHost(id+"/main",host),debug);
-		final ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
+		final DebugStream debugStream = new DebugStream(Format.joinIdHost(id+"/main",host),debug);
+		final ErrStream errStream = new ErrStream(Format.joinIdHost(id+"/main",host));
 		
 		final String context = Constants.context;
 		final String address = Constants.protocol + Constants.inAddressASN(debugStream,0) + Constants.inADNRoot;

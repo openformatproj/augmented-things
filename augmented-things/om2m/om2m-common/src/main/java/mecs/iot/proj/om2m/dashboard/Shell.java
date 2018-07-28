@@ -1,7 +1,8 @@
 package mecs.iot.proj.om2m.dashboard;
 
-import java.awt.Color;
-import java.awt.Font;
+import mecs.iot.proj.om2m.Services;
+import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.Interface;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -10,9 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import mecs.iot.proj.om2m.Services;
-import mecs.iot.proj.om2m.structures.Constants;
-import mecs.iot.proj.Interface;
+import java.awt.Color;
+import java.awt.Font;
 
 class Shell implements Interface {
 	
@@ -101,19 +101,16 @@ class Shell implements Interface {
 	}
 	
 	@Override
-	
 	public String getSerial() {
 		return "0x0001";
 	}
 	
 	@Override
-	
 	public void start() {
 		frame.setVisible(true);
 	}
 	
 	@Override
-	
 	public synchronized String in() {
 		try {
 			wait();
@@ -124,7 +121,6 @@ class Shell implements Interface {
 	}
 	
 	@Override
-	
 	public void out(String str, boolean isJSON) {
 		if (isJSON)
 			out.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
@@ -133,7 +129,6 @@ class Shell implements Interface {
 	}
 	
 	@Override
-	
 	public void outAsync(String str, boolean isJSON) {
 		if (isJSON)
 			outAsync.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
@@ -142,7 +137,6 @@ class Shell implements Interface {
 	}
 	
 	@Override
-	
 	public void terminate() {
 		frame.setVisible(false);
 		frame.dispose();

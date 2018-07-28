@@ -15,49 +15,235 @@ import org.eclipse.californium.core.coap.Option;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.CoAP.Code;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/** A collection of oneM2M services.
+ * Static methods allow manipulation of JSON objects,
+ * while instance methods are meant to be used on a
+ * {@link mecs.iot.proj.om2m.Client Client} object (Client.services)
+ * 
+ * @author Alessandro Trifoglio
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
+*/
 public class Services {
 	
 	private Client client;
 	private PathManager pathManager;
 	
-	public Services (Client client, String uri) {
+	private static ArrayList<String[]> packTable = new ArrayList<String[]>();
+	private static ArrayList<String[]> unpackTable = new ArrayList<String[]>();
+	
+	static {
+		
+		// Replace curly brackets with round brackets
+		packTable.add(new String[] {"{","("});
+		packTable.add(new String[] {"}",")"});
+		
+		// Replace round brackets with curly brackets
+		unpackTable.add(new String[] {"(","{"});
+		unpackTable.add(new String[] {")","}"});
+		
+	}
+	
+	Services (Client client, String uri) {
 		this.client = client;
 		pathManager = new PathManager(client,uri);
 	}
 	
-	private static String parseJSONObject(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
-		Object attribute = obj.get(attr);
-		if (attrType==Integer.class) {
-			return attr + "=" + Integer.toString((Integer)attribute);
-		} else if (attrType==String.class) {
-			return attr + "=" + (String)attribute;
-		} else if (attrType==Boolean.class) {
-			return attr + "=" + (boolean)attribute;
-		} else
-			return null;
+	/** Pack a JSON string.
+	 * Makes a JSON string suited to be sent towards
+	 * an oneM2M service.
+	 * 
+	 * @param json the JSON string to pack
+	 * @return the packed string
+	 */
+	public static String packJSON (String json) {
+		String[] pair = new String[2];
+		for (int i=0; i<packTable.size(); i++) {
+			pair = packTable.get(i);
+			json = json.replace(pair[0],pair[1]);
+		}
+		return json;
 	}
 	
-	private static String parseJSONObject_(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
-		Object attribute = obj.get(attr);
-		if (attrType==Integer.class) {
-			return Integer.toString((Integer)attribute);
-		} else if (attrType==String.class) {
-			return (String)attribute;
-		} else if (attrType==Boolean.class) {
-			return "" + (boolean)attribute;
-		} else
-			return null;
+	/** Unpack a JSON string.
+	 * Converts a JSON coming from an oneM2M service
+	 * into a well-formed JSON string.
+	 * 
+	 * @param json the JSON string to unpack
+	 * @return the unpacked string
+	 */
+	public static String unpackJSON (String json) {
+		String[] pair = new String[2];
+		for (int i=0; i<unpackTable.size(); i++) {
+			pair = unpackTable.get(i);
+			json = json.replace(pair[0],pair[1]);
+		}
+		return json;
 	}
 	
-	private static List<Object> parseJSONArray_(JSONObject obj, String attr) throws JSONException {
-		JSONArray jsonArray = obj.getJSONArray(attr);
-		return jsonArray.toList();
+	/** Format a JSON string.
+	 * Converts an inline JSON string into an expanded
+	 * and better readable one. Ideal for GUIs.
+	 * 
+	 * @param json the JSON string to format
+	 * @return the formatted string
+	 */
+	public static String formatJSON (String json) {
+		int level = 0;
+		char[] chars;
+		String str = json.replace(" ","");
+//		str = str.replaceAll("([\\}\\]])(?!,)","$1;");
+		int characters = 1;
+		char character;
+		for (int i=0; i<characters; i++) {
+			chars = str.toCharArray();
+			character = chars[i];
+			characters = chars.length;
+			if (isOpeningParenthesis(character)) {
+				str = insertStringAfter(str,Constants.newLine,i);
+				level++;
+				for (int j=0; j<level; j++) {
+					str = insertStringAfter(str,Constants.tab,i+Constants.newLine.length());
+				}
+			} else if (character==','/* || character==';'*/) {
+				for (int j=0; j<level; j++) {
+					str = insertStringAfter(str,Constants.tab,i);
+				}
+				str = insertStringAfter(str,Constants.newLine,i);
+			} else if (isClosingParenthesis(character)) {
+				str = insertStringBefore(str,Constants.newLine,i);
+				i += Constants.newLine.length();
+				level--;
+				for (int j=0; j<level; j++) {
+					str = insertStringBefore(str,Constants.tab,i);
+					i += Constants.tab.length();
+				}
+			}
+		}
+//		str.replace(";","");
+		return str;
 	}
 	
+	private static boolean isOpeningParenthesis(char c) {
+		return c=='{' || c=='[';
+	}
+	
+	private static boolean isClosingParenthesis(char c) {
+		return c=='}' || c==']';
+	}
+	
+	private static String insertStringBefore(String str, String c, int position) {
+		return str.substring(0,position) + c + str.substring(position,str.length());
+	}
+	
+	private static String insertStringAfter(String str, String c, int position) {
+		return str.substring(0,position+1) + c + str.substring(position+1,str.length());
+	}
+	
+	/** Parse a JSON string.
+	 * Gets a JSON string and retrieves a string containing
+	 * the content of an arbitrary number of attributes inside
+	 * a main outer JSON container.
+	 * Example:
+	 * <ul>
+	 * <li>
+	 * <code>Services.parseJSON("{"m2m:ae":{"rn":"state","ty":2}}", "m2m:ae", new String[] {"rn","ty"}, new Class&lt;?&gt;[] {String.class,Integer.class});</code>
+	 * retrieves <code>"rn=state, ty=2"</code>
+	 * </li>
+	 * </ul>
+	 * 
+	 * @param json the JSON string to parse
+	 * @param outerAttr the outer attribute
+	 * @param attr the array of attributes to extract content from
+	 * @param attrType an array of types describing the class of contents
+	 * @return the parsed string of attributes and their content
+	 */
+	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
+		JSONObject root = null;
+		try {
+			root = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		JSONObject obj = null;
+		try {
+			obj = (JSONObject) root.get(outerAttr);
+		} catch (JSONException e) {
+			throw e;
+		}
+		String parse = "";
+		for (int i=0; i<attr.length; i++) {
+			try {
+				parse += parseJSONObject(obj,attr[i],attrType[i]);
+			} catch (JSONException e) {
+				throw e;
+			}
+			if (i<attr.length-1)
+				parse += ", ";
+		}
+		return parse;
+	}
+	
+	/** Parse a JSON string.
+	 * Gets a JSON string and retrieves a string containing
+	 * the content of an arbitrary number of attributes inside
+	 * a main outer JSON container.
+	 * Example:
+	 * <ul>
+	 * <li>
+	 * <code>con = Services.parseJSON(notification, new String[] {"m2m:sgn","m2m:nev","m2m:rep","m2m:cin"}, new String[] {"con"}, new Class&lt;?&gt;[] {String.class});</code>
+	 * may retrieve for instance <code>"con=(\"mn\":\"augmented-things-MN\",\"id\":\"user.ALESSANDRO-K7NR\")"</code>
+	 * </li>
+	 * </ul>
+	 * 
+	 * @param json the JSON string to parse
+	 * @param outerAttr an array of attributes identifying the outer container
+	 * @param attr the array of attributes to extract content from
+	 * @param attrType an array of types describing the class of contents
+	 * @return the parsed string of attributes and their content
+	 */
+	public static String parseJSON(String json, String[] outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
+		JSONObject root = null;
+		try {
+			root = new JSONObject(json);
+		} catch (JSONException e) {
+			throw e;
+		}
+		JSONObject obj = root;
+		for (int i=0; i<outerAttr.length; i++) {
+			try {
+				obj = (JSONObject) obj.get(outerAttr[i]);
+			} catch (JSONException e) {
+				throw e;
+			}
+		}
+		String parse = "";
+		for (int i=0; i<attr.length; i++) {
+			try {
+				parse += parseJSONObject(obj,attr[i],attrType[i]);
+			} catch (JSONException e) {
+				throw e;
+			}
+			if (i<attr.length-1)
+				parse += ", ";
+		}
+		return parse;
+	}
+	
+	/** Parse a JSON string.
+	 * Gets a JSON string and retrieves a string containing
+	 * the content of an inner attribute.
+	 * 
+	 * @param json the JSON string to parse
+	 * @param attr the attribute to extract content from
+	 * @param attrType a type describing the class of content
+	 * @return the content of requested attribute
+	 */
 	public static String parseJSONObject(String json, String attr, Class<?> attrType) throws JSONException {
 		JSONObject obj = null;
 		try {
@@ -67,13 +253,24 @@ public class Services {
 		}
 		String parse = null;
 		try {
-			parse = parseJSONObject_(obj,attr,attrType);
+			parse = parseJSONObjectSilent(obj,attr,attrType);
 		} catch (JSONException e) {
 			throw e;
 		}
 		return parse;
 	}
 	
+	/** Parse a JSON string.
+	 * Gets a JSON string and retrieves a string containing
+	 * the content of an attribute inside a main outer JSON
+	 * container.
+	 * 
+	 * @param json the JSON string to parse
+	 * @param outerAttr the outer attribute
+	 * @param attr the attribute to extract content from
+	 * @param attrType a type describing the class of content
+	 * @return the content of requested attribute
+	 */
 	public static String parseJSONObject(String json, String outerAttr, String attr, Class<?> attrType) throws JSONException {
 		JSONObject root = null;
 		try {
@@ -89,15 +286,30 @@ public class Services {
 		}
 		String parse = null;
 		try {
-			parse = parseJSONObject_(obj,attr,attrType);
+			parse = parseJSONObjectSilent(obj,attr,attrType);
 		} catch (JSONException e) {
 			throw e;
 		}
 		return parse;
 	}
 	
+	/** Parse a JSON string.
+	 * Gets a JSON string and retrieves a string containing
+	 * the content of an attribute embedded multiple times
+	 * inside a JSON array.
+	 * Example:
+	 * <ul>
+	 * <li>
+	 * <code>id = parseJSONArray(json,new String[] {"subs","receiver"},"id");</code>
+	 * </li>
+	 * </ul>
+	 * 
+	 * @param json the JSON string to parse
+	 * @param outerAttr an array of attributes identifying the array and the outer container
+	 * @param attr the attribute to extract content from (assumed of type String)
+	 * @return an array containing all instances of the requested attribute inside the array
+	 */
 	@SuppressWarnings("unchecked")
-	
 	public static String[] parseJSONArray(String json, String[] outerAttr, String attr) throws JSONException, IndexOutOfBoundsException {
 		JSONObject root = null;
 		try {
@@ -107,7 +319,7 @@ public class Services {
 		}
 		List<Object> jsonList = null;
 		try {
-			jsonList = parseJSONArray_(root,outerAttr[0]);
+			jsonList = parseJSONArray(root,outerAttr[0]);
 		} catch (JSONException | IndexOutOfBoundsException e) {
 			throw e;
 		}
@@ -143,58 +355,33 @@ public class Services {
 		return attributes.toArray(new String[] {});
 	}
 	
-	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
-		JSONObject root = null;
-		try {
-			root = new JSONObject(json);
-		} catch (JSONException e) {
-			throw e;
-		}
-		JSONObject obj = null;
-		try {
-			obj = (JSONObject) root.get(outerAttr);
-		} catch (JSONException e) {
-			throw e;
-		}
-		String parse = "";
-		for (int i=0; i<attr.length; i++) {
-			try {
-				parse += parseJSONObject(obj,attr[i],attrType[i]);
-			} catch (JSONException e) {
-				throw e;
-			}
-			if (i<attr.length-1)
-				parse += ", ";
-		}
-		return parse;
+	private static String parseJSONObject(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
+		Object attribute = obj.get(attr);
+		if (attrType==Integer.class) {
+			return attr + "=" + Integer.toString((Integer)attribute);
+		} else if (attrType==String.class) {
+			return attr + "=" + (String)attribute;
+		} else if (attrType==Boolean.class) {
+			return attr + "=" + (boolean)attribute;
+		} else
+			return null;
 	}
 	
-	public static String parseJSON(String json, String[] outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
-		JSONObject root = null;
-		try {
-			root = new JSONObject(json);
-		} catch (JSONException e) {
-			throw e;
-		}
-		JSONObject obj = root;
-		for (int i=0; i<outerAttr.length; i++) {
-			try {
-				obj = (JSONObject) obj.get(outerAttr[i]);
-			} catch (JSONException e) {
-				throw e;
-			}
-		}
-		String parse = "";
-		for (int i=0; i<attr.length; i++) {
-			try {
-				parse += parseJSONObject(obj,attr[i],attrType[i]);
-			} catch (JSONException e) {
-				throw e;
-			}
-			if (i<attr.length-1)
-				parse += ", ";
-		}
-		return parse;
+	private static String parseJSONObjectSilent(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
+		Object attribute = obj.get(attr);
+		if (attrType==Integer.class) {
+			return Integer.toString((Integer)attribute);
+		} else if (attrType==String.class) {
+			return (String)attribute;
+		} else if (attrType==Boolean.class) {
+			return "" + (boolean)attribute;
+		} else
+			return null;
+	}
+	
+	private static List<Object> parseJSONArray(JSONObject obj, String attr) throws JSONException {
+		JSONArray jsonArray = obj.getJSONArray(attr);
+		return jsonArray.toList();
 	}
 	
 	public static JSONObject toJSONArray(JSONSerializable[] json, String attribute) {
@@ -223,13 +410,7 @@ public class Services {
 		return str;
 	}
 	
-	public static String normalizeName(String name) {
-		return name.replace('@','.');
-	}
-	
-	public static String joinIdHost(String id, String host) {
-		return id + "@" + host;
-	}
+	// Instance methods: associated to a Client instance
 	
 	public CoapResponse getResource(String[] uri, int i) throws URISyntaxException {
 		pathManager.change(uri);
@@ -484,101 +665,8 @@ public class Services {
 		return client.send(request, Code.POST);
 	}
 	
-	public static String getKeyFromAttribute(String attr) {
-		return attr.split("cnt-")[1];
-	}
-	
-	public static String getPathFromKey(String key) {
-		return "cnt-" + key;
-	}
-	
 	public String uri() {
 		return pathManager.uri();
-	}
-	
-	private static ArrayList<String[]> packTable = new ArrayList<String[]>();
-	private static ArrayList<String[]> unpackTable = new ArrayList<String[]>();
-	
-	static {
-		
-		// Replace curly brackets with round brackets
-		packTable.add(new String[] {"{","("});
-		packTable.add(new String[] {"}",")"});
-		
-		// Replace round brackets with curly brackets
-		unpackTable.add(new String[] {"(","{"});
-		unpackTable.add(new String[] {")","}"});
-		
-	}
-	
-	public static String packJSON (String json) {
-		String[] pair = new String[2];
-		for (int i=0; i<packTable.size(); i++) {
-			pair = packTable.get(i);
-			json = json.replace(pair[0],pair[1]);
-		}
-		return json;
-	}
-	
-	public static String unpackJSON (String json) {
-		String[] pair = new String[2];
-		for (int i=0; i<unpackTable.size(); i++) {
-			pair = unpackTable.get(i);
-			json = json.replace(pair[0],pair[1]);
-		}
-		return json;
-	}
-	
-	public static String formatJSON (String json) {
-		int level = 0;
-		char[] chars;
-		String str = json.replace(" ","");
-//		str = str.replaceAll("([\\}\\]])(?!,)","$1;");
-		int characters = 1;
-		char character;
-		for (int i=0; i<characters; i++) {
-			chars = str.toCharArray();
-			character = chars[i];
-			characters = chars.length;
-			if (isOpeningParenthesis(character)) {
-				str = insertStringAfter(str,Constants.newLine,i);
-				level++;
-				for (int j=0; j<level; j++) {
-					str = insertStringAfter(str,Constants.tab,i+Constants.newLine.length());
-				}
-			} else if (character==','/* || character==';'*/) {
-				for (int j=0; j<level; j++) {
-					str = insertStringAfter(str,Constants.tab,i);
-				}
-				str = insertStringAfter(str,Constants.newLine,i);
-			} else if (isClosingParenthesis(character)) {
-				str = insertStringBefore(str,Constants.newLine,i);
-				i += Constants.newLine.length();
-				level--;
-				for (int j=0; j<level; j++) {
-					str = insertStringBefore(str,Constants.tab,i);
-					i += Constants.tab.length();
-				}
-			}
-		}
-//		str.replace(";","");
-		return str;
-	}
-	
-	private static boolean isOpeningParenthesis(char c) {
-		return c=='{' || c=='[';
-	}
-	
-	private static boolean isClosingParenthesis(char c) {
-		return c=='}' || c==']';
-	}
-	
-	private static String insertStringBefore(String str, String c, int position) {
-		return str.substring(0,position) + c + str.substring(position,str.length());
-	}
-	
-	private static String insertStringAfter(String str, String c, int position) {
-		return str.substring(0,position+1) + c + str.substring(position+1,str.length());
 	}
 	
 	public static void main (String[] args) {

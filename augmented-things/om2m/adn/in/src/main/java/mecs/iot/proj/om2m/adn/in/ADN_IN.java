@@ -1,14 +1,5 @@
 package mecs.iot.proj.om2m.adn.in;
 
-import java.net.URISyntaxException;
-import java.util.HashMap;
-
-import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
-import org.eclipse.californium.core.coap.Response;
-import org.eclipse.californium.core.server.resources.CoapExchange;
-import org.json.JSONException;
-
 import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.ADN;
 import mecs.iot.proj.om2m.adn.in.exceptions.NotFoundMNException;
@@ -17,8 +8,18 @@ import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.ConfigurationDirectory;
 import mecs.iot.proj.om2m.structures.ConfigurationType;
+
+import java.net.URISyntaxException;
+import java.util.HashMap;
+
+import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.CoAP.ResponseCode;
+import org.eclipse.californium.core.coap.Response;
+import org.eclipse.californium.core.server.resources.CoapExchange;
+import org.json.JSONException;
 
 class ADN_IN extends ADN {
 	
@@ -30,7 +31,7 @@ class ADN_IN extends ADN {
 
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
-		cseClient = new Client(Services.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.inCSERoot(id), debug);
+		cseClient = new Client(Format.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.inCSERoot(id), debug);
 		// TODO: create AE, pull from OM2M (serialMap)
 		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
@@ -73,7 +74,6 @@ class ADN_IN extends ADN {
 	}
 	
 	@Override
-	
 	synchronized public void handleGET(CoapExchange exchange) {
 		outStream.out1("Received GET request", i);
 		Response response = null;
@@ -139,7 +139,6 @@ class ADN_IN extends ADN {
 	}
 	
 	@Override
-	
 	synchronized public void handlePOST(CoapExchange exchange) {
 		outStream.out1("Received POST request", i);
 		Response response = null;
@@ -441,13 +440,11 @@ class ADN_IN extends ADN {
 		}
 		
 		@Override
-		
 		public String toString() {
 			return "id=" + id + ", address=" + address + ", active=" + active;
 		}
 		
 		@Override
-		
 		public boolean equals(Object obj) {
 			MN mn = (MN)obj;
 			return id.equals(mn.id);

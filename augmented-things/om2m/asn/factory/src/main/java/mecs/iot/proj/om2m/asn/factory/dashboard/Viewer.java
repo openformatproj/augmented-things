@@ -27,32 +27,27 @@ public class Viewer implements Interface {
 	}
 	
 	@Override
-	
 	public void start() {
 		frame.setVisible(true);
 	}
 	
 	@Override
-	
 	public void add(String id, String serial, String type, int actions) {
 		nodes.add(new EP(id,serial,type,actions));
 	}
 	
 	@Override
-	
 	public void show(int n) {
 		EP node = nodes.get(n);
 		out.setText(out.getText() + "Id: " + node.id + "\n" + "Serial: " + node.serial + "\n" + "Type: " + node.type + "\n");
 	}
 	
 	@Override
-	
 	public void touch(int n, int action) {
 		
 	}
 	
 	@Override
-	
 	public void terminate() {
 		frame.setVisible(false);
 		frame.dispose();

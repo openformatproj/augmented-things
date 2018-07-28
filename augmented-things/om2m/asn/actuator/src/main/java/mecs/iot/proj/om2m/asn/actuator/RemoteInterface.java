@@ -3,9 +3,9 @@ package mecs.iot.proj.om2m.asn.actuator;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
 import mecs.iot.proj.om2m.dashboard.Severity;
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Tag;
 
 import java.net.URISyntaxException;
@@ -29,8 +29,8 @@ public class RemoteInterface extends Client {
 		this.location = location;
 		this.duration = duration;
 		this.address = Constants.protocol + ip + ":" + Integer.toString(port) + "/" + context;
-		ActuationUnit unit = new ActuationUnit(Services.joinIdHost(id+"/unit",host),tag.attributes,actions);
-		createNotificationServer(Services.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
+		ActuationUnit unit = new ActuationUnit(Format.joinIdHost(id+"/unit",host),tag.attributes,actions);
+		createNotificationServer(Format.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
 	}
 	
 	private class Watchdog extends Thread {
@@ -39,13 +39,12 @@ public class RemoteInterface extends Client {
 		private long start_;
 		
 		Watchdog (Client lock) {
-			super(Services.joinIdHost("watchdog",Constants.computerName()));
+			super(Format.joinIdHost("watchdog",Constants.computerName()));
 			this.lock = lock;
 			setDaemon(true);
 		}
 		
 		@Override
-		
 	    public void run() {
 			start_ = start;
 			while (true) {
@@ -61,7 +60,6 @@ public class RemoteInterface extends Client {
 	}
 	
 	@Override
-	
 	public void run() {
 		outStream.out("Starting remote interface", i);
 		outStream.out1("Locating node", i);

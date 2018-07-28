@@ -1,21 +1,21 @@
 package mecs.iot.proj.om2m.asn.factory;
 
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.factory.dashboard.Interface;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.ConfigurationDirectory;
 import mecs.iot.proj.om2m.structures.Tag;
 import mecs.iot.proj.om2m.structures.ConfigurationType;
+
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 class Remotes {
 	
@@ -41,7 +41,7 @@ class Remotes {
 		
 		int sensors = 0;
 		
-		DebugStream debugStream = new DebugStream(Services.joinIdHost("configurator/main",host),debug);
+		DebugStream debugStream = new DebugStream(Format.joinIdHost("configurator/main",host),debug);
 		
 		try {
 			conf = new Configuration ("/configuration/factory.xml",ConfigurationDirectory.JAR,ConfigurationType.XML);
@@ -84,7 +84,7 @@ class Remotes {
 				fluctuation = Double.parseDouble(conf.getTagTextContent("fluctuation",node));
 				duration = Long.parseLong(conf.getTagTextContent("duration",node));
 				period = Long.parseLong(conf.getTagTextContent("period",node));
-				tag = new Tag(Services.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
+				tag = new Tag(Format.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
 				try {
 					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration,period);
 					clients.add(remote);
@@ -117,7 +117,7 @@ class Remotes {
 				location = Integer.parseInt(conf.getTagTextContent("location",node));
 				port = Integer.parseInt(conf.getTagTextContent("port",node));
 				duration = Integer.parseInt(conf.getTagTextContent("duration",node));
-				tag = new Tag(Services.joinIdHost(id,host),serial,attributes.toArray(new String[]{}));
+				tag = new Tag(Format.joinIdHost(id,host),serial,attributes.toArray(new String[]{}));
 				Action[] callbacks = new Action[attributes.size()];
 				for (int j=0; j<callbacks.length; j++) {
 					final int n = sensors+i;

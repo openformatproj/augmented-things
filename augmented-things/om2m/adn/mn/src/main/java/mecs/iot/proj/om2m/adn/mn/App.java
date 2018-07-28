@@ -1,6 +1,5 @@
 package mecs.iot.proj.om2m.adn.mn;
 
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.adn.mn.exceptions.*;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
@@ -10,6 +9,7 @@ import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
+import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.ConfigurationDirectory;
 import mecs.iot.proj.om2m.structures.ConfigurationType;
 
@@ -26,7 +26,7 @@ public class App
 	final private static boolean debug = true;
 	
 	static {
-		DebugStream debugStream = new DebugStream(Services.joinIdHost("configurator/main",host),debug);
+		DebugStream debugStream = new DebugStream(Format.joinIdHost("configurator/main",host),debug);
 		Configuration name = null;
 		String str = null;
 		try {
@@ -54,8 +54,8 @@ public class App
 		}
 	}
 	
-	final private static ErrStream errStream = new ErrStream(Services.joinIdHost(id+"/main",host));
-	final private static OutStream outStream = new OutStream(Services.joinIdHost(id+"/main",host));
+	final private static ErrStream errStream = new ErrStream(Format.joinIdHost(id+"/main",host));
+	final private static OutStream outStream = new OutStream(Format.joinIdHost(id+"/main",host));
 	
     public static void main( String[] args )
     {

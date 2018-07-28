@@ -11,14 +11,12 @@ class Agent {
 	}
 	
 	@Override
-	
 	public int hashCode() {
 		int hash = name.hashCode()*(type.ordinal()+1);
 		return hash;
 	}
 	
 	@Override
-	
 	public boolean equals(Object obj) {
 		Agent agent = (Agent)obj;
 		return name.equals(agent.name) && type.equals(agent.type);

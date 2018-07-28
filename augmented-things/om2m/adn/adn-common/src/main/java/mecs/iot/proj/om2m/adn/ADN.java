@@ -1,7 +1,6 @@
 package mecs.iot.proj.om2m.adn;
 
 import mecs.iot.proj.om2m.Client;
-import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
@@ -15,6 +14,12 @@ import java.util.List;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
+/** An ADN CoAP resource, used to implement a CoAP server.
+ * 
+ * @author Alessandro Trifoglio
+ * @version 0.0.1-SNAPSHOT
+ * @since 0.0.1-SNAPSHOT
+*/
 public class ADN extends CoapResource {
 	
 	public Client cseClient;
@@ -31,7 +36,7 @@ public class ADN extends CoapResource {
 		super(Constants.context);
 		setObservable(true);
 		this.cseBaseName = cseBaseName;
-		String adnServerName = Services.joinIdHost(cseBaseName+"/server",host);
+		String adnServerName = Format.joinIdHost(cseBaseName+"/server",host);
 		outStream = new OutStream(adnServerName);
 		debugStream = new DebugStream(adnServerName,debug);
 		errStream = new ErrStream(adnServerName);
