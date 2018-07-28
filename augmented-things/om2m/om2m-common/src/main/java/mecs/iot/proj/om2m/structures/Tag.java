@@ -259,9 +259,12 @@ public class Tag implements JSONSerializable, Cloneable {
 	@Override
 	
 	public Object clone() {
-		String[] attributes_ = new String[attributes.length];
-		for (int i=0; i<attributes.length; i++)
-			attributes_[i] = attributes[i];
+		String[] attributes_ = null;
+		if (attributes!=null) {
+			attributes_ = new String[attributes.length];
+			for (int i=0; i<attributes.length; i++)
+				attributes_[i] = attributes[i];
+		}
 		return new Tag(node,id,type,address,attributes_,active,cseBaseName);
 	}
 	
