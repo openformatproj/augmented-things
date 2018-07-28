@@ -93,7 +93,7 @@ public class RemoteInterface extends Client {
 				publish(tag.id,tag.serial,Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type));
 			} catch (NoTypeException e) {
 				errStream.out(e,i,Severity.MEDIUM);
-				deleteNode(tag.serial);
+				deleteNodeAsync(tag.serial);
 				outStream.out2("failed. Terminating remote interface");
 			}
 			outStream.out2("done");

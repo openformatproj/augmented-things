@@ -342,10 +342,30 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		//request.setTimedOut(true);
 		debugStream.out("Sent deletion request to \"" + services.uri() + "\"", i);
-		sendAsync(request, Code.DELETE);
+		send(request, Code.DELETE);
 	}
 	
 	protected void deleteUser(String id) {
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("id" + "=" + id);
+		//request.setTimedOut(true);
+		debugStream.out("Sent deletion request to \"" + services.uri() + "\"", i);
+		send(request, Code.DELETE);
+	}
+	
+	protected void deleteNodeAsync(String serial) {
+		Request request = new Request(Code.DELETE);
+		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
+		request.getOptions().addUriQuery("ser" + "=" + serial);
+		//request.setTimedOut(true);
+		debugStream.out("Sent deletion request to \"" + services.uri() + "\"", i);
+		sendAsync(request, Code.DELETE);
+	}
+	
+	protected void deleteUserAsync(String id) {
 		Request request = new Request(Code.DELETE);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
