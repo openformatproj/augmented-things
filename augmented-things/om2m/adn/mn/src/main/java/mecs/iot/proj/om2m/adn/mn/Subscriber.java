@@ -10,7 +10,7 @@ import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ class Subscriber {
 		debugStream.out("Received JSON: " + json, k);
 	}
 	
-	void insert(Tag senderTag, Tag receiverTag, int k) throws URISyntaxException, StateCreationException {
+	void insert(ASN senderTag, ASN receiverTag, int k) throws URISyntaxException, StateCreationException {
 		Subscription ref = new Subscription(senderTag,receiverTag);
 		if (subscriptionMap.containsKey(senderTag.id)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
@@ -86,7 +86,7 @@ class Subscriber {
 		}
 	}
 	
-	void insert(Tag senderTag, String event, String rule, Tag receiverTag, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
+	void insert(ASN senderTag, String event, String rule, ASN receiverTag, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
 		Subscription ref = new Subscription(senderTag,event,rule,receiverTag,action);
 		if (subscriptionMap.containsKey(senderTag.id)) {
 			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);

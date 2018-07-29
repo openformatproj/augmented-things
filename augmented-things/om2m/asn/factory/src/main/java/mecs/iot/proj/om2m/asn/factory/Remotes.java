@@ -8,7 +8,7 @@ import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.ConfigurationDirectory;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 import mecs.iot.proj.om2m.structures.ConfigurationType;
 
 import java.net.URISyntaxException;
@@ -36,7 +36,7 @@ class Remotes {
 		int port;
 		long duration;
 		long period;
-		Tag tag;
+		ASN tag;
 		Node node;
 		
 		int sensors = 0;
@@ -84,7 +84,7 @@ class Remotes {
 				fluctuation = Double.parseDouble(conf.getTagTextContent("fluctuation",node));
 				duration = Long.parseLong(conf.getTagTextContent("duration",node));
 				period = Long.parseLong(conf.getTagTextContent("period",node));
-				tag = new Tag(Format.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
+				tag = new ASN(Format.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
 				try {
 					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration,period);
 					clients.add(remote);
@@ -117,7 +117,7 @@ class Remotes {
 				location = Integer.parseInt(conf.getTagTextContent("location",node));
 				port = Integer.parseInt(conf.getTagTextContent("port",node));
 				duration = Integer.parseInt(conf.getTagTextContent("duration",node));
-				tag = new Tag(Format.joinIdHost(id,host),serial,attributes.toArray(new String[]{}));
+				tag = new ASN(Format.joinIdHost(id,host),serial,attributes.toArray(new String[]{}));
 				Action[] callbacks = new Action[attributes.size()];
 				for (int j=0; j<callbacks.length; j++) {
 					final int n = sensors+i;

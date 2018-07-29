@@ -6,7 +6,7 @@ import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Physics;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
 
@@ -17,14 +17,14 @@ public class RemoteInterface extends Client {
 	
 	private double value;
 	private double fluctuation;
-	private Tag tag;
+	private ASN tag;
 	private int location;
 	private long duration;
 	private long period;
 	
 	private long start;
 
-	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long duration, long period) throws URISyntaxException {
+	public RemoteInterface(ASN tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long duration, long period) throws URISyntaxException {
 		super(tag.id, uri, debug);
 		this.value = value;
 		this.fluctuation = fluctuation;

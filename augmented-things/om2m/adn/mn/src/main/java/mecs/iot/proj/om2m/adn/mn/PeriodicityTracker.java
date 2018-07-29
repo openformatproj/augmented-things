@@ -6,7 +6,7 @@ import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ class PeriodicityTracker extends Thread {
 	private OutStream outStream;
 	private ErrStream errStream;
 	
-	private HashMap<String,Tag> tagMap;																					// id -> tag
+	private HashMap<String,ASN> tagMap;																					// id -> tag
 	private HashMap<String,String> serialMap;																			// id -> serial
 	
 	private Subscriber subscriber;
@@ -36,12 +36,12 @@ class PeriodicityTracker extends Thread {
 		this.cseBaseName = cseBaseName;
 		outStream = new OutStream(name);
 		errStream = new ErrStream(name);
-		tagMap = new HashMap<String,Tag>();
+		tagMap = new HashMap<String,ASN>();
 		serialMap = new HashMap<String,String>();
 		i = 0;
 	}
 	
-	void insert(String id, Tag tag, String serial) {
+	void insert(String id, ASN tag, String serial) {
 		tagMap.put(id,tag);
 		serialMap.put(id,serial);
 	}
@@ -61,7 +61,7 @@ class PeriodicityTracker extends Thread {
 	}
 	
 	private void delete(String id) {
-		Tag tag = tagMap.get(id);
+		ASN tag = tagMap.get(id);
 		String serial = serialMap.get(id);
 		outStream.out1("Handling removal of node with serial \"" + serial + "\"", i);
 		CoapResponse response_ = null;

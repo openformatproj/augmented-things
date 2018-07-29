@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-public class Tag implements JSONSerializable, Cloneable {
+public class ASN implements JSONSerializable, Cloneable {
 	
 	public Node node;
 	public String id;
@@ -26,7 +26,7 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	// Used inside endpoint nodes
 	
-	public Tag (String id, String serial, String type, String[] attributes) {
+	public ASN (String id, String serial, String type, String[] attributes) {
 		this.node = Node.SENSOR;
 		this.id = id;
 		this.serial = serial;
@@ -34,7 +34,7 @@ public class Tag implements JSONSerializable, Cloneable {
 		this.attributes = attributes;
 	}
 	
-	public Tag (String id, String serial, String[] attributes) {
+	public ASN (String id, String serial, String[] attributes) {
 		this.node = Node.ACTUATOR;
 		this.id = id;
 		this.serial = serial;
@@ -44,7 +44,7 @@ public class Tag implements JSONSerializable, Cloneable {
 	
 	// Used inside ADNs
 	
-	public Tag (Node node, String id, String serial, String str, String[] attributes, String cseBaseName) {
+	public ASN (Node node, String id, String serial, String str, String[] attributes, String cseBaseName) {
 		this.node = node;
 		this.serial = serial;
 		switch (node) {
@@ -79,7 +79,7 @@ public class Tag implements JSONSerializable, Cloneable {
 		this.cseBaseName = cseBaseName;
 	}
 	
-	public Tag (String id, String address, String cseBaseName) {
+	public ASN (String id, String address, String cseBaseName) {
 		this.node = Node.USER;
 		this.id = id;
 		this.address = address;
@@ -87,7 +87,7 @@ public class Tag implements JSONSerializable, Cloneable {
 		this.cseBaseName = cseBaseName;
 	}
 	
-	private Tag(Node node, String id, String type, String address, String[] attributes, boolean active, String cseBaseName) {
+	private ASN(Node node, String id, String type, String address, String[] attributes, boolean active, String cseBaseName) {
 		this.node = node;
 		this.id = id;
 		this.type = type;
@@ -262,7 +262,7 @@ public class Tag implements JSONSerializable, Cloneable {
 			for (int i=0; i<attributes.length; i++)
 				attributes_[i] = attributes[i];
 		}
-		return new Tag(node,id,type,address,attributes_,active,cseBaseName);
+		return new ASN(node,id,type,address,attributes_,active,cseBaseName);
 	}
 	
 	private enum Sign {

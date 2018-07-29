@@ -6,7 +6,7 @@ import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
 
@@ -15,7 +15,7 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
 public class RemoteInterface extends Client {
 	
-	private Tag tag;
+	private ASN tag;
 	private int location;
 	private long duration;
 	
@@ -23,7 +23,7 @@ public class RemoteInterface extends Client {
 	
 	private long start;
 
-	public RemoteInterface(Tag tag, int location, String uri, String context, boolean debug, Action[] actions, String ip, int port, String id, String host, long duration) throws URISyntaxException, ActionNumberMismatchException {
+	public RemoteInterface(ASN tag, int location, String uri, String context, boolean debug, Action[] actions, String ip, int port, String id, String host, long duration) throws URISyntaxException, ActionNumberMismatchException {
 		super(tag.id, uri, debug);
 		this.tag = tag;
 		this.location = location;

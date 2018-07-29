@@ -7,7 +7,7 @@ import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
 
@@ -25,7 +25,7 @@ public class App
 	final private static String address = Constants.protocol + Constants.inAddressASN(debugStream,0) + Constants.inADNRoot;
 	final private static String ip = Constants.ip(debugStream,0);
 	
-	final private static Tag tag = new Tag(Format.joinIdHost(id,host),"0x0002",new String[]{"action1","action2"});
+	final private static ASN tag = new ASN(Format.joinIdHost(id,host),"0x0002",new String[]{"action1","action2"});
 	final private static int location = 0;
 	
 	final private static Action action1 = () -> {/* System.out.println("*************************"); An action */};

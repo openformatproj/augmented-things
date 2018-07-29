@@ -2,7 +2,7 @@ package mecs.iot.proj.om2m.asn;
 
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
 
@@ -69,7 +69,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	 * MN registration (sensor)
 	 */
 	
-	protected CoapResponse register(Tag tag) {
+	protected CoapResponse register(ASN tag) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
@@ -93,7 +93,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	 * MN registration (actuator)
 	 */
 	
-	protected CoapResponse register(Tag tag, String address) {
+	protected CoapResponse register(ASN tag, String address) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);

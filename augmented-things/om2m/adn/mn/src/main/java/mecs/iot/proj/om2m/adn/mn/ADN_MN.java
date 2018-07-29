@@ -11,7 +11,7 @@ import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.Node;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -31,8 +31,8 @@ class ADN_MN extends ADN {
 
 	Client notificationClient;
 
-	private HashMap<String,Tag> tagMap;																					// serial -> node tag
-	private HashMap<String,Tag> userMap;																				// user id -> user tag
+	private HashMap<String,ASN> tagMap;																					// serial -> node tag
+	private HashMap<String,ASN> userMap;																				// user id -> user tag
 
 	private Subscriber subscriber;
 	
@@ -42,8 +42,8 @@ class ADN_MN extends ADN {
 		super(id,host,debug,console);
 		cseClient = new Client(Format.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.mnCSERoot(id), debug);
 		notificationClient = new Client(Format.joinIdHost(id+"/ATclient",host),debug);
-		tagMap = new HashMap<String,Tag>();
-		userMap = new HashMap<String,Tag>();
+		tagMap = new HashMap<String,ASN>();
+		userMap = new HashMap<String,ASN>();
 		if (false) {
 			// TODO: pull from OM2M
 		} else {
@@ -168,7 +168,7 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-			Tag tag = tagMap.get(serial);
+			ASN tag = tagMap.get(serial);
 			switch (sw) {
 				case 1:
 					// attributes query (mode=1&ser=<SERIAL>)
@@ -275,7 +275,7 @@ class ADN_MN extends ADN {
 				i++;
 				return;
 			}
-			Tag tag = tagMap.get(serial);
+			ASN tag = tagMap.get(serial);
 			// node name query (ser=<SERIAL>)
 			outStream.out2("detected node name query");
 			if (tag==null) {
@@ -335,7 +335,7 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					Tag tag = null;
+					ASN tag = null;
 					if (type.equals("act")) {
 						String address = getUriValue(exchange,"addr",3);
 						if (address==null || !isValidAddress(address)) {
@@ -348,9 +348,9 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						tag = new Tag(Node.ACTUATOR,id,serial,address,attributes,cseBaseName);
+						tag = new ASN(Node.ACTUATOR,id,serial,address,attributes,cseBaseName);
 					} else {
-						tag = new Tag(Node.SENSOR,id,serial,type,attributes,cseBaseName);
+						tag = new ASN(Node.SENSOR,id,serial,type,attributes,cseBaseName);
 					}
 					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
 					outStream.out2("detected node MN registration");
@@ -489,7 +489,7 @@ class ADN_MN extends ADN {
 						}
 						// actuator MN registration (id=<ID>&ser=<SERIAL>&addr=<EUI-64>), shortcut for highly constrained devices on an IPv6 network
 						outStream.out2("actuator MN registration");
-						Tag tag = new Tag(Node.ACTUATOR,id,serial,resolveEUI64Address(address),new String[] {"on","off"},cseBaseName);
+						ASN tag = new ASN(Node.ACTUATOR,id,serial,resolveEUI64Address(address),new String[] {"on","off"},cseBaseName);
 						outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 						boolean createState;
 						String[] uri_;
@@ -622,7 +622,7 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-							Tag tag = tagMap.get(serial);
+							ASN tag = tagMap.get(serial);
 							// content instance posting (id=<ID>&ser=<SERIAL>&con=<CON>)
 							outStream.out2("detected content instance posting");
 							if (tag==null || tag.node!=Node.SENSOR) {
@@ -702,7 +702,7 @@ class ADN_MN extends ADN {
 								response_ = null;
 								boolean hasBeenForwarded;
 								boolean exceptionOccurred;
-								Tag receiver;
+								ASN receiver;
 								String key = null;
 								for (int j=0; j<subs.size(); j++) {
 									hasBeenForwarded = false;
@@ -781,7 +781,7 @@ class ADN_MN extends ADN {
 								}
 							}
 						} else {
-							Tag tag = tagMap.get(serial);
+							ASN tag = tagMap.get(serial);
 							// node lookout (id=<ID>&ser=<SERIAL>)
 							outStream.out2("detected node lookout");
 							if (tag==null || tag.node!=Node.SENSOR) {
@@ -791,7 +791,7 @@ class ADN_MN extends ADN {
 								i++;
 								return;
 							}
-							Tag user  = userMap.get(id);
+							ASN user  = userMap.get(id);
 							if (user==null) {
 								response = new Response(ResponseCode.BAD_REQUEST);
 								exchange.respond(response);
@@ -837,7 +837,7 @@ class ADN_MN extends ADN {
 						createState = true;
 						uri_ = new String[] {cseBaseName, "state", "userMap"};
 					}
-					Tag user = new Tag(id,address,cseBaseName);
+					ASN user = new ASN(id,address,cseBaseName);
 					CoapResponse response_ = null;
 					cseClient.stepCount();
 					try {
@@ -955,8 +955,8 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				Tag tag0 = tagMap.get(serial0);
-				Tag tag1 = tagMap.get(serial1);
+				ASN tag0 = tagMap.get(serial0);
+				ASN tag1 = tagMap.get(serial1);
 				// nodes link (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
 				outStream.out2("detected nodes link");
 				if (tag0==null || tag0.node!=Node.SENSOR) {
@@ -987,7 +987,7 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				Tag user = userMap.get(notificationId);
+				ASN user = userMap.get(notificationId);
 				if (user==null) {
 					response = new Response(ResponseCode.BAD_REQUEST);
 					exchange.respond(response);
@@ -1047,7 +1047,7 @@ class ADN_MN extends ADN {
 			i++;
 			return;
 		}
-		Tag tag = tagMap.get(serial);
+		ASN tag = tagMap.get(serial);
 		// node write (ser=<SERIAL>&lab=<ACTION_LABEL>)
 		outStream.out2("detected node write");
 		if (tag==null || tag.node!=Node.ACTUATOR) {
@@ -1138,8 +1138,8 @@ class ADN_MN extends ADN {
 					i++;
 					return;
 				}
-				Tag tag = tagMap.get(serial);
-				Tag user = userMap.get(id);
+				ASN tag = tagMap.get(serial);
+				ASN user = userMap.get(id);
 				// lookout removal (id=<ID>&ser=<SERIAL>)
 				outStream.out2("detected lookout removal");
 				if (tag==null || tag.node!=Node.SENSOR) {
@@ -1170,7 +1170,7 @@ class ADN_MN extends ADN {
 				response = new Response(ResponseCode.DELETED);
 				response.setPayload("OK");
 			} else {
-				Tag user = userMap.get(id);
+				ASN user = userMap.get(id);
 				// user removal (id=<ID>)
 				outStream.out2("detected user removal");
 				if (user==null) {
@@ -1264,8 +1264,8 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					Tag tag0 = tagMap.get(serial0);
-					Tag tag1 = tagMap.get(serial1);
+					ASN tag0 = tagMap.get(serial0);
+					ASN tag1 = tagMap.get(serial1);
 					// link removal (ser=<SERIAL>&ser=<SERIAL>&lab=<EVENT_LABEL>&lab=<ACTION_LABEL>&id=<ID>)
 					outStream.out2("detected link removal");
 					if (tag0==null || tag0.node!=Node.SENSOR) {
@@ -1310,7 +1310,7 @@ class ADN_MN extends ADN {
 					response = new Response(ResponseCode.DELETED);
 					response.setPayload("OK");
 				} else {
-					Tag tag0 = tagMap.get(serial0);
+					ASN tag0 = tagMap.get(serial0);
 					// node removal (ser=<SERIAL>)
 					outStream.out2("detected node removal");
 					if (tag0==null) {

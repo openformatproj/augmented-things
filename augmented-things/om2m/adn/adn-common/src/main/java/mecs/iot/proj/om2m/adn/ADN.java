@@ -7,7 +7,7 @@ import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class ADN extends CoapResource {
 		return !content.isEmpty();
 	}
 	
-	protected boolean isRecognizedContent(String content, Tag tag) {
+	protected boolean isRecognizedContent(String content, ASN tag) {
 		// TODO
 		return true;
 	}
@@ -112,7 +112,7 @@ public class ADN extends CoapResource {
 		return !label.isEmpty();
 	}
 	
-	protected boolean isRecognizedLabel(String label, Tag tag) {
+	protected boolean isRecognizedLabel(String label, ASN tag) {
 		switch(tag.node) {
 			case SENSOR:
 				return tag.ruleMap.containsKey(label);

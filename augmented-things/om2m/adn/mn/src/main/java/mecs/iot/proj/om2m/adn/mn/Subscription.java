@@ -4,19 +4,19 @@ import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Format;
 import mecs.iot.proj.om2m.structures.JSONSerializable;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 
 import org.json.JSONObject;
 
 class Subscription implements JSONSerializable, Cloneable {
 	
-	Tag sender;
+	ASN sender;
 	String event;
 	Checker checker;
-	Tag receiver;
+	ASN receiver;
 	String action;
 	
-	Subscription(Tag sender, Tag receiver) {
+	Subscription(ASN sender, ASN receiver) {
 		this.sender = sender;
 		this.event = null;
 		this.checker = null;
@@ -24,7 +24,7 @@ class Subscription implements JSONSerializable, Cloneable {
 		this.action = null;
 	}
 	
-	Subscription(Tag sender, String event, String rule, Tag receiver, String action) throws InvalidRuleException, NoTypeException {
+	Subscription(ASN sender, String event, String rule, ASN receiver, String action) throws InvalidRuleException, NoTypeException {
 		this.sender = sender;
 		this.event = event;
 		String cl = null;
@@ -45,7 +45,7 @@ class Subscription implements JSONSerializable, Cloneable {
 		this.action = action;
 	}
 	
-	private Subscription(Tag sender, String event, Tag receiver, String action) {
+	private Subscription(ASN sender, String event, ASN receiver, String action) {
 		this.sender = sender;
 		this.event = event;
 		this.checker = null;
@@ -64,8 +64,8 @@ class Subscription implements JSONSerializable, Cloneable {
 	
 	@Override
 	public Object clone() {
-		Tag sender = (Tag)this.sender.clone();
-		Tag receiver = (Tag)this.receiver.clone();
+		ASN sender = (ASN)this.sender.clone();
+		ASN receiver = (ASN)this.receiver.clone();
 		return new Subscription(sender,event,receiver,action);
 	}
 	

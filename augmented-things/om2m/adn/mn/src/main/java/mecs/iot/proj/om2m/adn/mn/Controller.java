@@ -4,7 +4,7 @@ import mecs.iot.proj.om2m.exceptions.InvalidRuleException;
 import mecs.iot.proj.om2m.exceptions.NoRuleException;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.NumericRule;
-import mecs.iot.proj.om2m.structures.Tag;
+import mecs.iot.proj.om2m.structures.ASN;
 import mecs.iot.proj.om2m.structures.Token;
 
 class Controller implements Checker {
@@ -18,7 +18,7 @@ class Controller implements Checker {
 	Controller(String rule) throws InvalidRuleException {
 		NumericRule rule_ = null;
 		try {
-			rule_ = Tag.parseNumericRule(rule);
+			rule_ = ASN.parseNumericRule(rule);
 			noRule = false;
 		} catch (NoRuleException e) {
 			noRule = true;
