@@ -31,8 +31,8 @@ class ADN_MN extends ADN {
 
 	Client notificationClient;
 
-	private HashMap<String,ASN> tagMap;																					// serial -> node tag
-	private HashMap<String,ASN> userMap;																				// user id -> user tag
+	private HashMap<String,ASN> tagMap;																					// serial -> node
+	private HashMap<String,ASN> userMap;																				// id -> user
 
 	private Subscriber subscriber;
 	

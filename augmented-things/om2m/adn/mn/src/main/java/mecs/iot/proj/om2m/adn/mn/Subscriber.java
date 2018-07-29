@@ -68,39 +68,39 @@ class Subscriber {
 		debugStream.out("Received JSON: " + json, k);
 	}
 	
-	void insert(ASN senderTag, ASN receiverTag, int k) throws URISyntaxException, StateCreationException {
-		Subscription ref = new Subscription(senderTag,receiverTag);
-		if (subscriptionMap.containsKey(senderTag.id)) {
-			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
+	void insert(ASN sender, ASN receiver, int k) throws URISyntaxException, StateCreationException {
+		Subscription ref = new Subscription(sender,receiver);
+		if (subscriptionMap.containsKey(sender.id)) {
+			ArrayList<Subscription> subs = subscriptionMap.get(sender.id);
 			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE in case of failure
 			subs_.add(ref);
-			oM2Mput(senderTag.id,subs_,false,k);
-			debugStream.out("Creating subscription on \"" + senderTag.id + "\"", k);
+			oM2Mput(sender.id,subs_,false,k);
+			debugStream.out("Creating subscription on \"" + sender.id + "\"", k);
 			subs.add(ref);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
-			oM2Mput(senderTag.id,subs,true,k);
-			debugStream.out("Creating subscription on \"" + senderTag.id + "\"", k);
-			subscriptionMap.put(senderTag.id,subs);
+			oM2Mput(sender.id,subs,true,k);
+			debugStream.out("Creating subscription on \"" + sender.id + "\"", k);
+			subscriptionMap.put(sender.id,subs);
 		}
 	}
 	
-	void insert(ASN senderTag, String event, String rule, ASN receiverTag, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
-		Subscription ref = new Subscription(senderTag,event,rule,receiverTag,action);
-		if (subscriptionMap.containsKey(senderTag.id)) {
-			ArrayList<Subscription> subs = subscriptionMap.get(senderTag.id);
+	void insert(ASN sender, String event, String rule, ASN receiver, String action, int k) throws URISyntaxException, StateCreationException, InvalidRuleException, NoTypeException {
+		Subscription ref = new Subscription(sender,event,rule,receiver,action);
+		if (subscriptionMap.containsKey(sender.id)) {
+			ArrayList<Subscription> subs = subscriptionMap.get(sender.id);
 			ArrayList<Subscription> subs_ = cloneList(subs);												// Clone before passing to oM2Mput in order to prevent inconsistencies between local cache and CSE in case of failure
 			subs_.add(ref);
-			oM2Mput(senderTag.id,subs_,false,k);
-			debugStream.out("Creating subscription on \"" + senderTag.id + "\"", k);
+			oM2Mput(sender.id,subs_,false,k);
+			debugStream.out("Creating subscription on \"" + sender.id + "\"", k);
 			subs.add(ref);
 		} else {
 			ArrayList<Subscription> subs = new ArrayList<Subscription>();
 			subs.add(ref);
-			oM2Mput(senderTag.id,subs,true,k);
-			debugStream.out("Creating subscription on \"" + senderTag.id + "\"", k);
-			subscriptionMap.put(senderTag.id,subs);
+			oM2Mput(sender.id,subs,true,k);
+			debugStream.out("Creating subscription on \"" + sender.id + "\"", k);
+			subscriptionMap.put(sender.id,subs);
 		}
 	}
 	
