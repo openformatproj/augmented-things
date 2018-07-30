@@ -32,7 +32,7 @@ class ADN_IN extends ADN {
 	ADN_IN(String id, String host, boolean debug, Console console) throws URISyntaxException {
 		super(id,host,debug,console);
 		cseClient = new Client(Format.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.inCSERoot(id), debug);
-		// TODO: create AE, pull from OM2M (serialMap)
+		// TODO: create AE, pull state from OM2M (serialMap)
 		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
 		locationMap = new HashMap<Integer,MN>();
