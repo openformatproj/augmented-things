@@ -208,7 +208,7 @@ public class Client extends mecs.iot.proj.om2m.Client {
 		request.getOptions().addUriQuery("ser" + "=" + serial);
 		request.getOptions().addUriQuery("con" + "=" + con);
 		//request.setTimedOut(true);
-		debugStream.out("Sent registration request to \"" + services.uri() + "\"", i);
+		debugStream.out("Sent content instance request to \"" + services.uri() + "\"", i);
 		sendAsync(request, Code.POST);
 	}
 	
