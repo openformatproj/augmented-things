@@ -26,7 +26,7 @@ public class Viewer implements FactoryInterface {
 	
 	public Viewer() {
 		nodes = new ArrayList<ASN>();
-		grid = new Grid("AT Viewer",500,500,5,5); 																		// Name, width, height, number of slots on X and Y axes
+		grid = new Grid("AT Viewer",500,500,4,4); 																		// Name, width, height, number of slots on X and Y axes
 	}
 	
 	@Override
@@ -64,10 +64,12 @@ public class Viewer implements FactoryInterface {
 	
 	public static void main(String[] args) {
 	    Viewer viewer = new Viewer();
-	    viewer.add("sensor", "0x0001", "tempC", 0);
-	    viewer.add("actuator", "0x0002", "act", 6);
+	    viewer.add("sensor1", "0x0001", "tempC", 0);
+	    viewer.add("actuator1", "0x0002", "act", 6);
+	    viewer.add("sensor2", "0x0003", "tempC", 0);
+	    viewer.add("actuator2", "0x0004", "act", 2);
 	    viewer.start();
-	    for (int i=0; i<2; i++)
+	    for (int i=0; i<4; i++)
 	    	viewer.show(i);
 	    while(true) {
 		    try {
@@ -81,7 +83,19 @@ public class Viewer implements FactoryInterface {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		    viewer.touch(2);
+		    try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		    viewer.touch(1,(int)Math.rint(6*Math.random()));
+		    try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		    viewer.touch(3,(int)Math.rint(2*Math.random()));
 	    }
 	}
 
