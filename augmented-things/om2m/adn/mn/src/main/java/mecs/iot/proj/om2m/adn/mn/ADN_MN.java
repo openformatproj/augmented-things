@@ -31,12 +31,13 @@ class ADN_MN extends ADN {
 
 	Client notificationClient;
 
-	private HashMap<String,ASN> tagMap;																					// serial -> node
+	private HashMap<String,ASN> tagMap;																					// serial -> tag
 	private HashMap<String,ASN> userMap;																				// id -> user
 
 	private Subscriber subscriber;
 	
 	private PeriodicityTracker tracker;
+	private PeriodicNotifier notifier;
 
 	ADN_MN(String id, String host, boolean debug, Console console) throws URISyntaxException, StateCreationException, RegistrationException {
 		super(id,host,debug,console);
@@ -44,19 +45,50 @@ class ADN_MN extends ADN {
 		notificationClient = new Client(Format.joinIdHost(id+"/ATclient",host),debug);
 		tagMap = new HashMap<String,ASN>();
 		userMap = new HashMap<String,ASN>();
-		if (false) {
-			// TODO: pull from OM2M
-		} else {
+		outStream.out1("Searching for OM2M state",i);
+		String[] uri_ = new String[] {cseBaseName, "state"};
+		CoapResponse response_ = null;
+		cseClient.stepCount();
+		response_ = cseClient.services.getResource(uri_,cseClient.getCount());
+		if (response_==null) {
+			errStream.out("Unable to read from \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
+			outStream.out2("failed");
+			throw new StateCreationException();
+		}
+		if (response_.getCode()==ResponseCode.CONTENT || response_.getCode()!=ResponseCode.FORBIDDEN) {
+			outStream.out2("found");
+			// TODO: pull state from OM2M. Not possible because discovery is not implemented yet
+			// Delete AE as temporary workaround...
+			outStream.out1("Deleting OM2M state",i);
+			cseClient.stepCount();
+			response_ = cseClient.services.deleteResource(uri_,cseClient.getCount());
+			if (response_==null) {
+				errStream.out("Unable to delete \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			} else if (response_.getCode()!=ResponseCode.DELETED) {
+				if (!response_.getResponseText().isEmpty())
+					errStream.out("Unable to delete \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
+							", reason: " + response_.getResponseText(),
+							i, Severity.HIGH);
+				else
+					errStream.out("Unable to delete \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
+						i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			}
+			outStream.out2("done");
+			/* ----------------------------------------------- Copied section (from just below), temporary workaround ----------------------------------------------- */
 			String json = null;
 			outStream.out1("Creating OM2M state",i);
 			outStream.out1_2("posting root AE");
 			cseClient.stepCount();
-			CoapResponse response_ = cseClient.services.postAE("state",cseClient.getCount());
+			response_ = cseClient.services.postAE("state",cseClient.getCount());
 			if (response_==null) {
 				errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
 				outStream.out2("failed");
 				throw new StateCreationException();
-			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN*/) {
+			} else if (response_.getCode()!=ResponseCode.CREATED) {
 				if (!response_.getResponseText().isEmpty())
 					errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
@@ -83,7 +115,7 @@ class ADN_MN extends ADN {
 				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
 				outStream.out2("failed");
 				throw new StateCreationException();
-			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN */) {
+			} else if (response_.getCode()!=ResponseCode.CREATED) {
 				if (!response_.getResponseText().isEmpty())
 					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
@@ -110,7 +142,7 @@ class ADN_MN extends ADN {
 				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
 				outStream.out2("failed");
 				throw new StateCreationException();
-			} else if (response_.getCode()!=ResponseCode.CREATED/* && response_.getCode()!=ResponseCode.FORBIDDEN */) {
+			} else if (response_.getCode()!=ResponseCode.CREATED) {
 				if (!response_.getResponseText().isEmpty())
 					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
 							", reason: " + response_.getResponseText(),
@@ -132,12 +164,105 @@ class ADN_MN extends ADN {
 			debugStream.out("Received JSON: " + json, i);
 			outStream.out1_2("done, posting subscription state");
 			subscriber = new Subscriber(outStream,debugStream,errStream,cseClient,cseBaseName,i);
+			/* ----------------------------------------------- End of copied section ----------------------------------------------- */
+		} else if (response_.getCode()==ResponseCode.NOT_FOUND) {
+			outStream.out2("not found");
+			String json = null;
+			outStream.out1("Creating OM2M state",i);
+			outStream.out1_2("posting root AE");
+			cseClient.stepCount();
+			response_ = cseClient.services.postAE("state",cseClient.getCount());
+			if (response_==null) {
+				errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			} else if (response_.getCode()!=ResponseCode.CREATED) {
+				if (!response_.getResponseText().isEmpty())
+					errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
+							", reason: " + response_.getResponseText(),
+							i, Severity.HIGH);
+				else
+					errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
+						i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			}
+			try {
+				json = Services.parseJSON(response_.getResponseText(), "m2m:ae",
+						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+			} catch (JSONException e) {
+				errStream.out(e,i,Severity.MEDIUM);
+				outStream.out2("failed");
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
+			outStream.out1_2("done, posting tagMap");
+			cseClient.stepCount();
+			response_ = cseClient.services.postContainer(cseBaseName,"state","tagMap",cseClient.getCount());
+			if (response_==null) {
+				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			} else if (response_.getCode()!=ResponseCode.CREATED) {
+				if (!response_.getResponseText().isEmpty())
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
+							", reason: " + response_.getResponseText(),
+							i, Severity.HIGH);
+				else
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
+						i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			}
+			try {
+				json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+			} catch (JSONException e) {
+				errStream.out(e,i,Severity.MEDIUM);
+				outStream.out2("failed");
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
+			outStream.out1_2("done, posting userMap");
+			cseClient.stepCount();
+			response_ = cseClient.services.postContainer(cseBaseName,"state","userMap",cseClient.getCount());
+			if (response_==null) {
+				errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			} else if (response_.getCode()!=ResponseCode.CREATED) {
+				if (!response_.getResponseText().isEmpty())
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode() +
+							", reason: " + response_.getResponseText(),
+							i, Severity.HIGH);
+				else
+					errStream.out("Unable to post Container to \"" + cseClient.services.uri() + "\", response: " + response_.getCode(),
+						i, Severity.HIGH);
+				outStream.out2("failed");
+				throw new StateCreationException();
+			}
+			try {
+				json = Services.parseJSON(response_.getResponseText(), "m2m:cnt",
+						new String[] {"rn","ty"}, new Class<?>[] {String.class,Integer.class});
+			} catch (JSONException e) {
+				errStream.out(e,i,Severity.MEDIUM);
+				outStream.out2("failed");
+				throw e;
+			}
+			debugStream.out("Received JSON: " + json, i);
+			outStream.out1_2("done, posting subscription state");
+			subscriber = new Subscriber(outStream,debugStream,errStream,cseClient,cseBaseName,i);
+		} else {
+			outStream.out2("failed");
+			throw new StateCreationException();
 		}
 		outStream.out1("Registering to IN",i);
 		register(id,host,debug);
 		outStream.out2("done");
-		tracker = new PeriodicityTracker(Format.joinIdHost(cseBaseName+"/tracker",host),cseClient,subscriber,cseBaseName);
+		tracker = new PeriodicityTracker(Format.joinIdHost(cseBaseName+"/tracker",host),cseClient,subscriber,cseBaseName,tagMap);
+		notifier = new PeriodicNotifier(Format.joinIdHost(cseBaseName+"/notifier",host),cseClient,subscriber,cseBaseName,tagMap,userMap);
 		tracker.start();
+		notifier.start();
 		i++;
 	}
 
@@ -475,7 +600,9 @@ class ADN_MN extends ADN {
 					}
 					tagMap.put(serial,tag);
 					if (tag.node==Node.SENSOR)
-						tracker.insert(id,tag,serial);
+						tracker.insert(id,serial);
+					else if (tag.node==Node.ACTUATOR)
+						notifier.insert(id,serial);
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					String address = getUriValue(exchange,"addr",2);
@@ -611,6 +738,7 @@ class ADN_MN extends ADN {
 							debugStream.out("Received JSON: " + json, i);
 						}
 						tagMap.put(serial,tag);
+						notifier.insert(id,serial);
 						response = new Response(ResponseCode.CREATED);
 					} else {
 						String content = getUriValue(exchange,"con",2);
@@ -777,6 +905,8 @@ class ADN_MN extends ADN {
 										}
 									} else if (response_!=null && response_.getCode()!=ResponseCode.CHANGED) {
 										errStream.out("Unable to send data to \"" + receiver.id + "\", response: " + response_.getCode(), i, Severity.MEDIUM);
+									} else if (hasBeenForwarded) {
+										notifier.track(receiver.id);
 									}
 								}
 							}
@@ -910,6 +1040,7 @@ class ADN_MN extends ADN {
 						debugStream.out("Received JSON: " + json, i);
 					}
 					userMap.put(id,user);
+					notifier.insert(id);
 					response = new Response(ResponseCode.CREATED);
 				}
 			}
@@ -1333,8 +1464,6 @@ class ADN_MN extends ADN {
 						i++;
 						return;
 					}
-					if (tag0.node==Node.SENSOR)
-						tracker.remove(tag0.id);
 					String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial0};
 					cseClient.stepCount();
 					try {
