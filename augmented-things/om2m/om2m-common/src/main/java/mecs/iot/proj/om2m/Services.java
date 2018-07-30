@@ -425,6 +425,17 @@ public class Services {
 		return client.send(request, Code.GET);
 	}
 	
+	public CoapResponse deleteResource(String[] uri, int i) throws URISyntaxException {
+		pathManager.change(uri);
+		Request request = new Request(Code.DELETE); 										// Create a GET request
+		request.getOptions().addOption(new Option(267,1));
+		request.getOptions().addOption(new Option(256,"admin:admin"));
+		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
+		request.getOptions().setAccept(MediaTypeRegistry.APPLICATION_JSON);
+		client.debugStream.out("Sent reading request to CSE", i);
+		return client.send(request, Code.DELETE);
+	}
+	
 	public CoapResponse postAE(String name, int i) {
 		Request request = new Request(Code.POST);
 		request.getOptions().addOption(new Option(267,2));
