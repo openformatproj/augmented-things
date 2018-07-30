@@ -65,9 +65,9 @@ public class Viewer implements FactoryInterface {
 	public static void main(String[] args) {
 	    Viewer viewer = new Viewer();
 	    viewer.add("sensor1", "0x0001", "tempC", 0);
-	    viewer.add("actuator1", "0x0002", "act", 6);
 	    viewer.add("sensor2", "0x0003", "tempC", 0);
-	    viewer.add("actuator2", "0x0004", "act", 2);
+	    viewer.add("actuator1", "0x0002", "act", 6);
+	    viewer.add("actuator2", "0x0004", "act", 3);
 	    viewer.start();
 	    for (int i=0; i<4; i++)
 	    	viewer.show(i);
@@ -83,13 +83,13 @@ public class Viewer implements FactoryInterface {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		    viewer.touch(2);
+		    viewer.touch(1);
 		    try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		    viewer.touch(1,(int)Math.rint(6*Math.random()));
+		    viewer.touch(2,(int)Math.rint(5*Math.random()));
 		    try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {

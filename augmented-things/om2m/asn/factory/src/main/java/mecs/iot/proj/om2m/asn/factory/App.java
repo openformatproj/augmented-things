@@ -34,8 +34,8 @@ public class App
 	        viewer.start();
 	        for (int i=0; i<remotes.size(); i++) {
 	        	remote = remotes.get(i);
-	        	remote.start();
 	        	viewer.show(i);
+	        	remote.start();
 	        }
     	} catch (URISyntaxException e) {
 			errStream.out(e,0,Severity.MEDIUM);
