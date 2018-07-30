@@ -202,3 +202,4 @@ sensor@alessandro	[DEBUG]	37) Sent content instance request to to "coap://192.16
 sensor@alessandro	[DEBUG]	37) Sent asynchronous POST request to "coap://192.168.0.105:5686/augmented-things?id=sensor.alessandro&ser=0x0001&con=37,
                  	       	    726 °C" with payload <>
 sensor@alessandro	[INFO]	37) ...done
+
