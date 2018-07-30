@@ -191,7 +191,6 @@ class Grid extends JFrame {
 			Point2D center = new Point2D.Double(x,y);
 			double radius = 0.5*edge;
 			node.circle = circle(center,radius);
-			// TODO: show node info and actions
 			double actionRadius = 0.1*edge;
 			double angle = 2*Math.PI*Math.random();
 			for (int i=0; i<actions; i++) {
