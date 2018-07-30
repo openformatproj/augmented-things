@@ -95,37 +95,39 @@ public class Services {
 	 */
 	public static String formatJSON (String json) {
 		int level = 0;
-		char[] chars;
+		char[] charArray;
+		boolean parse = true;
 		String str = json.replace(" ","");
-//		str = str.replaceAll("([\\}\\]])(?!,)","$1;");
-		int characters = 1;
+		charArray = str.toCharArray();
 		char character;
-		for (int i=0; i<characters; i++) {
-			chars = str.toCharArray();
-			character = chars[i];
-			characters = chars.length;
-			if (isOpeningParenthesis(character)) {
-				str = insertStringAfter(str,Constants.newLine,i);
-				level++;
-				for (int j=0; j<level; j++) {
-					str = insertStringAfter(str,Constants.tab,i+Constants.newLine.length());
-				}
-			} else if (character==','/* || character==';'*/) {
-				for (int j=0; j<level; j++) {
-					str = insertStringAfter(str,Constants.tab,i);
-				}
-				str = insertStringAfter(str,Constants.newLine,i);
-			} else if (isClosingParenthesis(character)) {
-				str = insertStringBefore(str,Constants.newLine,i);
-				i += Constants.newLine.length();
-				level--;
-				for (int j=0; j<level; j++) {
-					str = insertStringBefore(str,Constants.tab,i);
-					i += Constants.tab.length();
+		for (int i=0; i<charArray.length; i++) {
+			character = charArray[i];
+			if (character=='"')
+				parse = !parse;
+			if (parse) {
+				if (isOpeningParenthesis(character)) {
+					str = insertStringAfter(str,Constants.newLine,i);
+					level++;
+					for (int j=0; j<level; j++) {
+						str = insertStringAfter(str,Constants.tab,i+Constants.newLine.length());
+					}
+				} else if (character==','/* || character==';'*/) {
+					for (int j=0; j<level; j++) {
+						str = insertStringAfter(str,Constants.tab,i);
+					}
+					str = insertStringAfter(str,Constants.newLine,i);
+				} else if (isClosingParenthesis(character)) {
+					str = insertStringBefore(str,Constants.newLine,i);
+					i += Constants.newLine.length();
+					level--;
+					for (int j=0; j<level; j++) {
+						str = insertStringBefore(str,Constants.tab,i);
+						i += Constants.tab.length();
+					}
 				}
 			}
+			charArray = str.toCharArray();
 		}
-//		str.replace(";","");
 		return str;
 	}
 	

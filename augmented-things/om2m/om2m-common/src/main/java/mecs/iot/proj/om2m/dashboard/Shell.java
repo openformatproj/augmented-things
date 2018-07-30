@@ -170,7 +170,7 @@ class Shell implements Interface {
 				"            \"node\":\"USER\"," + 
 				"            \"address\":\"coap://192.168.0.107:5691/augmented-things\"," + 
 				"            \"id\":\"user.ALESSANDRO-K7NR\"" + 
-				"         },\r\n" + 
+				"         }," + 
 				"         \"sender\":{" + 
 				"            \"node\":\"SENSOR\"," + 
 				"            \"id\":\"sensor.alessandro\"," + 
