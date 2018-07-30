@@ -83,6 +83,7 @@ class ADN_MN extends ADN {
 			outStream.out1("Creating OM2M state",i);
 			outStream.out1_2("posting root AE");
 			cseClient.stepCount();
+			cseClient.services.up();
 			response_ = cseClient.services.postAE("state",cseClient.getCount());
 			if (response_==null) {
 				errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);
@@ -171,6 +172,7 @@ class ADN_MN extends ADN {
 			outStream.out1("Creating OM2M state",i);
 			outStream.out1_2("posting root AE");
 			cseClient.stepCount();
+			cseClient.services.up();
 			response_ = cseClient.services.postAE("state",cseClient.getCount());
 			if (response_==null) {
 				errStream.out("Unable to post AE to \"" + cseClient.services.uri() + "\", timeout expired", i, Severity.HIGH);

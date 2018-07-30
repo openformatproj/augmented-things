@@ -682,6 +682,10 @@ public class Services {
 		return pathManager.uri();
 	}
 	
+	public void up() throws URISyntaxException {
+		pathManager.up();
+	}
+	
 	public static void main (String[] args) {
 		String json = "{" + 
 				"   \"mn\":\"augmented-things-MN\"," + 
