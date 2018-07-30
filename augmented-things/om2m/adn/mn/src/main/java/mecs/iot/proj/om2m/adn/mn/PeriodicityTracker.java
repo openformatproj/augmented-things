@@ -29,30 +29,24 @@ class PeriodicityTracker extends Thread {
 	private String cseBaseName;
 	private int i;
 	
-	PeriodicityTracker(String name, Client cseClient, Subscriber subscriber, String cseBaseName) {
+	PeriodicityTracker(String name, Client cseClient, Subscriber subscriber, String cseBaseName, HashMap<String,ASN> tagMap) {
 		super(name);
 		this.cseClient = cseClient;
 		this.subscriber = subscriber;
 		this.cseBaseName = cseBaseName;
+		this.tagMap = tagMap;
+		serialMap = new HashMap<String,String>();
 		outStream = new OutStream(name);
 		errStream = new ErrStream(name);
-		tagMap = new HashMap<String,ASN>();
-		serialMap = new HashMap<String,String>();
 		i = 0;
 	}
 	
-	void insert(String id, ASN tag, String serial) {
-		tagMap.put(id,tag);
+	void insert(String id, String serial) {
 		serialMap.put(id,serial);
 	}
 	
 	void track(String id) {
 		// TODO
-	}
-	
-	void remove(String id) {
-		tagMap.remove(id);
-		serialMap.remove(id);
 	}
 	
 	@Override
@@ -63,6 +57,7 @@ class PeriodicityTracker extends Thread {
 	private void delete(String id) {
 		ASN tag = tagMap.get(id);
 		String serial = serialMap.get(id);
+		// TODO: handle not existing id
 		outStream.out1("Handling removal of node with serial \"" + serial + "\"", i);
 		CoapResponse response_ = null;
 		try {
@@ -73,7 +68,6 @@ class PeriodicityTracker extends Thread {
 			i++;
 			return;
 		}
-		remove(id);
 		tag.active = false;
 		String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
 		cseClient.stepCount();
