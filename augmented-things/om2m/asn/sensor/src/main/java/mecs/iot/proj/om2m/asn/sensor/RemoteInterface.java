@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.asn.sensor;
 
 import mecs.iot.proj.om2m.asn.Client;
+import mecs.iot.proj.om2m.dashboard.FactoryInterface;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.exceptions.NoTypeException;
 import mecs.iot.proj.om2m.structures.Physics;
@@ -23,6 +24,9 @@ public class RemoteInterface extends Client {
 	private long period;
 	
 	private long start;
+	
+	private FactoryInterface viewer;
+	private int viewerIndex;
 
 	public RemoteInterface(ASN tag, int location, String uri, String context, boolean debug, double value, double fluctuation, long duration, long period) throws URISyntaxException {
 		super(tag.id, uri, debug);
@@ -32,6 +36,11 @@ public class RemoteInterface extends Client {
 		this.location = location;
 		this.duration = duration;
 		this.period = period;
+	}
+	
+	public void add(FactoryInterface viewer, int index) {
+		this.viewer = viewer;
+		viewerIndex = index;
 	}
 	
 	@Override
@@ -54,6 +63,8 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
+		if (viewer!=null)
+			viewer.touch(viewerIndex);
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
@@ -82,6 +93,8 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
+		if (viewer!=null)
+			viewer.touch(viewerIndex);
 		outStream.out2("done");
 		i++;
 		start = System.currentTimeMillis();
@@ -95,12 +108,16 @@ public class RemoteInterface extends Client {
 				deleteNodeAsync(tag.serial);
 				outStream.out2("failed. Terminating remote interface");
 			}
+			if (viewer!=null)
+				viewer.touch(viewerIndex);
 			outStream.out2("done");
 			i++;
 			timer = System.currentTimeMillis();
 			while (System.currentTimeMillis()-timer<period);
 		}
 		deleteNode(tag.serial);
+		if (viewer!=null)
+			viewer.touch(viewerIndex);
 		outStream.out("Terminating remote interface", i);
 	}
 

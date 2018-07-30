@@ -2,8 +2,8 @@ package mecs.iot.proj.om2m.asn.factory;
 
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.asn.Client;
-import mecs.iot.proj.om2m.asn.factory.dashboard.Interface;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
+import mecs.iot.proj.om2m.dashboard.FactoryInterface;
 import mecs.iot.proj.om2m.structures.Configuration;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.om2m.structures.Format;
@@ -19,7 +19,7 @@ import org.w3c.dom.NodeList;
 
 class Remotes {
 	
-	static ArrayList<Client> load(String host, String address, String context, boolean debug, String ip, Interface viewer) throws URISyntaxException {
+	static ArrayList<Client> load(String host, String address, String context, boolean debug, String ip, FactoryInterface viewer) throws URISyntaxException {
 		
 		Configuration conf = null;
 		NodeList list = null;
@@ -89,6 +89,7 @@ class Remotes {
 					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration,period);
 					clients.add(remote);
 					viewer.add(id,serial,type,0);
+					remote.add(viewer,i);
 					sensors++;
 				} catch (URISyntaxException e) {
 					throw e;
@@ -128,6 +129,7 @@ class Remotes {
 					mecs.iot.proj.om2m.asn.actuator.RemoteInterface remote = new mecs.iot.proj.om2m.asn.actuator.RemoteInterface(tag,location,address,context,debug,callbacks,ip,port,id,host,duration);
 					clients.add(remote);
 					viewer.add(id,serial,"act",callbacks.length);
+					remote.add(viewer,sensors+i);
 				} catch (URISyntaxException e) {
 					throw e;
 				}

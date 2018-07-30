@@ -2,6 +2,7 @@ package mecs.iot.proj.om2m.asn.actuator;
 
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.asn.actuator.exceptions.ActionNumberMismatchException;
+import mecs.iot.proj.om2m.dashboard.FactoryInterface;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.asn.Action;
 import mecs.iot.proj.om2m.structures.Constants;
@@ -22,6 +23,9 @@ public class RemoteInterface extends Client {
 	private String address;
 	
 	private long start;
+	
+	private FactoryInterface viewer;
+	private int viewerIndex;
 
 	public RemoteInterface(ASN tag, int location, String uri, String context, boolean debug, Action[] actions, String ip, int port, String id, String host, long duration) throws URISyntaxException, ActionNumberMismatchException {
 		super(tag.id, uri, debug);
@@ -31,6 +35,11 @@ public class RemoteInterface extends Client {
 		this.address = Constants.protocol + ip + ":" + Integer.toString(port) + "/" + context;
 		ActuationUnit unit = new ActuationUnit(Format.joinIdHost(id+"/unit",host),tag.attributes,actions);
 		createNotificationServer(Format.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
+	}
+	
+	public void add(FactoryInterface viewer, int index) {
+		this.viewer = viewer;
+		viewerIndex = index;
 	}
 	
 	private class Watchdog extends Thread {
@@ -81,6 +90,8 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
+		if (viewer!=null)
+			viewer.touch(viewerIndex);
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
@@ -112,6 +123,8 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
+		if (viewer!=null)
+			viewer.touch(viewerIndex);
 		outStream.out2("done");
 		i++;
 		if (duration>0) {
@@ -128,6 +141,8 @@ public class RemoteInterface extends Client {
 			i++;
 		}
 		deleteNode(tag.serial);
+		if (viewer!=null)
+			viewer.touch(viewerIndex);
 		destroy();
 		outStream.out("Terminating remote interface", i);
 	}
