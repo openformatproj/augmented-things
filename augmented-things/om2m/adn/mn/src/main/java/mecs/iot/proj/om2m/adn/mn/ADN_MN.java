@@ -55,7 +55,7 @@ class ADN_MN extends ADN {
 			outStream.out2("failed");
 			throw new StateCreationException();
 		}
-		if (response_.getCode()==ResponseCode.CONTENT || response_.getCode()!=ResponseCode.FORBIDDEN) {
+		if (response_.getCode()==ResponseCode.CONTENT || response_.getCode()==ResponseCode.FORBIDDEN) {
 			outStream.out2("found");
 			// TODO: pull state from OM2M. Not possible because discovery is not implemented yet
 			// Delete AE as temporary workaround...
