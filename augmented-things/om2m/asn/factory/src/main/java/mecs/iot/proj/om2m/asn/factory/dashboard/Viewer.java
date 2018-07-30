@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -17,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 
 public class Viewer implements FactoryInterface {
 	
@@ -42,7 +45,7 @@ public class Viewer implements FactoryInterface {
 	@Override
 	public void show(int n) {
 		ASN node = nodes.get(n);
-		grid.add(node.id,node.actions);
+		grid.add(node.id,node.serial,node.actions);
 	}
 	
 	@Override
@@ -125,6 +128,7 @@ class Grid extends JFrame {
 	private int ySlots;
 	private Stroke solidStroke;
 	private Graphics2D g2d;
+	private JPanel contentPanel;
 	
 	private Point[][] centers;
 	private final double edge;
@@ -137,7 +141,7 @@ class Grid extends JFrame {
 		this.ySlots = ySlots;
 		BufferedImage graphicsContext = new BufferedImage(panelWidth, panelHeight, BufferedImage.TYPE_INT_RGB);
 		JLabel contextRender = new JLabel(new ImageIcon(graphicsContext));
-		JPanel contentPanel = new JPanel();
+		contentPanel = new JPanel();
 		contentPanel.add(contextRender);
 		contentPanel.setSize(panelWidth, panelHeight);
 		g2d = graphicsContext.createGraphics();
@@ -162,7 +166,7 @@ class Grid extends JFrame {
 		nodes = new ArrayList<Node>();
 	}
 	
-	void add(String name, int actions) {
+	void add(String id, String serial, int actions) {
 		Point p;
 		int explored = 0;
 		do {
@@ -181,7 +185,7 @@ class Grid extends JFrame {
 				centers[i][j].explored = false;
 		if (p.assigned==false) {
 			p.assigned = true;
-			Node node = new Node(this,actions);
+			Node node = new Node(this,id,serial,actions);
 			double x = p.center[0];
 			double y = p.center[1];
 			Point2D center = new Point2D.Double(x,y);
@@ -208,14 +212,18 @@ class Grid extends JFrame {
 	class Node {
 		
 		Grid parent;
+		String id;
+		String serial;
 		Ellipse2D.Double circle;
 		Ellipse2D.Double[] actionCircle;
 		int actions;
 		Color color = new Color(221,221,119);
 		Color actionColor = new Color(119,221,119);
 		
-		Node(Grid parent, int actions) {
+		Node(Grid parent, String id,String serial, int actions) {
 			this.parent = parent;
+			this.id = id;
+			this.serial = serial;
 			actionCircle = new Ellipse2D.Double[actions];
 			this.actions = actions;
 		}
@@ -224,6 +232,18 @@ class Grid extends JFrame {
 			g2d.setStroke(solidStroke);
 			g2d.setColor(Color.BLACK);
 			g2d.draw(circle);
+			parent.contentPanel.addMouseMotionListener(new MouseMotionListener() {
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					if(circle.contains(e.getPoint()))
+						parent.contentPanel.setToolTipText("<html><p>Id: " + id + "<br/>Serial: " + serial + "</p></html>");
+					ToolTipManager.sharedInstance().mouseMoved(e);
+				}
+				@Override
+				public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub 
+				}
+			});
 			for (int i=0; i<actions; i++) {
 				g2d.setStroke(solidStroke);
 				g2d.setColor(Color.BLACK);
