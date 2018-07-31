@@ -412,8 +412,6 @@ class ADN_IN extends ADN {
 		i++;
 	}
 	
-	// TODO: middle-node removal
-	
 	private boolean hasBeenFound(CoapResponse response) {
 		if (response.getCode().equals(ResponseCode.NOT_FOUND)) {
 			try {
