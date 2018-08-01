@@ -33,7 +33,7 @@ class PeriodicNotifier extends PeriodicManager {
 		}
 		if (response_==null) {
 			errStream.out("Unable to send data to \"" + nr.asn.id + "\", timeout expired", i, Severity.LOW);
-			delete(nr.asn.id,nr.asn.node);
+			delete(nr.asn);
 		}
 		i++;
 	}
@@ -47,30 +47,29 @@ class PeriodicNotifier extends PeriodicManager {
 		return mn.notificationClient.send(request, Code.GET);
 	}
 	
-	private void delete(String id, Node node) {
+	private void delete(ASN asn) {
 		String[] uri_;
 		CoapResponse response_;
-		switch (node) {
+		switch (asn.node) {
 			case SENSOR:
 				break;
 			case ACTUATOR:
-				ASN tag = mn.tagMap.get(id);
-				outStream.out1("Handling removal of node with serial \"" + tag.serial + "\"", i);
-				tag.active = false;
-				remove(id);
+				outStream.out1("Handling removal of node with serial \"" + asn.serial + "\"", i);
+				asn.active = false;
+				remove(asn.id);
 				try {
-					mn.subscriber.remove(tag.id,Node.ACTUATOR,i);
+					mn.subscriber.remove(asn.id,Node.ACTUATOR,i);
 				} catch (URISyntaxException | StateCreationException e) {
 					errStream.out(e,i,Severity.HIGH);
 					outStream.out2("failed");
 					i++;
 					return;
 				}
-				uri_ = new String[] {mn.cseBaseName, "state", "tagMap", tag.serial};
+				uri_ = new String[] {mn.cseBaseName, "state", "tagMap", asn.serial};
 				response_ = null;
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(tag.serial,tag,uri_,false,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(asn.serial,asn,uri_,false,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					errStream.out(e,i,Severity.HIGH);
 					outStream.out2("failed");
@@ -91,23 +90,22 @@ class PeriodicNotifier extends PeriodicManager {
 				}
 				break;
 			case USER:
-				ASN user = mn.userMap.get(id);
-				outStream.out1("Handling removal of user \"" + id + "\"", i);
-				user.active = false;
-				remove(id);
+				outStream.out1("Handling removal of user \"" + asn.id + "\"", i);
+				asn.active = false;
+				remove(asn.id);
 				try {
-					mn.subscriber.remove(id,Node.USER,i);
+					mn.subscriber.remove(asn.id,Node.USER,i);
 				} catch (URISyntaxException | StateCreationException e) {
 					errStream.out(e,i,Severity.HIGH);
 					outStream.out2("failed");
 					i++;
 					return;
 				}
-				uri_ = new String[] {mn.cseBaseName, "state", "userMap", id};
+				uri_ = new String[] {mn.cseBaseName, "state", "userMap", asn.id};
 				response_ = null;
 				cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(id,user,uri_,false,cseClient.getCount());
+					response_ = cseClient.services.oM2Mput(asn.id,asn,uri_,false,cseClient.getCount());
 				} catch (URISyntaxException e) {
 					errStream.out(e,i,Severity.HIGH);
 					outStream.out2("failed");

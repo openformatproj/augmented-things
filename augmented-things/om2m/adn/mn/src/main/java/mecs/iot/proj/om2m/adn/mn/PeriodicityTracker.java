@@ -22,15 +22,14 @@ class PeriodicityTracker extends PeriodicManager {
 	
 	protected void act(NotificationRegister nr) {
 		debugStream.out("Resource \"" + nr.asn.id + "\" with period \"" + nr.asn.period + " ms\" has been detected to be inactive", i);
-		delete(nr.asn.id);
+		delete(nr.asn);
 		i++;
 	}
 	
-	private void delete(String id) {
-		ASN tag = mn.tagMap.get(id);
+	private void delete(ASN tag) {
 		outStream.out1("Handling removal of node with serial \"" + tag.serial + "\"", i);
 		tag.active = false;
-		remove(id);
+		remove(tag.id);
 		try {
 			mn.subscriber.remove(tag.id,Node.SENSOR,i);
 		} catch (URISyntaxException | StateCreationException e) {
