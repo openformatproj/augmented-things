@@ -111,9 +111,11 @@ class Subscriber {
 	void remove(String id, Node node, int k) throws URISyntaxException, StateCreationException {
 		switch(node) {
 			case SENSOR:
-				oM2Mput(id,new ArrayList<Subscription>(),false,k);
-				debugStream.out("Deleting subscription on \"" + id + "\"", k);
-				subscriptionMap.remove(id);
+				if (subscriptionMap.containsKey(id)) {
+					oM2Mput(id,new ArrayList<Subscription>(),false,k);
+					debugStream.out("Deleting subscription on \"" + id + "\"", k);
+					subscriptionMap.remove(id);
+				}
 				break;
 			case ACTUATOR:
 			case USER:
