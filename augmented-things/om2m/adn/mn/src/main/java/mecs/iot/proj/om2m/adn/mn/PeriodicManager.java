@@ -16,11 +16,11 @@ abstract class PeriodicManager extends Thread {
 	protected OutStream outStream;
 	protected ErrStream errStream;
 	protected DebugStream debugStream;
-	protected HashMap<String,NotificationRegister> map;
+	protected HashMap<String,NotificationRegister> reg;
 	protected ADN_MN mn;
 	protected int i;
 	
-	private LinkedList<Content> fifo;
+	private LinkedList<NotificationRegister> fifo;
 	
 	PeriodicManager(String name, ADN_MN mn, boolean debug) {
 		this.name = name;
@@ -28,51 +28,51 @@ abstract class PeriodicManager extends Thread {
 		outStream = new OutStream(name);
 		errStream = new ErrStream(name);
 		debugStream = new DebugStream(name,debug);
-		map = new HashMap<String,NotificationRegister>();
+		reg = new HashMap<String,NotificationRegister>();
 		i=0;
-		fifo = new LinkedList<Content>();
+		fifo = new LinkedList<NotificationRegister>();
 	}
 	
 	protected void insert(String id, Node node) {
 		switch (node) {
 			case SENSOR:
-				map.put(id,new NotificationRegister(this,mn.tagMap.get(id)));
+				reg.put(id,new NotificationRegister(this,mn.tagMap.get(id)));
 				break;
 			case ACTUATOR:
-				map.put(id,new NotificationRegister(this,mn.tagMap.get(id)));
+				reg.put(id,new NotificationRegister(this,mn.tagMap.get(id)));
 				break;
 			case USER:
-				map.put(id,new NotificationRegister(this,mn.userMap.get(id)));
+				reg.put(id,new NotificationRegister(this,mn.userMap.get(id)));
 				break;
 		}
 	}
 	
 	protected void remove(String id) {
-		map.get(id).terminate();
+		reg.get(id).terminate();
 	}
 	
-	protected abstract void act(String id, Node node);
+	protected abstract void act(NotificationRegister nr);
 	
-	void push(String id, Node node) {
-		fifo.add(new Content(id,node));
+	void push(NotificationRegister nr) {
+		fifo.add(nr);
 	}
 	
-	private Content pull() {
+	private NotificationRegister pull() {
 		return fifo.poll();
 	}
 	
 	@Override
 	public void run() {
-		Content content;
+		NotificationRegister nr;
 		while(true) {
 			synchronized(this) {
-				content = pull();
-				while (content==null) {
+				nr = pull();
+				while (nr==null) {
 					await();
-					content = pull();
+					nr = pull();
 				}
 			}
-			act(content.id,content.node);
+			act(nr);
 		}
 	}
 	
@@ -82,18 +82,6 @@ abstract class PeriodicManager extends Thread {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private class Content {
-		
-		Node node;
-		String id;
-		
-		Content(String id, Node node) {
-			this.id = id;
-			this.node = node;
-		}
-		
 	}
 
 }

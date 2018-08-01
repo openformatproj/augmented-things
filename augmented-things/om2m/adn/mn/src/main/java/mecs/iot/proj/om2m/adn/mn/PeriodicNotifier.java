@@ -20,32 +20,20 @@ class PeriodicNotifier extends PeriodicManager {
 	}
 	
 	void reset(String id) {
-		map.get(id).update();
+		reg.get(id).update();
 	}
 	
-	protected void act(String id, Node node) {
-		debugStream.out("Listener \"" + id + "\" is going to be solicitated",i);
-		// TODO: send a solicitation to 'id' and delete it in case of timeout
-		ASN asn = null;
-		switch (node) {
-			case SENSOR:
-				break;
-			case ACTUATOR:
-				asn = mn.tagMap.get(id);
-				break;
-			case USER:
-				asn = mn.userMap.get(id);
-				break;
-		}
+	protected void act(NotificationRegister nr) {
+		debugStream.out("Listener \"" + nr.asn.id + "\" is going to be solicitated", i);
 		CoapResponse response_ = null;
 		try {
-			response_ = forwardNotification(id,asn.address);
+			response_ = forwardNotification(nr.asn.id,nr.asn.address);
 		} catch (URISyntaxException e) {
 			errStream.out(e,i,Severity.MEDIUM);
 		}
 		if (response_==null) {
-			errStream.out("Unable to send data to \"" + id + "\", timeout expired", i, Severity.LOW);
-			delete(id,node);
+			errStream.out("Unable to send data to \"" + nr.asn.id + "\", timeout expired", i, Severity.LOW);
+			delete(nr.asn.id,nr.asn.node);
 		}
 		i++;
 	}

@@ -17,12 +17,12 @@ class PeriodicityTracker extends PeriodicManager {
 	}
 	
 	void track(String id) {
-		map.get(id).update();
+		reg.get(id).update();
 	}
 	
-	protected void act(String id, Node node) {
-		debugStream.out("Resource \"" + id + "\" has been detected to be inactive",i);
-		delete(id);
+	protected void act(NotificationRegister nr) {
+		debugStream.out("Resource \"" + nr.asn.id + "\" with period \"" + nr.asn.period + " ms\" has been detected to be inactive", i);
+		delete(nr.asn.id);
 		i++;
 	}
 	

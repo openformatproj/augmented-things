@@ -4,11 +4,12 @@ import mecs.iot.proj.om2m.structures.ASN;
 
 class NotificationRegister extends Thread {
 	
-	PeriodicManager manager;
+	private PeriodicManager manager;
 	ASN asn;
-	long lastReset;
-	long threshold;
-	int i;
+	long period;
+	private long lastReset;
+	private long threshold;
+	private int i;
 	
 	private boolean executing;
 	
@@ -17,7 +18,8 @@ class NotificationRegister extends Thread {
 		this.asn = asn;
 		switch(asn.node) {
 			case SENSOR:
-				threshold = 10*asn.period;
+				period = asn.period;
+				threshold = 10*period;
 				break;
 			case ACTUATOR:
 			case USER:
@@ -36,7 +38,8 @@ class NotificationRegister extends Thread {
 			case SENSOR:
 				if (i>1) {
 					asn.period = (long)Math.rint(((System.currentTimeMillis()-lastReset)+(i-1)*asn.period)/(double)i);
-					threshold = 10*asn.period;
+					period = asn.period;
+					threshold = 10*period;
 				}
 				reset();
 				break;
@@ -63,7 +66,7 @@ class NotificationRegister extends Thread {
 			timeElapsedFromlastReset = System.currentTimeMillis()-lastReset;
 			if (executing && timeElapsedFromlastReset>threshold) {
 				synchronized(manager) {
-					manager.push(asn.id,asn.node);
+					manager.push(this);
 					manager.notify();
 				}
 			}
