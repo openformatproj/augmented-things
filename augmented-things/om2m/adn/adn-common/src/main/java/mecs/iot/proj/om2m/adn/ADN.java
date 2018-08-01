@@ -23,12 +23,12 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 public class ADN extends CoapResource {
 	
 	public Client cseClient;
+	public String cseBaseName;
 	
 	protected OutStream outStream;
 	protected DebugStream debugStream;
 	protected ErrStream errStream;
 	
-	protected String cseBaseName;
 	protected Console console;
 	protected int i;
 

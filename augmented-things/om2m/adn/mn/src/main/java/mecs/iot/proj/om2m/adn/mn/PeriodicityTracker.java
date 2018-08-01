@@ -1,78 +1,49 @@
 package mecs.iot.proj.om2m.adn.mn;
 
-import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.adn.mn.exceptions.StateCreationException;
-import mecs.iot.proj.om2m.dashboard.ErrStream;
-import mecs.iot.proj.om2m.dashboard.OutStream;
 import mecs.iot.proj.om2m.dashboard.Severity;
 import mecs.iot.proj.om2m.structures.Node;
 import mecs.iot.proj.om2m.structures.ASN;
 
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 
-class PeriodicityTracker extends Thread {
+class PeriodicityTracker extends PeriodicManager {
 	
-	private Client cseClient;
-	
-	private OutStream outStream;
-	private ErrStream errStream;
-	
-	private HashMap<String,ASN> tagMap;																					// id -> tag
-	private HashMap<String,String> serialMap;																			// id -> serial
-	
-	private Subscriber subscriber;
-	
-	private String cseBaseName;
-	private int i;
-	
-	PeriodicityTracker(String name, Client cseClient, Subscriber subscriber, String cseBaseName, HashMap<String,ASN> tagMap) {
-		super(name);
-		this.cseClient = cseClient;
-		this.subscriber = subscriber;
-		this.cseBaseName = cseBaseName;
-		this.tagMap = tagMap;
-		serialMap = new HashMap<String,String>();
-		outStream = new OutStream(name);
-		errStream = new ErrStream(name);
-		i = 0;
-	}
-	
-	void insert(String id, String serial) {
-		serialMap.put(id,serial);
+	PeriodicityTracker(String name, ADN_MN mn, boolean debug) {
+		super(name,mn,debug);
 	}
 	
 	void track(String id) {
-		// TODO
+		map.get(id).update();
 	}
 	
-	@Override
-	public void run() {
-		// TODO
+	protected void act(String id, Node node) {
+		debugStream.out("Resource \"" + id + "\" has been detected to be inactive",i);
+		delete(id);
+		i++;
 	}
 	
 	private void delete(String id) {
-		ASN tag = tagMap.get(id);
-		String serial = serialMap.get(id);
-		// TODO: handle not existing id
-		outStream.out1("Handling removal of node with serial \"" + serial + "\"", i);
-		CoapResponse response_ = null;
+		ASN tag = mn.tagMap.get(id);
+		outStream.out1("Handling removal of node with serial \"" + tag.serial + "\"", i);
+		tag.active = false;
+		remove(id);
 		try {
-			subscriber.remove(tag.id,Node.SENSOR,i);
+			mn.subscriber.remove(tag.id,Node.SENSOR,i);
 		} catch (URISyntaxException | StateCreationException e) {
 			errStream.out(e,i,Severity.HIGH);
 			outStream.out2("failed");
 			i++;
 			return;
 		}
-		tag.active = false;
-		String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
+		String[] uri_ = new String[] {mn.cseBaseName, "state", "tagMap", tag.serial};
+		CoapResponse response_ = null;
 		cseClient.stepCount();
 		try {
-			response_ = cseClient.services.oM2Mput(serial,tag,uri_,false,cseClient.getCount());
+			response_ = cseClient.services.oM2Mput(tag.serial,tag,uri_,false,cseClient.getCount());
 		} catch (URISyntaxException e) {
 			errStream.out(e,i,Severity.HIGH);
 			outStream.out2("failed");
@@ -92,7 +63,6 @@ class PeriodicityTracker extends Thread {
 			return;
 		}
 		outStream.out2("done");
-		i++;
 	}
 
 }

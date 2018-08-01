@@ -30,6 +30,15 @@ class NotificationServer extends CoapResource {
 	}
 	
 	@Override
+	synchronized public void handleGET(CoapExchange exchange) {
+		Response response = new Response(ResponseCode.CONTENT);
+		outStream.out1("Handling solicitation",i);
+		exchange.respond(response);
+		outStream.out2("done");
+		i++;
+	}
+	
+	@Override
 	synchronized public void handlePUT(CoapExchange exchange) {
 		Response response = null;
 		String str = exchange.getRequestText();

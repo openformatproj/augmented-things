@@ -19,6 +19,8 @@ public class ASN implements JSONSerializable, Cloneable {
 	public String address;
 	public String[] attributes;
 	
+	public long period;
+	
 	public boolean active;
 	public HashMap<String,String> ruleMap;																		// label -> rule
 	
@@ -44,13 +46,13 @@ public class ASN implements JSONSerializable, Cloneable {
 	
 	// Used inside ADNs
 	
-	public ASN (Node node, String id, String serial, String str, String[] attributes, String cseBaseName) {
+	public ASN (Node node, String id, String serial, String type, Object attr, String[] attributes, String cseBaseName) {
 		this.node = node;
 		this.serial = serial;
 		switch (node) {
 			case SENSOR:
 				this.id = id;
-				this.type = str;
+				this.type = type;
 				this.address = null;
 				this.attributes = attributes;
 				this.ruleMap = new HashMap<String,String>();
@@ -63,16 +65,17 @@ public class ASN implements JSONSerializable, Cloneable {
 						this.ruleMap.put(splits[0],"");
 					// TODO: syntax check on labels and rules
 				}
+				this.period = (long)attr;
 				break;
 			case ACTUATOR:
 				this.id = id;
 				this.type = "act";
-				this.address = str;
+				this.address = (String)attr;
 				this.attributes = attributes;
 				// TODO: syntax check on labels
 				break;
 			case USER:
-				this.address = str;
+				this.address = (String)attr;
 				break;
 		}
 		this.active = true;
@@ -244,6 +247,7 @@ public class ASN implements JSONSerializable, Cloneable {
 		}
 		obj.put("active",active);
 		obj.put("mn",cseBaseName);
+		// TODO: consider to add 'period' for sensors, in order to fully recover state from OM2M in case of fault
 		return obj;
 	}
 	

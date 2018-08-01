@@ -31,10 +31,10 @@ class ADN_MN extends ADN {
 
 	Client notificationClient;
 
-	private HashMap<String,ASN> tagMap;																					// serial -> tag
-	private HashMap<String,ASN> userMap;																				// id -> user
+	HashMap<String,ASN> tagMap;																							// serial -> tag
+	HashMap<String,ASN> userMap;																						// id -> user
 
-	private Subscriber subscriber;
+	Subscriber subscriber;
 	
 	private PeriodicityTracker tracker;
 	private PeriodicNotifier notifier;
@@ -261,8 +261,8 @@ class ADN_MN extends ADN {
 		outStream.out1("Registering to IN",i);
 		register(id,host,debug);
 		outStream.out2("done");
-		tracker = new PeriodicityTracker(Format.joinIdHost(cseBaseName+"/tracker",host),cseClient,subscriber,cseBaseName,tagMap);
-		notifier = new PeriodicNotifier(Format.joinIdHost(cseBaseName+"/notifier",host),cseClient,subscriber,cseBaseName,tagMap,userMap);
+		tracker = new PeriodicityTracker(Format.joinIdHost(cseBaseName+"/tracker",host),this,debug);
+		notifier = new PeriodicNotifier(Format.joinIdHost(cseBaseName+"/notifier",host),this,debug);
 		tracker.start();
 		notifier.start();
 		i++;
@@ -475,11 +475,29 @@ class ADN_MN extends ADN {
 							i++;
 							return;
 						}
-						tag = new ASN(Node.ACTUATOR,id,serial,address,attributes,cseBaseName);
+						tag = new ASN(Node.ACTUATOR,id,serial,null,address,attributes,cseBaseName);
 					} else {
-						tag = new ASN(Node.SENSOR,id,serial,type,attributes,cseBaseName);
+						String period_ = getUriValue(exchange,"per",3);
+						if (period_==null) {
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							outStream.out2("bad request, \"per\" is empty");
+							i++;
+							return;
+						}
+						long period;
+						try {
+							period = Long.parseLong(period_);
+						} catch(NumberFormatException e) {
+							response = new Response(ResponseCode.BAD_REQUEST);
+							exchange.respond(response);
+							outStream.out2("bad request, \"per=" + period_ + "\"");
+							i++;
+							return;
+						}
+						tag = new ASN(Node.SENSOR,id,serial,type,period,attributes,cseBaseName);
 					}
-					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>{&addr=<URI>}, PAYLOAD [<ATTRIBUTE>])
+					// node MN registration (id=<ID>&ser=<SERIAL>&type=<TYPE>&[per=<PERIOD>|addr=<URI>], PAYLOAD [<ATTRIBUTE>])
 					outStream.out2("detected node MN registration");
 					outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 					boolean createState;
@@ -602,9 +620,9 @@ class ADN_MN extends ADN {
 					}
 					tagMap.put(serial,tag);
 					if (tag.node==Node.SENSOR)
-						tracker.insert(id,serial);
+						tracker.insert(id,Node.SENSOR);
 					else if (tag.node==Node.ACTUATOR)
-						notifier.insert(id,serial);
+						notifier.insert(id,Node.ACTUATOR);
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					String address = getUriValue(exchange,"addr",2);
@@ -618,7 +636,7 @@ class ADN_MN extends ADN {
 						}
 						// actuator MN registration (id=<ID>&ser=<SERIAL>&addr=<EUI-64>), shortcut for highly constrained devices on an IPv6 network
 						outStream.out2("actuator MN registration");
-						ASN tag = new ASN(Node.ACTUATOR,id,serial,resolveEUI64Address(address),new String[] {"on","off"},cseBaseName);
+						ASN tag = new ASN(Node.ACTUATOR,id,serial,null,resolveEUI64Address(address),new String[] {"on","off"},cseBaseName);
 						outStream.out1("Registering node \"" + id + "\" with serial \"" + serial + "\"", i);
 						boolean createState;
 						String[] uri_;
@@ -740,7 +758,7 @@ class ADN_MN extends ADN {
 							debugStream.out("Received JSON: " + json, i);
 						}
 						tagMap.put(serial,tag);
-						notifier.insert(id,serial);
+						notifier.insert(id,Node.ACTUATOR);
 						response = new Response(ResponseCode.CREATED);
 					} else {
 						String content = getUriValue(exchange,"con",2);
@@ -863,7 +881,7 @@ class ADN_MN extends ADN {
 											checker.insert(value);
 											if (checker==null || checker.check()) {
 												try {
-													response_ = forwardNotification(receiver.id,receiver.address,subs.get(j).action,i);
+													response_ = forwardNotification(receiver.id,receiver.address,subs.get(j).action);
 												} catch (URISyntaxException e) {
 													errStream.out(e,i,Severity.MEDIUM);
 													break;
@@ -875,7 +893,7 @@ class ADN_MN extends ADN {
 											break;
 										case USER:
 											try {
-												response_ = forwardNotification(receiver.id,receiver.address,id+": con="+content,i);
+												response_ = forwardNotification(receiver.id,receiver.address,id+": con="+content);
 											} catch (URISyntaxException e) {
 												errStream.out(e,i,Severity.MEDIUM);
 												break;
@@ -891,11 +909,12 @@ class ADN_MN extends ADN {
 										errStream.out("Unable to send data to \"" + receiver.id + "\", timeout expired", i, Severity.LOW);
 										// remove listener if it doesn't answer
 										receiver.active = false;
+										notifier.remove(receiver.id);
 										try {
 											subscriber.remove(receiver.id,receiver.node,i);
 											String[] uri_ = new String[] {cseBaseName, "state", "tagMap", key};
 											cseClient.stepCount();
-												response_ = cseClient.services.oM2Mput(receiver,uri_,cseClient.getCount());
+											response_ = cseClient.services.oM2Mput(receiver,uri_,cseClient.getCount());
 											if (response_==null) {
 												errStream.out("Unable to remove node from CSE, timeout expired", i, Severity.HIGH);
 											} else if (response_.getCode()!=ResponseCode.CREATED) {
@@ -908,7 +927,7 @@ class ADN_MN extends ADN {
 									} else if (response_!=null && response_.getCode()!=ResponseCode.CHANGED) {
 										errStream.out("Unable to send data to \"" + receiver.id + "\", response: " + response_.getCode(), i, Severity.MEDIUM);
 									} else if (hasBeenForwarded) {
-										notifier.track(receiver.id);
+										notifier.reset(receiver.id);
 									}
 								}
 							}
@@ -1042,7 +1061,7 @@ class ADN_MN extends ADN {
 						debugStream.out("Received JSON: " + json, i);
 					}
 					userMap.put(id,user);
-					notifier.insert(id);
+					notifier.insert(id,Node.USER);
 					response = new Response(ResponseCode.CREATED);
 				}
 			}
@@ -1214,6 +1233,7 @@ class ADN_MN extends ADN {
 			errStream.out("Unable to write on actuator \"" + tag.id + "\", timeout expired", i, Severity.LOW);
 			// remove listener if it doesn't answer
 			tag.active = false;
+			notifier.remove(tag.id);
 			try {
 				subscriber.remove(tag.id,Node.ACTUATOR,i);
 				String[] uri_ = new String[] {cseBaseName, "state", "tagMap", serial};
@@ -1315,6 +1335,7 @@ class ADN_MN extends ADN {
 				}
 				outStream.out1("Handling removal of user \"" + id + "\"", i);
 				user.active = false;
+				notifier.remove(id);
 				try {
 					subscriber.remove(id,Node.USER,i);
 				} catch (URISyntaxException | StateCreationException e) {
@@ -1456,6 +1477,10 @@ class ADN_MN extends ADN {
 					outStream.out1("Handling removal of node with serial \"" + serial0 + "\"", i);
 					CoapResponse response_ = null;
 					tag0.active = false;
+					if (tag0.node==Node.SENSOR)
+						tracker.remove(tag0.id);
+					else if (tag0.node==Node.ACTUATOR)
+						notifier.remove(tag0.id);
 					try {
 						subscriber.remove(tag0.id,tag0.node,i);
 					} catch (URISyntaxException | StateCreationException e) {
@@ -1509,7 +1534,7 @@ class ADN_MN extends ADN {
 		i++;
 	}
 
-	private CoapResponse forwardNotification(String id, String address, String content, int i) throws URISyntaxException {
+	private CoapResponse forwardNotification(String id, String address, String content) throws URISyntaxException {
 		notificationClient.stepCount();
 		notificationClient.connect(address,false);
 		Request request = new Request(Code.PUT);

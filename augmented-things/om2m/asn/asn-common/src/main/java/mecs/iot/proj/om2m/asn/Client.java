@@ -69,13 +69,14 @@ public class Client extends mecs.iot.proj.om2m.Client {
 	 * MN registration (sensor)
 	 */
 	
-	protected CoapResponse register(ASN tag) {
+	protected CoapResponse register(ASN tag, long period) {
 		Request request = new Request(Code.POST);
 		request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().setAccept(MediaTypeRegistry.TEXT_PLAIN);
 		request.getOptions().addUriQuery("id" + "=" + Format.normalizeName(tag.id));
 		request.getOptions().addUriQuery("ser" + "=" + tag.serial);
 		request.getOptions().addUriQuery("type" + "=" + tag.type);
+		request.getOptions().addUriQuery("per" + "=" + Long.toString(period));
 		String payload = "";
 		for (int i=0; i<tag.attributes.length; i++) {
 			if (i!=tag.attributes.length-1)

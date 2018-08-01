@@ -77,7 +77,7 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering");
-		response = register(tag);
+		response = register(tag,period);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
 			outStream.out2("failed. Terminating remote interface");
