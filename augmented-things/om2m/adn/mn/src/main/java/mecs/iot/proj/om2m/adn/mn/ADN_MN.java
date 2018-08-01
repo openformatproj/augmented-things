@@ -620,9 +620,9 @@ class ADN_MN extends ADN {
 					}
 					tagMap.put(serial,tag);
 					if (tag.node==Node.SENSOR)
-						tracker.insert(id,Node.SENSOR);
+						tracker.insert(id,serial,Node.SENSOR);
 					else if (tag.node==Node.ACTUATOR)
-						notifier.insert(id,Node.ACTUATOR);
+						notifier.insert(id,serial,Node.ACTUATOR);
 					response = new Response(ResponseCode.CREATED);
 				} else {
 					String address = getUriValue(exchange,"addr",2);
@@ -758,7 +758,7 @@ class ADN_MN extends ADN {
 							debugStream.out("Received JSON: " + json, i);
 						}
 						tagMap.put(serial,tag);
-						notifier.insert(id,Node.ACTUATOR);
+						notifier.insert(id,serial,Node.ACTUATOR);
 						response = new Response(ResponseCode.CREATED);
 					} else {
 						String content = getUriValue(exchange,"con",2);
@@ -1061,7 +1061,7 @@ class ADN_MN extends ADN {
 						debugStream.out("Received JSON: " + json, i);
 					}
 					userMap.put(id,user);
-					notifier.insert(id,Node.USER);
+					notifier.insert(id,id,Node.USER);
 					response = new Response(ResponseCode.CREATED);
 				}
 			}

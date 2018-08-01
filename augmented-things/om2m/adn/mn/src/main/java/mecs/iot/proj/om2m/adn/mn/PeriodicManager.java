@@ -29,20 +29,20 @@ abstract class PeriodicManager extends Thread {
 		errStream = new ErrStream(name);
 		debugStream = new DebugStream(name,debug);
 		reg = new HashMap<String,NotificationRegister>();
-		i=0;
+		i = 0;
 		fifo = new LinkedList<NotificationRegister>();
 	}
 	
-	protected void insert(String id, Node node) {
+	protected void insert(String id, String key, Node node) {
 		switch (node) {
 			case SENSOR:
-				reg.put(id,new NotificationRegister(this,mn.tagMap.get(id)));
+				reg.put(id,new NotificationRegister(this,mn.tagMap.get(key)));
 				break;
 			case ACTUATOR:
-				reg.put(id,new NotificationRegister(this,mn.tagMap.get(id)));
+				reg.put(id,new NotificationRegister(this,mn.tagMap.get(key)));
 				break;
 			case USER:
-				reg.put(id,new NotificationRegister(this,mn.userMap.get(id)));
+				reg.put(id,new NotificationRegister(this,mn.userMap.get(key)));
 				break;
 		}
 	}
