@@ -24,7 +24,7 @@ class PeriodicNotifier extends PeriodicManager {
 	}
 	
 	protected void act(NotificationRegister nr) {
-		debugStream.out("Listener \"" + nr.asn.id + "\" is going to be solicitated", i);
+		outStream.out1("Listener \"" + nr.asn.id + "\" is going to be solicitated", i);
 		CoapResponse response_ = null;
 		try {
 			response_ = forwardNotification(nr.asn.id,nr.asn.address);
@@ -33,7 +33,10 @@ class PeriodicNotifier extends PeriodicManager {
 		}
 		if (response_==null) {
 			errStream.out("Unable to send data to \"" + nr.asn.id + "\", timeout expired", i, Severity.LOW);
+			outStream.out2("failed");
 			delete(nr.asn);
+		} else {
+			outStream.out2("done");
 		}
 		i++;
 	}

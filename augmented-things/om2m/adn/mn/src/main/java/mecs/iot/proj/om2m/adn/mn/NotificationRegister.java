@@ -11,7 +11,7 @@ class NotificationRegister extends Thread {
 	private long threshold;
 	private int i;
 	
-	private boolean executing;
+	boolean executing;
 	
 	NotificationRegister(PeriodicManager manager, ASN asn) {
 		this.manager = manager;
@@ -69,6 +69,7 @@ class NotificationRegister extends Thread {
 					manager.push(this);
 					manager.notify();
 				}
+				reset();
 			}
 		}
 	}

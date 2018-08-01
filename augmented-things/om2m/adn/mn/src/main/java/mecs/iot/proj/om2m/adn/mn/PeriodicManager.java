@@ -63,7 +63,7 @@ abstract class PeriodicManager extends Thread {
 		while(true) {
 			synchronized(this) {
 				nr = pull();
-				while (nr==null) {
+				while (nr==null || !nr.executing) {
 					await();
 					nr = pull();
 				}
