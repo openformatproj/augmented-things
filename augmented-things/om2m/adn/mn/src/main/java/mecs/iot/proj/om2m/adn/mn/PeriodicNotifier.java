@@ -67,9 +67,9 @@ class PeriodicNotifier extends PeriodicManager {
 				}
 				uri_ = new String[] {mn.cseBaseName, "state", "tagMap", asn.serial};
 				response_ = null;
-				cseClient.stepCount();
+				mn.cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(asn.serial,asn,uri_,false,cseClient.getCount());
+					response_ = mn.cseClient.services.oM2Mput(asn.serial,asn,uri_,false,mn.cseClient.getCount());
 				} catch (URISyntaxException e) {
 					errStream.out(e,i,Severity.HIGH);
 					outStream.out2("failed");
@@ -103,9 +103,9 @@ class PeriodicNotifier extends PeriodicManager {
 				}
 				uri_ = new String[] {mn.cseBaseName, "state", "userMap", asn.id};
 				response_ = null;
-				cseClient.stepCount();
+				mn.cseClient.stepCount();
 				try {
-					response_ = cseClient.services.oM2Mput(asn.id,asn,uri_,false,cseClient.getCount());
+					response_ = mn.cseClient.services.oM2Mput(asn.id,asn,uri_,false,mn.cseClient.getCount());
 				} catch (URISyntaxException e) {
 					errStream.out(e,i,Severity.HIGH);
 					outStream.out2("failed");

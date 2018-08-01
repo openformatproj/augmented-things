@@ -40,9 +40,9 @@ class PeriodicityTracker extends PeriodicManager {
 		}
 		String[] uri_ = new String[] {mn.cseBaseName, "state", "tagMap", tag.serial};
 		CoapResponse response_ = null;
-		cseClient.stepCount();
+		mn.cseClient.stepCount();
 		try {
-			response_ = cseClient.services.oM2Mput(tag.serial,tag,uri_,false,cseClient.getCount());
+			response_ = mn.cseClient.services.oM2Mput(tag.serial,tag,uri_,false,mn.cseClient.getCount());
 		} catch (URISyntaxException e) {
 			errStream.out(e,i,Severity.HIGH);
 			outStream.out2("failed");

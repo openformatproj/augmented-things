@@ -1,6 +1,5 @@
 package mecs.iot.proj.om2m.adn.mn;
 
-import mecs.iot.proj.om2m.Client;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
 import mecs.iot.proj.om2m.dashboard.ErrStream;
 import mecs.iot.proj.om2m.dashboard.OutStream;
@@ -11,8 +10,6 @@ import java.util.LinkedList;
 
 abstract class PeriodicManager extends Thread {
 	
-	public String name;
-	protected Client cseClient;
 	protected OutStream outStream;
 	protected ErrStream errStream;
 	protected DebugStream debugStream;
@@ -23,7 +20,6 @@ abstract class PeriodicManager extends Thread {
 	private LinkedList<NotificationRegister> fifo;
 	
 	PeriodicManager(String name, ADN_MN mn, boolean debug) {
-		this.name = name;
 		this.mn = mn;
 		outStream = new OutStream(name);
 		errStream = new ErrStream(name);
