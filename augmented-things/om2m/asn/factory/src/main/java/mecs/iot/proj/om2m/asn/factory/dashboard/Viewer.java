@@ -50,6 +50,14 @@ public class Viewer implements FactoryInterface {
 	public void show(int n) {
 		ASN node = nodes.get(n);
 		grid.add(node.id,node.serial,node.attributes);
+		String attrList = "";
+		for (int i=0; i<node.attributes.length; i++) {
+			if (i<node.attributes.length-1)
+				attrList += node.attributes[i] + ", ";
+			else
+				attrList += node.attributes[i];
+		}
+		grid.logger.print("Added node " + node.id + " with attributes: {" + attrList + "} \r\n");
 	}
 	
 	@Override
@@ -178,7 +186,7 @@ class Grid extends JFrame {
 		edge = Math.min(panelWidth/(double)xSlots,panelHeight/(double)ySlots)/2.0;
 		solidStroke = new BasicStroke((float)(3.0*(edge/125.0)));
 		nodes = new ArrayList<Node>();
-		logger = new Logger("AT Event Logger",300,200);
+		logger = new Logger("AT Event Logger",600,800);
 	}
 	
 	void add(String id, String serial, String[] attributes) {
@@ -216,10 +224,6 @@ class Grid extends JFrame {
 			node.draw();
 			nodes.add(node);
 		}
-	}
-	
-	void log(String event) {
-		logger.print(event);
 	}
 
 	static Ellipse2D.Double circle(Point2D center, double radius) {
@@ -306,7 +310,7 @@ class Grid extends JFrame {
 			parent.getContentPane().repaint();
 			Fader fader = new Fader(c,color);
 			fader.start();
-			parent.log(id + " has sent data. " + event + "\r\n");
+			parent.logger.print(id + " has sent data. " + event + "\r\n");
 		}
 		
 		void touch(int n) {
@@ -322,7 +326,7 @@ class Grid extends JFrame {
 			parent.getContentPane().repaint();
 			Fader fader = new Fader(c,attributeColor);
 			fader.start();
-			parent.log(id + " has triggered an action: " + attributes[n] + "\r\n");
+			parent.logger.print(id + " has triggered an action: " + attributes[n] + "\r\n");
 		}
 		
 		private class Fader extends Thread {
