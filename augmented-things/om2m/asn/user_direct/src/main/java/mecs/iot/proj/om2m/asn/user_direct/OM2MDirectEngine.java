@@ -1,6 +1,7 @@
 package mecs.iot.proj.om2m.asn.user_direct;
 
 import mecs.iot.proj.Interface;
+import mecs.iot.proj.RegistrationState;
 import mecs.iot.proj.om2m.dashboard.Command;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.DebugStream;
@@ -43,8 +44,8 @@ public class OM2MDirectEngine {
 		remote.start();
 	}
 	
-	public boolean gotSerial() {
-		return remote.foundSerial;
+	public RegistrationState registrationState() {
+		return remote.registrationState;
 	}
 
 }

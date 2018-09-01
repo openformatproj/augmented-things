@@ -1,5 +1,6 @@
 package mecs.iot.proj.om2m.asn.user_direct;
 
+import mecs.iot.proj.RegistrationState;
 import mecs.iot.proj.om2m.asn.Client;
 import mecs.iot.proj.om2m.dashboard.Console;
 import mecs.iot.proj.om2m.dashboard.Severity;
@@ -21,7 +22,7 @@ class RemoteInterface extends Client {
 	private Console console;
 	private boolean executing;
 	
-	boolean foundSerial;
+	RegistrationState registrationState;
 
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
 		super(Format.joinIdHost(id+"/remote",host), uri, debug);
@@ -33,7 +34,7 @@ class RemoteInterface extends Client {
 			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2],list.isJSON[i]);
 		}
 		executing = true;
-		foundSerial = false;
+		registrationState = RegistrationState.UNREGISTERED;
 		ConsoleWrapper unit = new ConsoleWrapper(Format.joinIdHost(id+"/unit",host),console);
 		createNotificationServer(Format.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
 	}
@@ -41,9 +42,11 @@ class RemoteInterface extends Client {
 	@Override
 	public void run() {
 		outStream.out("Starting remote interface", i);
+		boolean foundSerial = false;
 		CoapResponse response = null;
 		while (!foundSerial) {
 			serial = console.getSerial();
+			registrationState = RegistrationState.WAITING;
 			outStream.out1("Locating serial \"" + serial + "\"", i);
 			response = locate(serial);
 			if (response==null) {
@@ -62,6 +65,7 @@ class RemoteInterface extends Client {
 				foundSerial = true;
 			}
 		}
+		registrationState = RegistrationState.REGISTERED;
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
