@@ -42,5 +42,9 @@ public class OM2MDirectEngine {
 	public void start() {
 		remote.start();
 	}
+	
+	public boolean gotSerial() {
+		return remote.foundSerial;
+	}
 
 }

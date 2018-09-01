@@ -20,6 +20,8 @@ class RemoteInterface extends Client {
 	
 	private Console console;
 	private boolean executing;
+	
+	boolean foundSerial;
 
 	RemoteInterface(String id, String host, String uri, String context, boolean debug, Console console, String ip, int port) throws URISyntaxException {
 		super(Format.joinIdHost(id+"/remote",host), uri, debug);
@@ -31,6 +33,7 @@ class RemoteInterface extends Client {
 			console.add(list.text[i][0],list.getCommand(i),list.numOptions[i],list.text[i][1],list.text[i][2],list.isJSON[i]);
 		}
 		executing = true;
+		foundSerial = false;
 		ConsoleWrapper unit = new ConsoleWrapper(Format.joinIdHost(id+"/unit",host),console);
 		createNotificationServer(Format.joinIdHost(id+"/ATserver",host),context,debug,unit,port);
 	}
@@ -38,7 +41,6 @@ class RemoteInterface extends Client {
 	@Override
 	public void run() {
 		outStream.out("Starting remote interface", i);
-		boolean foundSerial = false;
 		CoapResponse response = null;
 		while (!foundSerial) {
 			serial = console.getSerial();
