@@ -2,6 +2,8 @@ package mecs.iot.proj.om2m.asn.factory.dashboard;
 
 import mecs.iot.proj.om2m.dashboard.FactoryInterface;
 
+import java.util.ArrayList;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -13,12 +15,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ToolTipManager;
 
 public class Viewer implements FactoryInterface {
@@ -35,11 +38,12 @@ public class Viewer implements FactoryInterface {
 	@Override
 	public void start() {
 		grid.setVisible(true);
+		grid.logger.setVisible(true);
 	}
 	
 	@Override
-	public void add(String id, String serial, String type, int attributes) {
-		nodes.add(new ASN(id,serial,type,Math.min(attributes,maxAttributes)));
+	public void add(String id, String serial, String type, String[] attributes) {
+		nodes.add(new ASN(id,serial,type,attributes));
 	}
 	
 	@Override
@@ -49,8 +53,8 @@ public class Viewer implements FactoryInterface {
 	}
 	
 	@Override
-	public void touch(int n) {
-		grid.nodes.get(n).touch();
+	public void touch(int n, String event) {
+		grid.nodes.get(n).touch(event);
 	}
 	
 	@Override
@@ -63,14 +67,16 @@ public class Viewer implements FactoryInterface {
 	public void terminate() {
 		grid.setVisible(false);
 		grid.dispose();
+		grid.logger.setVisible(false);
+		grid.logger.dispose();
 	}
 	
 	public static void main(String[] args) {
 	    Viewer viewer = new Viewer();
-	    viewer.add("sensor1", "0x0001", "tempC", 1);
-	    viewer.add("sensor2", "0x0003", "tempC", 2);
-	    viewer.add("actuator1", "0x0002", "act", 6);
-	    viewer.add("actuator2", "0x0004", "act", 3);
+	    viewer.add("sensor1", "0x0001", "tempC", new String[] {"event1"});
+	    viewer.add("sensor2", "0x0003", "tempC", new String[] {});
+	    viewer.add("actuator1", "0x0002", "act", new String[] {"action1","action2","action3","action4","action5","action6"});
+	    viewer.add("actuator2", "0x0004", "act", new String[] {"action1","action2","action3"});
 	    viewer.start();
 	    for (int i=0; i<4; i++)
 	    	viewer.show(i);
@@ -80,13 +86,13 @@ public class Viewer implements FactoryInterface {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		    viewer.touch(0);
+		    viewer.touch(0,"Published: 36.0 °C");
 		    try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		    viewer.touch(1);
+		    viewer.touch(1,"Published: 37.0 °C");
 		    try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -107,13 +113,19 @@ public class Viewer implements FactoryInterface {
 		String id;
 		String serial;
 		String type;
-		int attributes;
+		String[] attributes;
 		
-		ASN(String id, String serial, String type, int attributes) {
+		ASN(String id, String serial, String type, String[] attributes) {
 			this.id = id;
 			this.serial = serial;
 			this.type = type;
-			this.attributes = attributes;
+			if (attributes.length<=maxAttributes) {
+				this.attributes = attributes;
+			} else {
+				this.attributes = new String[maxAttributes];
+				for (int i=0; i<maxAttributes; i++)
+					this.attributes[i] = attributes[i];
+			}
 		}
 		
 	}
@@ -134,6 +146,8 @@ class Grid extends JFrame {
 	private final double edge;
 	
 	final ArrayList<Node> nodes;
+	
+	Logger logger;
 	
 	Grid(String name, int panelWidth, int panelHeight, int xSlots, int ySlots) {
 		super(name);
@@ -164,9 +178,10 @@ class Grid extends JFrame {
 		edge = Math.min(panelWidth/(double)xSlots,panelHeight/(double)ySlots)/2.0;
 		solidStroke = new BasicStroke((float)(3.0*(edge/125.0)));
 		nodes = new ArrayList<Node>();
+		logger = new Logger("AT Event Logger",300,200);
 	}
 	
-	void add(String id, String serial, int attributes) {
+	void add(String id, String serial, String[] attributes) {
 		Point p;
 		int explored = 0;
 		do {
@@ -193,7 +208,7 @@ class Grid extends JFrame {
 			node.circle = circle(center,radius);																										// Create the main circle for the node
 			double attributeRadius = 0.1*edge;
 			double angle = 2*Math.PI*Math.random();
-			for (int i=0; i<attributes; i++) {
+			for (int i=0; i<attributes.length; i++) {
 				center = new Point2D.Double(x+(radius+0.15*edge+attributeRadius)*Math.cos(angle),y+(radius+0.15*edge+attributeRadius)*Math.sin(angle));
 				angle += Math.PI/5.0;
 				node.attributeCircle[i] = circle(center,attributeRadius);																				// Add a circle for the i-th attribute (event or action)
@@ -202,10 +217,36 @@ class Grid extends JFrame {
 			nodes.add(node);
 		}
 	}
+	
+	void log(String event) {
+		logger.print(event);
+	}
 
 	static Ellipse2D.Double circle(Point2D center, double radius) {
 		Ellipse2D.Double circle = new Ellipse2D.Double(center.getX()-radius, center.getY()-radius, 2*radius, 2*radius);
 		return circle;
+	}
+	
+	class Logger extends JFrame {
+		
+		private static final long serialVersionUID = 1L;
+		
+		private JTextArea textArea;
+		private JScrollPane pane;
+		
+		Logger(String title, int width, int height) {
+			super(title);
+			setSize(width, height);
+			textArea = new JTextArea();
+			pane = new JScrollPane(textArea);
+			getContentPane().add(pane);
+		}
+
+		void print(String event) {
+			textArea.append(event);
+			this.getContentPane().validate();
+		}
+		
 	}
 
 	class Node {
@@ -215,15 +256,15 @@ class Grid extends JFrame {
 		String serial;
 		Ellipse2D.Double circle;
 		Ellipse2D.Double[] attributeCircle;
-		int attributes;
+		String[] attributes;
 		Color color = new Color(221,221,119);
 		Color attributeColor = new Color(119,221,119);
 		
-		Node(Grid parent, String id, String serial, int attributes) {
+		Node(Grid parent, String id, String serial, String[] attributes) {
 			this.parent = parent;
 			this.id = id;
 			this.serial = serial;
-			attributeCircle = new Ellipse2D.Double[attributes];
+			attributeCircle = new Ellipse2D.Double[attributes.length];
 			this.attributes = attributes;
 		}
 		
@@ -243,7 +284,7 @@ class Grid extends JFrame {
 					// TODO Auto-generated method stub 
 				}
 			});
-			for (int i=0; i<attributes; i++) {
+			for (int i=0; i<attributes.length; i++) {
 				g2d.setStroke(solidStroke);
 				g2d.setColor(Color.BLACK);
 				g2d.draw(attributeCircle[i]);
@@ -252,7 +293,7 @@ class Grid extends JFrame {
 			parent.getContentPane().repaint();
 		}
 		
-		void touch() {
+		void touch(String event) {
 			double x = circle.getCenterX();
 			double y = circle.getCenterY();
 			Point2D center = new Point2D.Double(x,y);
@@ -265,6 +306,7 @@ class Grid extends JFrame {
 			parent.getContentPane().repaint();
 			Fader fader = new Fader(c,color);
 			fader.start();
+			parent.log(id + " has sent data. " + event + "\r\n");
 		}
 		
 		void touch(int n) {
@@ -280,6 +322,7 @@ class Grid extends JFrame {
 			parent.getContentPane().repaint();
 			Fader fader = new Fader(c,attributeColor);
 			fader.start();
+			parent.log(id + " has triggered an action: " + attributes[n] + "\r\n");
 		}
 		
 		private class Fader extends Thread {

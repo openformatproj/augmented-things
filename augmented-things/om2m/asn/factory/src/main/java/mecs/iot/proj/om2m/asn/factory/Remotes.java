@@ -84,11 +84,12 @@ class Remotes {
 				fluctuation = Double.parseDouble(conf.getTagTextContent("fluctuation",node));
 				duration = Long.parseLong(conf.getTagTextContent("duration",node));
 				period = Long.parseLong(conf.getTagTextContent("period",node));
-				tag = new ASN(Format.joinIdHost(id,host),serial,type,attributes.toArray(new String[]{}));
+				String[] attrs = attributes.toArray(new String[]{});
+				tag = new ASN(Format.joinIdHost(id,host),serial,type,attrs);
 				try {
 					mecs.iot.proj.om2m.asn.sensor.RemoteInterface remote = new mecs.iot.proj.om2m.asn.sensor.RemoteInterface(tag,location,address,context,debug,value,fluctuation,duration,period);
 					clients.add(remote);
-					viewer.add(id,serial,type,0);
+					viewer.add(id,serial,type,attrs);
 					remote.add(viewer,i);
 					sensors++;
 				} catch (URISyntaxException e) {
@@ -118,7 +119,8 @@ class Remotes {
 				location = Integer.parseInt(conf.getTagTextContent("location",node));
 				port = Integer.parseInt(conf.getTagTextContent("port",node));
 				duration = Integer.parseInt(conf.getTagTextContent("duration",node));
-				tag = new ASN(Format.joinIdHost(id,host),serial,attributes.toArray(new String[]{}));
+				String[] attrs = attributes.toArray(new String[]{});
+				tag = new ASN(Format.joinIdHost(id,host),serial,attrs);
 				Action[] callbacks = new Action[attributes.size()];
 				for (int j=0; j<callbacks.length; j++) {
 					final int n = sensors+i;
@@ -128,7 +130,7 @@ class Remotes {
 				try {
 					mecs.iot.proj.om2m.asn.actuator.RemoteInterface remote = new mecs.iot.proj.om2m.asn.actuator.RemoteInterface(tag,location,address,context,debug,callbacks,ip,port,id,host,duration);
 					clients.add(remote);
-					viewer.add(id,serial,"act",callbacks.length);
+					viewer.add(id,serial,"act",attrs);
 					remote.add(viewer,sensors+i);
 				} catch (URISyntaxException e) {
 					throw e;

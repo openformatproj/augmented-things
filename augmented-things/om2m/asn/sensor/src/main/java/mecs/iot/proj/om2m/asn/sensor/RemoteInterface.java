@@ -47,6 +47,8 @@ public class RemoteInterface extends Client {
 	public void run() {
 		outStream.out("Starting remote interface", i);
 		outStream.out1("Locating node", i);
+		if (viewer!=null)
+			viewer.touch(viewerIndex, "Locating");
 		CoapResponse response = locate(tag.id,tag.serial,location);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
@@ -63,8 +65,6 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
-		if (viewer!=null)
-			viewer.touch(viewerIndex);
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
@@ -77,6 +77,8 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering");
+		if (viewer!=null)
+			viewer.touch(viewerIndex, "Registering");
 		response = register(tag,period);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
@@ -93,31 +95,31 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
-		if (viewer!=null)
-			viewer.touch(viewerIndex);
 		outStream.out2("done");
 		i++;
 		start = System.currentTimeMillis();
 		long timer;
 		while(System.currentTimeMillis()-start<duration || duration==0) {
 			outStream.out1("Posting Content Instance", i);
+			String datum = null;
 			try {
-				publish(tag.id,tag.serial,Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type));
+				datum = Format.pack(value*Physics.randomGaussianFluctuation(fluctuation),tag.type);
 			} catch (NoTypeException e) {
 				errStream.out(e,i,Severity.MEDIUM);
 				deleteNodeAsync(tag.serial);
 				outStream.out2("failed. Terminating remote interface");
 			}
+			publish(tag.id,tag.serial,datum);
 			if (viewer!=null)
-				viewer.touch(viewerIndex);
+				viewer.touch(viewerIndex, "Published: " + datum);
 			outStream.out2("done");
 			i++;
 			timer = System.currentTimeMillis();
 			while (System.currentTimeMillis()-timer<period);
 		}
-		deleteNode(tag.serial);
 		if (viewer!=null)
-			viewer.touch(viewerIndex);
+			viewer.touch(viewerIndex, "Unregistering");
+		deleteNode(tag.serial);
 		outStream.out("Terminating remote interface", i);
 	}
 

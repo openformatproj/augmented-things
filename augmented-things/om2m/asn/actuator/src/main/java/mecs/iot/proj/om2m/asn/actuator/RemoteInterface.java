@@ -72,6 +72,8 @@ public class RemoteInterface extends Client {
 	public void run() {
 		outStream.out("Starting remote interface", i);
 		outStream.out1("Locating node", i);
+		if (viewer!=null)
+			viewer.touch(viewerIndex, "Locating");
 		CoapResponse response = locate(tag.id,tag.serial,location);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
@@ -90,8 +92,6 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
-		if (viewer!=null)
-			viewer.touch(viewerIndex);
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
@@ -105,6 +105,8 @@ public class RemoteInterface extends Client {
 			return;
 		}
 		outStream.out1_2("done, registering");
+		if (viewer!=null)
+			viewer.touch(viewerIndex, "Registering");
 		response = register(tag,this.address);
 		if (response==null) {
 			errStream.out("Unable to register to \"" + services.uri() + "\", timeout expired", i, Severity.LOW);
@@ -123,8 +125,6 @@ public class RemoteInterface extends Client {
 			outStream.out2("failed. Terminating remote interface");
 			return;
 		}
-		if (viewer!=null)
-			viewer.touch(viewerIndex);
 		outStream.out2("done");
 		i++;
 		if (duration>0) {
@@ -140,9 +140,9 @@ public class RemoteInterface extends Client {
 			outStream.out2("received: \"" + getNotification() + "\" (by \"" + getNotifier() + "\")");
 			i++;
 		}
-		deleteNode(tag.serial);
 		if (viewer!=null)
-			viewer.touch(viewerIndex);
+			viewer.touch(viewerIndex, "Unregistering");
+		deleteNode(tag.serial);
 		destroy();
 		outStream.out("Terminating remote interface", i);
 	}
