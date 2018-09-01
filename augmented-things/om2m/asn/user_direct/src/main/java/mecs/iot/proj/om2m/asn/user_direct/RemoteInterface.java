@@ -61,11 +61,12 @@ class RemoteInterface extends Client {
 					errStream.out("Unable to locate the user on \"" + services.uri() + "\", response: " + response.getCode(),
 							i, Severity.LOW);
 				outStream.out2("failed. Retrying");
+				registrationState = RegistrationState.UNREGISTERED;
 			} else {
 				foundSerial = true;
+				registrationState = RegistrationState.REGISTERED;
 			}
 		}
-		registrationState = RegistrationState.REGISTERED;
 		String[] mnData = response.getResponseText().split(", "); 													// MN id and address
 		String name = mnData[0];
 		String address = mnData[1];
