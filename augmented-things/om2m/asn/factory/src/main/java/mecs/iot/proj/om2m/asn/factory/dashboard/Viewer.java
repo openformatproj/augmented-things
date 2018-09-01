@@ -25,7 +25,7 @@ public class Viewer implements FactoryInterface {
 	
 	private static ArrayList<ASN> nodes;
 	private static Grid grid;
-	private final static int maxActions = 5;
+	private final static int maxAttributes = 5;
 	
 	public Viewer() {
 		nodes = new ArrayList<ASN>();
@@ -38,14 +38,14 @@ public class Viewer implements FactoryInterface {
 	}
 	
 	@Override
-	public void add(String id, String serial, String type, int actions) {
-		nodes.add(new ASN(id,serial,type,Math.min(actions,maxActions)));
+	public void add(String id, String serial, String type, int attributes) {
+		nodes.add(new ASN(id,serial,type,Math.min(attributes,maxAttributes)));
 	}
 	
 	@Override
 	public void show(int n) {
 		ASN node = nodes.get(n);
-		grid.add(node.id,node.serial,node.actions);
+		grid.add(node.id,node.serial,node.attributes);
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class Viewer implements FactoryInterface {
 	
 	@Override
 	public void touch(int n, int action) {
-		if (action<maxActions)
+		if (action<maxAttributes)
 			grid.nodes.get(n).touch(action);
 	}
 	
@@ -67,8 +67,8 @@ public class Viewer implements FactoryInterface {
 	
 	public static void main(String[] args) {
 	    Viewer viewer = new Viewer();
-	    viewer.add("sensor1", "0x0001", "tempC", 0);
-	    viewer.add("sensor2", "0x0003", "tempC", 0);
+	    viewer.add("sensor1", "0x0001", "tempC", 1);
+	    viewer.add("sensor2", "0x0003", "tempC", 2);
 	    viewer.add("actuator1", "0x0002", "act", 6);
 	    viewer.add("actuator2", "0x0004", "act", 3);
 	    viewer.start();
@@ -107,13 +107,13 @@ public class Viewer implements FactoryInterface {
 		String id;
 		String serial;
 		String type;
-		int actions;
+		int attributes;
 		
-		ASN(String id, String serial, String type, int actions) {
+		ASN(String id, String serial, String type, int attributes) {
 			this.id = id;
 			this.serial = serial;
 			this.type = type;
-			this.actions = actions;
+			this.attributes = attributes;
 		}
 		
 	}
@@ -166,7 +166,7 @@ class Grid extends JFrame {
 		nodes = new ArrayList<Node>();
 	}
 	
-	void add(String id, String serial, int actions) {
+	void add(String id, String serial, int attributes) {
 		Point p;
 		int explored = 0;
 		do {
@@ -185,18 +185,18 @@ class Grid extends JFrame {
 				centers[i][j].explored = false;
 		if (p.assigned==false) {
 			p.assigned = true;
-			Node node = new Node(this,id,serial,actions);
+			Node node = new Node(this,id,serial,attributes);
 			double x = p.center[0];
 			double y = p.center[1];
 			Point2D center = new Point2D.Double(x,y);
 			double radius = 0.5*edge;
-			node.circle = circle(center,radius);
-			double actionRadius = 0.1*edge;
+			node.circle = circle(center,radius);																										// Create the main circle for the node
+			double attributeRadius = 0.1*edge;
 			double angle = 2*Math.PI*Math.random();
-			for (int i=0; i<actions; i++) {
-				center = new Point2D.Double(x+(radius+0.15*edge+actionRadius)*Math.cos(angle),y+(radius+0.15*edge+actionRadius)*Math.sin(angle));
+			for (int i=0; i<attributes; i++) {
+				center = new Point2D.Double(x+(radius+0.15*edge+attributeRadius)*Math.cos(angle),y+(radius+0.15*edge+attributeRadius)*Math.sin(angle));
 				angle += Math.PI/5.0;
-				node.actionCircle[i] = circle(center,actionRadius);
+				node.attributeCircle[i] = circle(center,attributeRadius);																				// Add a circle for the i-th attribute (event or action)
 			}
 			node.draw();
 			nodes.add(node);
@@ -214,17 +214,17 @@ class Grid extends JFrame {
 		String id;
 		String serial;
 		Ellipse2D.Double circle;
-		Ellipse2D.Double[] actionCircle;
-		int actions;
+		Ellipse2D.Double[] attributeCircle;
+		int attributes;
 		Color color = new Color(221,221,119);
-		Color actionColor = new Color(119,221,119);
+		Color attributeColor = new Color(119,221,119);
 		
-		Node(Grid parent, String id,String serial, int actions) {
+		Node(Grid parent, String id, String serial, int attributes) {
 			this.parent = parent;
 			this.id = id;
 			this.serial = serial;
-			actionCircle = new Ellipse2D.Double[actions];
-			this.actions = actions;
+			attributeCircle = new Ellipse2D.Double[attributes];
+			this.attributes = attributes;
 		}
 		
 		void draw() {
@@ -234,19 +234,19 @@ class Grid extends JFrame {
 			parent.contentPanel.addMouseMotionListener(new MouseMotionListener() {
 				@Override
 				public void mouseMoved(MouseEvent e) {
-					if(circle.contains(e.getPoint()))
+					if (circle.contains(e.getPoint()))
 						parent.contentPanel.setToolTipText("<html><p>Id: " + id + "<br/>Serial: " + serial + "</p></html>");
 					ToolTipManager.sharedInstance().mouseMoved(e);
 				}
 				@Override
 				public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub 
+					// TODO Auto-generated method stub 
 				}
 			});
-			for (int i=0; i<actions; i++) {
+			for (int i=0; i<attributes; i++) {
 				g2d.setStroke(solidStroke);
 				g2d.setColor(Color.BLACK);
-				g2d.draw(actionCircle[i]);
+				g2d.draw(attributeCircle[i]);
 			}
 			parent.getContentPane().validate();
 			parent.getContentPane().repaint();
@@ -268,17 +268,17 @@ class Grid extends JFrame {
 		}
 		
 		void touch(int n) {
-			double x = actionCircle[n].getCenterX();
-			double y = actionCircle[n].getCenterY();
+			double x = attributeCircle[n].getCenterX();
+			double y = attributeCircle[n].getCenterY();
 			Point2D center = new Point2D.Double(x,y);
-			double radius = actionCircle[n].getWidth()/2.0;
+			double radius = attributeCircle[n].getWidth()/2.0;
 			Ellipse2D.Double c = circle(center,0.8*radius);
 			g2d.setStroke(new BasicStroke(0.0f));
-			g2d.setPaint(actionColor);
+			g2d.setPaint(attributeColor);
 			g2d.fill(c);
 			parent.getContentPane().validate();
 			parent.getContentPane().repaint();
-			Fader fader = new Fader(c,actionColor);
+			Fader fader = new Fader(c,attributeColor);
 			fader.start();
 		}
 		
