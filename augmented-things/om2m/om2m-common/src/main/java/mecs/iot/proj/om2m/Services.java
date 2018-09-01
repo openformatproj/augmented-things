@@ -161,11 +161,11 @@ public class Services {
 	 * 
 	 * @param json the JSON string to parse
 	 * @param outerAttr the outer attribute
-	 * @param attr the array of attributes to extract content from
+	 * @param attribute the array of attributes to extract content from
 	 * @param attrType an array of types describing the class of contents
 	 * @return the parsed string of attributes and their content
 	 */
-	public static String parseJSON(String json, String outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
+	public static String parseJSON(String json, String outerAttr, String[] attribute, Class<?>[] attrType) throws JSONException {
 		JSONObject root = null;
 		try {
 			root = new JSONObject(json);
@@ -179,13 +179,13 @@ public class Services {
 			throw e;
 		}
 		String parse = "";
-		for (int i=0; i<attr.length; i++) {
+		for (int i=0; i<attribute.length; i++) {
 			try {
-				parse += parseJSONObject(obj,attr[i],attrType[i]);
+				parse += parseJSONObject(obj,attribute[i],attrType[i]);
 			} catch (JSONException e) {
 				throw e;
 			}
-			if (i<attr.length-1)
+			if (i<attribute.length-1)
 				parse += ", ";
 		}
 		return parse;
@@ -205,11 +205,11 @@ public class Services {
 	 * 
 	 * @param json the JSON string to parse
 	 * @param outerAttr an array of attributes identifying the outer container
-	 * @param attr the array of attributes to extract content from
+	 * @param attribute the array of attributes to extract content from
 	 * @param attrType an array of types describing the class of contents
 	 * @return the parsed string of attributes and their content
 	 */
-	public static String parseJSON(String json, String[] outerAttr, String[] attr, Class<?>[] attrType) throws JSONException {
+	public static String parseJSON(String json, String[] outerAttr, String[] attribute, Class<?>[] attrType) throws JSONException {
 		JSONObject root = null;
 		try {
 			root = new JSONObject(json);
@@ -225,13 +225,13 @@ public class Services {
 			}
 		}
 		String parse = "";
-		for (int i=0; i<attr.length; i++) {
+		for (int i=0; i<attribute.length; i++) {
 			try {
-				parse += parseJSONObject(obj,attr[i],attrType[i]);
+				parse += parseJSONObject(obj,attribute[i],attrType[i]);
 			} catch (JSONException e) {
 				throw e;
 			}
-			if (i<attr.length-1)
+			if (i<attribute.length-1)
 				parse += ", ";
 		}
 		return parse;
@@ -242,11 +242,11 @@ public class Services {
 	 * the content of an inner attribute.
 	 * 
 	 * @param json the JSON string to parse
-	 * @param attr the attribute to extract content from
+	 * @param attribute the attribute to extract content from
 	 * @param attrType a type describing the class of content
 	 * @return the content of requested attribute
 	 */
-	public static String parseJSONObject(String json, String attr, Class<?> attrType) throws JSONException {
+	public static String parseJSONObject(String json, String attribute, Class<?> attrType) throws JSONException {
 		JSONObject obj = null;
 		try {
 			obj = new JSONObject(json);
@@ -255,7 +255,7 @@ public class Services {
 		}
 		String parse = null;
 		try {
-			parse = parseJSONObjectSilent(obj,attr,attrType);
+			parse = parseJSONObjectSilent(obj,attribute,attrType);
 		} catch (JSONException e) {
 			throw e;
 		}
@@ -269,11 +269,11 @@ public class Services {
 	 * 
 	 * @param json the JSON string to parse
 	 * @param outerAttr the outer attribute
-	 * @param attr the attribute to extract content from
+	 * @param attribute the attribute to extract content from
 	 * @param attrType a type describing the class of content
 	 * @return the content of requested attribute
 	 */
-	public static String parseJSONObject(String json, String outerAttr, String attr, Class<?> attrType) throws JSONException {
+	public static String parseJSONObject(String json, String outerAttr, String attribute, Class<?> attrType) throws JSONException {
 		JSONObject root = null;
 		try {
 			root = new JSONObject(json);
@@ -288,7 +288,7 @@ public class Services {
 		}
 		String parse = null;
 		try {
-			parse = parseJSONObjectSilent(obj,attr,attrType);
+			parse = parseJSONObjectSilent(obj,attribute,attrType);
 		} catch (JSONException e) {
 			throw e;
 		}
@@ -308,11 +308,11 @@ public class Services {
 	 * 
 	 * @param json the JSON string to parse
 	 * @param outerAttr an array of attributes identifying the array and the outer container
-	 * @param attr the attribute to extract content from (assumed of type String)
+	 * @param attribute the attribute to extract content from (assumed of type String)
 	 * @return an array containing all instances of the requested attribute inside the array
 	 */
 	@SuppressWarnings("unchecked")
-	public static String[] parseJSONArray(String json, String[] outerAttr, String attr) throws JSONException, IndexOutOfBoundsException {
+	public static String[] parseJSONArray(String json, String[] outerAttr, String attribute) throws JSONException, IndexOutOfBoundsException {
 		JSONObject root = null;
 		try {
 			root = new JSONObject(json);
@@ -328,7 +328,7 @@ public class Services {
 		ArrayList<String> attributes = new ArrayList<String>();
 		HashMap<String,Object> map = null;
 		for (int j=0; j<jsonList.size(); j++) {
-			if (attr==null) {
+			if (attribute==null) {
 				if (outerAttr.length==1) {
 					attributes.add((String)jsonList.get(j));
 				} else {
@@ -351,52 +351,66 @@ public class Services {
 						throw e;
 					}
 				}
-				attributes.add((String)map.get(attr));
+				attributes.add((String)map.get(attribute));
 			}
 		}
 		return attributes.toArray(new String[] {});
 	}
 	
-	private static String parseJSONObject(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
-		Object attribute = obj.get(attr);
+	private static String parseJSONObject(JSONObject obj, String attribute, Class<?> attrType) throws JSONException {
+		Object attr = obj.get(attribute);
 		if (attrType==Integer.class) {
-			return attr + "=" + Integer.toString((Integer)attribute);
+			return attribute + "=" + Integer.toString((Integer)attr);
 		} else if (attrType==String.class) {
-			return attr + "=" + (String)attribute;
+			return attribute + "=" + (String)attr;
 		} else if (attrType==Boolean.class) {
-			return attr + "=" + (boolean)attribute;
+			return attribute + "=" + (boolean)attr;
 		} else
 			return null;
 	}
 	
-	private static String parseJSONObjectSilent(JSONObject obj, String attr, Class<?> attrType) throws JSONException {
-		Object attribute = obj.get(attr);
+	private static String parseJSONObjectSilent(JSONObject obj, String attribute, Class<?> attrType) throws JSONException {
+		Object attr = obj.get(attribute);
 		if (attrType==Integer.class) {
-			return Integer.toString((Integer)attribute);
+			return Integer.toString((Integer)attr);
 		} else if (attrType==String.class) {
-			return (String)attribute;
+			return (String)attr;
 		} else if (attrType==Boolean.class) {
-			return "" + (boolean)attribute;
+			return "" + (boolean)attr;
 		} else
 			return null;
 	}
 	
-	private static List<Object> parseJSONArray(JSONObject obj, String attr) throws JSONException {
-		JSONArray jsonArray = obj.getJSONArray(attr);
+	private static List<Object> parseJSONArray(JSONObject obj, String attribute) throws JSONException {
+		JSONArray jsonArray = obj.getJSONArray(attribute);
 		return jsonArray.toList();
 	}
 	
-	public static JSONObject toJSONArray(JSONSerializable[] json, String attribute) {
+	/** Convert an array into a JSON array.
+	 * Converts an array of JSONSerializable objects into a JSON array.
+	 * 
+	 * @param jsonArray the JSONSerializable array
+	 * @param attribute the attribute under which the array is created
+	 * @return a JSON object containing the array
+	 */
+	public static JSONObject toJSONArray(JSONSerializable[] jsonArray, String attribute) {
 		JSONObject obj = new JSONObject();
-		for (int i=0; i<json.length; i++)
-			obj.append(attribute,json[i].toJSON());
+		for (int i=0; i<jsonArray.length; i++)
+			obj.append(attribute,jsonArray[i].toJSON());
 		return obj;
 	}
 	
-	public static JSONObject toJSONArray(String[] value, String attribute) {
+	/** Convert an array into a JSON array.
+	 * Converts an array of strings into a JSON array.
+	 * 
+	 * @param array the String array
+	 * @param attribute the attribute under which the array is created
+	 * @return a JSON object containing the array
+	 */
+	public static JSONObject toJSONArray(String[] array, String attribute) {
 		JSONObject obj = new JSONObject();
-		for (int i=0; i<value.length; i++)
-			obj.append(attribute,value[i]);
+		for (int i=0; i<array.length; i++)
+			obj.append(attribute,array[i]);
 		return obj;
 	}
 	

@@ -61,7 +61,7 @@ public class Client extends Thread {
 		connect(uri);
 	}
 	
-	 /** 
+	 /** Establish a connection with a server.
 	 * Connects to a server by specifying its URI and creates a new instance of oneM2M services.
 	 * Examples:
 	 * <ul>
@@ -88,7 +88,7 @@ public class Client extends Thread {
 		debugStream.out("Connected to \"" + uri + "\"", i);
 	}
 	
-	/** 
+	/** Establish a connection with a server.
 	 * Connects to a server by specifying its URI.
 	 * Examples:
 	 * <ul>
@@ -122,16 +122,15 @@ public class Client extends Thread {
 //		return connection.ping();
 //	}
 	
-	/**
-	 * Disable the inner CoAP connection.
+	/** Disable the CoAP connection.
+	 * 
 	 */
 	@Override
 	public void destroy() {
 		connection.shutdown();
 	}
 	
-	/**
-	 * Send a synchronous CoAP request.
+	/** Send a synchronous CoAP request.
 	 * 
 	 * @param request the request to issue
 	 * @param method the REST method to issue
@@ -143,8 +142,7 @@ public class Client extends Thread {
 		return connection.advanced(request);
 	}
 	
-	/**
-	 * Send a synchronous CoAP request and prints the answer on a console.
+	/** Send a synchronous CoAP request and prints the answer on a console.
 	 * 
 	 * @param request the request to issue
 	 * @param method the REST method to issue
@@ -157,8 +155,7 @@ public class Client extends Thread {
 		return connection.advanced(request);
 	}
 	
-	/**
-	 * Send an asynchronous CoAP request.
+	/** Send an asynchronous CoAP request.
 	 * 
 	 * @param request the request to issue
 	 * @param method the REST method to issue
@@ -175,8 +172,8 @@ public class Client extends Thread {
 //		return query.get(index).substring(attribute.length()+1);
 //	}
 	
-	/**
-	 * Get the number of operations of this client has performed.
+	/** Get the number of operations this client has performed.
+	 * 
 	 * @return the number of elementary operations performed between start-up and the call point
 	 */
 	public int getCount() {
@@ -187,8 +184,8 @@ public class Client extends Thread {
 //		this.i = i;
 //	}
 	
-	/**
-	 * Step the number of operations of this client by one.
+	/** Step the number of operations of this client by one.
+	 * 
 	 */
 	public void stepCount() {
 		this.i = this.i+1;
