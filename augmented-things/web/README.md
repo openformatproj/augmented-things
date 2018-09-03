@@ -22,3 +22,8 @@ to launch the usual Java applications, and then on
 * Package Explorer/web -> Run As -> Run on Server
 
 to execute the Tomcat server. Currently, this mode of operation can be launched only from Eclipse.
+
+All .war files can be found in the ```<package>/target``` folder, being ```<package>``` one of the possible applications
+
+* direct (```./web/```)
+* indirect (```./web/```)
