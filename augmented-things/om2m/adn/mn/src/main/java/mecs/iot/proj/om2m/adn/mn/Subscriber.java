@@ -123,14 +123,16 @@ class Subscriber {
 				ArrayList<Subscription> subs;
 				for (int i=0; i<resources.length; i++) {
 					subs = subscriptionMap.get(resources[i]);
-					for (int j=0; j<subs.size(); j++) {
-						if (subs.get(j).receiver.id.equals(id))
-							subs.remove(j);																	// Remove all subscriptions containing the receiver
-					}
-					oM2Mput(resources[i],subs,false,k);
-					if (subs.size()==0) {																	// If there are no subscriptions anymore, remove the subscription to the corresponding resource
-						debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
-						subscriptionMap.remove(resources[i]);
+					if (subs!=null) {
+						for (int j=0; j<subs.size(); j++) {
+							if (subs.get(j).receiver.id.equals(id))
+								subs.remove(j);																// Remove all subscriptions containing the receiver
+						}
+						oM2Mput(resources[i],subs,false,k);
+						if (subs.size()==0) {																// If there are no subscriptions anymore, remove the subscription to the corresponding resource
+							debugStream.out("Deleting subscription on \"" + resources[i] + "\"", k);
+							subscriptionMap.remove(resources[i]);
+						}
 					}
 				}
 				break;
@@ -139,29 +141,33 @@ class Subscriber {
 	
 	void remove(String sender, String receiver, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
-		for (int j=0; j<subs.size(); j++) {
-			if (subs.get(j).receiver.id.equals(receiver))
-				subs.remove(j);																				// Remove all subscriptions containing the receiver
-		}
-		oM2Mput(sender,subs,false,k);
-		if (subs.size()==0) {
-			debugStream.out("Deleting subscription on \"" + sender + "\"", k);
-			subscriptionMap.remove(sender);
+		if (subs!=null) {
+			for (int j=0; j<subs.size(); j++) {
+				if (subs.get(j).receiver.id.equals(receiver))
+					subs.remove(j);																			// Remove all subscriptions containing the receiver
+			}
+			oM2Mput(sender,subs,false,k);
+			if (subs.size()==0) {
+				debugStream.out("Deleting subscription on \"" + sender + "\"", k);
+				subscriptionMap.remove(sender);
+			}
 		}
 	}
 	
 	void remove(String sender, String event, String receiver, String action, int k) throws URISyntaxException, StateCreationException {
 		ArrayList<Subscription> subs = subscriptionMap.get(sender);
-		Subscription ref;
-		for (int j=0; j<subs.size(); j++) {
-			ref = subs.get(j);
-			if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
-				subs.remove(j);																				// Remove all subscriptions both containing the receiver and matching the pair event/action
-		}
-		oM2Mput(sender,subs,false,k);
-		if (subs.size()==0) {
-			debugStream.out("Deleting subscription on \"" + sender + "\"", k);
-			subscriptionMap.remove(sender);
+		if (subs!=null) {
+			Subscription ref;
+			for (int j=0; j<subs.size(); j++) {
+				ref = subs.get(j);
+				if (ref.receiver.id.equals(receiver) && ref.event.equals(event) && ref.action.equals(action))
+					subs.remove(j);																			// Remove all subscriptions both containing the receiver and matching the pair event/action
+			}
+			oM2Mput(sender,subs,false,k);
+			if (subs.size()==0) {
+				debugStream.out("Deleting subscription on \"" + sender + "\"", k);
+				subscriptionMap.remove(sender);
+			}
 		}
 	}
 	
