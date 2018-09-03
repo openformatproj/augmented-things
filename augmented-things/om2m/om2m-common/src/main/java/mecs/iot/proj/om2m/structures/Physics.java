@@ -15,5 +15,14 @@ public class Physics {
 			rnd = new Random();
 		return 1+relativeDeviation*rnd.nextGaussian();
 	}
+	
+	public static double threshold (double value, Double min, Double max) {
+		if (min!=null && value<=min.doubleValue())
+			return min.doubleValue();
+		else if (max!=null && value>=max.doubleValue())
+			return max.doubleValue();
+		else
+			return value;
+	}
 
 }
