@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author Alessandro Trifoglio
  * @version 0.0.1-SNAPSHOT
  * @since 0.0.1-SNAPSHOT
-*/
+ */
 public class Services {
 	
 	private Client client;
@@ -430,7 +430,7 @@ public class Services {
 	
 	public CoapResponse getResource(String[] uri, int i) throws URISyntaxException {
 		pathManager.change(uri);
-		Request request = new Request(Code.GET); 										// Create a GET request
+		Request request = new Request(Code.GET);
 		request.getOptions().addOption(new Option(267,1));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);
@@ -441,7 +441,7 @@ public class Services {
 	
 	public CoapResponse deleteResource(String[] uri, int i) throws URISyntaxException {
 		pathManager.change(uri);
-		Request request = new Request(Code.DELETE); 										// Create a GET request
+		Request request = new Request(Code.DELETE);
 		request.getOptions().addOption(new Option(267,1));
 		request.getOptions().addOption(new Option(256,"admin:admin"));
 		request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_JSON);

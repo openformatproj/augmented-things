@@ -18,7 +18,7 @@ import org.eclipse.californium.core.coap.Request;
  * @author Alessandro Trifoglio
  * @version 0.0.1-SNAPSHOT
  * @since 0.0.1-SNAPSHOT
-*/
+ */
 public class Client extends Thread {
 	
 	/** The set of oneM2M services this class provides.

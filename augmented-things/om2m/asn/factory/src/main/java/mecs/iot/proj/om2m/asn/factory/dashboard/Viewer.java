@@ -236,14 +236,12 @@ class Grid extends JFrame {
 		private static final long serialVersionUID = 1L;
 		
 		private JTextArea textArea;
-		private JScrollPane pane;
 		
 		Logger(String title, int width, int height) {
 			super(title);
 			setSize(width, height);
 			textArea = new JTextArea();
-			pane = new JScrollPane(textArea);
-			getContentPane().add(pane);
+			getContentPane().add(new JScrollPane(textArea));
 		}
 
 		void print(String event) {
