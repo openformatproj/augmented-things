@@ -4,21 +4,22 @@ import mecs.iot.proj.om2m.Services;
 import mecs.iot.proj.om2m.structures.Constants;
 import mecs.iot.proj.Interface;
 
-import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.awt.Font;
+
+// import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
-
-import java.awt.Color;
-import java.awt.Font;
 
 class Shell implements Interface {
 	
 	private JFrame frame;
-	private JTextPane out;
-	private JTextPane outAsync;
+	private JTextArea out;
+	private JTextArea outAsync;
 	private JTextField commandLine;
 	
 	private final int offsetX = 20;
@@ -31,6 +32,8 @@ class Shell implements Interface {
 	private final int asyncLabelHeight = 30;
 	private final Color bg = new Color(48,10,36);
 	private final Color fg = Color.WHITE;
+	
+	private int i,j;
 	
 	Shell(Console console) {
 		
@@ -61,13 +64,17 @@ class Shell implements Interface {
 		final int frameWidth = loginWidth+commandLineWidth+submitWidth+4*offsetX;
 		final int frameWidth_ = loginWidth+commandLineWidth+submitWidth+2*offsetX;
 		
-		out = new JTextPane();
+		out = new JTextArea();
+		JScrollPane pane = new JScrollPane(out);
+		pane.setBounds(offsetX, commandLineHeight+2*offsetY, frameWidth_, outHeight);
 		out.setBounds(offsetX, commandLineHeight+2*offsetY, frameWidth_, outHeight);
 		out.setBackground(bg);
 		out.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
 		out.setForeground(fg);
+		/*
 		out.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), 
 	            BorderFactory.createEmptyBorder(10,10,10,10)));
+		 */
 		
 		JLabel asyncLabel = new JLabel();
 		asyncLabel.setBounds(offsetX, commandLineHeight+outHeight+3*offsetY, frameWidth_, asyncLabelHeight);
@@ -75,19 +82,25 @@ class Shell implements Interface {
 		asyncLabel.setFont(new Font("Ubuntu Mono",Font.BOLD,14));
 		asyncLabel.setForeground(fg);
 		
-		outAsync = new JTextPane();
+		outAsync = new JTextArea();
+		JScrollPane paneAsync = new JScrollPane(outAsync);
+		paneAsync.setBounds(offsetX, commandLineHeight+outHeight+asyncLabelHeight+4*offsetY, frameWidth_, outHeight);
 		outAsync.setBounds(offsetX, commandLineHeight+outHeight+asyncLabelHeight+4*offsetY, frameWidth_, outHeight);
 		outAsync.setBackground(bg);
 		outAsync.setFont(new Font("Ubuntu Mono",Font.BOLD,12));
 		outAsync.setForeground(fg);
+		/*
 		outAsync.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE), 
 	            BorderFactory.createEmptyBorder(10,10,10,10)));
+		 */
 		
 		final int frameHeight = commandLineHeight+outHeight+asyncLabelHeight+outHeight+5*offsetY;
 		
 		frame = new JFrame("AT Shell");
-		frame.add(out);
-		frame.add(outAsync);
+		// frame.add(out);
+		frame.getContentPane().add(pane);
+		// frame.add(outAsync);
+		frame.getContentPane().add(paneAsync);
 		frame.add(commandLine);
 		frame.add(login);
 		frame.add(submit);
@@ -97,6 +110,9 @@ class Shell implements Interface {
 		frame.setResizable(true);
 		frame.setLayout(null);
 		frame.getContentPane().setBackground(bg);
+		
+		i = 0;
+		j = 0;
 		
 	}
 	
@@ -122,18 +138,24 @@ class Shell implements Interface {
 	
 	@Override
 	public void out(String str, boolean isJSON) {
+		i = i%99 + 1;
+		out.setText("");
+		out.append(i + ") Message from \"" + Thread.currentThread().getName() + "\":\r\n\r\n");
 		if (isJSON)
-			out.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+			out.append(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 		else
-			out.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+			out.append(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 	}
 	
 	@Override
 	public void outAsync(String str, boolean isJSON) {
+		j = j%99 + 1;
+		outAsync.setText("");
+		outAsync.append(j + ") Message from \"" + Thread.currentThread().getName() + "\":\r\n\r\n");
 		if (isJSON)
-			outAsync.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+			outAsync.append(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 		else
-			outAsync.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+			outAsync.append(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 	}
 	
 	@Override
