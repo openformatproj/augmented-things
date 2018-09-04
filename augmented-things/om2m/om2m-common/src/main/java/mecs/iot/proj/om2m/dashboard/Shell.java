@@ -184,25 +184,20 @@ class Shell implements Interface {
 	public void out(String str, boolean isJSON) {
 		i = i%99 + 1;
 		if (!fixed) {
-			JTextArea o = (JTextArea)out;
-			o.setText("");
-			o.append(i + ") Message from \"" + Thread.currentThread().getName() + "\":\r\n\r\n");
+			((JTextArea)out).setText("");
+			((JTextArea)out).append(i + ") Message from \"" + Thread.currentThread().getName() + "\":\r\n\r\n");
 		}
 		if (isJSON) {
 			if (!fixed) {
-				JTextArea o = (JTextArea)out;
-				o.append(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextArea)out).append(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			} else {
-				JTextPane o = (JTextPane)out;
-				o.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextPane)out).setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			}
 		} else {
 			if (!fixed) {
-				JTextArea o = (JTextArea)out;
-				o.append(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextArea)out).append(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			} else {
-				JTextPane o = (JTextPane)out;
-				o.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextPane)out).setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			}
 		}
 	}
@@ -211,25 +206,20 @@ class Shell implements Interface {
 	public void outAsync(String str, boolean isJSON) {
 		j = j%99 + 1;
 		if (!fixed) {
-			JTextArea o = (JTextArea)outAsync;
-			o.setText("");
-			o.append(j + ") Message from \"" + Thread.currentThread().getName() + "\":\r\n\r\n");
+			((JTextArea)outAsync).setText("");
+			((JTextArea)outAsync).append(j + ") Message from \"" + Thread.currentThread().getName() + "\":\r\n\r\n");
 		}
 		if (isJSON) {
 			if (!fixed) {
-				JTextArea o = (JTextArea)outAsync;
-				o.append(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextArea)outAsync).append(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			} else {
-				JTextPane o = (JTextPane)outAsync;
-				o.setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextPane)outAsync).setText(Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			}
 		} else {
 			if (!fixed) {
-				JTextArea o = (JTextArea)outAsync;
-				o.append(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextArea)outAsync).append(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			} else {
-				JTextPane o = (JTextPane)outAsync;
-				o.setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
+				((JTextPane)outAsync).setText(str.replace(Constants.newLine,"\n").replace(Constants.tab,"   "));
 			}
 		}
 	}
