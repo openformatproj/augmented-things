@@ -24,8 +24,9 @@ import org.json.JSONException;
 class ADN_IN extends ADN {
 	
 	private HashMap<String,MN> serialMap;																					// serial -> MN
-	private String[] subscriptions;
 	private HashMap<Integer,MN> locationMap;
+	
+	private final String[] subscriptions;
 	
 	Cloud cloud;
 
@@ -33,6 +34,7 @@ class ADN_IN extends ADN {
 		super(id,host,debug,console);
 		cseClient = new Client(Format.joinIdHost(id+"/CSEclient",host), Constants.protocol + "localhost" + Constants.inCSERoot(id), debug);
 		// TODO: create AE, pull state (serialMap) from OM2M. Not possible because discovery is not implemented yet
+		// WARNING: no workarounds are provided for this issue, so the system is currently not resilient against IN shutdowns
 		serialMap = new HashMap<String,MN>();
 		subscriptions = new String[] {"tagMap","userMap","subscriptionMap"};
 		locationMap = new HashMap<Integer,MN>();
