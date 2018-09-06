@@ -55,7 +55,7 @@ then go to ```localhost:8585``` , click on Manager App button to see the full ta
 * ```/direct```
 * ```/indirect```
 
-click on ```/indirect``` to open the web application.
+click on ```/indirect``` to open the web application. Be sure that the OM2M engine be up and running before launching the Tomcat server.
 
 ## Check log
 
