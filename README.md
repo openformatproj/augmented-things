@@ -44,3 +44,4 @@ Also check
 * [```om2m/asn/factory/README.md```](https://github.com/openformatproj/augmented-things/tree/master/augmented-things/om2m/asn/factory/README.md)
 * [```web/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/web/README.md)
 * [Contiki simulation](https://drive.google.com/drive/folders/1UCtUQH555_K1cqXqpyiYsh_Y-ocA-PP3)
+* [Android app sources](https://drive.google.com/open?id=1pkO_xtF5SklMtcSNe4vK67tayJ96MfV0): developed under[AndroidStudio](https://developer.android.com/studio/)
