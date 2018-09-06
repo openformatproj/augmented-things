@@ -4,6 +4,7 @@ const TESTER = "test";
 
 
 // utility globals
+const mnReq = "{\"command\":\"mns\"}";
 var bool = false;
 var response = '';
 
@@ -33,28 +34,25 @@ function loadMap(elem, reflist) { // tag element + string
 	if (elem.value == "false") {
 		elem.value = "true";
 		ajaxReq(
-				"GET",
-				SERVLET,
-			    '',
+			    mnReq,
 			    "json",
-			    getSuccess,
+			    getSuccess(reply, reflist),
 			    getError
 			 );
-//		document.getElementById(reflist).style.display = "block";
+		document.getElementById(reflist).style.display = "block";
 	}
 	else {
 		elem.value = "false";
-//		document.getElementById(reflist).style.display = "none";
+		document.getElementById(reflist).style.display = "none";
 	}
 }
 
-// used for other buttons
-function loadmn(target) {	
+// "View" button of each middle node
+function loadNodes(target, whichMN) {	
+	var nodesReq = "{\"command\":\"nodes\", \"mn\":\""+whichMN+"\"}";
 	ajaxReq(
-			"GET",
-			SERVLET,
-			"mns",
-			"text/plain",
+			nodesReq,
+			"application/json",
 			function(reply) {
 				prepareMDiv(reply, target);
 			}, // create object inside node div passed
@@ -62,21 +60,22 @@ function loadmn(target) {
 	);	
 }
 
-function loadnd(target) {
+// "Users" button of each middle node
+function loadUsers(target, whichMN) {
+	var usersReq = "{\"commad\":\"users\", \"mn\":\""+whichMN+"\"}";
 	ajaxReq(
-			"GET",
-			SERVLET,
-			"nodes",
-			"text/plain",
+			usersReq,
+			"application/json",
 			function (reply) {
-				prepareNDiv(reply, target);
+				prepareUDiv(reply, target);
 			},
 			getError
 	);
 }
 
-function prepareMDiv(reply, target) {
-	window.alert("not prepared");
+// list visualization
+function prepareUDiv(reply, target) {
+	window.alert("U not prepared");
 }
 
 function prepareNDiv(reply, target) {
@@ -148,10 +147,10 @@ function prepareNDiv(reply, target) {
 //-------------------------------------
 
 //Perform an AJAX request
-function ajaxReq(method, dest, info, type, succ, err) {
+function ajaxReq(info, type, succ, err) {
  $.ajax({
-     type: method,
-     url: dest,
+     type: "POST",
+     url: SERVLET,
      data: info,
      contentType: type,				
      dataType: "json", 				
@@ -162,10 +161,11 @@ function ajaxReq(method, dest, info, type, succ, err) {
 }
 
 // response
-function getSuccess(reply) {
+function getSuccess(reply, reflist) {
 	if(reply != null) {
         // all went well, prepare the page: the object that I received 
 		// is meant to be exactly a json object.
+		document.getElementById(reflist).style.display = "block";
 		var json = reply;
 		console.log(json);
 	}

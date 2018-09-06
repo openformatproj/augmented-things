@@ -5,21 +5,32 @@ import mecs.iot.proj.Interface;
 
 public class IndirectShell implements Interface {
 
-	
-	// questa roba deve cambiare e deve diventare qualcosa di comprensibile PER ME
-	// out deve essere: restituisco al servlet un JSON da parsare per esempio
-	private String outString;
+	private String serial;
 	private String command;
+	private String out , outAsync;
+	private boolean commandReady = false;	// different lock conditions
+	private boolean outReady = false, outAsyncReady = false;
+	private final static String SHELL_LOG = "[ISHELL] ";
+	private final static String [] ALERTS = { 
+			"has a mandatory number of",
+			"Error: 4.00",
+			"is not a valid command",
+			"Error: 5.00"
+	};
 	
-	public IndirectShell() {
-		
-			
+	public IndirectShell() {		
 	}
 	
+	/*
+	 */
 	@Override
-	// still don't understand why such that 
 	public String getSerial() {
-		return null;
+//		try { wait(); } 
+//		catch (InterruptedException e) { 
+//			System.out.println(SHELL_LOG+e.getMessage());
+//			e.printStackTrace();
+//		}
+		return serial;
 	}
 	
 	@Override
@@ -29,43 +40,78 @@ public class IndirectShell implements Interface {
 	}
 	
 	@Override
-	
+	// this is used by the app to retrieve the command
 	public synchronized String in() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		while(!commandReady) {
+			try { wait(); }
+			catch (InterruptedException e) { 
+				System.out.println(SHELL_LOG+e.getMessage());
+				e.printStackTrace(); 
+			}
 		}
+		commandReady = false;
 		return command;
 	}
 	
-	@Override
 	
-	public void out(String str, boolean isJSON) {
-		if (isJSON)
-			outString = "{}"; //Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   ");
+	@Override
+	// the string 'str' is what om2m sets!
+	public synchronized void out(String str, boolean isJSON) {
+		if (isConsistent(str)) 
+			out = str;
+		else 
+			out = null;
+		outReady = true;
+		notify();
+	}
+
+	@Override
+	// these are the responses from om2m!! do not use them to write
+	public synchronized void outAsync(String str, boolean isJSON) {
+		if (isConsistent(str))
+			outAsync = str;
 		else
-			outString = ""; //str.replace(Constants.newLine,"\n").replace(Constants.tab,"   ");
+			outAsync = null;
+		outAsyncReady = true;
+		notify();
 	}
 	
-	@Override
-	
-	public void outAsync(String str, boolean isJSON) {
-		if (isJSON)
-			outString = "{}"; //Services.formatJSON(str).replace(Constants.newLine,"\n").replace(Constants.tab,"   ");
-		else
-			outString = ""; //str.replace(Constants.newLine,"\n").replace(Constants.tab,"   ");
+	// these are called ONLY by the servlet. The shell always returns a "valid" string message
+	// The problem is: we have to check if the response is consistent or not. We do it into
+	// another function
+	public synchronized String getOut() {
+		if (!outReady) {
+			try {wait();}
+			catch (InterruptedException e) {
+				System.out.println(SHELL_LOG+e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		outReady = false;
+		return out;
 	}
 	
+	public synchronized String getOutAsync() {
+		if (!outAsyncReady) {
+			try {wait();}
+			catch (InterruptedException e) {
+				System.out.println(SHELL_LOG+e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		outAsyncReady = false;
+		return outAsync;
+	}
+
 	@Override
-	
 	public void terminate() {
-		// to do
+		// brute force submitting
+		outReady = outAsyncReady = commandReady = true;
+		notifyAll();
 	}
 	
-	// queryshell puo' essere usato in concorrenza dal servlet e dalla console
-	// cosi' che la wake arriva quando il comando e' pronto
-	private synchronized void wake() {
+	public synchronized void submit() {
+		commandReady = true;
 		notify();
 	}
 	
@@ -73,26 +119,24 @@ public class IndirectShell implements Interface {
 	// by the servlet in order to notify the Console
 	public synchronized void callMNS() {
 		command = "mns";
-		wake(); // meglio solo notify? e' gia' synchronized!!!
+		submit(); 
 	}
 	
-	public synchronized void callNODES(String mn_name) {
-		if (!mn_name.isEmpty())
-			command = "nodes -"+mn_name;
-		else
-			command = "nodes";
-		wake();
+	public synchronized void callNODES(String nodecommand) {
+		command = nodecommand;
+		submit();
 	}
 	
-	public synchronized void callUSERS(String users) {
-		if (!users.isEmpty())
-			command = "users -"+users;
-		else
-			command = "users";
-		wake();
+	public synchronized void callUSERS(String usercommand) {
+		command = usercommand;
+		submit();
 	}
-	
-	public String getOutString() {
-		return outString;
+
+	public boolean isConsistent(String str) {
+		for (int i = 0; i < ALERTS.length; i++) {
+			if (str.contains(ALERTS[i]))
+				return false;
+		}
+		return true;
 	}
 }

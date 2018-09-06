@@ -43,6 +43,10 @@ p {
 	box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
+.txtColRed {
+	color: red;
+}
+
 /* For sticky footer */
 html {
 	position: relative;

@@ -1,20 +1,21 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>mecs.iot.proj</groupId>
-    <artifactId>web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+  	<groupId>mecs.iot.proj</groupId>
+  	<artifactId>web</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
   </parent>
+  
   <artifactId>direct</artifactId>
+  <name>DirectInteraction</name>
   <packaging>war</packaging>
-  <name>Direct Interaction</name>
+  
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mainClass>web.direct.AndroidServlet</mainClass>
+    <!-- <mainClass>web.direct.AndroidServlet</mainClass>  -->
   </properties>
+  
   <dependencies>
     <dependency>
       <groupId>mecs.iot.proj</groupId>
@@ -22,8 +23,20 @@
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
+  
   <build>
     <finalName>direct</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/webapp</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    
+    <!-- Maven compiler plugin should be imported by parent-->
+      
     <pluginManagement>
       <plugins>
         <!-- Maven War Plugin -->
@@ -38,4 +51,5 @@
       </plugins>
     </pluginManagement>
   </build>
+  
 </project>

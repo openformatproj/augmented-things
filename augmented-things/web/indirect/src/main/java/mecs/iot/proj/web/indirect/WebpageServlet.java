@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import mecs.iot.proj.om2m.adn.in.OM2MIndirectEngine;
@@ -18,15 +19,17 @@ import mecs.iot.proj.om2m.adn.in.OM2MIndirectEngine;
  * to the in App. 
  * @author ilaria
  */
-@WebServlet(name = "WebpageServlet", 
-			urlPatterns = { "/webpage" },
-			loadOnStartup = 1)
+
+@WebServlet(asyncSupported = true, 
+			description = "indirect interaction", 
+			urlPatterns = { "/webpage" })
 public class WebpageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String SERV_LOG = "[WEBPAGE] ";
 	private static final IndirectShell is = new IndirectShell();
 	private static final OM2MIndirectEngine engine;
-    static {
+
+	static {
     	engine = new OM2MIndirectEngine(is);
     }
 	
@@ -34,62 +37,72 @@ public class WebpageServlet extends HttpServlet {
     public WebpageServlet() {
     	super();
     	engine.start();
+    	
     }
 
-	/** @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response) */
+	/**
+	 * REMEMBER: GET does dot receive any data by itself. Then, we shall use POST
+	 * Accepted jsons:
+	 * {"command":"mns"}
+	 * {"command":"nodes", "mn":"<name>"}
+	 * {"command":"users", "mn":"<name>"}
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// We have received a json. Let's check: data of ajax is into QUERY
-		System.out.println(SERV_LOG	+"I received a request.");
-		System.out.println(SERV_LOG	+"Content type: "+request.getContentType());
-		System.out.println(SERV_LOG	+"Query: "+request.getQueryString());
-		
+		// We have received a json. Let's check: data of ajax is into QUERY		
 		String command = request.getQueryString();
-		Boolean success = false;
-		if (command.equals("mns")) {
-			is.callMNS();
-			success = true;
+		if (command == null) 
+			command = request.getReader().readLine();
+		if (command == null) {
+			System.out.println(SERV_LOG+"No request to fulfill.");
+			response.getWriter().println("{\"error\":\"bad_query\"}");
+			return;
 		}
-		else {
-			String[] commands = command.split(",");
-			if (commands.length == 2) { 
-				if (commands[0].equals("nodes")) { 
-					is.callNODES(commands[1]);
-					success = true;
-				}
-				if (commands[0].equals("users")) {
-					is.callUSERS(commands[1]);
-					success = true;
-				}
-			}	
+		System.out.println(SERV_LOG+"Received ajax request: "+command);
+			
+		String ans = null;
+		try {
+			response.setContentType("application/json");			
+			JSONObject jsonRequest = new JSONObject(command);
+			if (!jsonRequest.has("command")) {
+				System.out.println(SERV_LOG+"No commands");
+				response.getWriter().println("{\"error\":\"no_commands\"}");
+				return;
+			}
+			if (jsonRequest.getString("command").equals("mns")) {
+				is.callMNS();
+				ans = is.getOut();
+				System.out.println(SERV_LOG+"Answer to mns:\n"+ans);
+				response.getWriter().println(ans);
+				return;
+			}
+			if (jsonRequest.getString("command").equals("nodes")) {
+				is.callNODES("nodes -"+jsonRequest.getString("mn"));
+				ans = is.getOut();
+				System.out.println(SERV_LOG+"Answer to nodes:\n"+ans);
+				response.getWriter().println(ans);
+				return;
+			}
+			if (jsonRequest.getString("command").equals("users")) {
+				is.callNODES("users -"+jsonRequest.getString("mn"));
+				ans = is.getOut();
+				System.out.println(SERV_LOG+"Answer to users:\n"+ans);
+				response.getWriter().println(ans);
+				return;
+			}
+			// if we reached here, no valid command is recognized
+			System.out.println(SERV_LOG+"Unrecognized command.");
+			response.getWriter().println("{\"error\":\"unrecognized_commandd\"}");
+		}
+		catch (JSONException e) {
+			System.out.println(SERV_LOG+e.getMessage());
+			response.getWriter().println("{\"error\":\"POST_error_JSON\"}");
 		}
 		
-		// prepare a json example to test
-		String json = "{"
-				+ "\"nodes\" :["
-				+ "{"
-					+ "\"mn\":\"augmented-things-MN\","
-					+ "\"active\":true,"
-					+ "\"attributes\":["
-						+ "\"event\""
-					+ "],"
-					+ "\"id\":\"sensor.alessandro\","
-					+ "\"type\":\"tempC\""
-				+ "},"
-				+ "{"
-				+ "\"mn\":\"augmented-things-MN\","
-				+ "\"active\":true,"
-				+ "\"attributes\":["
-					+ "\"action1\","
-					+ "\"action2\""
-				+ "],"
-				+ "\"id\":\"actuator.alessandro\","
-				+ "\"type\":\"act\""
-				+ "}"
-				+ "]}";
-
-		response.setContentType("application/json");
-//		response.getWriter().println(is.getOutString());
-		response.getWriter().println(json);
+//		if (ans == null) {
+//			System.out.println(SERV_LOG+"Errors occured while executing command...");
+//			response.getWriter().println("{\"error\":\"command_failed\"}");
+//			return;
+//		}
 	}
 
 	/**
@@ -97,6 +110,7 @@ public class WebpageServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println(SERV_LOG+"Redirecting POST...");
 		doGet(request, response);
 	}
 

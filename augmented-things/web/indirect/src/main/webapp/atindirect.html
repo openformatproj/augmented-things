@@ -80,11 +80,10 @@
 			</p>
 			<p>
 				<!-- the following button MUST issue a request on the CoapClient -->
-				<button id="generalmap-btn" onclick="loadMap(this,'test-h'); changeText(this)" href="#"
-					class="btn btn-primary my-2" value="false">Issue middle nodes</button>
-				<button id="midnodemap-btn" onclick="" href="#" hidden
-					class="btn btn-secondary my-2" value="false">Disabled button</button>
+				<button id="generalmap-btn" onclick="loadMap(this,'mainContainer')" href="#"
+					class="btn btn-primary my-2" value="false">Check connection</button>
 			</p>
+			<p class="text-muted" id="generalmap-info">Click above to show nodes connected to the cloud.</p>
 			<!-- NOTE	when an action is issued (make a list) something must happen to the opacity of the whole page: 
           			it can get aqua-colored when a button is issued, masking in some way the fact that I am doing
           			polling on the page.
@@ -94,27 +93,30 @@
 
 
 	<!-- the following is shown only if the midnodemap-btn is pressed -->
-	<div class="album py-5 bg-light">
+	<div id="mainContainer" class="album py-5 bg-light" display="none">
 		<div class="container">
 
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="card mb-4 box-shadow">
-						<img class="card-img-top" src="img/pittsburg-garden.jpeg"
+						<img class="card-img-top" src="img/smartgreen.jpg"
 							alt="Greenhouse thumbnail">
 						<div class="card-body">
 							<h3 class="card-text">GREENHOUSE</h3>
-							<p class="card-text">Control the sensors into greenhouse:
+							<p class="card-text">Control the sensors that monitor the health of your plants:
 								heat, humidity, pressure and so on.</p>
 							<!-- This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer. -->
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="btn-group">
 									<!-- Buttons should be assigned a behavior (link a js) -->
 									<button id="greenhuse-view"
-										onclick="loadnd('greenhouse-map'); upDate('modified-1')" type="button"
+										onclick="loadNodes('greenhouse-map', 'greenhouse-MN'); upDate('modified-1')" type="button"
 										class="btn btn-sm btn-outline-secondary" value="false">View</button>
+									<button id="greenhouse-users" type="button" 
+										onClick="loadUsers('greenhouse-map', 'greenhouse-MN'); upDate('modified-1')"
+										class="btn btn-sm btn-outline-secondary">Users</button>
 								</div>
-								<!-- This small text allows to? Count last update?-->
+								<!-- This small text allows to count last update?-->
 								<small id="modified-1" class="text-muted"></small>
 							</div>
 							<div id="greenhouse-map">
@@ -123,9 +125,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="card mb-4 box-shadow">
-						<img class="card-img-top" src="img/office.jpeg"
+						<img class="card-img-top" src="img/desk.jpg"
 							alt="Office thumbnail">
 						<div class="card-body">
 							<h3 class="card-text">OFFICE</h3>
@@ -133,9 +135,13 @@
 								main office.</p>
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="btn-group">
-									<button id="office-view" onclick="upDate('modified-2')"
+									<button id="office-view" 
+										onclick="loadNodes('office-map', 'office-MN'); upDate('modified-2')"
 										type="button" class="btn btn-sm btn-outline-secondary"
 										value="false">View</button>
+									<button id="office-users" type="button" 
+										onClick="loadUsers('office-map', 'office-MN'); upDate('modified-2')"
+										class="btn btn-sm btn-outline-secondary">Users</button>
 								</div>
 
 								<small id="modified-2" class="text-muted"></small>
@@ -164,24 +170,6 @@
 										<li>connected: #0A3F</li>
 									</ul>
 								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="card mb-4 box-shadow">
-						<img class="card-img-top" src="img/interior-designers5.jpg"
-							alt="Home thumbnail">
-						<div class="card-body">
-							<h3 class="card-text">SMART HOME</h3>
-							<p class="card-text">Manage your domotics to interact with
-								alarms, conditioning, lighting, car and security.</p>
-							<div class="d-flex justify-content-between align-items-center">
-								<div class="btn-group">
-									<button id="home-view" type="button" onclick="upDate('modified-3')"
-										class="btn btn-sm btn-outline-secondary" value="false">View</button>
-								</div>
-								<small id='modified-3' class="text-muted"></small>
 							</div>
 						</div>
 					</div>
