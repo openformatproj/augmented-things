@@ -119,7 +119,8 @@ See an [example of correct view](https://drive.google.com/open?id=1YArtcoISaD0PH
 By default, Tomcat redirects the standard output on this file: ```$CATALINA_HOME/logs/catalina.out```. Check it for log info.
 
 ## Launch from Eclipse
-After Tomcat installation, it is also possible to run the application on server using Eclipse. In this way, it can be easier to check logs on Console during further development.
+After Tomcat installation, it is also possible to run the application on server using Eclipse. In this way, it can be easier to check logs on Console during further development. **NOTE:** you cannot run Tomcat from bash and from Eclipse simultaneously. If you started up the server as descripted above, first shut it down before launching it on the IDE.
+
 Open Eclipse and click on:
 
 * Window -> Preferences -> Server/Runtime Environments
@@ -138,3 +139,4 @@ You are ready to launch your server from Eclipse! Right click on:
 
 and select the just created server. By clicking on "Next>" you can select which module to deploy (you can run both or only one of them at a time: in case, do the above operation also on Package Explorer/direct to launch that module too). Just click "Finish" to launch all modules as default. 
 Remember that also in this case you have to previously check that OM2M is up and running before starting the server.
+
