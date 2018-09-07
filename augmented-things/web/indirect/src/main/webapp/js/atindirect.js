@@ -2,11 +2,10 @@
 const SERVLET = "webpage";
 const TESTER = "test";
 
-
 // utility globals
 const mnReq = "{\"command\":\"mns\"}";
-var bool = false;
-var response = '';
+var mainInfo = "generalmap-info";
+
 
 function changeText(elem) { 
 	// using jquery: . takes classes, # takes ids, nothing takes tags
@@ -31,20 +30,50 @@ function showError(elem, errormsg) {
 
 // Just test to display. Literally, only the button value changes, so that the java client can operate on it
 function loadMap(elem, reflist) { // tag element + string
-	if (elem.value == "false") {
-		elem.value = "true";
-		ajaxReq(
-			    mnReq,
-			    "json",
-			    getSuccess(reply, reflist),
-			    getError
-			 );
+	ajaxReq(
+			mnReq,
+			"application/json",
+			function(reply) {
+				showMN(reply, reflist);
+			},
+			function(reply) {
+				hideMN(reply,reflist);
+			}
+			
+	);
+//	
+//	if (elem.value == "false") {
+//		elem.value = "true";
+//		passenger = reflist;
+//		ajaxReq(
+//			    mnReq,
+//			    "json",
+//			    getSuccess,
+//			    getError
+//			 );
+//	}
+//	else {
+//		elem.value = "false";
+//		document.getElementById(reflist).style.display = "none";
+//	}
+}
+
+function showMN(reply, reflist) {
+	if(reply != null) {
+        // all went well, prepare the page: the object that I received 
+		// is meant to be exactly a json object.
 		document.getElementById(reflist).style.display = "block";
+		$("\#"+mainInfo).html("Connection to the IN is successful. See below middle-nodes.");
 	}
-	else {
-		elem.value = "false";
-		document.getElementById(reflist).style.display = "none";
-	}
+    else {
+    	console.log(err);
+        window.alert("Ajax wrong response\n"+JSON.stringify(reply));
+    }
+}
+
+function hideMN(reply, reflist) {
+	document.getElementById(reflist).style.display = "block";
+	$("\#"+mainInfo).html("Connection failed. Click above to show nodes connected to the cloud.");
 }
 
 // "View" button of each middle node
@@ -54,42 +83,139 @@ function loadNodes(target, whichMN) {
 			nodesReq,
 			"application/json",
 			function(reply) {
-				prepareMDiv(reply, target);
+				if (reply.hasOwnProperty("error")) 
+					getError(reply);
+				else
+					prepareNDiv(reply, target);
 			}, // create object inside node div passed
-			getError
+			function (reply) {
+				Nerr(reply, target);
+			}
 	);	
 }
 
 // "Users" button of each middle node
 function loadUsers(target, whichMN) {
-	var usersReq = "{\"commad\":\"users\", \"mn\":\""+whichMN+"\"}";
+	var usersReq = "{\"command\":\"users\", \"mn\":\""+whichMN+"\"}";
 	ajaxReq(
 			usersReq,
 			"application/json",
 			function (reply) {
-				prepareUDiv(reply, target);
+				if (reply.hasOwnProperty("error")) 
+					getError(reply);
+				else
+					prepareUDiv(reply, target);
 			},
-			getError
+			function(reply) {
+				Uerr(reply, target);
+			}
 	);
+}
+
+function Nerr(reply, target) {
+	console.log("calledNerr");
+	var parent = document.getElementById(target);
+	var child = document.getElementById(target+"-ul");
+	if (child!=null)
+		parent.removeChild(child);
+	
+	// check that the node is registered
+	var json = JSON.parse(JSON.stringify(reply)); 
+	var p = document.createElement("p");
+	p.setAttribute("id", target+"-ul");
+	p.setAttribute("class", "small red-text");
+	p.appendChild(document.createTextNode(json.responseText));
+	parent.appendChild(p);
+}
+
+function Uerr(reply, target) {
+	console.log("calledUErr");
+	var parent = document.getElementById(target);
+	var child = document.getElementById(target+"-ul");
+	if (child!=null)
+		parent.removeChild(child);
+	
+	// check that the node is registered
+	var json = JSON.parse(JSON.stringify(reply)); 
+	var p = document.createElement("p");
+	p.setAttribute("id", target+"-ul");
+	p.setAttribute("class", "small red-text");
+	p.appendChild(document.createTextNode(json.responseText));
+	parent.appendChild(p);
 }
 
 // list visualization
 function prepareUDiv(reply, target) {
-	window.alert("U not prepared");
-}
-
-function prepareNDiv(reply, target) {
+	console.log("calledUdiv");
 	// by first, delete existing ones
 	var parent = document.getElementById(target);
 	var child = document.getElementById(target+"-ul");
 	if (child != null)
 		parent.removeChild(child);
-	console.log(target);
+//	console.log(target);
+	if (reply != null) {
+		console.log("Full object:")
+		console.log(JSON.stringify(reply));
+		if (JSON.stringify(reply) === "{}") {
+			// empty
+			var p = document.createElement("p");
+			p.setAttribute("id", target+"-ul");
+			p.setAttribute("class", "small red-text");
+			p.appendChild(document.createTextNode("No users connected."));
+			parent.appendChild(p);
+			return;
+		}
+		var ul1 = document.createElement("ul");
+		ul1.setAttribute("class", "orange-text");
+		ul1.setAttribute("id", target+"-ul");
+		var li1 = document.createElement("li");
+		li1.appendChild(document.createTextNode("USERS:"));
+		ul1.appendChild(li1);
+		for (var i in reply.users) { // 2 mn
+//			console.log("first inner object: still an array");
+//			console.log(reply.nodes[i]);			
+//			ul2.appendChild(document.createElement("li").appendChild(document.createTextNode("("+i+")")));
+			var ul2 = document.createElement("ul");
+			var li2 = document.createElement("li");
+			li2.appendChild(document.createTextNode("User "+i));
+			ul2.appendChild(li2);
+			var ul3 = document.createElement("ul");
+			ul2.appendChild(ul3);
+			for (var j in reply.users[i]) {
+//				console.log(j); // already a string! it's an object now
+				var li = document.createElement("li"); // primo mn: un ul
+				li.appendChild(document.createTextNode(j+": "+reply.users[i][j]));
+				ul3.appendChild(li);
+			}
+			ul1.appendChild(ul2);
+		}
+		document.getElementById(target).appendChild(ul1);
+	}
+}
+
+	
+function prepareNDiv(reply, target) {
+	console.log("calledNdiv");
+	// by first, delete existing ones
+	var parent = document.getElementById(target);
+	var child = document.getElementById(target+"-ul");
+	if (child != null)
+		parent.removeChild(child);
+//	console.log(target);
 	if (reply != null) {
 //		console.log("Full object:")
 //		console.log(reply);
+		if (JSON.stringify(reply) === "{}") {
+			// empty
+			var p = document.createElement("p");
+			p.setAttribute("id", target+"-ul");
+			p.setAttribute("class", "small red-text");
+			p.appendChild(document.createTextNode("No nodes connected."));
+			parent.appendChild(p);
+			return;
+		}
 		var ul1 = document.createElement("ul");
-		ul1.setAttribute("class", "text-muted");
+		ul1.setAttribute("class", "blue-text");
 		ul1.setAttribute("id", target+"-ul");
 		var li1 = document.createElement("li");
 		li1.appendChild(document.createTextNode("NODES:"));
@@ -154,32 +280,29 @@ function ajaxReq(info, type, succ, err) {
      data: info,
      contentType: type,				
      dataType: "json", 				
-//     mimeType: "application/json",
      success: succ,
      error: err
  });
 }
 
 // response
-function getSuccess(reply, reflist) {
-	if(reply != null) {
-        // all went well, prepare the page: the object that I received 
-		// is meant to be exactly a json object.
-		document.getElementById(reflist).style.display = "block";
-		var json = reply;
-		console.log(json);
-	}
-    else {
-        window.alert("Ajax wrong response");
-    }
-    
-}
+//function getSuccess(reply) {
+//	if(reply != null) {
+//        // all went well, prepare the page: the object that I received 
+//		// is meant to be exactly a json object.
+//		document.getElementById(passenger).style.display = "block";
+//		var json = reply;
+//		console.log(json);
+//	}
+//    else {
+//    	console.log(err);
+//        window.alert("Ajax wrong response");
+//    }
+//    
+//}
 
 function getError(err) {
-	window.alert("Error "+err);
+	console.log(err);
+	window.alert("Error "+JSON.stringify(err));
 }
 
-// prepare list to
-function prepareList(json) { // JSON object
-	
-}

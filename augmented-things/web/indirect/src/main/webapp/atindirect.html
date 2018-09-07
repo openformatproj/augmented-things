@@ -12,7 +12,6 @@
 
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.minmine.css" rel="stylesheet">
-
 <!-- Custom styles for this template -->
 <link href="css/atindirect.css" rel="stylesheet">
 
@@ -93,7 +92,7 @@
 
 
 	<!-- the following is shown only if the midnodemap-btn is pressed -->
-	<div id="mainContainer" class="album py-5 bg-light" display="none">
+	<div id="mainContainer" class="album py-5 bg-light" style="display:none">
 		<div class="container">
 
 			<div class="row">
@@ -146,14 +145,15 @@
 
 								<small id="modified-2" class="text-muted"></small>
 							</div>
-							<div id="office-map" style="display:none">
-								<ul class="text-muted">
+							<div id="office-map" style="display:block">
+							<!-- 
+								<ul id="office-map-ul" class="text-muted">
 									<li>Sensor</li>
 									<ul> 
 										<li>name: heat sensor</li>
 										<li>tagID: #0A15</li>
 										<li>value: 15C°</li>
-										<li>connected: none</li> <!-- some way to set undefined value -->
+										<li>connected: none</li> 
 									</ul>
 									<li>Sensor</li>
 									<ul> 
@@ -170,6 +170,7 @@
 										<li>connected: #0A3F</li>
 									</ul>
 								</ul>
+								-->
 							</div>
 						</div>
 					</div>
@@ -204,12 +205,17 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>
-	<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+	<script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script> 
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/holder.min.js"></script>
     <!-- my scripts -->
 	<script src="js/atindirect.js"></script>
+	
+    <script>window.jQuery || document.write('<script src="js/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="js/assets/js/vendor/popper.min.js"></script>
+    <script src="js/dist/js/bootstrap.min.js"></script>
+    <script src="js/assets/js/vendor/holder.min.js"></script>
 </body>
 </html>

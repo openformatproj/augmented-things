@@ -30,6 +30,16 @@
 	max-width: 60rem;
 }
 
+.red-text{
+	color: red;
+}
+.blue-text{
+	color: blue;
+}
+.orange-text{
+	color: DarkOrange;
+}
+
 footer {
 	padding-top: 3rem;
 	padding-bottom: 3rem;
