@@ -117,9 +117,10 @@ Alternatively, you can deploy .war files by browsing them in the Manager App.
 
 **IMPORTANT NOTICE:** Be sure that the OM2M engine is up and running before launching the Tomcat server. For this reason, if Tomcat shows these contexes as already running at startup time, it could be necessary to stop both and restart them from the Manager. Remember that is better to start ```indirect``` before ```direct```. 
 
-*TROUBLESHOOTING:* A possible issue is related to the fact that sometimes you are not able to restart the IN due to endpoint error (port 568x already in use by other processes). in this case:
+#### Troubleshooting
+Sometimes you may end up in the impossibility of restarting the IN due to endpoint error (port 568x already in use by other processes). In this case:
 * check that you have already shut down all other threads using that port;
-* check that the port does not appear as a listening udp6 port. Use ```netstat --listen```. You can kill definitely the found processes using ```kill $(lsof -t -i:8080)```. More discussion [here](https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux)
+* check that the port does not appear as a listening udp6 port. Use ```netstat --listen```. You can kill definitely the found processes using ```kill $(lsof -t -i:8080)```. More discussion [here](https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux).
 
 ### Monitor log
 
