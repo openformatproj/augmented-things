@@ -101,7 +101,8 @@ Download the desired version from [here](https://tomcat.apache.org/download-90.c
 
 ### Deploy the application
 
-Gegerated .war files can be found in ```target``` folder of the progects ```web/indirect``` and ```web/direct```. Put these packages into the folder ```$CATALINA_HOME/webapps``` to have Tomcat automatically deploy them at startup time.
+Gegerated .war files can be found in ```target``` folder of the progects ```web/indirect``` and ```web/direct```. Put these packages into the folder ```$CATALINA_HOME/webapps``` to have Tomcat automatically deploy them at startup time. Moreover, put all the generated ```<module-name-snaphsot>-jar-with-dependencies.jar``` into ```$CATALINA_HOME/libs``` to let the server know where maven modules can be found by the web application.
+
 To launch Tomcat, execute from terminal: 
 
 ```$CATALINA_HOME/bin/startup.sh```
@@ -110,7 +111,9 @@ and open your browser. After going on Tomcat home page at ```localhost:8585```, 
 
 * ```/direct```
 * ```/indirect```
-See an [example of correct view](https://drive.google.com/open?id=1YArtcoISaD0PHDEplU17POvERlaIbLWE). By clicking on ```/indirect``` you can reach the webpage of our application and check that it is correctly online.
+See an [example of correct view](https://drive.google.com/open?id=1YArtcoISaD0PHDEplU17POvERlaIbLWE). By clicking on ```/indirect``` you can reach the webpage of our application and check that it is correctly online. 
+
+Alternatively, you can deploy .war files by browsing them in the Manager App. 
 
 **IMPORTANT NOTICE:** Be sure that the OM2M engine is up and running before launching the Tomcat server. For this reason, if Tomcat shows these contexes as already running at startup time, stop both and restart them from the Manager. Remember that you have to start indirect before direct.
 
