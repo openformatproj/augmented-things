@@ -19,6 +19,14 @@ mvn clean compile war:war
 ```
 to do the same for .war files.
 
+## Setting
+After building the project, follow the following instructions
+* [```om2m/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md): this sets the om2m environment and launches the .jar files out of Tomcat
+* [```om2m/asn/factory/README.md```](https://github.com/openformatproj/augmented-things/tree/master/augmented-things/om2m/asn/factory/README.md): this launches the factory simulation
+* [```web/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/web/README.md): this sets Tomcat services and launches the Web Server
+* [Contiki simulation](https://drive.google.com/drive/folders/1UCtUQH555_K1cqXqpyiYsh_Y-ocA-PP3)
+* [Android app sources](https://drive.google.com/open?id=1ji5jKmUPzDfxiWXNrXRphrfWNK1Cl3Ud): developed under [AndroidStudio](https://developer.android.com/studio/)
+
 ## Notes for collaborators
 To import this project in your Eclipse workspace
 * right click on Package Explorer -> Import -> Maven/Check out Maven Projects from SCM or File -> Import -> Maven/Check out Maven Projects
@@ -37,11 +45,3 @@ To synchronize your local copy with the current version of this repository
 
 to push your edit in this repository
 * right click on Package Explorer/augmented-things -> Team -> Commit -> Commit and Push
-
-### Modules' documentation
-Also check
-* [```om2m/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md)
-* [```om2m/asn/factory/README.md```](https://github.com/openformatproj/augmented-things/tree/master/augmented-things/om2m/asn/factory/README.md)
-* [```web/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/web/README.md)
-* [Contiki simulation](https://drive.google.com/drive/folders/1UCtUQH555_K1cqXqpyiYsh_Y-ocA-PP3)
-* [Android app sources](https://drive.google.com/open?id=1ji5jKmUPzDfxiWXNrXRphrfWNK1Cl3Ud): developed under[AndroidStudio](https://developer.android.com/studio/)
