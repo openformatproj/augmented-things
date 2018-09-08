@@ -1,7 +1,7 @@
 # web
 
 ## Setting
-This module contains all what concerns the Web Server that provides and interface between the remote user and the Augmented Things infrastructure. Two main server provide access via browser or via mobile application (see the [relative documentation and sources](https://drive.google.com/open?id=1pkO_xtF5SklMtcSNe4vK67tayJ96MfV0)).
+This module contains all what concerns the Web Server that provides and interface between the remote user and the Augmented Things infrastructure. Two main services provide and interface to om2m via browser or via mobile app developed on Android (see the relative documentation and [sources](https://drive.google.com/open?id=1ji5jKmUPzDfxiWXNrXRphrfWNK1Cl3Ud)).
 
 In order to launch it, be sure that [```./om2m/om2m-common/src/main/resources/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/om2m-common/src/main/resources/configuration/config.ini) file is set in this way
 ```
@@ -10,9 +10,9 @@ mecs.iot.proj.om2m.startWebShell=true
 ```
 
 ### Prerequisites
-To launch the full application, you need both
+To launch the full application, you need either
 
-* Eclipse installed with JAVA EE plugins for web development (you can grab the latest version from [here](http://www.eclipse.org/downloads/packages/release/photon/r/eclipse-ide-java-ee-developers))
+* Eclipse installed with JAVA EE plugins for web development (you can grab the latest version [here](http://www.eclipse.org/downloads/packages/release/photon/r/eclipse-ide-java-ee-developers))
 * a web server implementation: this project has been deployed on Apache Tomcat
 
 ## Generating .war files
@@ -35,7 +35,7 @@ even though they can be launched from whatever location in the directory structu
 To install Tomcat, download the desired version from [here](https://tomcat.apache.org/download-90.cgi) and follow the instructions on the site (available [here](https://tomcat.apache.org/tomcat-9.0-doc/setup.html)). After installing Tomcat
 
 * on ```$CATALINA_HOME/conf/context.xml```, change the default port from 8080 to any other number exept 8080 and 8282 (for instance 8585)
-* add the following part into ```$CATALINA_HOME/conf/tomcat-users.xml``` to set the users able the access the manager app of Tomcat
+* add the following code into ```$CATALINA_HOME/conf/tomcat-users.xml``` to set the users able the access the manager app of Tomcat
 ```
 <role rolename="tomcat"/>
 <role rolename="manager-gui"/>
@@ -64,7 +64,7 @@ see an [example of correct view](https://drive.google.com/open?id=1YArtcoISaD0PH
 Sometimes you may end up in the impossibility of restarting the IN due to endpoint error (port 568x already in use by other processes). In this case:
 
 * check that you have already shut down all other threads using that port
-* check that the port does not appear as a listening udp6 port. Use ```netstat --listen```. You can kill definitively the found processes using ```kill $(lsof -t -i:<port>)```. More information [here](https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux)
+* check that the port does not appear as a listening udp6 port: use ```netstat --listen```. You can kill definitively the found processes using ```kill $(lsof -t -i:<port>)```. More information [here](https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux)
 
 ### Monitor log
 By default, Tomcat redirects the standard output on this file: ```$CATALINA_HOME/logs/catalina.out```. Check it for logging info.
@@ -76,14 +76,14 @@ Open Eclipse and click on
 
 * Window -> Preferences -> Server/Runtime Environments
 
-then click on "Add...", select your Tomcat version and check "Create new local server", then click on "Next>". Provide a name for this server and provide the path of your current Tomcat installation, then click "Finish". The next step is providing the library for servlet API. This library is required by any web application that uses Servlet 3.x and later. You can do this by going to
+then click on "Add...", select your Tomcat version and check "Create new local server", then click on "Next>". Provide a name for this server and the path of your current Tomcat installation, then click "Finish". The next step is providing the library for servlet API: this library is required by any web application that uses Servlet 3.x and later. You can do this by going to
 
 * Window -> Preferences -> Java/Build Path/User libraries
 
-and using "Import..." to browse where the ```servlet-api.jar``` is located. Typically, you can find it in your ```$CATALINA_HOME/libs```. You are now ready to launch your server from Eclipse! Right click on the ```App.java``` file of the package you want to execute (```./web/direct``` and/or ```./web/indirect```) and then
+and using "Import..." to browse where the ```servlet-api.jar``` is located. Typically, you can find it in your ```$CATALINA_HOME/libs```. You are now ready to launch your server from Eclipse! Right click on the Package Explorer/<webmodule> you want to execute (```indirect``` or ```direct```), then
 
-* Package Explorer/indirect -> Run As -> Run on Server...
+* Run As -> Run on Server...
 
-and select the just created server. By clicking on "Next>" you can select which module to deploy (you can run both or only one of them at a time: in case, do the above operation also on Package Explorer/direct to launch that module too). Just click "Finish" to launch all modules as default. Remember that even in this case you have to previously check that om2m is up and running before starting the server.
+and select the just created server. By clicking on "Next>" you can select which module to deploy (you can run both or only one of them at a time: in case, do the above operation also on the other module to launch it too). Just click "Finish" to launch all modules as default. Remember that even in this case you have to previously check that om2m is up and running before starting the server.
 
-**Note**: you cannot run Tomcat from bash and from Eclipse simultaneously. If you started up the server as described above, first shut it down before launching it on the IDE.
+**Note**: you cannot run Tomcat from bash and from Eclipse simultaneously. If you started up the server as described in prior section, first shut it down before launching it on the IDE.
