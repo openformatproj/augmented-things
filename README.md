@@ -22,8 +22,8 @@ to do the same for .war files.
 ## Setting
 After building the project, follow the following instructions
 * [```om2m/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/README.md): this sets the om2m environment and launches the .jar files out of Tomcat
-* [```om2m/asn/factory/README.md```](https://github.com/openformatproj/augmented-things/tree/master/augmented-things/om2m/asn/factory/README.md): this launches the factory simulation
 * [```web/README.md```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/web/README.md): this sets Tomcat services and launches the Web Server
+* [```om2m/asn/factory/README.md```](https://github.com/openformatproj/augmented-things/tree/master/augmented-things/om2m/asn/factory/README.md): this launches the factory simulation
 * [Contiki simulation](https://drive.google.com/drive/folders/1UCtUQH555_K1cqXqpyiYsh_Y-ocA-PP3)
 * [Android app sources](https://drive.google.com/open?id=1ji5jKmUPzDfxiWXNrXRphrfWNK1Cl3Ud): developed under [AndroidStudio](https://developer.android.com/studio/)
 
