@@ -10,10 +10,10 @@ mecs.iot.proj.om2m.startWebShell=true
 ```
 
 ### Prerequisites
-To launch the full application, you need either
+To launch the full application, you need both
 
-* Eclipse installed with JAVA EE plugins for web development (you can grab the latest version [here](http://www.eclipse.org/downloads/packages/release/photon/r/eclipse-ide-java-ee-developers))
 * a web server implementation: this project has been deployed on Apache Tomcat
+* Eclipse installed with JAVA EE plugins for web development (you can grab the latest version [here](http://www.eclipse.org/downloads/packages/release/photon/r/eclipse-ide-java-ee-developers))
 
 ## Generating .war files
 From Eclipse, right click on
