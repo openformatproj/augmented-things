@@ -56,7 +56,7 @@ and open your browser. After going on Tomcat home page at ```localhost:8585``` ,
 * ```/direct```
 * ```/indirect```
 
-see an [example of correct view](https://drive.google.com/open?id=1YArtcoISaD0PHDEplU17POvERlaIbLWE). By clicking on ```/indirect``` you can reach the application webpage and check whether it is correctly online.
+see an [example of correct view](https://drive.google.com/open?id=1YArtcoISaD0PHDEplU17POvERlaIbLWE). By clicking on ```/indirect``` you can reach the application webpage and check whether it is correctly online. Alternatively, you can deploy .war files by browsing them in the Manager App.
 
 **Note**: be sure that the om2m engine is up and running before launching the Tomcat server. For this reason, if Tomcat shows these contexts as already running at startup time, it could be necessary to stop both and restart them from the Manager. Remember that is better to start ```indirect``` before ```direct```.
 
@@ -80,7 +80,7 @@ then click on "Add...", select your Tomcat version and check "Create new local s
 
 * Window -> Preferences -> Java/Build Path/User libraries
 
-and using "Import..." to browse where the ```servlet-api.jar``` is located. Typically, you can find it in your ```$CATALINA_HOME/libs```. You are now ready to launch your server from Eclipse! Right click on ```App.java``` and then
+and using "Import..." to browse where the ```servlet-api.jar``` is located. Typically, you can find it in your ```$CATALINA_HOME/libs```. You are now ready to launch your server from Eclipse! Right click on the ```App.java``` file of the package you want to execute - ```./web/direct``` and/or ```./web/indirect``` - and then
 
 * Package Explorer/indirect -> Run As -> Run on Server... 
 
