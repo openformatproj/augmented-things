@@ -80,9 +80,9 @@ then click on "Add...", select your Tomcat version and check "Create new local s
 
 * Window -> Preferences -> Java/Build Path/User libraries
 
-and using "Import..." to browse where the ```servlet-api.jar``` is located. Typically, you can find it in your ```$CATALINA_HOME/libs```. You are now ready to launch your server from Eclipse! Right click on the ```App.java``` file of the package you want to execute - ```./web/direct``` and/or ```./web/indirect``` - and then
+and using "Import..." to browse where the ```servlet-api.jar``` is located. Typically, you can find it in your ```$CATALINA_HOME/libs```. You are now ready to launch your server from Eclipse! Right click on the ```App.java``` file of the package you want to execute (```./web/direct``` and/or ```./web/indirect```) and then
 
-* Package Explorer/indirect -> Run As -> Run on Server... 
+* Package Explorer/indirect -> Run As -> Run on Server...
 
 and select the just created server. By clicking on "Next>" you can select which module to deploy (you can run both or only one of them at a time: in case, do the above operation also on Package Explorer/direct to launch that module too). Just click "Finish" to launch all modules as default. Remember that even in this case you have to previously check that om2m is up and running before starting the server.
 
