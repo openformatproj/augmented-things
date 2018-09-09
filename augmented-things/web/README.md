@@ -3,12 +3,6 @@
 ## Setting
 This module contains all what concerns the Web Server that provides and interface between the remote user and the Augmented Things infrastructure. Two main services provide and interface to om2m via browser or via mobile app developed on Android (see the relative documentation and [sources](https://drive.google.com/open?id=1ji5jKmUPzDfxiWXNrXRphrfWNK1Cl3Ud)).
 
-In order to launch it, be sure that [```./om2m/om2m-common/src/main/resources/configuration/config.ini```](https://github.com/openformatproj/augmented-things/blob/master/augmented-things/om2m/om2m-common/src/main/resources/configuration/config.ini) file is set in this way
-```
-# Use Web Shell or AT Shell
-mecs.iot.proj.om2m.startWebShell=true
-```
-
 ### Prerequisites
 To launch the full application, you need both
 
