@@ -29,6 +29,7 @@ public class AndroidServlet extends HttpServlet {
     private static final DirectShell ds;
     private static final OM2MDirectEngine engine;
     private static final ErrorMessage em;
+    private static boolean firstreg = true;
     static {
     	ds = new DirectShell();
     	em = new ErrorMessage();
@@ -44,17 +45,6 @@ public class AndroidServlet extends HttpServlet {
         engine.start();
     }
 
-    // NOTA BENE: COSE CHE MANCANO
-    // - corretto shut down (quando il servlet trova un errore irreparabile, cade eccetera) bisognerebbe
-    //   terminare correttamente anche l'engine. Quando parte il waitForNotifications rimane bloccato e 
-    //   il timeout per la mutua esclusione crea qualche problema con il servlet;
-    //	 NOTA: qunando tomcat aggiorna online va in exception: non puo' aggiornare se c'e' un altro thread
-    //	 attivo sotto che sta facendo altre cose
-    // - gestione delle notifiche -> servlet asincrono + gestione parallela android
-    // - retry con la registrazione se fallisce
-    // - quell'handling notifications ROMPE I COGLIONI
-    // - DOMANDA: un sensore puo' essere collegato a piu' azioni contemporaneamente?
-    
 	/**
 	 * The GET action contains the serial about which we have to give back infos about. It always considers
 	 * JSON requests that are redirected from POST, PUT and DEL. That's because GET is never called directly, 
@@ -268,6 +258,11 @@ public class AndroidServlet extends HttpServlet {
 			// 2b. if the registration ended well, then the state is REGISTERED.
 			// We then have to wait until the engine is no more in WAITING state
 			if (engine.registrationState() == RegistrationState.UNREGISTERED) {
+				if (firstreg) {
+					System.out.println(SERV_LOG+"Waiting for registration...");
+					response.getWriter().println(em.REG_WAIT);
+					return;
+				}
 				System.out.println(SERV_LOG+"Registration failed. Retry...");
 				response.getWriter().println(em.REG_FAIL);
 				return;
