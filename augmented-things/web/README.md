@@ -43,7 +43,7 @@ Before launching Tomcat, put .war packages into the folder ```$CATALINA_HOME/web
 
 To launch Tomcat, execute from terminal
 ```
-$CATALINA_HOME/bin$./startup.sh
+$CATALINA_HOME/bin$ ./startup.sh
 ```
 and open your browser. After going on Tomcat home page at ```localhost:8585``` , click on the "Manager App" button to see the full table of deployed contexts: in case of success, you should see the contexts of your interest
 
